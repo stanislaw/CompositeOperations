@@ -17,16 +17,16 @@
 		860EDB7D18008535001BEEEE /* HighLoadTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB6A18008535001BEEEE /* HighLoadTests.m */; };
 		860EDB7E18008535001BEEEE /* NSOperationCompatibilityTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB6B18008535001BEEEE /* NSOperationCompatibilityTests.m */; };
 		860EDB7F18008535001BEEEE /* NSOperationQueueCompatibilityTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB6C18008535001BEEEE /* NSOperationQueueCompatibilityTests.m */; };
-		860EDB8018008535001BEEEE /* SACascadeOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB6D18008535001BEEEE /* SACascadeOperationTests.m */; };
-		860EDB8118008535001BEEEE /* SACompositeOperationsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB6E18008535001BEEEE /* SACompositeOperationsTests.m */; };
-		860EDB8218008535001BEEEE /* SAOperation_Suspending_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB6F18008535001BEEEE /* SAOperation_Suspending_Tests.m */; };
-		860EDB8318008535001BEEEE /* SAOperationQueueTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB7018008535001BEEEE /* SAOperationQueueTests.m */; };
-		860EDB8418008535001BEEEE /* SAOperationResolverTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB7118008535001BEEEE /* SAOperationResolverTests.m */; };
-		860EDB8518008535001BEEEE /* SAOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB7218008535001BEEEE /* SAOperationTests.m */; };
-		860EDB8618008535001BEEEE /* SAQueuesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB7318008535001BEEEE /* SAQueuesTests.m */; };
-		860EDB8718008535001BEEEE /* SASyncOperation_NonBlocking_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB7418008535001BEEEE /* SASyncOperation_NonBlocking_Tests.m */; };
-		860EDB8818008535001BEEEE /* SASyncOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB7518008535001BEEEE /* SASyncOperationTests.m */; };
-		860EDB8918008535001BEEEE /* SATransactionalOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB7618008535001BEEEE /* SATransactionalOperationTests.m */; };
+		860EDB8018008535001BEEEE /* COCascadeOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB6D18008535001BEEEE /* COCascadeOperationTests.m */; };
+		860EDB8118008535001BEEEE /* CompositeOperationsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB6E18008535001BEEEE /* CompositeOperationsTests.m */; };
+		860EDB8218008535001BEEEE /* COOperation_Suspending_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB6F18008535001BEEEE /* COOperation_Suspending_Tests.m */; };
+		860EDB8318008535001BEEEE /* COOperationQueueTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB7018008535001BEEEE /* COOperationQueueTests.m */; };
+		860EDB8418008535001BEEEE /* COOperationResolverTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB7118008535001BEEEE /* COOperationResolverTests.m */; };
+		860EDB8518008535001BEEEE /* COOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB7218008535001BEEEE /* COOperationTests.m */; };
+		860EDB8618008535001BEEEE /* COQueuesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB7318008535001BEEEE /* COQueuesTests.m */; };
+		860EDB8718008535001BEEEE /* COSyncOperation_NonBlocking_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB7418008535001BEEEE /* COSyncOperation_NonBlocking_Tests.m */; };
+		860EDB8818008535001BEEEE /* COSyncOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB7518008535001BEEEE /* COSyncOperationTests.m */; };
+		860EDB8918008535001BEEEE /* COTransactionalOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB7618008535001BEEEE /* COTransactionalOperationTests.m */; };
 		860EDB8A18008535001BEEEE /* TODO.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB7718008535001BEEEE /* TODO.m */; };
 		860EDB8C180087B9001BEEEE /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 860EDB8B180087B9001BEEEE /* SenTestingKit.framework */; };
 		860EDBA118008822001BEEEE /* COCascadeOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB8F18008822001BEEEE /* COCascadeOperation.m */; };
@@ -66,16 +66,16 @@
 		860EDB6A18008535001BEEEE /* HighLoadTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HighLoadTests.m; sourceTree = "<group>"; };
 		860EDB6B18008535001BEEEE /* NSOperationCompatibilityTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSOperationCompatibilityTests.m; sourceTree = "<group>"; };
 		860EDB6C18008535001BEEEE /* NSOperationQueueCompatibilityTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSOperationQueueCompatibilityTests.m; sourceTree = "<group>"; };
-		860EDB6D18008535001BEEEE /* SACascadeOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SACascadeOperationTests.m; sourceTree = "<group>"; };
-		860EDB6E18008535001BEEEE /* SACompositeOperationsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SACompositeOperationsTests.m; sourceTree = "<group>"; };
-		860EDB6F18008535001BEEEE /* SAOperation_Suspending_Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAOperation_Suspending_Tests.m; sourceTree = "<group>"; };
-		860EDB7018008535001BEEEE /* SAOperationQueueTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAOperationQueueTests.m; sourceTree = "<group>"; };
-		860EDB7118008535001BEEEE /* SAOperationResolverTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAOperationResolverTests.m; sourceTree = "<group>"; };
-		860EDB7218008535001BEEEE /* SAOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAOperationTests.m; sourceTree = "<group>"; };
-		860EDB7318008535001BEEEE /* SAQueuesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAQueuesTests.m; sourceTree = "<group>"; };
-		860EDB7418008535001BEEEE /* SASyncOperation_NonBlocking_Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SASyncOperation_NonBlocking_Tests.m; sourceTree = "<group>"; };
-		860EDB7518008535001BEEEE /* SASyncOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SASyncOperationTests.m; sourceTree = "<group>"; };
-		860EDB7618008535001BEEEE /* SATransactionalOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SATransactionalOperationTests.m; sourceTree = "<group>"; };
+		860EDB6D18008535001BEEEE /* COCascadeOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COCascadeOperationTests.m; sourceTree = "<group>"; };
+		860EDB6E18008535001BEEEE /* CompositeOperationsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompositeOperationsTests.m; sourceTree = "<group>"; };
+		860EDB6F18008535001BEEEE /* COOperation_Suspending_Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COOperation_Suspending_Tests.m; sourceTree = "<group>"; };
+		860EDB7018008535001BEEEE /* COOperationQueueTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COOperationQueueTests.m; sourceTree = "<group>"; };
+		860EDB7118008535001BEEEE /* COOperationResolverTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COOperationResolverTests.m; sourceTree = "<group>"; };
+		860EDB7218008535001BEEEE /* COOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COOperationTests.m; sourceTree = "<group>"; };
+		860EDB7318008535001BEEEE /* COQueuesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COQueuesTests.m; sourceTree = "<group>"; };
+		860EDB7418008535001BEEEE /* COSyncOperation_NonBlocking_Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COSyncOperation_NonBlocking_Tests.m; sourceTree = "<group>"; };
+		860EDB7518008535001BEEEE /* COSyncOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COSyncOperationTests.m; sourceTree = "<group>"; };
+		860EDB7618008535001BEEEE /* COTransactionalOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COTransactionalOperationTests.m; sourceTree = "<group>"; };
 		860EDB7718008535001BEEEE /* TODO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TODO.m; sourceTree = "<group>"; };
 		860EDB8B180087B9001BEEEE /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		860EDB8E18008822001BEEEE /* COCascadeOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COCascadeOperation.h; sourceTree = "<group>"; };
@@ -190,16 +190,16 @@
 				860EDB6A18008535001BEEEE /* HighLoadTests.m */,
 				860EDB6B18008535001BEEEE /* NSOperationCompatibilityTests.m */,
 				860EDB6C18008535001BEEEE /* NSOperationQueueCompatibilityTests.m */,
-				860EDB6D18008535001BEEEE /* SACascadeOperationTests.m */,
-				860EDB6E18008535001BEEEE /* SACompositeOperationsTests.m */,
-				860EDB6F18008535001BEEEE /* SAOperation_Suspending_Tests.m */,
-				860EDB7018008535001BEEEE /* SAOperationQueueTests.m */,
-				860EDB7118008535001BEEEE /* SAOperationResolverTests.m */,
-				860EDB7218008535001BEEEE /* SAOperationTests.m */,
-				860EDB7318008535001BEEEE /* SAQueuesTests.m */,
-				860EDB7418008535001BEEEE /* SASyncOperation_NonBlocking_Tests.m */,
-				860EDB7518008535001BEEEE /* SASyncOperationTests.m */,
-				860EDB7618008535001BEEEE /* SATransactionalOperationTests.m */,
+				860EDB6D18008535001BEEEE /* COCascadeOperationTests.m */,
+				860EDB6E18008535001BEEEE /* CompositeOperationsTests.m */,
+				860EDB6F18008535001BEEEE /* COOperation_Suspending_Tests.m */,
+				860EDB7018008535001BEEEE /* COOperationQueueTests.m */,
+				860EDB7118008535001BEEEE /* COOperationResolverTests.m */,
+				860EDB7218008535001BEEEE /* COOperationTests.m */,
+				860EDB7318008535001BEEEE /* COQueuesTests.m */,
+				860EDB7418008535001BEEEE /* COSyncOperation_NonBlocking_Tests.m */,
+				860EDB7518008535001BEEEE /* COSyncOperationTests.m */,
+				860EDB7618008535001BEEEE /* COTransactionalOperationTests.m */,
 				860EDB7718008535001BEEEE /* TODO.m */,
 			);
 			path = Tests;
@@ -318,33 +318,33 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				860EDB8018008535001BEEEE /* SACascadeOperationTests.m in Sources */,
-				860EDB8418008535001BEEEE /* SAOperationResolverTests.m in Sources */,
+				860EDB8018008535001BEEEE /* COCascadeOperationTests.m in Sources */,
+				860EDB8418008535001BEEEE /* COOperationResolverTests.m in Sources */,
 				860EDBA818008822001BEEEE /* COSyncOperation.m in Sources */,
-				860EDB8918008535001BEEEE /* SATransactionalOperationTests.m in Sources */,
+				860EDB8918008535001BEEEE /* COTransactionalOperationTests.m in Sources */,
 				860EDB7E18008535001BEEEE /* NSOperationCompatibilityTests.m in Sources */,
-				860EDB8818008535001BEEEE /* SASyncOperationTests.m in Sources */,
+				860EDB8818008535001BEEEE /* COSyncOperationTests.m in Sources */,
 				860EDB7D18008535001BEEEE /* HighLoadTests.m in Sources */,
-				860EDB8718008535001BEEEE /* SASyncOperation_NonBlocking_Tests.m in Sources */,
+				860EDB8718008535001BEEEE /* COSyncOperation_NonBlocking_Tests.m in Sources */,
 				860EDBA218008822001BEEEE /* COCompositeOperation.m in Sources */,
 				860EDBA318008822001BEEEE /* CompositeOperations.m in Sources */,
-				860EDB8518008535001BEEEE /* SAOperationTests.m in Sources */,
+				860EDB8518008535001BEEEE /* COOperationTests.m in Sources */,
 				860EDB7F18008535001BEEEE /* NSOperationQueueCompatibilityTests.m in Sources */,
 				860EDB7B18008535001BEEEE /* CompatibilityAliasesTests.m in Sources */,
 				860EDBA118008822001BEEEE /* COCascadeOperation.m in Sources */,
 				860EDBA718008822001BEEEE /* COQueues.m in Sources */,
 				860EDBA618008822001BEEEE /* COOperationResolver.m in Sources */,
-				860EDB8618008535001BEEEE /* SAQueuesTests.m in Sources */,
+				860EDB8618008535001BEEEE /* COQueuesTests.m in Sources */,
 				860EDBA518008822001BEEEE /* COOperationQueue.m in Sources */,
 				860EDBA918008822001BEEEE /* COTransactionalOperation.m in Sources */,
 				860EDB7C18008535001BEEEE /* CurrentTests.m in Sources */,
 				860EDBA418008822001BEEEE /* COOperation.m in Sources */,
 				860EDB54180084C7001BEEEE /* main.m in Sources */,
 				860EDB8A18008535001BEEEE /* TODO.m in Sources */,
-				860EDB8118008535001BEEEE /* SACompositeOperationsTests.m in Sources */,
-				860EDB8318008535001BEEEE /* SAOperationQueueTests.m in Sources */,
+				860EDB8118008535001BEEEE /* CompositeOperationsTests.m in Sources */,
+				860EDB8318008535001BEEEE /* COOperationQueueTests.m in Sources */,
 				860EDB7A18008535001BEEEE /* TestHelpers.m in Sources */,
-				860EDB8218008535001BEEEE /* SAOperation_Suspending_Tests.m in Sources */,
+				860EDB8218008535001BEEEE /* COOperation_Suspending_Tests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

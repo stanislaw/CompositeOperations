@@ -1,2 +1,2 @@
-all:
-	cd SACompositeOperationsTests; ./runtests
+test:
+	cd Tests; ./runtests

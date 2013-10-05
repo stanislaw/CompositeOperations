@@ -7,10 +7,10 @@ PROJECT_DIR:= $(TESTS_DIR)/..
 FRAMEWORKS_PATH:= -F/Applications/Xcode.app/Contents/Developer/Library/Frameworks
 FRAMEWORKS:= -framework Foundation -framework SenTestingKit
 LIBRARIES:= -lobjc
-INCLUDE_PATHS:= -I$(PROJECT_DIR)/SACompositeOperations\
+INCLUDE_PATHS:= -I$(PROJECT_DIR)/CompositeOperations\
                 -I$(TESTS_DIR)/TestHelpers
 
-SOURCE_SA = $(wildcard $(PROJECT_DIR)/SACompositeOperations/*.m)
+SOURCE_SA = $(wildcard $(PROJECT_DIR)/CompositeOperations/*.m)
 					
 SOURCE_TEST_SUITE = $(wildcard $(TESTS_DIR)/Tests/*.m)
 
