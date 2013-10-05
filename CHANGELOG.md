@@ -1,4 +1,26 @@
-# SACompositeOperations
+# Changes in CompositeOperations
+
+## Version 0.4.8
+
+Release date: 2013-10-05
+
+First release after migration. No changes, just completely new naming introduced to the whole project: `SA -> CO`.
+
+----
+
+The project was renamed: `SACompositeOperations -> CompositeOperations`
+because of the naming conflicts with Apple private frameworks introduced
+in iOS7. This inspired author to remove prefix from the name of the
+project: `CompositeOperations` and change a naming namespace for the
+whole project: `SA -> CO`.
+
+```
+SAOperation -> COOperation
+SACascadeOperation -> COCascadeOperation
+...
+```
+
+----
 
 ## Version 0.4.6
 
