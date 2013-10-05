@@ -1,0 +1,25 @@
+#!/bin/bash
+
+export DYLD_FRAMEWORK_PATH=/Applications/Xcode.app/Contents/Developer/Library/Frameworks
+
+make
+
+runtests ()
+{
+  ./octest 2>&1 | awk -f "octest.awk"
+
+  local awkstatus=$?
+
+  if [ "$awkstatus" -eq "1" ]
+  then
+    echo "Test suite failed"
+    return $awkstatus
+  else
+    echo "Test suite passed"
+    return 0
+  fi
+}
+
+echo "*** Building..."
+
+runtests || exit $?
