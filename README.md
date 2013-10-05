@@ -128,8 +128,6 @@ The order of execution:
 ```objective-c
 COSetDefaultQueue(concurrentQueue());
 
-__block BOOL isFinished = NO;
-
 transactionalOperation(^(COTransactionalOperation *transaction) {
     [transaction operation:^(COOperation *operation) {
         /* 
@@ -161,7 +159,6 @@ transactionalOperation(^(COTransactionalOperation *transaction) {
       ...Completion handler code...
     */
 
-    isFinished = YES;
 }, ^(COTransactionalOperation *transaction){
     /*
       ...Cancellation handler code...
@@ -170,8 +167,6 @@ transactionalOperation(^(COTransactionalOperation *transaction) {
     */
 });
 
-// Just a demonstration loop to wait until the operation will be finished
-while (!isFinished);
 ```
 
 ### COCascadedOperation
@@ -262,8 +257,6 @@ The order of execution:
 4. Third suboperation
  
 ```objective-c
-BOOL isFinished = NO;
-
 COSetDefaultQueue(someQueue());
 
 cascadeOperation(^(COCascadeOperation *co) {
@@ -292,13 +285,9 @@ cascadeOperation(^(COCascadeOperation *co) {
         */
 
         [o finish];
-        isFinished = YES;
     }];
     // At this point - after the outer block have just run - all operations are scheduled to be run in CODefaultQueue()
 }, nil, nil);
-
-// Just a demonstration loop to wait until an operation will run out
-while (!isFinished);
 ```
 
 ## Defining and running operations
