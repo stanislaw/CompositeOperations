@@ -100,7 +100,7 @@
 
     if ((self.isOnMainThread = [NSThread isMainThread])) {
         while (dispatch_semaphore_wait(self.semaphore, DISPATCH_TIME_NOW)) {
-            CFRunLoopRunInMode(kCFRunLoopDefaultMode, [[NSDate distantFuture] timeIntervalSinceNow], NO);
+            CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, NO);
         }
     } else {
         dispatch_semaphore_wait(self.semaphore, DISPATCH_TIME_FOREVER);
