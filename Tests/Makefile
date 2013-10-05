@@ -10,7 +10,7 @@ LIBRARIES:= -lobjc
 INCLUDE_PATHS:= -I$(PROJECT_DIR)/CompositeOperations\
                 -I$(TESTS_DIR)/TestHelpers
 
-SOURCE_SA = $(wildcard $(PROJECT_DIR)/CompositeOperations/*.m)
+SOURCE_COMPOSITE_OPERATIONS = $(wildcard $(PROJECT_DIR)/CompositeOperations/*.m)
 					
 SOURCE_TEST_SUITE = $(wildcard $(TESTS_DIR)/Tests/*.m)
 
@@ -18,10 +18,13 @@ SOURCE_TESTS = $(TESTS_DIR)/TestHelpers/TestHelpers.m\
 			         octest.m
 
 
-CFLAGS=-Wall -Werror -fobjc-arc -fobjc-exceptions -fexceptions -fdiagnostics-show-option -fcolor-diagnostics -g -v $(SOURCE_SA) $(SOURCE_TEST_SUITE) $(SOURCE_TESTS)
+CFLAGS=-Wall -Werror -fobjc-arc -fobjc-exceptions -fexceptions -fdiagnostics-show-option -fcolor-diagnostics -g -v $(SOURCE_COMPOSITE_OPERATIONS) $(SOURCE_TEST_SUITE) $(SOURCE_TESTS)
 
 LDFLAGS=$(LIBRARIES) $(FRAMEWORKS)
 OUT=-o octest
 
+test:
+		./runtests
+
 all:
-	    $(CC) $(FRAMEWORKS_PATH) $(CFLAGS) $(INCLUDE_PATHS) $(LDFLAGS) $(OUT)
+		$(CC) $(FRAMEWORKS_PATH) $(CFLAGS) $(INCLUDE_PATHS) $(LDFLAGS) $(OUT)

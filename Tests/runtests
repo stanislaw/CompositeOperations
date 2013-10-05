@@ -2,7 +2,7 @@
 
 export DYLD_FRAMEWORK_PATH=/Applications/Xcode.app/Contents/Developer/Library/Frameworks
 
-make
+make all
 
 runtests ()
 {
