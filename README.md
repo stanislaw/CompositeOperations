@@ -1,8 +1,8 @@
 # CompositeOperations 
 
-**COCompositeOperations = NSOperation/NSOperationQueue + block-based DSL**
+**CompositeOperations = NSOperation/NSOperationQueue + block-based DSL**
  
-`COCompositeOperations` is an attempt to build a higher-level composite operations framework on top of GCD. Its main features are:
+`CompositeOperations` is an attempt to build a higher-level composite operations framework on top of GCD. Its main features are:
 
 * Multistep asynchronous operations: chaining and synchronizing.
 * Mixing (or combining) operations (See 'Combining Operations').
@@ -11,7 +11,7 @@
 
 You might be interested at this project if you use GCD, but want it to be a bit more high-level: you need to implement the complex flows of operations (see the description of "sync", "async", "cascade" and "transactional" operations below) and for some reasons you are not satisfied with what NSOperationQueue/NSOperation can do
 
-[![Build Status](https://travis-ci.org/stanislaw/COCompositeOperations.png?branch=master)](https://travis-ci.org/stanislaw/COCompositeOperations)
+[![Build Status](https://travis-ci.org/stanislaw/CompositeOperations.png?branch=master)](https://travis-ci.org/stanislaw/CompositeOperations)
 
 ## Status 2013.09.16
 
@@ -56,12 +56,12 @@ The author will be very thankful for any feedback: regarding the overall code de
 
 ## Installation
 
-Just add `COCompositeOperations/` folder to your project.
+Just add `CompositeOperations/` folder to your project.
 
 Or add into your Podfile:
 
 ```ruby
-pod 'COCompositeOperations', :git => 'https://github.com/stanislaw/COCompositeOperations'
+pod 'CompositeOperations', :git => 'https://github.com/stanislaw/CompositeOperations'
 pod update
 ```
  
@@ -73,10 +73,10 @@ In some common place like an app delegate set up default queue to be used by all
 [COQueues setDefaultQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)];
 ```
 
-Then import `COCompositeOperations.h` where you want to use CO operations.
+Then import `CompositeOperations.h` where you want to use CO operations.
 
 ```objective-c
-#import <COCompositeOperations.h>
+#import <CompositeOperations.h>
 ```
 
 ## Four operations
@@ -85,7 +85,7 @@ Then import `COCompositeOperations.h` where you want to use CO operations.
 
 The `COOperation` is just a block of code wrapped into an NSOperation subclass with additional capabilities: since COOperation yields itself to the block to be executed (see `Each operation yields itself to the block`), it is possible to get more control of operation's execution flow: it is possible to cancel, suspend/resume, rerun (and some more options) operation from inside its own operation body.
 
-The most simple example: use `operation` (C-function wrapper for COOperation, part of COCompositeOperations DSL) to create and immediatedly run an operation block:
+The most simple example: use `operation` (C-function wrapper for COOperation, part of CompositeOperations DSL) to create and immediatedly run an operation block:
 
 ```objective-c
 operation(concurrentQueue(), ^(COOperation *operation) {
@@ -337,10 +337,10 @@ syncOperation.operation = ^(COSyncOperation *so) {
 [syncOperation start];
 ```
 
-or using helper functions defined in the global namespace in `COCompositeOperations.h`:
+or using helper functions defined in the global namespace in `CompositeOperations.h`:
 
 ``` objective-c
-#import "COCompositeOperations.h"
+#import "CompositeOperations.h"
 
 // ...
 
@@ -372,7 +372,7 @@ Both `COTransactionalOperation` and `COCascadedOperation` have a possibility to 
 
 ## TODO
 
-See [TODO](https://github.com/stanislaw/COCompositeOperations/wiki/TODO).
+See [TODO](https://github.com/stanislaw/CompositeOperations/wiki/TODO).
 
 ## Copyright
 

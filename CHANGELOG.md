@@ -8,7 +8,7 @@ First release after migration. No changes, just completely new naming introduced
 
 ----
 
-The project was renamed: `SACompositeOperations -> CompositeOperations` because of the naming conflicts with Apple private frameworks introduced in iOS7 ([SACompositeOperations issue #1](Reason: https://github.com/stanislaw/SACompositeOperations/issues/1). This inspired author to remove prefix from the name of the project: `CompositeOperations` and change a naming namespace for the whole project: `SA -> CO`.
+The project was renamed: `SACompositeOperations -> CompositeOperations` because of the naming conflicts with Apple private frameworks introduced in iOS7 ([SACompositeOperations issue #1](Reason: https://github.com/stanislaw/SACompositeOperations/issues/1)). This inspired author to remove prefix from the name of the project: `CompositeOperations` and change a naming namespace for the whole project: `SA -> CO`.
 
 ```
 SAOperation -> COOperation
