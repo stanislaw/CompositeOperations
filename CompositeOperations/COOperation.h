@@ -1,19 +1,19 @@
 #import <Foundation/Foundation.h>
-#import "SATypedefs.h"
-#import "SAOperationResolver.h"
+#import "COTypedefs.h"
+#import "COOperationResolver.h"
 
 typedef enum {
-    SAOperationCancelledState   = -2,
-    SAOperationSuspendedState   = -1,
-    SAOperationReadyState       = 0,
-    SAOperationExecutingState   = 1,
-    SAOperationFinishedState    = 2,
-} _SAOperationState;
+    COOperationCancelledState   = -2,
+    COOperationSuspendedState   = -1,
+    COOperationReadyState       = 0,
+    COOperationExecutingState   = 1,
+    COOperationFinishedState    = 2,
+} _COOperationState;
 
-@interface SAOperation : NSOperation
+@interface COOperation : NSOperation
 
 // Core
-@property (copy) SAOperationBlock operation;
+@property (copy) COOperationBlock operation;
 
 @property (strong) id operationQueue;
 
@@ -27,16 +27,16 @@ typedef enum {
 
 - (void)main;
 
-- (void)run:(SAOperationBlock)operationBlock;
-- (void)runInQueue:(dispatch_queue_t)queue operation:(SAOperationBlock)operationBlock;
-- (void)run:(SAOperationBlock)operationBlock completionHandler:(SACompletionBlock)completionHandler cancellationHandler:(SACancellationBlockForOperation)cancellationHandler;
+- (void)run:(COOperationBlock)operationBlock;
+- (void)runInQueue:(dispatch_queue_t)queue operation:(COOperationBlock)operationBlock;
+- (void)run:(COOperationBlock)operationBlock completionHandler:(COCompletionBlock)completionHandler cancellationHandler:(COCancellationBlockForOperation)cancellationHandler;
 
 - (void)start;
 - (void)finish;
 - (void)cancel;
 
 // Context operation
-@property (strong) SAOperation *contextOperation;
+@property (strong) COOperation *contextOperation;
 
 // Rerunning
 - (void)reRun;
@@ -47,8 +47,8 @@ typedef enum {
 - (void)resume;
 
 // Resolution
-- (void)resolveWithResolver:(id <SAOperationResolver>)operationResolver;
-- (void)resolveWithResolver:(id <SAOperationResolver>)operationResolver usingResolutionStrategy:(id)resolutionStrategy fallbackHandler:(SACompletionBlock)fallbackHandler;
+- (void)resolveWithResolver:(id <COOperationResolver>)operationResolver;
+- (void)resolveWithResolver:(id <COOperationResolver>)operationResolver usingResolutionStrategy:(id)resolutionStrategy fallbackHandler:(COCompletionBlock)fallbackHandler;
 
 // NSObject
 - (NSString *)description;
@@ -57,9 +57,9 @@ typedef enum {
 @end
 
 
-@interface SAOperation ()
+@interface COOperation ()
 
-@property (nonatomic) _SAOperationState state;
+@property (nonatomic) _COOperationState state;
 @property (nonatomic, readonly) NSString *stateKey;
 
 - (void)initPropertiesForRun;

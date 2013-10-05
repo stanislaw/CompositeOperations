@@ -1,9 +1,9 @@
-#import "SAOperationResolver.h"
-#import "SAOperation.h"
+#import "COOperationResolver.h"
+#import "COOperation.h"
 
-#import "SAQueues.h"
+#import "COQueues.h"
 
-@implementation SAOperationResolver
+@implementation COOperationResolver
 
 - (id)init {
     if (self = [super init]) {
@@ -14,32 +14,32 @@
     return self;
 }
 
-- (void)resolveOperation:(SAOperation *)operation {
+- (void)resolveOperation:(COOperation *)operation {
     [self resolveOperation:operation usingResolutionStrategy:nil fallbackHandler:nil];
 }
 
 // Default implementation, should be extended in subclasses
-- (void)resolveOperation:(SAOperation *)operation usingResolutionStrategy:(id)resolutionStrategy fallbackHandler:(SACompletionBlock)fallbackHandler {
+- (void)resolveOperation:(COOperation *)operation usingResolutionStrategy:(id)resolutionStrategy fallbackHandler:(COCompletionBlock)fallbackHandler {
 
-    [self awakeOperation:operation times:self.defaultNumberOfTimesToRerunOperation eachAfterTimeInterval:self.defaultPauseInSecondsBeforeNextRunOfOperation withAwakeBlock:^(SAOperation *operation) {
+    [self awakeOperation:operation times:self.defaultNumberOfTimesToRerunOperation eachAfterTimeInterval:self.defaultPauseInSecondsBeforeNextRunOfOperation withAwakeBlock:^(COOperation *operation) {
         [operation awake];
     } fallbackHandler:^{
         if (fallbackHandler) fallbackHandler();
     }];
 }
 
-- (void)awakeOperation:(SAOperation *)operation times:(NSUInteger)times eachAfterTimeInterval:(NSTimeInterval)timeInterval withAwakeBlock:(SAOperationBlock)awakeBlock fallbackHandler:(SACompletionBlock)fallbackHandler {
+- (void)awakeOperation:(COOperation *)operation times:(NSUInteger)times eachAfterTimeInterval:(NSTimeInterval)timeInterval withAwakeBlock:(COOperationBlock)awakeBlock fallbackHandler:(COCompletionBlock)fallbackHandler {
 
     if (operation.numberOfRuns < times) {
 
         // Fallback handlers are registered for operations that have been run once.
         if (operation.numberOfRuns == 1) {
-            __weak SAOperation *weakOperation = operation;
+            __weak COOperation *weakOperation = operation;
 
             // Decorate NSOperation's completionBlock, so it could run fallbackHandler():
             // It runs fallbackHandler() only if operation is still unfinished.
             operation.completionBlock = ^{
-                __strong SAOperation *strongOperation = weakOperation;
+                __strong COOperation *strongOperation = weakOperation;
 
                 if (strongOperation.isFinished == NO && strongOperation.isCancelled == NO) {
                     if (fallbackHandler) fallbackHandler();

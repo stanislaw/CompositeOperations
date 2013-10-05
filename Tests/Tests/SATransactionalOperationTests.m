@@ -9,30 +9,30 @@
 #import <SenTestingKit/SenTestingKit.h>
 #import "TestHelpers.h"
 
-#import "SATransactionalOperation.h"
-#import "SAQueues.h"
+#import "COTransactionalOperation.h"
+#import "COQueues.h"
 
 @interface TransactionalOperationsTests : SenTestCase
 @end
 
 @implementation TransactionalOperationsTests
 
-// Ensures that -[SAOperation cancel] of suboperation cancels all operations in a transaction
+// Ensures that -[COOperation cancel] of suboperation cancels all operations in a transaction
 - (void) testTransactionalOperation_cancel {
     __block BOOL isFinished = NO;
 
-    SATransactionalOperation *to = [SATransactionalOperation new];
+    COTransactionalOperation *to = [COTransactionalOperation new];
 
-    [to run:^(SATransactionalOperation *to) {
-        [to operationInQueue:serialQueue() operation:^(SAOperation *o) {
+    [to run:^(COTransactionalOperation *to) {
+        [to operationInQueue:serialQueue() operation:^(COOperation *o) {
             // Intentionally unfinished operation
         }];
 
-        [to operationInQueue:serialQueue() operation:^(SAOperation *o) {
+        [to operationInQueue:serialQueue() operation:^(COOperation *o) {
             STAssertFalse(o.isCancelled, nil);
 
             @synchronized(to) {
-                for (SAOperation *operation in to.operations) {
+                for (COOperation *operation in to.operations) {
                     STAssertFalse(operation.isFinished, nil);
                     STAssertFalse(operation.isCancelled, nil);
                 }
@@ -41,14 +41,14 @@
             [o cancel];
 
             @synchronized(to) {
-                for (SAOperation *operation in to.operations) {
+                for (COOperation *operation in to.operations) {
                     STAssertFalse(operation.isFinished, nil);
                     STAssertTrue(operation.isCancelled, nil);
                 }
             }
         }];
         
-        [to operationInQueue:serialQueue() operation:^(SAOperation *o) {
+        [to operationInQueue:serialQueue() operation:^(COOperation *o) {
             // Intentionally unfinished operation
         }];
     } completionHandler:^{
@@ -57,31 +57,31 @@
         
         NSLog(@"Call stack: %@", [NSThread callStackSymbols]);
         raiseShouldNotReachHere();
-    } cancellationHandler:^(SATransactionalOperation *to) {
+    } cancellationHandler:^(COTransactionalOperation *to) {
         isFinished = YES;
     }];
 
     while (!isFinished);
 
-    for (SAOperation *operation in to.operations) {
+    for (COOperation *operation in to.operations) {
         NSString *errMessage = [NSString stringWithFormat:@"Expected all operations to be cancelled after cancelling third sub-operation: %@", operation];
         STAssertTrue(operation.isCancelled, errMessage);
     }
 }
 
-// Ensures that if cancellationHandler is defined, -[SAOperation cancel] of suboperation cancels suboperations, NOT cancels transaction automatically and runs a cancellation handler, so it could be decided what to do with a transaction.
+// Ensures that if cancellationHandler is defined, -[COOperation cancel] of suboperation cancels suboperations, NOT cancels transaction automatically and runs a cancellation handler, so it could be decided what to do with a transaction.
 - (void) testTransactionalOperation_cancel_cancellation_handler {
     __block BOOL isFinished = NO;
 
-    SATransactionalOperation *to = [SATransactionalOperation new];
+    COTransactionalOperation *to = [COTransactionalOperation new];
 
-    [to run:^(SATransactionalOperation *to) {
-        [to operationInQueue:serialQueue() operation:^(SAOperation *o) {
+    [to run:^(COTransactionalOperation *to) {
+        [to operationInQueue:serialQueue() operation:^(COOperation *o) {
             [o cancel];
         }];
     } completionHandler:^{
         raiseShouldNotReachHere();
-    } cancellationHandler:^(SATransactionalOperation *to) {
+    } cancellationHandler:^(COTransactionalOperation *to) {
         STAssertTrue(to.isExecuting, nil);  // cancellation handler is provided
         STAssertFalse(to.isCancelled, nil); // so the transaction is not cancelled automatically
 
@@ -95,30 +95,30 @@
 
     while (!isFinished);
 
-    for (SAOperation *operation in to.operations) {
+    for (COOperation *operation in to.operations) {
         STAssertTrue(operation.isCancelled, @"Expected all operations to be cancelled after cancelling third sub-operation");
     }
 }
 
 #pragma mark
-#pragma mark SATransactionalOperation: assigns NSOperation's operationBlocks to its suboperations.
+#pragma mark COTransactionalOperation: assigns NSOperation's operationBlocks to its suboperations.
 
 #if !OS_OBJECT_USE_OBJC
 
-// Ensures that -[SATransactionalOperation cancel] does not run and remove completionBlocks of suboperations ("soft cancel") when cancellationHandler is provided.
+// Ensures that -[COTransactionalOperation cancel] does not run and remove completionBlocks of suboperations ("soft cancel") when cancellationHandler is provided.
 - (void)test_transactionalOperation_cancel_does_not_runs_suboperations_completionBlocks_if_cancellation_handler_is_provided {
     __block BOOL isFinished = NO;
 
-    SATransactionalOperation *tOperation = [SATransactionalOperation new];
+    COTransactionalOperation *tOperation = [COTransactionalOperation new];
 
-    [tOperation run:^(SATransactionalOperation *to) {
-        [to operation:^(SAOperation *o) {
+    [tOperation run:^(COTransactionalOperation *to) {
+        [to operation:^(COOperation *o) {
             [o cancel];
         }];
     } completionHandler:^{
         raiseShouldNotReachHere();
-    } cancellationHandler:^(SATransactionalOperation *cascadeOperation) {
-        for (SAOperation *operation in cascadeOperation.operations) {
+    } cancellationHandler:^(COTransactionalOperation *cascadeOperation) {
+        for (COOperation *operation in cascadeOperation.operations) {
             STAssertNotNil(operation.completionBlock, nil);
         }
 
@@ -128,14 +128,14 @@
     while (!isFinished);
 }
 
-// Ensures that -[SACascadeOperation cancel] DOES run and remove completionBlocks of suboperations ("soft cancel") when cancellationHandler is not provided.
+// Ensures that -[COCascadeOperation cancel] DOES run and remove completionBlocks of suboperations ("soft cancel") when cancellationHandler is not provided.
 - (void)test_transactionalOperation_cancel_does_run_suboperations_completionBlocks_if_cancellation_handler_is_provided {
     __block BOOL isFinished = NO;
 
-    SATransactionalOperation *tOperation = [SATransactionalOperation new];
+    COTransactionalOperation *tOperation = [COTransactionalOperation new];
 
-    [tOperation run:^(SATransactionalOperation *to) {
-        [to operation:^(SAOperation *o) {
+    [tOperation run:^(COTransactionalOperation *to) {
+        [to operation:^(COOperation *o) {
             [o cancel];
 
             isFinished = YES;
@@ -146,7 +146,7 @@
 
     while (!isFinished);
 
-    for (SAOperation *operation in tOperation.operations) {
+    for (COOperation *operation in tOperation.operations) {
         STAssertNotNil(operation.completionBlock, nil);
     }
 }
@@ -161,10 +161,10 @@
     __block BOOL isFinished = NO;
     NSMutableArray *countArr = [NSMutableArray array];
 
-    SATransactionalOperation *to = [SATransactionalOperation new];
+    COTransactionalOperation *to = [COTransactionalOperation new];
 
-    [to run:^(SATransactionalOperation *to) {
-        [to operationInQueue:concurrentQueue() operation:^(SAOperation *tao) {
+    [to run:^(COTransactionalOperation *to) {
+        [to operationInQueue:concurrentQueue() operation:^(COOperation *tao) {
             @synchronized(countArr) {
                 [countArr addObject:@1];
             }
@@ -187,34 +187,34 @@
     __block BOOL isFinished = NO;
     NSMutableArray *countArr = [NSMutableArray array];
 
-    SAOperationQueue *opQueue = [SAOperationQueue new];
+    COOperationQueue *opQueue = [COOperationQueue new];
     opQueue.queue = concurrentQueue();
 
-    SATransactionalOperation *to = [SATransactionalOperation new];
+    COTransactionalOperation *to = [COTransactionalOperation new];
     to.operationQueue = opQueue;
 
     STAssertEquals((int)opQueue.pendingOperations.count, 0, @"Expected to be 0 pending operations before transactional operation");
     STAssertEquals((int)opQueue.runningOperations.count, 0, @"Expected to be 0 running operations before transactional operation");
     
-    [to run:^(SATransactionalOperation *to) {
+    [to run:^(COTransactionalOperation *to) {
         STAssertEquals((int)opQueue.pendingOperations.count, 0, nil);
         STAssertEquals((int)opQueue.runningOperations.count, 1, nil);
 
-        [to operation:^(SAOperation *tao) {
+        [to operation:^(COOperation *tao) {
             @synchronized(countArr) {
                 [countArr addObject:@1];
             }
             [tao finish];
         }];
         
-        [to operation:^(SAOperation *tao) {
+        [to operation:^(COOperation *tao) {
             @synchronized(countArr) {
                 [countArr addObject:@1];
             }
             [tao finish];
         }];
         
-        [to operation:^(SAOperation *tao) {
+        [to operation:^(COOperation *tao) {
             @synchronized(countArr) {
                 [countArr addObject:@1];
             }
@@ -241,11 +241,11 @@
     __block NSMutableString *accResult = [NSMutableString string];
     __block NSUInteger operationsScheduled;
 
-    SATransactionalOperation *to = [SATransactionalOperation new];
+    COTransactionalOperation *to = [COTransactionalOperation new];
 
-    [to run:^(SATransactionalOperation *to) {
+    [to run:^(COTransactionalOperation *to) {
         for (int i=1; i<=10;i++) {
-            [to operationInQueue:concurrentQueue() operation:^(SAOperation *tao) {
+            [to operationInQueue:concurrentQueue() operation:^(COOperation *tao) {
                 @synchronized(countArr) {
                     [countArr addObject:@1];
                 }
@@ -267,29 +267,29 @@
 }
 
 - (void) test_transactionalOperation_with_defaultQueue_set {
-    SASetDefaultQueue(concurrentQueue());
+    COSetDefaultQueue(concurrentQueue());
     NSMutableArray *countArr = [NSMutableArray array];
     __block BOOL isFinished = NO;
     __block NSMutableString *accResult = [NSMutableString string];
 
-    SATransactionalOperation *to = [SATransactionalOperation new];
+    COTransactionalOperation *to = [COTransactionalOperation new];
 
-    [to run:^(SATransactionalOperation *to) {
-        [to operation:^(SAOperation *tao) {
+    [to run:^(COTransactionalOperation *to) {
+        [to operation:^(COOperation *tao) {
             @synchronized(countArr) {
                 [countArr addObject:@1];
             }
             [accResult appendString:@"1"];
             [tao finish];
         }];
-        [to operation:^(SAOperation *tao) {
+        [to operation:^(COOperation *tao) {
             @synchronized(countArr) {
                 [countArr addObject:@1];
             }
             [accResult appendString:@"2"];
             [tao finish];
         }];
-        [to operation:^(SAOperation *tao) {
+        [to operation:^(COOperation *tao) {
             @synchronized(countArr) {
                 [countArr addObject:@1];
             }
@@ -303,14 +303,14 @@
     while (!isFinished);
 
     STAssertEquals((int)countArr.count, 3, @"Expected count to be equal 3");
-    SASetDefaultQueue(nil);
+    COSetDefaultQueue(nil);
     NSLog(@"%s: accResult is: %@", __PRETTY_FUNCTION__, accResult);
 }
 
 #pragma mark
 #pragma mark Resume / suspend
 
-// Ensures that -[SATransactionalOperation resume] reruns left suspended operation if cascade operation was suspended in the body of successful previous sub-operation
+// Ensures that -[COTransactionalOperation resume] reruns left suspended operation if cascade operation was suspended in the body of successful previous sub-operation
 
 - (void)test_transactionalOperation_resume_runs_all_suspended_operations_if_cascade_operation_was_suspended_in_th_body_of_successful_previous_sub_operation {
     int N = 10;
@@ -320,16 +320,16 @@
         
         __block BOOL transactionHaveAlreadyBeenSuspended = NO;
         
-        SATransactionalOperation *tOperation = [SATransactionalOperation new];
+        COTransactionalOperation *tOperation = [COTransactionalOperation new];
 
-        [tOperation run:^(SATransactionalOperation *transaction) {
-            [transaction operationInQueue:serialQueue() operation:^(SAOperation *operation) {
+        [tOperation run:^(COTransactionalOperation *transaction) {
+            [transaction operationInQueue:serialQueue() operation:^(COOperation *operation) {
                 [operation finish];
                 
                 STAssertTrue(operation.isFinished, nil);
             }];
 
-            [transaction operationInQueue:serialQueue() operation:^(SAOperation *operation) {
+            [transaction operationInQueue:serialQueue() operation:^(COOperation *operation) {
                 // First time it will just run out without finish or cancel
                 // And on the second it will actually finish itself
                 if (transactionHaveAlreadyBeenSuspended == NO) {
@@ -363,18 +363,18 @@
 
     __block BOOL transactionHaveAlreadyBeenSuspended = NO;
 
-    SATransactionalOperation *tOperation = [SATransactionalOperation new];
+    COTransactionalOperation *tOperation = [COTransactionalOperation new];
 
-    SASetDefaultQueue(concurrentQueue());
+    COSetDefaultQueue(concurrentQueue());
     
-    [tOperation run:^(SATransactionalOperation *transaction) {
-        [transaction operationInQueue:serialQueue() operation:^(SAOperation *operation) {
+    [tOperation run:^(COTransactionalOperation *transaction) {
+        [transaction operationInQueue:serialQueue() operation:^(COOperation *operation) {
             [operation finish];
 
             STAssertTrue(operation.isFinished, nil);
         }];
 
-        [transaction operationInQueue:serialQueue() operation:^(SAOperation *operation) {
+        [transaction operationInQueue:serialQueue() operation:^(COOperation *operation) {
 
             // It should both times be serialQueue() 
             STAssertTrue(dispatch_get_current_queue() == serialQueue(), nil);
@@ -408,22 +408,22 @@
 // Ensures that -[TransactionalOperation awake] awakes(i.e. reruns) all unfinished operations.
 
 - (void)test_transactionalOperation_awake {
-    SASetDefaultQueue(serialQueue());
+    COSetDefaultQueue(serialQueue());
     
     NSMutableArray *regArray = [NSMutableArray new];
 
     __block BOOL blockFlag = NO;
     __block NSNumber *secondOperationRunTimes = @(0);
 
-    SATransactionalOperation *tOperation = [SATransactionalOperation new];
+    COTransactionalOperation *tOperation = [COTransactionalOperation new];
 
-    [tOperation run:^(SATransactionalOperation *co) {
-        [co operation:^(SAOperation *o) {
+    [tOperation run:^(COTransactionalOperation *co) {
+        [co operation:^(COOperation *o) {
             [regArray addObject:@"1"];
             [o finish];
         }];
 
-        [co operation:^(SAOperation *operation) {
+        [co operation:^(COOperation *operation) {
             STAssertTrue(tOperation.isExecuting, nil);
 
             secondOperationRunTimes = @(secondOperationRunTimes.intValue + 1);
@@ -446,7 +446,7 @@
         STAssertTrue([regArray containsObject:@"3"], nil);
 
         blockFlag = YES;
-    } cancellationHandler:^(SATransactionalOperation *to) {
+    } cancellationHandler:^(COTransactionalOperation *to) {
         STAssertTrue([regArray containsObject:@"1"], nil);
         STAssertTrue([regArray containsObject:@"2"], nil);
         STAssertFalse([regArray containsObject:@"3"], nil);
@@ -469,16 +469,16 @@
 - (void)test_transactionalOperation_awake_has_effect_on_executing_operations {
     __block BOOL blockFlag = NO;
     
-    SATransactionalOperation *intentionallyUnfinishableTOperation = [SATransactionalOperation new];
+    COTransactionalOperation *intentionallyUnfinishableTOperation = [COTransactionalOperation new];
 
-    intentionallyUnfinishableTOperation.operation = ^(SATransactionalOperation *co) {
-        [co operation:^(SAOperation *operation) {
+    intentionallyUnfinishableTOperation.operation = ^(COTransactionalOperation *co) {
+        [co operation:^(COOperation *operation) {
             [operation finish];
             blockFlag = YES;
         }];
     };
 
-    intentionallyUnfinishableTOperation.state = SAOperationExecutingState;
+    intentionallyUnfinishableTOperation.state = COOperationExecutingState;
     STAssertTrue(intentionallyUnfinishableTOperation.isExecuting, nil);
     
     [intentionallyUnfinishableTOperation awake];
@@ -490,10 +490,10 @@
 
 // Ensures that -[TransactionalOperation awake] has no effect on finished operations
 - (void)test_transactionalOperation_awake_has_no_effect_on_finished_operations {
-    SATransactionalOperation *intentionallyUnfinishableTOperation = [SATransactionalOperation new];
+    COTransactionalOperation *intentionallyUnfinishableTOperation = [COTransactionalOperation new];
 
-    intentionallyUnfinishableTOperation.operation = ^(SATransactionalOperation *co) {
-        [co operation:^(SAOperation *operation) {
+    intentionallyUnfinishableTOperation.operation = ^(COTransactionalOperation *co) {
+        [co operation:^(COOperation *operation) {
             raiseShouldNotReachHere();
         }];
     };
@@ -508,10 +508,10 @@
 
 // Ensures that -[TransactionalOperation awake] has no effect on cancelled operations
 - (void)test_transactionalOperation_awake_has_no_effect_on_cancelled_operations {
-    SATransactionalOperation *intentionallyUnfinishableTOperation = [SATransactionalOperation new];
+    COTransactionalOperation *intentionallyUnfinishableTOperation = [COTransactionalOperation new];
 
-    intentionallyUnfinishableTOperation.operation = ^(SATransactionalOperation *co) {
-        [co operation:^(SAOperation *operation) {
+    intentionallyUnfinishableTOperation.operation = ^(COTransactionalOperation *co) {
+        [co operation:^(COOperation *operation) {
             raiseShouldNotReachHere();
         }];
     };

@@ -1,6 +1,6 @@
-#import "SASyncOperation.h"
+#import "COSyncOperation.h"
 
-@implementation SASyncOperation
+@implementation COSyncOperation
 
 @synthesize operation = _operation;
 
@@ -18,7 +18,7 @@
 
 - (void)start {
     if (self.isReady) {
-        self.state = SAOperationExecutingState;
+        self.state = COOperationExecutingState;
 
         if (self.isCancelled) {
             [self finish];
@@ -37,18 +37,18 @@
     }
 }
 
-- (void)run:(SASyncOperationBlock)operationBlock {
+- (void)run:(COSyncOperationBlock)operationBlock {
     self.operation = operationBlock;
 
     [self start];
 }
 
-- (void)runInQueue:(dispatch_queue_t)queue operation:(SASyncOperationBlock)operationBlock {
+- (void)runInQueue:(dispatch_queue_t)queue operation:(COSyncOperationBlock)operationBlock {
 #if !OS_OBJECT_USE_OBJC
     dispatch_retain(queue);
 #endif
 
-    SASyncOperationBlock operationBlockInQueue = ^(SASyncOperation *op) {
+    COSyncOperationBlock operationBlockInQueue = ^(COSyncOperation *op) {
         dispatch_async(queue, ^{
             if (op.isExecuting == YES) {
                 operationBlock(op);
@@ -59,9 +59,9 @@
     self.operation = operationBlockInQueue;
 
 #if !OS_OBJECT_USE_OBJC
-    SASyncOperation *weakSelf = self;
+    COSyncOperation *weakSelf = self;
     self.completionBlock = ^{
-        __strong SASyncOperation *strongSelf = weakSelf;
+        __strong COSyncOperation *strongSelf = weakSelf;
 
         if (strongSelf.isFinished || strongSelf.isCancelled) {
             dispatch_release(queue);

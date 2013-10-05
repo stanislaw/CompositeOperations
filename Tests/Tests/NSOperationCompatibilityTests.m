@@ -1,11 +1,11 @@
 #import <SenTestingKit/SenTestingKit.h>
 #import "TestHelpers.h"
 
-#import "SACompositeOperations.h"
-#import "SACascadeOperation.h"
+#import "CompositeOperations.h"
+#import "COCascadeOperation.h"
 
-#import "SATransactionalOperation.h"
-#import "SAQueues.h"
+#import "COTransactionalOperation.h"
+#import "COQueues.h"
 
 @interface NSOperationCompatibilityTests : SenTestCase
 @end
@@ -18,7 +18,7 @@ static BOOL isFinishedNotificationSent;
 - (void)test_SAOperation_basic_KVO_notifications {
     isExecutingNotificationSent = NO;
 
-    SAOperation *operation = [SAOperation new];
+    COOperation *operation = [COOperation new];
 
     [operation addObserver:self
                 forKeyPath:@"isExecuting"
@@ -30,7 +30,7 @@ static BOOL isFinishedNotificationSent;
                    options:NSKeyValueObservingOptionNew
                    context:NULL];
 
-    operation.operation = ^(SAOperation *op){
+    operation.operation = ^(COOperation *op){
         STAssertTrue(isExecutingNotificationSent, @"");
         STAssertFalse(isFinishedNotificationSent, @"");
 

@@ -1,11 +1,11 @@
 #import <SenTestingKit/SenTestingKit.h>
 #import "TestHelpers.h"
 
-#import "SACompositeOperations.h"
-#import "SACascadeOperation.h"
+#import "CompositeOperations.h"
+#import "COCascadeOperation.h"
 
-#import "SATransactionalOperation.h"
-#import "SAQueues.h"
+#import "COTransactionalOperation.h"
+#import "COQueues.h"
 
 @interface NSOperationQueueCompatibilityTests : SenTestCase
 @end
@@ -17,9 +17,9 @@
     
     __block BOOL soOver = NO;
 
-    SASyncOperation *syncOperation = [SASyncOperation new];
+    COSyncOperation *syncOperation = [COSyncOperation new];
 
-    syncOperation.operation = ^(SASyncOperation *so) {
+    syncOperation.operation = ^(COSyncOperation *so) {
         soOver = YES;
 
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -41,9 +41,9 @@
     
     __block BOOL oOver = NO;
 
-    SAOperation *operation = [SAOperation new];
+    COOperation *operation = [COOperation new];
 
-    operation.operation = ^(SAOperation *ao) {
+    operation.operation = ^(COOperation *ao) {
         asynchronousJob(^{
             oOver = YES;
             [ao finish];
@@ -64,10 +64,10 @@
     __block BOOL isFinished = NO;
     __block BOOL firstJobIsDone = NO, secondJobIsDone = NO, thirdJobIsDone = NO;
 
-    SACascadeOperation *cOperation = [SACascadeOperation new];
+    COCascadeOperation *cOperation = [COCascadeOperation new];
 
-    cOperation.operation = ^(SACascadeOperation *co) {
-        [co operation:^(SAOperation *cao) {
+    cOperation.operation = ^(COCascadeOperation *co) {
+        [co operation:^(COOperation *cao) {
             asynchronousJob(^{
                 count = count + 1;
 
@@ -82,7 +82,7 @@
             });
         }];
 
-        [co operation:^(SAOperation *cao) {
+        [co operation:^(COOperation *cao) {
             asynchronousJob(^{
                 count = count + 1;
 
@@ -98,7 +98,7 @@
             });
         }];
 
-        [co operation:^(SAOperation *cao) {
+        [co operation:^(COOperation *cao) {
             asynchronousJob(^{
                 count = count + 1;
 
@@ -128,8 +128,8 @@
     __block BOOL isFinished = NO;
     __block BOOL firstJobIsDone = NO, secondJobIsDone = NO, thirdJobIsDone = NO;
 
-    cascadeOperation(opQueue, ^(SACascadeOperation *co) {
-        [co operation:^(SAOperation *cao) {
+    cascadeOperation(opQueue, ^(COCascadeOperation *co) {
+        [co operation:^(COOperation *cao) {
             asynchronousJob(^{
                 count = count + 1;
 
@@ -144,7 +144,7 @@
             });
         }];
 
-        [co operation:^(SAOperation *cao) {
+        [co operation:^(COOperation *cao) {
             asynchronousJob(^{
                 count = count + 1;
 
@@ -160,7 +160,7 @@
             });
         }];
 
-        [co operation:^(SAOperation *cao) {
+        [co operation:^(COOperation *cao) {
             asynchronousJob(^{
                 count = count + 1;
 
@@ -187,22 +187,22 @@
 
     NSOperationQueue *opQueue = [[NSOperationQueue alloc] init];
 
-    SATransactionalOperation *to = [SATransactionalOperation new];
+    COTransactionalOperation *to = [COTransactionalOperation new];
 
-    to.operation = ^(SATransactionalOperation *to) {
-        [to operationInQueue:concurrentQueue() operation:^(SAOperation *tao) {
+    to.operation = ^(COTransactionalOperation *to) {
+        [to operationInQueue:concurrentQueue() operation:^(COOperation *tao) {
             @synchronized(countArr) {
                 [countArr addObject:@1];
             }
             [tao finish];
         }];
-        [to operationInQueue:concurrentQueue() operation:^(SAOperation *tao) {
+        [to operationInQueue:concurrentQueue() operation:^(COOperation *tao) {
             @synchronized(countArr) {
                 [countArr addObject:@1];
             }
             [tao finish];
         }];
-        [to operationInQueue:concurrentQueue() operation:^(SAOperation *tao) {
+        [to operationInQueue:concurrentQueue() operation:^(COOperation *tao) {
             @synchronized(countArr) {
                 [countArr addObject:@1];
             }
@@ -227,20 +227,20 @@
 
     NSOperationQueue *opQueue = [[NSOperationQueue alloc] init];
 
-    transactionalOperation(opQueue, ^(SATransactionalOperation *to) {
-        [to operationInQueue:concurrentQueue() operation:^(SAOperation *tao) {
+    transactionalOperation(opQueue, ^(COTransactionalOperation *to) {
+        [to operationInQueue:concurrentQueue() operation:^(COOperation *tao) {
             @synchronized(countArr) {
                 [countArr addObject:@1];
             }
             [tao finish];
         }];
-        [to operationInQueue:concurrentQueue() operation:^(SAOperation *tao) {
+        [to operationInQueue:concurrentQueue() operation:^(COOperation *tao) {
             @synchronized(countArr) {
                 [countArr addObject:@1];
             }
             [tao finish];
         }];
-        [to operationInQueue:concurrentQueue() operation:^(SAOperation *tao) {
+        [to operationInQueue:concurrentQueue() operation:^(COOperation *tao) {
             @synchronized(countArr) {
                 [countArr addObject:@1];
             }

@@ -1,24 +1,24 @@
-#import "SAOperation.h"
-#import "SAQueues.h"
+#import "COOperation.h"
+#import "COQueues.h"
 
-static inline NSString * SAKeyPathFromOperationState(_SAOperationState state) {
+static inline NSString * COKeyPathFromOperationState(_COOperationState state) {
     switch (state) {
-        case SAOperationCancelledState:
+        case COOperationCancelledState:
             return @"isCancelled";
-        case SAOperationSuspendedState:
+        case COOperationSuspendedState:
             return @"isSuspended";
-        case SAOperationReadyState:
+        case COOperationReadyState:
             return @"isReady";
-        case SAOperationExecutingState:
+        case COOperationExecutingState:
             return @"isExecuting";
-        case SAOperationFinishedState:
+        case COOperationFinishedState:
             return @"isFinished";
         default:
             return @"state";
     }
 }
 
-@implementation SAOperation
+@implementation COOperation
 
 - (id)init {
     if (self = [super init]) {
@@ -31,7 +31,7 @@ static inline NSString * SAKeyPathFromOperationState(_SAOperationState state) {
 }
 
 - (void)initPropertiesForRun {
-    self.state = SAOperationReadyState;
+    self.state = COOperationReadyState;
 }
 
 - (void)dealloc {
@@ -42,17 +42,17 @@ static inline NSString * SAKeyPathFromOperationState(_SAOperationState state) {
 #pragma mark Properties
 
 - (NSString *)stateKey {
-    return SAKeyPathFromOperationState(self.state);
+    return COKeyPathFromOperationState(self.state);
 }
 
 - (BOOL)isConcurrent {
     return YES;
 }
 
-- (void)setState:(_SAOperationState)state {
+- (void)setState:(_COOperationState)state {
     @synchronized(self) {
         NSString *oldStateKey = self.stateKey;
-        NSString *newStateKey = SAKeyPathFromOperationState(state);
+        NSString *newStateKey = COKeyPathFromOperationState(state);
 
         [self willChangeValueForKey:newStateKey];
         [self willChangeValueForKey:oldStateKey];
@@ -63,15 +63,15 @@ static inline NSString * SAKeyPathFromOperationState(_SAOperationState state) {
 }
 
 - (BOOL)isReady {
-    return self.state == SAOperationReadyState && super.isReady;
+    return self.state == COOperationReadyState && super.isReady;
 }
 
 - (BOOL)isExecuting {
-    return self.state == SAOperationExecutingState;
+    return self.state == COOperationExecutingState;
 }
 
 - (BOOL)isFinished {
-    return self.state == SAOperationFinishedState;
+    return self.state == COOperationFinishedState;
 }
 
 #pragma mark
@@ -85,7 +85,7 @@ static inline NSString * SAKeyPathFromOperationState(_SAOperationState state) {
     if (self.isReady) {
         self.numberOfRuns++;
 
-        self.state = SAOperationExecutingState;
+        self.state = COOperationExecutingState;
 
         if (self.isCancelled || self.contextOperation.isCancelled) {
             [self finish];
@@ -95,18 +95,18 @@ static inline NSString * SAKeyPathFromOperationState(_SAOperationState state) {
     }
 }
 
-- (void)run:(SAOperationBlock)operationBlock {
+- (void)run:(COOperationBlock)operationBlock {
     self.operation = operationBlock;
 
-    SARunOperation(self);
+    CORunOperation(self);
 }
 
-- (void)runInQueue:(dispatch_queue_t)queue operation:(SAOperationBlock)operationBlock {
+- (void)runInQueue:(dispatch_queue_t)queue operation:(COOperationBlock)operationBlock {
 #if !OS_OBJECT_USE_OBJC
     dispatch_retain(queue);
 #endif
 
-    SAOperationBlock operationBlockInQueue = ^(SAOperation *op) {
+    COOperationBlock operationBlockInQueue = ^(COOperation *op) {
         dispatch_async(queue, ^{
             if (op.isExecuting == YES) {
                 operationBlock(op);
@@ -117,9 +117,9 @@ static inline NSString * SAKeyPathFromOperationState(_SAOperationState state) {
     self.operation = operationBlockInQueue;
 
 #if !OS_OBJECT_USE_OBJC
-    SAOperation *weakSelf = self;
+    COOperation *weakSelf = self;
     self.completionBlock = ^{
-        __strong SAOperation *strongSelf = weakSelf;
+        __strong COOperation *strongSelf = weakSelf;
 
         if (strongSelf.isFinished || strongSelf.isCancelled) {
             dispatch_release(queue);
@@ -132,12 +132,12 @@ static inline NSString * SAKeyPathFromOperationState(_SAOperationState state) {
     [self start];
 }
 
-- (void)run:(SAOperationBlock)operationBlock completionHandler:(SACompletionBlock)completionHandler cancellationHandler:(SACancellationBlockForOperation)cancellationHandler {
+- (void)run:(COOperationBlock)operationBlock completionHandler:(COCompletionBlock)completionHandler cancellationHandler:(COCancellationBlockForOperation)cancellationHandler {
     self.operation = operationBlock;
 
-    __weak SAOperation *weakSelf = self;
+    __weak COOperation *weakSelf = self;
     self.completionBlock = ^{
-        __strong SAOperation *strongSelf = weakSelf;
+        __strong COOperation *strongSelf = weakSelf;
 
         if (strongSelf.isFinished) {
             if (completionHandler) completionHandler();
@@ -149,23 +149,23 @@ static inline NSString * SAKeyPathFromOperationState(_SAOperationState state) {
         }
     };
     
-    SARunOperation(self);
+    CORunOperation(self);
 }
 
 - (void)finish {
     if (self.isCancelled == NO) {
-        self.state = SAOperationFinishedState;
+        self.state = COOperationFinishedState;
     }
 }
 
 - (BOOL)isCancelled {
-    return self.state == SAOperationCancelledState;
+    return self.state == COOperationCancelledState;
 }
 
 - (void)cancel {
     @synchronized(self) {
         if (self.isFinished == NO && self.isCancelled == NO && self.isSuspended == NO) {
-            self.state = SAOperationCancelledState;
+            self.state = COOperationCancelledState;
 
             if (self.contextOperation == nil && self.completionBlock) self.completionBlock();
         }
@@ -189,12 +189,12 @@ static inline NSString * SAKeyPathFromOperationState(_SAOperationState state) {
 #pragma mark Suspend / Resume
 
 - (BOOL)isSuspended {
-    return self.state == SAOperationSuspendedState;
+    return self.state == COOperationSuspendedState;
 }
 
 - (void)suspend {
     if (self.isFinished == NO && self.isCancelled == NO && self.isSuspended == NO) {
-        self.state = SAOperationSuspendedState;
+        self.state = COOperationSuspendedState;
     }
 }
 
@@ -205,18 +205,18 @@ static inline NSString * SAKeyPathFromOperationState(_SAOperationState state) {
     if (self.numberOfRuns > 0 && self.contextOperation == nil) {
         [self reRun];
     } else {
-        self.state = SAOperationReadyState;
+        self.state = COOperationReadyState;
     }
 }
 
 #pragma mark
 #pragma mark Resolution
 
-- (void)resolveWithResolver:(id <SAOperationResolver>)operationResolver {
+- (void)resolveWithResolver:(id <COOperationResolver>)operationResolver {
     [operationResolver resolveOperation:self];
 }
 
-- (void)resolveWithResolver:(id <SAOperationResolver>)operationResolver usingResolutionStrategy:(id)resolutionStrategy fallbackHandler:(SACompletionBlock)fallbackHandler {
+- (void)resolveWithResolver:(id <COOperationResolver>)operationResolver usingResolutionStrategy:(id)resolutionStrategy fallbackHandler:(COCompletionBlock)fallbackHandler {
     [operationResolver resolveOperation:self usingResolutionStrategy:resolutionStrategy fallbackHandler:fallbackHandler];
 }
 

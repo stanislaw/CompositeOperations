@@ -8,44 +8,44 @@
 
 #import <Foundation/Foundation.h>
 
-#import "SAOperation.h"
+#import "COOperation.h"
 
-@protocol SACompositeOperation <NSObject> 
-- (void)enqueueSuboperation:(SAOperation *)subOperation;
+@protocol COCompositeOperation <NSObject>
+- (void)enqueueSuboperation:(COOperation *)subOperation;
 
 - (void)performCheckpointRoutine;
 - (void)performAwakeRoutine;
 - (void)performResumeRoutine;
 
-- (void)subOperationWasFinished:(SAOperation *)subOperation;
-- (void)subOperationWasCancelled:(SAOperation *)subOperation;
+- (void)subOperationWasFinished:(COOperation *)subOperation;
+- (void)subOperationWasCancelled:(COOperation *)subOperation;
 @end
 
-@interface SAAbstractCompositeOperation : SAOperation
+@interface COAbstractCompositeOperation : COOperation
 
 // Public API: Inner operations
-- (void)operation:(SAOperationBlock)operationBlock;
-- (void)operationInQueue:(dispatch_queue_t)queue operation:(SAOperationBlock)operationBlock;
+- (void)operation:(COOperationBlock)operationBlock;
+- (void)operationInQueue:(dispatch_queue_t)queue operation:(COOperationBlock)operationBlock;
 
 // Public API: Inner composite operations
-- (void)transactionalOperation:(SATransactionalOperationBlock)operationBlock;
-- (void)cascadeOperation:(SACascadeOperationBlock)operationBlock;
+- (void)transactionalOperation:(COTransactionalOperationBlock)operationBlock;
+- (void)cascadeOperation:(COCascadeOperationBlock)operationBlock;
 
 // Shared data
 @property (strong) id sharedData;
-- (void)modifySharedData:(SAModificationBlock)modificationBlock;
+- (void)modifySharedData:(COModificationBlock)modificationBlock;
 
 @end
 
-@interface SAAbstractCompositeOperation () <SACompositeOperation>
+@interface COAbstractCompositeOperation () <COCompositeOperation>
 
 @property (strong) NSMutableArray *operations;
 @property BOOL allSuboperationsRegistered;
 
 - (void)_teardown;
 
-- (void)_registerSuboperation:(SAOperation *)subOperation;
-- (void)_runSuboperation:(SAOperation *)subOperation;
+- (void)_registerSuboperation:(COOperation *)subOperation;
+- (void)_runSuboperation:(COOperation *)subOperation;
 - (void)_runSuboperationAtIndex:(NSUInteger)indexOfSuboperationToRun;
 
 - (void)_cancelSuboperations:(BOOL)runCompletionBlocks;

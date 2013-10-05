@@ -10,12 +10,12 @@
 
 #import "TestHelpers.h"
 
-#import "SASyncOperation.h"
-#import "SACompositeOperations.h"
-#import "SAQueues.h"
-#import "SAOperationQueue.h"
+#import "COSyncOperation.h"
+#import "CompositeOperations.h"
+#import "COQueues.h"
+#import "COOperationQueue.h"
 
-@interface SAOperationQueue ()
+@interface COOperationQueue ()
 - (void) _runNextOperationIfExists;
 @end
 
@@ -52,7 +52,7 @@ static int finishedOperationsCount;
 - (void)test_addOperationWithBlock {
     __block BOOL done = NO;
 
-    SAOperationQueue *opQueue = [SAOperationQueue new];
+    COOperationQueue *opQueue = [COOperationQueue new];
     opQueue.maximumOperationsLimit = 0;
     opQueue.queue = concurrentQueue();
 
@@ -66,12 +66,12 @@ static int finishedOperationsCount;
     STAssertEquals((int)opQueue.runningOperations.count, 0, nil);
 }
 
-- (void)test_SAOperationQueue_addOperation_max_limit_0 {
+- (void)test_COOperationQueue_addOperation_max_limit_0 {
     int N = 100;
 
     NSMutableArray *countArr = [NSMutableArray array];
 
-    SAOperationQueue *opQueue = [SAOperationQueue new];
+    COOperationQueue *opQueue = [COOperationQueue new];
 
     opQueue.maximumOperationsLimit = 0;
 
@@ -80,9 +80,9 @@ static int finishedOperationsCount;
     int countDown = N;
     
     while (countDown-- > 0) {
-        SAOperation *o = [SAOperation new];
+        COOperation *o = [COOperation new];
 
-        o.operation = ^(SAOperation *operation) {
+        o.operation = ^(COOperation *operation) {
             @synchronized(countArr) {
                 [countArr addObject:@1];
             }
@@ -104,18 +104,18 @@ static int finishedOperationsCount;
     STAssertEquals(finishedOperationsCount, N, @"Expected finishedOperationsCount to be 100");
 }
 
-- (void)test_SAOperationQueue_addOperation_max_limit_1 {
+- (void)test_COOperationQueue_addOperation_max_limit_1 {
     NSMutableArray *countArr = [NSMutableArray array];
     __block BOOL finished = NO;
 
-    SAOperationQueue *opQueue = [SAOperationQueue new];
+    COOperationQueue *opQueue = [COOperationQueue new];
     opQueue.maximumOperationsLimit = 1;
     opQueue.queue = concurrentQueue();
 
     int countDown = 10;
     while (countDown-- > 0 ) {
-        SAOperation *o = [SAOperation new];
-        o.operation = ^(SAOperation *o) {
+        COOperation *o = [COOperation new];
+        o.operation = ^(COOperation *o) {
             STAssertEquals((int)opQueue.runningOperations.count, 1, nil);
 
             @synchronized(countArr) {
@@ -139,19 +139,19 @@ static int finishedOperationsCount;
     STAssertEquals((int)countArr.count, 10, nil);
 }
 
-- (void)test_SAOperationQueue_removeAllPendingOperations {
+- (void)test_COOperationQueue_removeAllPendingOperations {
     NSMutableArray *countArr = [NSMutableArray array];
     __block BOOL finished = NO;
 
-    SAOperationQueue *opQueue = [SAOperationQueue new];
+    COOperationQueue *opQueue = [COOperationQueue new];
     opQueue.maximumOperationsLimit = 1;
     opQueue.queue = concurrentQueue();
 
     int countDown = 10;
     while (countDown-- > 0 ) {
-        SAOperation *o = [SAOperation new];
+        COOperation *o = [COOperation new];
         
-        o.operation = ^(SAOperation *o) {
+        o.operation = ^(COOperation *o) {
             @synchronized(countArr) {
                 [countArr addObject:@1];
             }
@@ -179,19 +179,19 @@ static int finishedOperationsCount;
     STAssertEquals((int)countArr.count, 5, nil);
 }
 
-// SAOperationQueue suspends only pendingOperations - it does not touch on-the-fly operations, leaving them to manage their states.
+// COOperationQueue suspends only pendingOperations - it does not touch on-the-fly operations, leaving them to manage their states.
 // But when resuming, it does call 'resume' on both pending and running operations.
 - (void)test_suspend_and_resume {
-    SAOperationQueue *opQueue = [[SAOperationQueue alloc] init];
+    COOperationQueue *opQueue = [[COOperationQueue alloc] init];
     opQueue.queue = concurrentQueue();
     opQueue.maximumOperationsLimit = 2;
 
-    SAOperationBlock operation = ^(SAOperation *operation) { /* Just nothing! */ };
+    COOperationBlock operation = ^(COOperation *operation) { /* Just nothing! */ };
 
-    SAOperation *operationA = [SAOperation new];
-    SAOperation *operationB = [SAOperation new];
-    SAOperation *operationC = [SAOperation new];
-    SAOperation *operationD = [SAOperation new];
+    COOperation *operationA = [COOperation new];
+    COOperation *operationB = [COOperation new];
+    COOperation *operationC = [COOperation new];
+    COOperation *operationD = [COOperation new];
 
     operationA.operation = operation;
     operationB.operation = operation;
@@ -217,12 +217,12 @@ static int finishedOperationsCount;
     STAssertTrue(opQueue.isSuspended, nil);
 
     // Pending operations should have all been suspended
-    for (SAOperation *operation in opQueue.pendingOperations) {
+    for (COOperation *operation in opQueue.pendingOperations) {
         STAssertTrue(operation.isSuspended, nil);
     }
 
     // Running operations should have not all been suspended - they should have isExecuting state
-    for (SAOperation *operation in opQueue.runningOperations) {
+    for (COOperation *operation in opQueue.runningOperations) {
         STAssertTrue(operation.isExecuting, nil);
     }
 
@@ -231,27 +231,27 @@ static int finishedOperationsCount;
     STAssertFalse(opQueue.isSuspended, nil);
 
     // Pending operations should have all been resumed and become ready again
-    for (SAOperation *operation in opQueue.pendingOperations) {
+    for (COOperation *operation in opQueue.pendingOperations) {
         STAssertTrue(operation.isReady, nil);
     }
 
     // Running operations should be executing - their states have not been changed
-    for (SAOperation *operation in opQueue.runningOperations) {
+    for (COOperation *operation in opQueue.runningOperations) {
         STAssertTrue(operation.isExecuting, nil);
     }
 }
 
-// Though SAOperationQueue does not suspend on-the-fly operations, it does resume them if they did suspend themselves before.
+// Though COOperationQueue does not suspend on-the-fly operations, it does resume them if they did suspend themselves before.
 - (void)test_suspend_and_resume_one_of_operations_suspends_itself_on_ {
-    SAOperationQueue *opQueue = [[SAOperationQueue alloc] init];
+    COOperationQueue *opQueue = [[COOperationQueue alloc] init];
     opQueue.queue = concurrentQueue();
     opQueue.maximumOperationsLimit = 1;
 
-    SAOperation *operationA = [SAOperation new];
-    SAOperation *operationB = [SAOperation new];
+    COOperation *operationA = [COOperation new];
+    COOperation *operationB = [COOperation new];
 
-    operationA.operation = ^(SAOperation *operation) { [operation suspend]; };
-    operationB.operation = ^(SAOperation *operation) { /* Just nothing! */ };
+    operationA.operation = ^(COOperation *operation) { [operation suspend]; };
+    operationB.operation = ^(COOperation *operation) { /* Just nothing! */ };
 
     [opQueue addOperation:operationA];
     [opQueue addOperation:operationB];
@@ -289,17 +289,17 @@ static int finishedOperationsCount;
 - (void)test_aggressive_LIFO {
     __block BOOL flag = NO;
     
-    SAOperationQueue *operationQueue = [SAOperationQueue new];
+    COOperationQueue *operationQueue = [COOperationQueue new];
 
-    operationQueue.queueType = SAOperationQueueAggressiveLIFO;
+    operationQueue.queueType = COOperationQueueAggressiveLIFO;
     operationQueue.maximumOperationsLimit = 1;
     operationQueue.queue = serialQueue();
     
-    operation(operationQueue, ^(SAOperation *operation) {
+    operation(operationQueue, ^(COOperation *operation) {
         // Nothing intentionally - operation will never finish itself and will stay in runningOperations
     });
 
-    operation(operationQueue, ^(SAOperation *operation) {
+    operation(operationQueue, ^(COOperation *operation) {
         // Nothing intentionally - operation will never be run
         // Because it will be replaced by the following operation
         raiseShouldNotReachHere();
@@ -307,7 +307,7 @@ static int finishedOperationsCount;
         flag = YES;
     });
 
-    operation(operationQueue, ^(SAOperation *operation) {
+    operation(operationQueue, ^(COOperation *operation) {
         raiseShouldNotReachHere();
     }, ^{
     }, ^{

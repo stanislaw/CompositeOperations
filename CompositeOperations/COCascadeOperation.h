@@ -8,26 +8,24 @@
 
 #import <Foundation/Foundation.h>
 
-#import "SATypedefs.h"
+#import "COTypedefs.h"
 
-#import "SACompositeOperation.h"
-#import "SATransactionalOperation.h"
+#import "COCompositeOperation.h"
+#import "COTransactionalOperation.h"
 
-#import "SAOperationQueue.h"
+#import "COOperationQueue.h"
 
-@class SACascadeOperation;
+@class COCascadeOperation;
 
-@interface SACascadeOperation : SAAbstractCompositeOperation
+@interface COCascadeOperation : COAbstractCompositeOperation
 
-@property (copy) SACascadeOperationBlock operation;
+@property (copy) COCascadeOperationBlock operation;
 
 // Public API: Cascade operation
-- (void)run:(SACascadeOperationBlock)operationBlock __attribute__((unavailable("must run cascade operation with 'run:completionHandler:cancellationHandler:' instead.")));
-- (void)runInQueue:(dispatch_queue_t)queue operation:(SAOperationBlock)operationBlock __attribute__((unavailable("must run cascade operation with 'run:completionHandler:cancellationHandler:' instead.")));
+- (void)run:(COCascadeOperationBlock)operationBlock __attribute__((unavailable("must run cascade operation with 'run:completionHandler:cancellationHandler:' instead.")));
+- (void)runInQueue:(dispatch_queue_t)queue operation:(COOperationBlock)operationBlock __attribute__((unavailable("must run cascade operation with 'run:completionHandler:cancellationHandler:' instead.")));
 
-- (void)run:(SACascadeOperationBlock)operationBlock completionHandler:(SACompletionBlock)completionHandler cancellationHandler:(SACancellationBlockForCascadeOperation)cancellationHandler;
+- (void)run:(COCascadeOperationBlock)operationBlock completionHandler:(COCompletionBlock)completionHandler cancellationHandler:(COCancellationBlockForCascadeOperation)cancellationHandler;
 
 @end
 
-@interface SACascadeOperation ()
-@end

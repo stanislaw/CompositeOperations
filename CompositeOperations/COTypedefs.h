@@ -1,23 +1,23 @@
-@class SAOperation;
-@class SASyncOperation;
-@class SATransactionalOperation;
-@class SACascadeOperation;
+@class COOperation;
+@class COSyncOperation;
+@class COTransactionalOperation;
+@class COCascadeOperation;
 
-@compatibility_alias SACascade SACascadeOperation;
-@compatibility_alias SATransaction SATransactionalOperation;
+@compatibility_alias COCascade COCascadeOperation;
+@compatibility_alias COTransaction COTransactionalOperation;
 
 // Operation blocks
-typedef void (^SABlock)(void);
-typedef void (^SAOperationBlock)(SAOperation *operation);
-typedef void (^SASyncOperationBlock)(SASyncOperation *operation);
-typedef void (^SATransactionalOperationBlock)(SATransactionalOperation *transactionalOperation);
-typedef void (^SACascadeOperationBlock)(SACascadeOperation *cascadeOperation);
+typedef void (^COBlock)(void);
+typedef void (^COOperationBlock)(COOperation *operation);
+typedef void (^COSyncOperationBlock)(COSyncOperation *operation);
+typedef void (^COTransactionalOperationBlock)(COTransactionalOperation *transactionalOperation);
+typedef void (^COCascadeOperationBlock)(COCascadeOperation *cascadeOperation);
 
 // Completion and cancellation blocks
 // Gotcha: in the following typedef the second "void" is important to have overloading picked up
-typedef void (^SACompletionBlock)(void);
-typedef void (^SACancellationBlockForOperation)(void);
-typedef void (^SACancellationBlockForTransactionalOperation)(SATransactionalOperation *transactionalOperation);
-typedef void (^SACancellationBlockForCascadeOperation)(SACascadeOperation *cascadeOperation);
+typedef void (^COCompletionBlock)(void);
+typedef void (^COCancellationBlockForOperation)(void);
+typedef void (^COCancellationBlockForTransactionalOperation)(COTransactionalOperation *transactionalOperation);
+typedef void (^COCancellationBlockForCascadeOperation)(COCascadeOperation *cascadeOperation);
 
-typedef void (^SAModificationBlock)(id data);
+typedef void (^COModificationBlock)(id data);

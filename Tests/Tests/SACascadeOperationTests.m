@@ -9,14 +9,14 @@
 #import <SenTestingKit/SenTestingKit.h>
 #import "TestHelpers.h"
 
-#import "SACascadeOperation.h"
-#import "SAQueues.h"
+#import "COCascadeOperation.h"
+#import "COQueues.h"
 
-@interface SACascadeOperation (PrivateProperties)
+@interface COCascadeOperation (PrivateProperties)
 @property (strong) NSMutableArray *operations;
 @end
 
-@implementation SACascadeOperation (PrivateProperties)
+@implementation COCascadeOperation (PrivateProperties)
 @dynamic operations;
 @end
 
@@ -30,10 +30,10 @@
     __block BOOL isFinished = NO;
     __block BOOL firstJobIsDone = NO, secondJobIsDone = NO, thirdJobIsDone = NO;
 
-    SACascadeOperation *cOperation = [SACascadeOperation new];
+    COCascadeOperation *cOperation = [COCascadeOperation new];
 
-    [cOperation run:^(SACascadeOperation *co) {
-        [co operation:^(SAOperation *cao) {
+    [cOperation run:^(COCascadeOperation *co) {
+        [co operation:^(COOperation *cao) {
             asynchronousJob(^{
                 count = count + 1;
 
@@ -48,7 +48,7 @@
             });
         }];
 
-        [co operation:^(SAOperation *cao) {
+        [co operation:^(COOperation *cao) {
             asynchronousJob(^{
                 count = count + 1;
 
@@ -64,7 +64,7 @@
             });
         }];
 
-        [co operation:^(SAOperation *cao) {
+        [co operation:^(COOperation *cao) {
             asynchronousJob(^{
                 count = count + 1;
 
@@ -86,28 +86,28 @@
 }
 
 #pragma mark
-#pragma mark SACascadeOperation: assigns NSOperation's operationBlocks to its suboperations.
+#pragma mark COCascadeOperation: assigns NSOperation's operationBlocks to its suboperations.
 
 #if !OS_OBJECT_USE_OBJC
 
-// Ensures that -[SACascadeOperation cancel] does not run and remove completionBlocks of suboperations ("soft cancel") when cancellationHandler is provided.
+// Ensures that -[COCascadeOperation cancel] does not run and remove completionBlocks of suboperations ("soft cancel") when cancellationHandler is provided.
 - (void)test_cascadeOperation_cancel_does_not_run_suboperations_completionBlocks_if_cancellation_handler_is_provided {
     __block BOOL isFinished = NO;
 
-    SACascadeOperation *cOperation = [SACascadeOperation new];
+    COCascadeOperation *cOperation = [COCascadeOperation new];
 
-    [cOperation run:^(SACascadeOperation *co) {
-        [co operation:^(SAOperation *operation) {
+    [cOperation run:^(COCascadeOperation *co) {
+        [co operation:^(COOperation *operation) {
             [operation cancel];
         }];
 
-        [co operation:^(SAOperation *operation) {
+        [co operation:^(COOperation *operation) {
             raiseShouldNotReachHere();
         }];
     } completionHandler:^{
         raiseShouldNotReachHere();
-    } cancellationHandler:^(SACascadeOperation *cascadeOperation) {
-        for (SAOperation *operation in cascadeOperation.operations) {
+    } cancellationHandler:^(COCascadeOperation *cascadeOperation) {
+        for (COOperation *operation in cascadeOperation.operations) {
             STAssertNotNil(operation.completionBlock, nil);
         }
         isFinished = YES;
@@ -116,20 +116,20 @@
     while (!isFinished);
 }
 
-// Ensures that -[SACascadeOperation cancel] DOES run and remove completionBlocks of suboperations ("soft cancel") when cancellationHandler is not provided.
+// Ensures that -[COCascadeOperation cancel] DOES run and remove completionBlocks of suboperations ("soft cancel") when cancellationHandler is not provided.
 - (void)test_cascadeOperation_cancel_does_run_suboperations_completionBlocks_if_cancellation_handler_is_not_provided {
     __block BOOL isFinished = NO;
 
-    SACascadeOperation *cOperation = [SACascadeOperation new];
+    COCascadeOperation *cOperation = [COCascadeOperation new];
     
-    [cOperation run:^(SACascadeOperation *co) {
-        [co operation:^(SAOperation *operation) {
+    [cOperation run:^(COCascadeOperation *co) {
+        [co operation:^(COOperation *operation) {
             [co cancel];
 
             isFinished = YES;
         }];
 
-        [co operation:^(SAOperation *operation) {
+        [co operation:^(COOperation *operation) {
             raiseShouldNotReachHere();
         }];
     } completionHandler:^{
@@ -138,7 +138,7 @@
     
     while (!isFinished);
 
-    for (SAOperation *operation in cOperation.operations) {
+    for (COOperation *operation in cOperation.operations) {
         STAssertNil(operation.completionBlock, nil);
     }
 }
@@ -148,29 +148,29 @@
 #pragma mark
 #pragma mark Suspend / Resume
 
-// Ensures that -[SACascadeOperation suspend] suspends self and inner operations.
+// Ensures that -[COCascadeOperation suspend] suspends self and inner operations.
 
 - (void)testCascadeOperation_suspend_suspends_self_and_inner_operations {
     __block BOOL isFinished = NO;
 
-    SACascadeOperation *cOperation = [SACascadeOperation new];
+    COCascadeOperation *cOperation = [COCascadeOperation new];
 
-    [cOperation run:^(SACascadeOperation *cascade) {
-        [cascade operation:^(SAOperation *operation) {
+    [cOperation run:^(COCascadeOperation *cascade) {
+        [cascade operation:^(COOperation *operation) {
             STAssertFalse(cascade.isCancelled, nil);
 
             [cascade suspend]; // Suspends cascade and all suboperations
             
             STAssertTrue(cascade.isSuspended, nil);
 
-            [cascade.operations enumerateObjectsUsingBlock:^(SAOperation *operation, NSUInteger idx, BOOL *stop) {
+            [cascade.operations enumerateObjectsUsingBlock:^(COOperation *operation, NSUInteger idx, BOOL *stop) {
                 STAssertTrue(operation.isSuspended, nil);
             }];
 
             isFinished = YES;
         }];
 
-        [cascade operation:^(SAOperation *operation) {
+        [cascade operation:^(COOperation *operation) {
             raiseShouldNotReachHere();
         }];
     } completionHandler:nil cancellationHandler:nil];
@@ -178,15 +178,15 @@
     while (!isFinished);
 }
 
-// Ensures that -[SACascadeOperation suspend] suspends self and inner operations so that -cancel of inner operations does hot have effect.
+// Ensures that -[COCascadeOperation suspend] suspends self and inner operations so that -cancel of inner operations does hot have effect.
 
 - (void)testCascadeOperation_suspend_suspends_self_and_inner_operations_so_than_cancellation_of_inner_operation_does_not_have_effect {
     __block BOOL isFinished = NO;
 
-    SACascadeOperation *cOperation = [SACascadeOperation new];
+    COCascadeOperation *cOperation = [COCascadeOperation new];
 
-    [cOperation run:^(SACascadeOperation *cascade) {
-        [cascade operation:^(SAOperation *operation) {
+    [cOperation run:^(COCascadeOperation *cascade) {
+        [cascade operation:^(COOperation *operation) {
             [cascade suspend]; // Suspends cascade and all suboperations
 
             STAssertTrue(operation.isSuspended, nil);
@@ -198,7 +198,7 @@
             isFinished = YES;
         }];
 
-        [cascade operation:^(SAOperation *operation) {
+        [cascade operation:^(COOperation *operation) {
             raiseShouldNotReachHere();
         }];
     } completionHandler:nil cancellationHandler:nil];
@@ -207,18 +207,18 @@
 }
 
 
-// Ensures that -[SACascadeOperation resume] runs next operation at current index if cascade operation was suspended in the body of successful previous sub-operation
+// Ensures that -[COCascadeOperation resume] runs next operation at current index if cascade operation was suspended in the body of successful previous sub-operation
 
 - (void)testCascadeOperation_resume_runs_next_operation_at_current_index_if_cascade_operation_was_suspended_in_th_body_of_successful_previous_sub_operation {
     __block BOOL isFinished = NO;
 
-    SACascadeOperation *cOperation = [SACascadeOperation new];
+    COCascadeOperation *cOperation = [COCascadeOperation new];
 
-    [cOperation run:^(SACascadeOperation *cascade) {
-        [cascade operation:^(SAOperation *operation) {
+    [cOperation run:^(COCascadeOperation *cascade) {
+        [cascade operation:^(COOperation *operation) {
             [cascade suspend]; // Suspends cascade and all suboperations
 
-            [cascade.operations enumerateObjectsUsingBlock:^(SAOperation *operation, NSUInteger idx, BOOL *stop) {
+            [cascade.operations enumerateObjectsUsingBlock:^(COOperation *operation, NSUInteger idx, BOOL *stop) {
                 STAssertTrue(operation.isSuspended, nil);
             }];
 
@@ -229,7 +229,7 @@
             isFinished = YES;
         }];
 
-        [cascade operation:^(SAOperation *operation) {
+        [cascade operation:^(COOperation *operation) {
             STAssertTrue(operation.isExecuting, nil);
 
             isFinished = YES;
@@ -260,15 +260,15 @@
     __block BOOL blockFlag = NO;
     __block NSNumber *secondOperationRunTimes = @(0);
 
-    SACascadeOperation *cOperation = [SACascadeOperation new];
+    COCascadeOperation *cOperation = [COCascadeOperation new];
 
-    [cOperation run:^(SACascadeOperation *co) {
-        [co operation:^(SAOperation *o) {
+    [cOperation run:^(COCascadeOperation *co) {
+        [co operation:^(COOperation *o) {
             [regString appendString:@"1"];
             [o finish];
         }];
 
-        [co operation:^(SAOperation *operation) {
+        [co operation:^(COOperation *operation) {
             STAssertTrue(cOperation.isExecuting, nil);
 
             secondOperationRunTimes = @(secondOperationRunTimes.intValue + 1);
@@ -281,7 +281,7 @@
             }
         }];
 
-        [co operation:^(SAOperation *o) {
+        [co operation:^(COOperation *o) {
             STAssertTrue([regString isEqualToString:@"12"], nil);
             [regString appendString:@"3"];
             
@@ -293,7 +293,7 @@
         STAssertTrue([regString isEqualToString:@"123"], nil);
 
         blockFlag = YES;
-    } cancellationHandler:^(SACascadeOperation *co) {
+    } cancellationHandler:^(COCascadeOperation *co) {
         STAssertTrue(cOperation.isExecuting, nil);
 
         STAssertTrue([regString isEqualToString:@"1"], nil);
@@ -309,20 +309,20 @@
     while(blockFlag == NO){}
 }
 
-// Ensures that -[SACascadeOperation awake] HAS effect on executing operations
+// Ensures that -[COCascadeOperation awake] HAS effect on executing operations
 - (void)test_cascadeOperation_awake_has_effect_on_executing_operations {
     __block BOOL blockFlag = NO;
 
-    SACascadeOperation *intentionallyUnfinishableCOperation = [SACascadeOperation new];
+    COCascadeOperation *intentionallyUnfinishableCOperation = [COCascadeOperation new];
 
-    intentionallyUnfinishableCOperation.operation = ^(SACascadeOperation *co) {
-        [co operation:^(SAOperation *operation) {
+    intentionallyUnfinishableCOperation.operation = ^(COCascadeOperation *co) {
+        [co operation:^(COOperation *operation) {
             [operation finish];
             blockFlag = YES;
         }];
     };
 
-    intentionallyUnfinishableCOperation.state = SAOperationExecutingState;
+    intentionallyUnfinishableCOperation.state = COOperationExecutingState;
     STAssertTrue(intentionallyUnfinishableCOperation.isExecuting, nil);
 
     [intentionallyUnfinishableCOperation awake];
@@ -332,12 +332,12 @@
     STAssertTrue(intentionallyUnfinishableCOperation.isFinished, nil);
 }
 
-// Ensures that -[SACascadeOperation awake] has no effect on finished operations
+// Ensures that -[COCascadeOperation awake] has no effect on finished operations
 - (void)test_cascadeOperation_awake_has_no_effect_on_finished_operations {
-    SACascadeOperation *intentionallyUnfinishableCOperation = [SACascadeOperation new];
+    COCascadeOperation *intentionallyUnfinishableCOperation = [COCascadeOperation new];
 
-    intentionallyUnfinishableCOperation.operation = ^(SACascadeOperation *co) {
-        [co operation:^(SAOperation *operation) {
+    intentionallyUnfinishableCOperation.operation = ^(COCascadeOperation *co) {
+        [co operation:^(COOperation *operation) {
             raiseShouldNotReachHere();
         }];
     };
@@ -352,10 +352,10 @@
 
 // Ensures that -[TransactionalOperation awake] has no effect on cancelled operations
 - (void)test_cascadeOperation_awake_has_no_effect_on_cancelled_operations {
-    SACascadeOperation *intentionallyUnfinishableCOperation = [SACascadeOperation new];
+    COCascadeOperation *intentionallyUnfinishableCOperation = [COCascadeOperation new];
 
-    intentionallyUnfinishableCOperation.operation = ^(SACascadeOperation *co) {
-        [co operation:^(SAOperation *operation) {
+    intentionallyUnfinishableCOperation.operation = ^(COCascadeOperation *co) {
+        [co operation:^(COOperation *operation) {
             raiseShouldNotReachHere();
         }];
     };
@@ -376,11 +376,11 @@
     __block BOOL isFinished = NO;
     __block BOOL cancellationHandlerWasRun = NO;
     
-    SACascadeOperation *cOperation = [SACascadeOperation new];
+    COCascadeOperation *cOperation = [COCascadeOperation new];
 
-    [cOperation run:^(SACascadeOperation *co) {
-        [co operation:^(SAOperation *o) {
-            for (SAOperation *operation in co.operations) {
+    [cOperation run:^(COCascadeOperation *co) {
+        [co operation:^(COOperation *o) {
+            for (COOperation *operation in co.operations) {
                 STAssertFalse(operation.isCancelled, nil);
             }
 
@@ -390,17 +390,17 @@
 
             STAssertFalse(co.isCancelled, nil);
 
-            for (SAOperation *operation in co.operations) {
+            for (COOperation *operation in co.operations) {
                 STAssertTrue(operation.isCancelled, nil);
             }
 
             isFinished = YES;
         }];
 
-        [co operation:^(SAOperation *o) {
+        [co operation:^(COOperation *o) {
             raiseShouldNotReachHere();
         }];
-    } completionHandler:nil cancellationHandler:^(SACascadeOperation *co){
+    } completionHandler:nil cancellationHandler:^(COCascadeOperation *co){
         STAssertFalse(co.isCancelled, nil);
         cancellationHandlerWasRun = YES;
     }];
@@ -415,19 +415,19 @@
     NSMutableArray *countArr = [NSMutableArray array];
     __block BOOL isFinished = NO;
 
-    SAOperationQueue *opQueue = [SAOperationQueue new];
+    COOperationQueue *opQueue = [COOperationQueue new];
     opQueue.queue = createQueue();
 
-    SACascadeOperation *cOperation = [SACascadeOperation new];
+    COCascadeOperation *cOperation = [COCascadeOperation new];
     cOperation.operationQueue = opQueue;
     STAssertEquals((int)opQueue.pendingOperations.count, 0, nil);
     STAssertEquals((int)opQueue.runningOperations.count, 0, nil);
 
-    [cOperation run:^(SACascadeOperation *co) {
+    [cOperation run:^(COCascadeOperation *co) {
         STAssertEquals((int)opQueue.pendingOperations.count, 0, nil);
         STAssertEquals((int)opQueue.runningOperations.count, 1, nil);
 
-        [co operation:^(SAOperation *cao) {
+        [co operation:^(COOperation *cao) {
             asynchronousJob(^{
                 @synchronized(countArr) {
                     [countArr addObject:@1];
@@ -436,7 +436,7 @@
             });
         }];
         
-        [co operation:^(SAOperation *cao) {
+        [co operation:^(COOperation *cao) {
             asynchronousJob(^{
                 @synchronized(countArr) {
                     [countArr addObject:@1];
@@ -445,7 +445,7 @@
             });
         }];
 
-        [co operation:^(SAOperation *cuo) {
+        [co operation:^(COOperation *cuo) {
             @synchronized(countArr) {
                 [countArr addObject:@1];
             }
@@ -461,10 +461,10 @@
 - (void)test_cascadeOperation_running_with_defaultQueue_unset {    
     __block BOOL isFinished = NO;
 
-    SACascadeOperation *cOperation = [SACascadeOperation new];
+    COCascadeOperation *cOperation = [COCascadeOperation new];
 
-    [cOperation run:^(SACascadeOperation *co) {
-        [co operation:^(SAOperation *cao) {
+    [cOperation run:^(COCascadeOperation *co) {
+        [co operation:^(COOperation *cao) {
             STAssertEquals(dispatch_get_current_queue(), concurrentQueue(), @"Expected unit operation to be run in the same queue the test is run");
 
             [cao finish];
@@ -476,16 +476,16 @@
 }
 
 - (void)test_cascadeOperation_when_default_queue_is_set_first_operation_should_pickup_original_environment {
-    SASetDefaultQueue(concurrentQueue());
+    COSetDefaultQueue(concurrentQueue());
     
     NSString *someVar = @"pickmeup";
     
     __block BOOL isFinished = NO;
 
-    SACascadeOperation *cOperation = [SACascadeOperation new];
+    COCascadeOperation *cOperation = [COCascadeOperation new];
 
-    [cOperation run:^(SACascadeOperation *co) {
-        [co operation:^(SAOperation *cao) {
+    [cOperation run:^(COCascadeOperation *co) {
+        [co operation:^(COOperation *cao) {
             STAssertTrue([someVar isEqualToString:@"pickmeup"], @"Expected someVar to be picked up by first operation");
             [cao finish];
             isFinished = YES;
@@ -493,18 +493,18 @@
     } completionHandler:nil cancellationHandler:nil];
 
     while (!isFinished);
-    SASetDefaultQueue(nil);
+    COSetDefaultQueue(nil);
 }
 
 - (void)test_cascadeOperation_running_with_defaultQueue_set {
     __block BOOL isFinished = NO;
 
-    SASetDefaultQueue(concurrentQueue());
+    COSetDefaultQueue(concurrentQueue());
 
-    SACascadeOperation *cOperation = [SACascadeOperation new];
+    COCascadeOperation *cOperation = [COCascadeOperation new];
 
-    [cOperation run:^(SACascadeOperation *co) {
-        [co operation:^(SAOperation *cao) {
+    [cOperation run:^(COCascadeOperation *co) {
+        [co operation:^(COOperation *cao) {
             STAssertEquals(dispatch_get_current_queue(), concurrentQueue(), @"Expected unit operation to be run in concurrentQueue()");
 
             [cao finish];
@@ -514,7 +514,7 @@
     
     while (!isFinished);
 
-    SASetDefaultQueue(nil);
+    COSetDefaultQueue(nil);
 }
 
 - (void)testCascadeOperation_sharedData {
@@ -522,15 +522,15 @@
 
     __block NSString *data = @"1";
 
-    SACascadeOperation *cOperation = [SACascadeOperation new];
+    COCascadeOperation *cOperation = [COCascadeOperation new];
 
-    [cOperation run:^(SACascadeOperation *co) {
-        [co operation:^(SAOperation *cao) {
+    [cOperation run:^(COCascadeOperation *co) {
+        [co operation:^(COOperation *cao) {
             co.sharedData = data;
             [cao finish];
         }];
 
-        [co operation:^(SAOperation *cao) {
+        [co operation:^(COOperation *cao) {
             NSString *sharedData = co.sharedData;
 
             STAssertTrue([sharedData isEqualToString:data], @"Expected shared data to be set in the first operation and be accessible from the second operation");
@@ -548,10 +548,10 @@
     __block BOOL isFinished = NO;
     __block BOOL firstJobIsDone = NO, secondJobIsDone = NO, thirdJobIsDone = NO;
 
-    SACascadeOperation *cOperation = [SACascadeOperation new];
+    COCascadeOperation *cOperation = [COCascadeOperation new];
 
-    [cOperation run:^(SACascadeOperation *co) {
-        [co operationInQueue:concurrentQueue() operation:^(SAOperation *cao) {
+    [cOperation run:^(COCascadeOperation *co) {
+        [co operationInQueue:concurrentQueue() operation:^(COOperation *cao) {
             count = count + 1;
 
             STAssertFalse(firstJobIsDone, @"Expected firstJobIsDone to be NO");
@@ -564,7 +564,7 @@
             [cao finish];
         }];
 
-        [co operationInQueue:concurrentQueue() operation:^(SAOperation *cao) {
+        [co operationInQueue:concurrentQueue() operation:^(COOperation *cao) {
             count = count + 1;
 
             STAssertTrue(firstJobIsDone, @"Expected firstJobIsDone to be YES");
@@ -578,7 +578,7 @@
             [cao finish];
         }];
 
-        [co operationInQueue:concurrentQueue() operation:^(SAOperation *cao) {
+        [co operationInQueue:concurrentQueue() operation:^(COOperation *cao) {
             count = count + 1;
 
             STAssertTrue(firstJobIsDone, @"Expected firstJobIsDone to be YES");
@@ -601,23 +601,23 @@
     NSMutableArray *countArr = [NSMutableArray array];
     __block BOOL isFinished = NO;
 
-    SACascadeOperation *cOperation = [SACascadeOperation new];
+    COCascadeOperation *cOperation = [COCascadeOperation new];
 
-    [cOperation run:^(SACascadeOperation *co) {
-        [co operation:^(SAOperation *cuo) {
+    [cOperation run:^(COCascadeOperation *co) {
+        [co operation:^(COOperation *cuo) {
             [cuo finish];
         }];
 
-        [co transactionalOperation:^(SATransactionalOperation *to1) {
+        [co transactionalOperation:^(COTransactionalOperation *to1) {
 
-            [to1 operation:^(SAOperation *tao) {
+            [to1 operation:^(COOperation *tao) {
                 @synchronized(countArr) {
                     [countArr addObject:@1];
                 }
                 [tao finish];
             }];
 
-            [to1 operation:^(SAOperation *tao) {
+            [to1 operation:^(COOperation *tao) {
                 @synchronized(countArr) {
                     [countArr addObject:@1];
                 }
@@ -625,7 +625,7 @@
             }];
         }];
 
-        [co operation:^(SAOperation *cuo) {
+        [co operation:^(COOperation *cuo) {
             isFinished = YES;
         }];
     } completionHandler:nil cancellationHandler:nil];
@@ -639,26 +639,26 @@
 - (void)test_transactionalOperation_inside_cascadeOperation_cancellationHandlers {
     __block BOOL isFinished = NO;
 
-    SACascadeOperation *cOperation = [SACascadeOperation new];
+    COCascadeOperation *cOperation = [COCascadeOperation new];
 
-    [cOperation run:^(SACascadeOperation *co) {
-        [co transactionalOperation:^(SATransactionalOperation *to1) {
+    [cOperation run:^(COCascadeOperation *co) {
+        [co transactionalOperation:^(COTransactionalOperation *to1) {
 
-            [to1 operation:^(SAOperation *tao) {
+            [to1 operation:^(COOperation *tao) {
                 [tao cancel];
             }];
         }];
 
-        [co operation:^(SAOperation *cuo) {
+        [co operation:^(COOperation *cuo) {
             raiseShouldNotReachHere();
         }];
-    } completionHandler:nil cancellationHandler:^(SACascadeOperation *coperation){
-        SATransactionalOperation *tOperation = [coperation.operations objectAtIndex:0];
-        for (SAOperation *operation in tOperation.operations) {
+    } completionHandler:nil cancellationHandler:^(COCascadeOperation *coperation){
+        COTransactionalOperation *tOperation = [coperation.operations objectAtIndex:0];
+        for (COOperation *operation in tOperation.operations) {
             STAssertTrue(operation.isCancelled, nil);
         }
 
-        for (SAOperation *operation in coperation.operations) {
+        for (COOperation *operation in coperation.operations) {
             STAssertTrue(operation.isCancelled, nil);
         }
         
@@ -673,11 +673,11 @@
     __block BOOL isFinished = NO;
     __block BOOL firstJobIsDone = NO, secondJobIsDone = NO, thirdJobIsDone = NO;
 
-    SACascadeOperation *cOperation = [SACascadeOperation new];
+    COCascadeOperation *cOperation = [COCascadeOperation new];
 
     createQueue();
-    [cOperation run:^(SACascadeOperation *co) {
-        [co operation:^(SAOperation *cao) {
+    [cOperation run:^(COCascadeOperation *co) {
+        [co operation:^(COOperation *cao) {
             asynchronousJob(^{
                 count = count + 1;
 
@@ -692,7 +692,7 @@
             });
         }];
 
-        [co operation:^(SAOperation *cao) {
+        [co operation:^(COOperation *cao) {
             asynchronousJob(^{
                 count = count + 1;
 
@@ -708,7 +708,7 @@
             });
         }];
 
-        [co operation:^(SAOperation *cao) {
+        [co operation:^(COOperation *cao) {
             asynchronousJob(^{
                 asynchronousJob(^{
                     asynchronousJob(^{
@@ -740,18 +740,18 @@
     
     __block BOOL isFinished = NO;
         
-    SACascadeOperation *cOperation = [SACascadeOperation new];
+    COCascadeOperation *cOperation = [COCascadeOperation new];
 
-    [cOperation run:^(SACascadeOperation *co) {
-        [co operation:^(SAOperation *cao) {
+    [cOperation run:^(COCascadeOperation *co) {
+        [co operation:^(COOperation *cao) {
             [cao finish];
         }];
 
         int loop = 100;
 
         while(loop-- > 0) {
-            [co transactionalOperation:^(SATransactionalOperation *to1) {
-                [to1 operation:^(SAOperation *tao) {
+            [co transactionalOperation:^(COTransactionalOperation *to1) {
+                [to1 operation:^(COOperation *tao) {
                     @synchronized(regArray) {
                         [regArray addObject:@1];
                     }
@@ -759,7 +759,7 @@
                     [tao finish];
                 }];
 
-                [to1 operation:^(SAOperation *tao) {
+                [to1 operation:^(COOperation *tao) {
                     @synchronized(regArray) {
                         [regArray addObject:@1];
                     }
@@ -772,15 +772,15 @@
         loop = 20;
 
         while(loop-- > 0) {
-            [co transactionalOperation:^(SATransactionalOperation *to1) {
-                [to1 operation:^(SAOperation *tao) {
+            [co transactionalOperation:^(COTransactionalOperation *to1) {
+                [to1 operation:^(COOperation *tao) {
                     @synchronized(regArray) {
                         [regArray removeLastObject];
                     }
                     [tao finish];
                 }];
 
-                [to1 operation:^(SAOperation *tao) {
+                [to1 operation:^(COOperation *tao) {
                     @synchronized(regArray) {
                         [regArray addObject:@1];
                     }
@@ -789,7 +789,7 @@
             }];
         }
 
-        [co operation:^(SAOperation *cao) {
+        [co operation:^(COOperation *cao) {
             [cao finish];
             isFinished = YES;
         }];

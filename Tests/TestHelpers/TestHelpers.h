@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <SenTestingKit/SenTestingKit.h>
-#import "SACompositeOperations.h"
+#import "CompositeOperations.h"
 
 #define raiseShouldNotReachHere() @throw [NSException exceptionWithName:NSGenericException reason:[NSString stringWithFormat:@"Should not reach here: %s:%d, %s", __FILE__, __LINE__, __PRETTY_FUNCTION__] userInfo:nil]
 

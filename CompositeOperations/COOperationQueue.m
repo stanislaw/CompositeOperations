@@ -1,15 +1,15 @@
-#import "SAOperationQueue.h"
+#import "COOperationQueue.h"
 
-static inline NSString * SAKeyPathFromOperationQueueState(SAOperationQueueState state) {
+static inline NSString * SAKeyPathFromOperationQueueState(COOperationQueueState state) {
     switch (state) {
-        case SAOperationQueueSuspendedState:
+        case COOperationQueueSuspendedState:
             return @"isSuspended";
         default:
             return @"isNormal";
     }
 }
 
-@implementation SAOperationQueue
+@implementation COOperationQueue
 
 - (id)init {
     self = [super init];
@@ -17,8 +17,8 @@ static inline NSString * SAKeyPathFromOperationQueueState(SAOperationQueueState 
     self.maximumOperationsLimit = 0;
     self.pendingOperations = [NSMutableArray array];
     self.runningOperations = [NSMutableArray array];
-    self.queueType = SAOperationQueueFIFO;
-    self.state = SAOperationQueueNormalState;
+    self.queueType = COOperationQueueFIFO;
+    self.state = COOperationQueueNormalState;
 
     return self;
 }
@@ -64,16 +64,16 @@ static inline NSString * SAKeyPathFromOperationQueueState(SAOperationQueueState 
 }
 
 - (BOOL)isSuspended {
-    return self.state == SAOperationQueueSuspendedState;
+    return self.state == COOperationQueueSuspendedState;
 }
 
 #pragma mark
 #pragma mark
 
-- (void)addOperationWithBlock:(SABlock)operationBlock {
-    SAOperation *operation = [SAOperation new];
+- (void)addOperationWithBlock:(COBlock)operationBlock {
+    COOperation *operation = [COOperation new];
 
-    operation.operation = ^(SAOperation *op){
+    operation.operation = ^(COOperation *op){
         operationBlock();
 
         [op finish];
@@ -87,24 +87,24 @@ static inline NSString * SAKeyPathFromOperationQueueState(SAOperationQueueState 
 
 - (void)addOperation:(NSOperation *)operation {
     if (self.queue == nil) {
-        @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"SAOperationQueue: queue should be defined" userInfo:nil];
+        @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"COOperationQueue: queue should be defined" userInfo:nil];
     }
 
     @synchronized(self) {
         switch (self.queueType) {
-            case SAOperationQueueFIFO:
+            case COOperationQueueFIFO:
                 [self.pendingOperations addObject:operation];
 
                 break;
 
-            case SAOperationQueueLIFO:
+            case COOperationQueueLIFO:
                 [self.pendingOperations insertObject:operation atIndex:0];
 
                 break;
 
-            case SAOperationQueueAggressiveLIFO:
+            case COOperationQueueAggressiveLIFO:
                 if (self.maximumOperationsLimit > 0 && self.pendingOperations.count == self.maximumOperationsLimit) {
-                    SAOperation *operation = (SAOperation *)self.pendingOperations.lastObject;
+                    COOperation *operation = (COOperation *)self.pendingOperations.lastObject;
                     [self.pendingOperations removeObject:operation];
 
                     [operation cancel];
@@ -129,7 +129,7 @@ static inline NSString * SAKeyPathFromOperationQueueState(SAOperationQueueState 
     
     @synchronized(self) {
         if (self.pendingOperations.count > 0 && (self.runningOperations.count < self.maximumOperationsLimit || (self.maximumOperationsLimit == 0))) {
-            NSUInteger firstReadyOperationIndex = [self.pendingOperations indexOfObjectPassingTest:^BOOL(SAOperation *operation, NSUInteger idx, BOOL *stop) {
+            NSUInteger firstReadyOperationIndex = [self.pendingOperations indexOfObjectPassingTest:^BOOL(COOperation *operation, NSUInteger idx, BOOL *stop) {
                 if (operation.isReady) {
                     *stop = YES;
 
@@ -140,7 +140,7 @@ static inline NSString * SAKeyPathFromOperationQueueState(SAOperationQueueState 
             }];
 
             if (firstReadyOperationIndex != NSNotFound) {
-                SAOperation *operation = (SAOperation *)[self.pendingOperations objectAtIndex:firstReadyOperationIndex];
+                COOperation *operation = (COOperation *)[self.pendingOperations objectAtIndex:firstReadyOperationIndex];
 
                 [operation addObserver:self
                             forKeyPath:@"isFinished"
@@ -190,7 +190,7 @@ static inline NSString * SAKeyPathFromOperationQueueState(SAOperationQueueState 
 - (void)suspend {
     if (self.isSuspended == NO) {
         @synchronized(self) {
-            self.state = SAOperationQueueSuspendedState;
+            self.state = COOperationQueueSuspendedState;
                         
             [[self.pendingOperations copy] makeObjectsPerformSelector:@selector(suspend)];
 
@@ -204,7 +204,7 @@ static inline NSString * SAKeyPathFromOperationQueueState(SAOperationQueueState 
 
 - (void)resume {
     @synchronized(self) {
-        self.state = SAOperationQueueNormalState;
+        self.state = COOperationQueueNormalState;
 
         [[self.pendingOperations copy] makeObjectsPerformSelector:@selector(resume)];
         [[self.runningOperations copy] makeObjectsPerformSelector:@selector(resume)];

@@ -9,9 +9,9 @@
 #import <SenTestingKit/SenTestingKit.h>
 #import "TestHelpers.h"
 
-#import "SAOperation.h"
-#import "SAOperationQueue.h"
-#import "SACompositeOperations.h"
+#import "COOperation.h"
+#import "COOperationQueue.h"
+#import "CompositeOperations.h"
 
 @interface SAOperationTests : SenTestCase
 @end
@@ -21,11 +21,11 @@
 #pragma mark
 #pragma mark NSOperation's roots
 
-// Suprisingly ensures that new SAOperation instance when called with -finish, triggers its completionBlock, even when its main body is undefined.
+// Suprisingly ensures that new COOperation instance when called with -finish, triggers its completionBlock, even when its main body is undefined.
 - (void)test_NSOperationCallsCompletionBlockWhenFinished_evenWithoutActualyStartMainCalls {
     __block BOOL flag = NO;
 
-    SAOperation *operation = [SAOperation new];
+    COOperation *operation = [COOperation new];
 
     operation.completionBlock = ^{
         flag = YES;
@@ -39,15 +39,15 @@
 }
 
 #pragma mark
-#pragma mark -[SAOperation run:inQueue:]
+#pragma mark -[COOperation run:inQueue:]
 
-// Ensures that -[SAOperation run:inQueue:] runs its operation block in a given queue: it works for -start and -rerun also
+// Ensures that -[COOperation run:inQueue:] runs its operation block in a given queue: it works for -start and -rerun also
 - (void)test_run_inQueue {
     NSMutableArray *regArray = [NSMutableArray array];
 
     __block BOOL oOver = NO;
 
-    operation(concurrentQueue(), ^(SAOperation *o) {
+    operation(concurrentQueue(), ^(COOperation *o) {
         [regArray addObject:@(1)];
 
         STAssertEquals(currentQueue(), concurrentQueue(), nil);
@@ -66,13 +66,13 @@
 }
 
 #if !OS_OBJECT_USE_OBJC
-// Ensures that -[SAOperation run:inQueue:] uses NSOperation's completionBlock to retain/release dispatch_queue it runs in
+// Ensures that -[COOperation run:inQueue:] uses NSOperation's completionBlock to retain/release dispatch_queue it runs in
 - (void)test_run_inQueue_uses_completionBlock_to_retain_and_release_dispatch_queue {
     __block BOOL oOver = NO;
 
-    SAOperation *operation = [SAOperation new];
+    COOperation *operation = [COOperation new];
 
-    [operation runInQueue:concurrentQueue() operation:^(SAOperation *o) {
+    [operation runInQueue:concurrentQueue() operation:^(COOperation *o) {
         STAssertNotNil(o.completionBlock, nil);
 
         [o finish];
@@ -91,11 +91,11 @@
 }
 #endif
 
-// Ensures, that -[SAOperation cancel] has no effect on operations suspended when ready
+// Ensures, that -[COOperation cancel] has no effect on operations suspended when ready
 - (void)test_cancel_should_not_work_on_suspended_operations {
-    SAOperation *operation = [SAOperation new];
+    COOperation *operation = [COOperation new];
 
-    operation.operation = ^(SAOperation *operation){};
+    operation.operation = ^(COOperation *operation){};
 
     STAssertTrue(operation.isReady, nil);
 
@@ -109,13 +109,13 @@
     STAssertTrue(operation.isSuspended, nil);
 }
 
-// Ensures, that -[SAOperation cancel] has no effect on operations suspended when running
+// Ensures, that -[COOperation cancel] has no effect on operations suspended when running
 - (void)test_cancel_has_no_effect_on_operations_suspended_when_running {
-    SAOperation *operation = [SAOperation new];
+    COOperation *operation = [COOperation new];
 
     STAssertTrue(operation.isReady, nil);
 
-    operation.operation = ^(SAOperation *operation){
+    operation.operation = ^(COOperation *operation){
         [operation suspend];
         STAssertTrue(operation.isSuspended, nil);
 
@@ -128,9 +128,9 @@
     [operation start];
 }
 
-// Ensures, that -[SAOperation suspend] has no effect on finished operations
+// Ensures, that -[COOperation suspend] has no effect on finished operations
 - (void)test_suspend_has_no_effect_on_finished_operations {
-    SAOperation *operation = [SAOperation new];
+    COOperation *operation = [COOperation new];
 
     STAssertTrue(operation.isReady, nil);
 
@@ -141,9 +141,9 @@
     STAssertTrue(operation.isFinished, nil);
 }
 
-// Ensures, that -[SAOperation suspend] has no effect on cancelled operations
+// Ensures, that -[COOperation suspend] has no effect on cancelled operations
 - (void)test_suspend_has_no_effect_on_cancelled_operations {
-    SAOperation *operation = [SAOperation new];
+    COOperation *operation = [COOperation new];
 
     STAssertTrue(operation.isReady, nil);
 
@@ -159,9 +159,9 @@
 
     __block BOOL oOver = NO;
 
-    SAOperation *operation = [SAOperation new];
+    COOperation *operation = [COOperation new];
 
-    [operation run:^(SAOperation *o) {
+    [operation run:^(COOperation *o) {
         asynchronousJob(^{
             @synchronized(countArr) {
                 [countArr addObject:@1];
@@ -186,9 +186,9 @@
 - (void)test_run_completionHandler_cancellationHandler {
     __block BOOL blockFlag = NO;
     
-    SAOperation *operation = [SAOperation new];
+    COOperation *operation = [COOperation new];
 
-    [operation run:^(SAOperation *operation) {
+    [operation run:^(COOperation *operation) {
         [operation cancel];
     } completionHandler:^{
         raiseShouldNotReachHere();

@@ -6,15 +6,15 @@
 //  Copyright (c) 2013 Stanislaw Pankevich. All rights reserved.
 //
 
-#import "SACompositeOperation.h"
+#import "COCompositeOperation.h"
 
-#import "SAQueues.h"
+#import "COQueues.h"
 
-#import "SACascadeOperation.h"
-#import "SATransactionalOperation.h"
-#import "SATypedefs.h"
+#import "COCascadeOperation.h"
+#import "COTransactionalOperation.h"
+#import "COTypedefs.h"
 
-@implementation SAAbstractCompositeOperation
+@implementation COAbstractCompositeOperation
 
 @synthesize operation = _operation,
             operations = _operations,
@@ -60,19 +60,19 @@
 #pragma mark
 #pragma mark Public API: Inner operations
 
-- (void)operation:(SAOperationBlock)operationBlock {
+- (void)operation:(COOperationBlock)operationBlock {
     [self operationInQueue:SADefaultQueue() operation:operationBlock];
 }
 
-- (void)operationInQueue:(dispatch_queue_t)queue operation:(SAOperationBlock)operationBlock {
+- (void)operationInQueue:(dispatch_queue_t)queue operation:(COOperationBlock)operationBlock {
     @synchronized(self) {
-        SAOperation *operation = [SAOperation new];
+        COOperation *operation = [COOperation new];
 
 #if !OS_OBJECT_USE_OBJC
         dispatch_retain(queue);
 #endif
 
-        SAOperationBlock operationBlockInQueue = ^(SAOperation *op) {
+        COOperationBlock operationBlockInQueue = ^(COOperation *op) {
             dispatch_async(queue, ^{
                 // Ensuring isExecuting == YES to not run operations which have been already cancelled on contextOperation level
                 if (op.isExecuting == YES && op.contextOperation.isExecuting == YES) {
@@ -84,9 +84,9 @@
         operation.operation = operationBlockInQueue;
 
 #if !OS_OBJECT_USE_OBJC
-        SAOperation *weakOperation = operation;
+        COOperation *weakOperation = operation;
         operation.completionBlock = ^{
-            __strong SAOperation *strongOperation = weakOperation;
+            __strong COOperation *strongOperation = weakOperation;
 
             if (strongOperation.isFinished || strongOperation.isCancelled) {
                 dispatch_release(queue);
@@ -103,15 +103,15 @@
 #pragma mark
 #pragma mark Public API: Inner composite operations
 
-- (void)cascadeOperation:(SACascadeOperationBlock)operationBlock {
+- (void)cascadeOperation:(COCascadeOperationBlock)operationBlock {
     @synchronized(self) {
-        SACascadeOperation *cascadeOperation = [SACascadeOperation new];
+        COCascadeOperation *cascadeOperation = [COCascadeOperation new];
 
         cascadeOperation.operation = operationBlock;
 
-        __weak SACascadeOperation *weakCascadeOperation = cascadeOperation;
+        __weak COCascadeOperation *weakCascadeOperation = cascadeOperation;
         cascadeOperation.completionBlock = ^{
-            __strong SACascadeOperation *strongCascadeOperation = weakCascadeOperation;
+            __strong COCascadeOperation *strongCascadeOperation = weakCascadeOperation;
 
             if (strongCascadeOperation.isFinished) {
             } else {
@@ -125,14 +125,14 @@
     }
 }
 
-- (void)transactionalOperation:(SATransactionalOperationBlock)operationBlock {
-    SATransactionalOperation *transactionalOperation = [SATransactionalOperation new];
+- (void)transactionalOperation:(COTransactionalOperationBlock)operationBlock {
+    COTransactionalOperation *transactionalOperation = [COTransactionalOperation new];
 
     transactionalOperation.operation = operationBlock;
 
-    __weak SATransactionalOperation *weakTransactionalOperation = transactionalOperation;
+    __weak COTransactionalOperation *weakTransactionalOperation = transactionalOperation;
     transactionalOperation.completionBlock = ^{
-        __strong SATransactionalOperation *strongTransactionalOperation = weakTransactionalOperation;
+        __strong COTransactionalOperation *strongTransactionalOperation = weakTransactionalOperation;
 
         if (strongTransactionalOperation.isFinished) {
         } else {
@@ -148,7 +148,7 @@
 #pragma mark
 #pragma mark Public API: Shared data
 
-- (void)modifySharedData:(SAModificationBlock)modificationBlock {
+- (void)modifySharedData:(COModificationBlock)modificationBlock {
     @synchronized(self) {
         modificationBlock(self.sharedData);
     }
@@ -170,7 +170,7 @@
         if (self.isFinished == NO && self.isCancelled == NO && self.isSuspended == NO) {
             [self _cancelSuboperations:YES];
 
-            self.state = SAOperationCancelledState;
+            self.state = COOperationCancelledState;
         }
     }
 }
@@ -183,7 +183,7 @@
         if (self.numberOfRuns == 0) {
             [self reRun];
         } else {
-            self.state = SAOperationExecutingState;
+            self.state = COOperationExecutingState;
 
             [self performAwakeRoutine];
         }
@@ -208,13 +208,13 @@
 
     @synchronized(self) {
         if (self.numberOfRuns > 0) {
-            self.state = SAOperationExecutingState;
+            self.state = COOperationExecutingState;
 
             [self.operations makeObjectsPerformSelector:@selector(resume)];
 
             [self performResumeRoutine];
         } else {
-            self.state = SAOperationReadyState;
+            self.state = COOperationReadyState;
         }
     }
 }
@@ -222,34 +222,34 @@
 #pragma mark
 #pragma mark <SACompositeOperation>
 
-- (void)enqueueSuboperation:(SAOperation *)subOperation {}
+- (void)enqueueSuboperation:(COOperation *)subOperation {}
 
 - (void)performCheckpointRoutine {}
 - (void)performAwakeRoutine {}
 - (void)performResumeRoutine {}
 
-- (void)subOperationWasCancelled:(SAOperation *)subOperation {
+- (void)subOperationWasCancelled:(COOperation *)subOperation {
     self.completionBlock();
 }
 
-- (void)subOperationWasFinished:(SAOperation *)subOperation {}
+- (void)subOperationWasFinished:(COOperation *)subOperation {}
 
 #pragma mark
 #pragma mark Private methods
 
 - (void)_teardown {    
-    for (SAOperation *operation in self.operations) {
+    for (COOperation *operation in self.operations) {
         operation.contextOperation = nil;
     }
 
     self.operations = nil;
 }
 
-- (void)_enqueueSuboperation:(SAOperation *)subOperation {
+- (void)_enqueueSuboperation:(COOperation *)subOperation {
     // 
 }
 
-- (void)_registerSuboperation:(SAOperation *)subOperation {
+- (void)_registerSuboperation:(COOperation *)subOperation {
     subOperation.contextOperation = self;
     subOperation.operationQueue = self.operationQueue;
 
@@ -258,7 +258,7 @@
     }
 }
 
-- (void)_runSuboperation:(SAOperation *)subOperation {
+- (void)_runSuboperation:(COOperation *)subOperation {
     [subOperation addObserver:self
                 forKeyPath:@"isFinished"
                    options:NSKeyValueObservingOptionNew
@@ -269,18 +269,18 @@
                    options:NSKeyValueObservingOptionNew
                    context:NULL];
 
-    SARunOperation(subOperation);
+    CORunOperation(subOperation);
 }
 
 - (void)_runSuboperationAtIndex:(NSUInteger)indexOfSuboperationToRun {
-    SAOperation *operation = [self.operations objectAtIndex:indexOfSuboperationToRun];
+    COOperation *operation = [self.operations objectAtIndex:indexOfSuboperationToRun];
 
     [self _runSuboperation:operation];
 }
 
 - (void)_cancelSuboperations:(BOOL)runCompletionBlocks {
     @synchronized(self) {
-        [[self.operations copy] enumerateObjectsUsingBlock:^(SAOperation *operation, NSUInteger idx, BOOL *stop) {
+        [[self.operations copy] enumerateObjectsUsingBlock:^(COOperation *operation, NSUInteger idx, BOOL *stop) {
             if (operation.isCancelled == NO && operation.isFinished == NO) {
                 if (operation.isReady == NO) {
                     [operation removeObserver:self forKeyPath:@"isFinished"];
@@ -310,7 +310,7 @@
             [object removeObserver:self forKeyPath:@"isFinished"];
             [object removeObserver:self forKeyPath:@"isCancelled"];
 
-            SAOperation *operation = (SAOperation *)object;
+            COOperation *operation = (COOperation *)object;
 
             if ([keyPath isEqual:@"isFinished"]) {
                 [self subOperationWasFinished:operation];

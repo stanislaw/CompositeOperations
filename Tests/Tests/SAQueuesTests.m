@@ -9,10 +9,10 @@
 #import <SenTestingKit/SenTestingKit.h>
 #import "TestHelpers.h"
 
-#import "SACascadeOperation.h"
-#import "SATransactionalOperation.h"
+#import "COCascadeOperation.h"
+#import "COTransactionalOperation.h"
 
-#import "SAQueues.h"
+#import "COQueues.h"
 
 @interface SAQueuesTests : SenTestCase
 @end
@@ -22,11 +22,11 @@
 - (void) test_defaultQueue_and_setDefaultQueue {
     STAssertTrue((SADefaultQueue() == concurrentQueue()), @"Expected default queue to be nil");
 
-    SASetDefaultQueue(dispatch_get_main_queue());
+    COSetDefaultQueue(dispatch_get_main_queue());
 
     STAssertEquals(SADefaultQueue(), dispatch_get_main_queue(), @"Expected defaultQueue() to be equal to main_queue()");
 
-    SASetDefaultQueue(nil);
+    COSetDefaultQueue(nil);
 
     STAssertThrowsSpecific(SADefaultQueue(), NSException, @"Expected default queue to be nil after setting to nil by setDefaultQueue");
 }

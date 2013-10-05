@@ -29,6 +29,15 @@
 		860EDB8918008535001BEEEE /* SATransactionalOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB7618008535001BEEEE /* SATransactionalOperationTests.m */; };
 		860EDB8A18008535001BEEEE /* TODO.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB7718008535001BEEEE /* TODO.m */; };
 		860EDB8C180087B9001BEEEE /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 860EDB8B180087B9001BEEEE /* SenTestingKit.framework */; };
+		860EDBA118008822001BEEEE /* COCascadeOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB8F18008822001BEEEE /* COCascadeOperation.m */; };
+		860EDBA218008822001BEEEE /* COCompositeOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB9118008822001BEEEE /* COCompositeOperation.m */; };
+		860EDBA318008822001BEEEE /* CompositeOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB9318008822001BEEEE /* CompositeOperations.m */; };
+		860EDBA418008822001BEEEE /* COOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB9518008822001BEEEE /* COOperation.m */; };
+		860EDBA518008822001BEEEE /* COOperationQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB9718008822001BEEEE /* COOperationQueue.m */; };
+		860EDBA618008822001BEEEE /* COOperationResolver.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB9918008822001BEEEE /* COOperationResolver.m */; };
+		860EDBA718008822001BEEEE /* COQueues.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB9B18008822001BEEEE /* COQueues.m */; };
+		860EDBA818008822001BEEEE /* COSyncOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB9D18008822001BEEEE /* COSyncOperation.m */; };
+		860EDBA918008822001BEEEE /* COTransactionalOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB9F18008822001BEEEE /* COTransactionalOperation.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -69,6 +78,25 @@
 		860EDB7618008535001BEEEE /* SATransactionalOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SATransactionalOperationTests.m; sourceTree = "<group>"; };
 		860EDB7718008535001BEEEE /* TODO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TODO.m; sourceTree = "<group>"; };
 		860EDB8B180087B9001BEEEE /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		860EDB8E18008822001BEEEE /* COCascadeOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COCascadeOperation.h; sourceTree = "<group>"; };
+		860EDB8F18008822001BEEEE /* COCascadeOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COCascadeOperation.m; sourceTree = "<group>"; };
+		860EDB9018008822001BEEEE /* COCompositeOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COCompositeOperation.h; sourceTree = "<group>"; };
+		860EDB9118008822001BEEEE /* COCompositeOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COCompositeOperation.m; sourceTree = "<group>"; };
+		860EDB9218008822001BEEEE /* CompositeOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompositeOperations.h; sourceTree = "<group>"; };
+		860EDB9318008822001BEEEE /* CompositeOperations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompositeOperations.m; sourceTree = "<group>"; };
+		860EDB9418008822001BEEEE /* COOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COOperation.h; sourceTree = "<group>"; };
+		860EDB9518008822001BEEEE /* COOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COOperation.m; sourceTree = "<group>"; };
+		860EDB9618008822001BEEEE /* COOperationQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COOperationQueue.h; sourceTree = "<group>"; };
+		860EDB9718008822001BEEEE /* COOperationQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COOperationQueue.m; sourceTree = "<group>"; };
+		860EDB9818008822001BEEEE /* COOperationResolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COOperationResolver.h; sourceTree = "<group>"; };
+		860EDB9918008822001BEEEE /* COOperationResolver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COOperationResolver.m; sourceTree = "<group>"; };
+		860EDB9A18008822001BEEEE /* COQueues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COQueues.h; sourceTree = "<group>"; };
+		860EDB9B18008822001BEEEE /* COQueues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COQueues.m; sourceTree = "<group>"; };
+		860EDB9C18008822001BEEEE /* COSyncOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COSyncOperation.h; sourceTree = "<group>"; };
+		860EDB9D18008822001BEEEE /* COSyncOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COSyncOperation.m; sourceTree = "<group>"; };
+		860EDB9E18008822001BEEEE /* COTransactionalOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COTransactionalOperation.h; sourceTree = "<group>"; };
+		860EDB9F18008822001BEEEE /* COTransactionalOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COTransactionalOperation.m; sourceTree = "<group>"; };
+		860EDBA018008822001BEEEE /* COTypedefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COTypedefs.h; sourceTree = "<group>"; };
 		F4ADEE41A0E7474AB857DDBB /* libPods-TestsApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TestsApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FEB14E77372742B39B17759B /* Pods-TestsApp.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestsApp.xcconfig"; path = "Pods/Pods-TestsApp.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -90,6 +118,7 @@
 		860EDB44180084C6001BEEEE = {
 			isa = PBXGroup;
 			children = (
+				860EDB8D18008822001BEEEE /* CompositeOperations */,
 				860EDB5E18008535001BEEEE /* Tests */,
 				860EDB52180084C7001BEEEE /* TestsApp */,
 				860EDB4F180084C6001BEEEE /* Frameworks */,
@@ -174,6 +203,33 @@
 				860EDB7718008535001BEEEE /* TODO.m */,
 			);
 			path = Tests;
+			sourceTree = "<group>";
+		};
+		860EDB8D18008822001BEEEE /* CompositeOperations */ = {
+			isa = PBXGroup;
+			children = (
+				860EDB8E18008822001BEEEE /* COCascadeOperation.h */,
+				860EDB8F18008822001BEEEE /* COCascadeOperation.m */,
+				860EDB9018008822001BEEEE /* COCompositeOperation.h */,
+				860EDB9118008822001BEEEE /* COCompositeOperation.m */,
+				860EDB9218008822001BEEEE /* CompositeOperations.h */,
+				860EDB9318008822001BEEEE /* CompositeOperations.m */,
+				860EDB9418008822001BEEEE /* COOperation.h */,
+				860EDB9518008822001BEEEE /* COOperation.m */,
+				860EDB9618008822001BEEEE /* COOperationQueue.h */,
+				860EDB9718008822001BEEEE /* COOperationQueue.m */,
+				860EDB9818008822001BEEEE /* COOperationResolver.h */,
+				860EDB9918008822001BEEEE /* COOperationResolver.m */,
+				860EDB9A18008822001BEEEE /* COQueues.h */,
+				860EDB9B18008822001BEEEE /* COQueues.m */,
+				860EDB9C18008822001BEEEE /* COSyncOperation.h */,
+				860EDB9D18008822001BEEEE /* COSyncOperation.m */,
+				860EDB9E18008822001BEEEE /* COTransactionalOperation.h */,
+				860EDB9F18008822001BEEEE /* COTransactionalOperation.m */,
+				860EDBA018008822001BEEEE /* COTypedefs.h */,
+			);
+			name = CompositeOperations;
+			path = ../CompositeOperations;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -264,16 +320,25 @@
 			files = (
 				860EDB8018008535001BEEEE /* SACascadeOperationTests.m in Sources */,
 				860EDB8418008535001BEEEE /* SAOperationResolverTests.m in Sources */,
+				860EDBA818008822001BEEEE /* COSyncOperation.m in Sources */,
 				860EDB8918008535001BEEEE /* SATransactionalOperationTests.m in Sources */,
 				860EDB7E18008535001BEEEE /* NSOperationCompatibilityTests.m in Sources */,
 				860EDB8818008535001BEEEE /* SASyncOperationTests.m in Sources */,
 				860EDB7D18008535001BEEEE /* HighLoadTests.m in Sources */,
 				860EDB8718008535001BEEEE /* SASyncOperation_NonBlocking_Tests.m in Sources */,
+				860EDBA218008822001BEEEE /* COCompositeOperation.m in Sources */,
+				860EDBA318008822001BEEEE /* CompositeOperations.m in Sources */,
 				860EDB8518008535001BEEEE /* SAOperationTests.m in Sources */,
 				860EDB7F18008535001BEEEE /* NSOperationQueueCompatibilityTests.m in Sources */,
 				860EDB7B18008535001BEEEE /* CompatibilityAliasesTests.m in Sources */,
+				860EDBA118008822001BEEEE /* COCascadeOperation.m in Sources */,
+				860EDBA718008822001BEEEE /* COQueues.m in Sources */,
+				860EDBA618008822001BEEEE /* COOperationResolver.m in Sources */,
 				860EDB8618008535001BEEEE /* SAQueuesTests.m in Sources */,
+				860EDBA518008822001BEEEE /* COOperationQueue.m in Sources */,
+				860EDBA918008822001BEEEE /* COTransactionalOperation.m in Sources */,
 				860EDB7C18008535001BEEEE /* CurrentTests.m in Sources */,
+				860EDBA418008822001BEEEE /* COOperation.m in Sources */,
 				860EDB54180084C7001BEEEE /* main.m in Sources */,
 				860EDB8A18008535001BEEEE /* TODO.m in Sources */,
 				860EDB8118008535001BEEEE /* SACompositeOperationsTests.m in Sources */,

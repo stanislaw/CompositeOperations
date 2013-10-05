@@ -1,12 +1,12 @@
 #import "TestHelpers.h"
 
-#import "SAOperationResolver.h"
-#import "SAQueues.h"
+#import "COOperationResolver.h"
+#import "COQueues.h"
 
-@interface SAOperationResolverTests : SenTestCase
+@interface COOperationResolverTests : SenTestCase
 @end
 
-@implementation SAOperationResolverTests
+@implementation COOperationResolverTests
 
 // awakeOperation:times:eachAfterTimeInterval:fallbackHandlerIfStillNotFinished:
 - (void)test_awakeOperation_times_eachAfterTimeInterval_fallbackHandlerIfStillNotFinished {
@@ -14,13 +14,13 @@
     
     NSMutableString *regString = [NSMutableString string];
 
-    SAOperationResolver *opResolver = [[SAOperationResolver alloc] init];
+    COOperationResolver *opResolver = [[COOperationResolver alloc] init];
 
-    SAOperation *operation = [SAOperation new];
-    operation.operation = ^(SAOperation *operation) {
+    COOperation *operation = [COOperation new];
+    operation.operation = ^(COOperation *operation) {
         [regString appendString:@"1"];
 
-        [opResolver awakeOperation:operation times:5 eachAfterTimeInterval:0 withAwakeBlock:^(SAOperation *operation) {
+        [opResolver awakeOperation:operation times:5 eachAfterTimeInterval:0 withAwakeBlock:^(COOperation *operation) {
             [operation awake];
         } fallbackHandler:^{
             STAssertTrue([regString isEqualToString:@"11111"], nil);

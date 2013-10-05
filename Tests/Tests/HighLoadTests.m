@@ -9,11 +9,11 @@
 #import <SenTestingKit/SenTestingKit.h>
 #import "TestHelpers.h"
 
-#import "SACompositeOperations.h"
-#import "SACascadeOperation.h"
+#import "CompositeOperations.h"
+#import "COCascadeOperation.h"
 
-#import "SATransactionalOperation.h"
-#import "SAQueues.h"
+#import "COTransactionalOperation.h"
+#import "COQueues.h"
 
 @interface HighLoadTests : SenTestCase
 @end
@@ -28,7 +28,7 @@ static int const N = 10;
     __block BOOL isFinished = NO;
 
     for (int j = 1; j <= N; j++) {
-        operation(concurrentQueue(), ^(SAOperation *o) {
+        operation(concurrentQueue(), ^(COOperation *o) {
 
             @synchronized(countArr) {
                 [countArr addObject:@1];
@@ -48,11 +48,11 @@ static int const N = 10;
 
     __block BOOL isFinished = NO;
 
-    SATransactionalOperation *to = [SATransactionalOperation new];
+    COTransactionalOperation *to = [COTransactionalOperation new];
 
-    [to run:^(SATransactionalOperation *to) {
+    [to run:^(COTransactionalOperation *to) {
         for (int j = 1; j <= N; j++) {
-            [to operation:^(SAOperation *o) {
+            [to operation:^(COOperation *o) {
                 @synchronized(countArr) {
                     [countArr addObject:@1];
                 }

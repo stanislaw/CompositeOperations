@@ -1,28 +1,28 @@
 #import <Foundation/Foundation.h>
 
-#import "SATypedefs.h"
+#import "COTypedefs.h"
 
-#import "SACompositeOperation.h"
+#import "COCompositeOperation.h"
 
-#import "SACascadeOperation.h"
+#import "COCascadeOperation.h"
 
-@class SATransactionalOperation;
-@class SAOperation;
+@class COTransactionalOperation;
+@class COOperation;
 
-@interface SATransactionalOperation : SAAbstractCompositeOperation
+@interface COTransactionalOperation : COAbstractCompositeOperation
 
-@property (copy) SATransactionalOperationBlock operation;
+@property (copy) COTransactionalOperationBlock operation;
 
 // Public API: Transactional operation
-- (void)run:(SATransactionalOperationBlock)operationBlock __attribute__((unavailable("must run transactional operation with 'run:completionHandler:cancellationHandler:' instead.")));
-- (void)runInQueue:(dispatch_queue_t)queue operation:(SAOperationBlock)operationBlock __attribute__((unavailable("must run transactional operation with 'run:completionHandler:cancellationHandler:' instead.")));
+- (void)run:(COTransactionalOperationBlock)operationBlock __attribute__((unavailable("must run transactional operation with 'run:completionHandler:cancellationHandler:' instead.")));
+- (void)runInQueue:(dispatch_queue_t)queue operation:(COOperationBlock)operationBlock __attribute__((unavailable("must run transactional operation with 'run:completionHandler:cancellationHandler:' instead.")));
 
-- (void)run:(SATransactionalOperationBlock)operationBlock completionHandler:(SACompletionBlock)completionHandler cancellationHandler:(SACancellationBlockForTransactionalOperation)cancellationHandler;
+- (void)run:(COTransactionalOperationBlock)operationBlock completionHandler:(COCompletionBlock)completionHandler cancellationHandler:(COCancellationBlockForTransactionalOperation)cancellationHandler;
 
 @end
 
 
-@interface SATransactionalOperation ()
+@interface COTransactionalOperation ()
 
 @property NSUInteger operationsCount;
 

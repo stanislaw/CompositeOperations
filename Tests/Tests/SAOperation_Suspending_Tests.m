@@ -1,6 +1,6 @@
 #import "TestHelpers.h"
 
-#import "SAOperation.h"
+#import "COOperation.h"
 
 @interface SAOperation_Suspending_Tests : SenTestCase
 @end
@@ -10,9 +10,9 @@
 - (void)test_suspend_whenNotRunning {
     __block BOOL isDone = NO;
     
-    SAOperation *operation = [SAOperation new];
+    COOperation *operation = [COOperation new];
 
-    operation.operation = ^(SAOperation *operation) {};
+    operation.operation = ^(COOperation *operation) {};
     STAssertTrue(operation.isReady, nil);
 
     asynchronousJob(^{

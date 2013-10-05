@@ -1,6 +1,6 @@
-#import "SAQueues.h"
+#import "COQueues.h"
 
-#import "SAOperationQueue.h"
+#import "COOperationQueue.h"
 
 static dispatch_queue_t defaultQueue;
 
@@ -11,7 +11,7 @@ dispatch_queue_t SADefaultQueue() {
         @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:[NSString stringWithFormat:@"SAQueues: defaultQueue should be defined, %s, %d, %s", __FILE__, __LINE__, __PRETTY_FUNCTION__] userInfo:nil];
 }
 
-void SASetDefaultQueue(dispatch_queue_t queue) {
+void COSetDefaultQueue(dispatch_queue_t queue) {
 #if !OS_OBJECT_USE_OBJC
     if (defaultQueue) dispatch_release(defaultQueue);
 
@@ -23,11 +23,11 @@ void SASetDefaultQueue(dispatch_queue_t queue) {
     defaultQueue = queue;
 }
 
-void SARunInDefaultQueue(SABlock block) {
+void SARunInDefaultQueue(COBlock block) {
     dispatch_async(SADefaultQueue(), block);
 }
 
-void SARunOperation(SAOperation *operation) {
+void CORunOperation(COOperation *operation) {
     if (operation.operationQueue == nil) {
         
         [operation start];
@@ -37,11 +37,11 @@ void SARunOperation(SAOperation *operation) {
         NSOperationQueue *opQueue = (NSOperationQueue *)operation.operationQueue;
         [opQueue addOperation:operation];
         
-    } else if ([operation.operationQueue isKindOfClass:SAOperationQueue.class]) {
+    } else if ([operation.operationQueue isKindOfClass:COOperationQueue.class]) {
         
         [operation.operationQueue addOperation:operation];
         
     } else {
-        @throw [NSException exceptionWithName:NSGenericException reason:[NSString stringWithFormat:@"%@, %s: operation queue should be of NSOperationQueue class or SAOperationQueue", NSStringFromClass(operation.class), __PRETTY_FUNCTION__] userInfo:nil];
+        @throw [NSException exceptionWithName:NSGenericException reason:[NSString stringWithFormat:@"%@, %s: operation queue should be of NSOperationQueue class or COOperationQueue", NSStringFromClass(operation.class), __PRETTY_FUNCTION__] userInfo:nil];
     }
 }

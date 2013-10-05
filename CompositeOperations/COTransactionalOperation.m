@@ -1,15 +1,15 @@
 //
-//  SATransactionalOperation.m
+//  COTransactionalOperation.m
 //  SACompositeOperations
 //
 //  Created by Stanislaw Pankevich on 10/20/12.
 //  Copyright (c) 2012 Stanislaw Pankevich. All rights reserved.
 //
 
-#import "SATransactionalOperation.h"
-#import "SAQueues.h"
+#import "COTransactionalOperation.h"
+#import "COQueues.h"
 
-@implementation SATransactionalOperation
+@implementation COTransactionalOperation
 
 - (void)initPropertiesForRun {
     [super initPropertiesForRun];
@@ -20,12 +20,12 @@
 #pragma mark
 #pragma mark Public API: Transactional operation
 
-- (void)run:(SATransactionalOperationBlock)operationBlock completionHandler:(SACompletionBlock)completionHandler cancellationHandler:(SACancellationBlockForTransactionalOperation)cancellationHandler {
+- (void)run:(COTransactionalOperationBlock)operationBlock completionHandler:(COCompletionBlock)completionHandler cancellationHandler:(COCancellationBlockForTransactionalOperation)cancellationHandler {
     self.operation = operationBlock;
 
-    __weak SATransactionalOperation *weakSelf = self;
+    __weak COTransactionalOperation *weakSelf = self;
     self.completionBlock = ^{
-        __strong SATransactionalOperation *strongSelf = weakSelf;
+        __strong COTransactionalOperation *strongSelf = weakSelf;
 
         if (strongSelf.isFinished) {
             if (completionHandler) completionHandler();
@@ -42,13 +42,13 @@
         }
     };
 
-    SARunOperation(self);
+    CORunOperation(self);
 }
 
 #pragma mark
 #pragma mark <SACompositeOperation>
 
-- (void)enqueueSuboperation:(SAOperation *)subOperation {
+- (void)enqueueSuboperation:(COOperation *)subOperation {
     if (self.isFinished) [NSException raise: NSInvalidArgumentException format: @"[%@-%@] suboperation cannot be added to the finished transactional operation", NSStringFromClass(self.class), NSStringFromSelector(_cmd)];
     
     [self _registerSuboperation:subOperation];
@@ -56,7 +56,7 @@
     self.operationsCount++;
 
     if (self.isSuspended == NO) {
-        NSUInteger areThereCancelledOperations = [[self.operations copy] indexOfObjectPassingTest:^BOOL(SAOperation *operation, NSUInteger idx, BOOL *stop) {
+        NSUInteger areThereCancelledOperations = [[self.operations copy] indexOfObjectPassingTest:^BOOL(COOperation *operation, NSUInteger idx, BOOL *stop) {
             if (operation.isCancelled) {
                 *stop = YES;
                 return YES;
@@ -80,7 +80,7 @@
 }
 
 - (void)performAwakeRoutine {
-    [[self.operations copy] enumerateObjectsUsingBlock:^(SAOperation *operation, NSUInteger idx, BOOL *stop) {
+    [[self.operations copy] enumerateObjectsUsingBlock:^(COOperation *operation, NSUInteger idx, BOOL *stop) {
         if (operation.isFinished == NO) {
             [operation initPropertiesForRun];
         }
@@ -90,14 +90,14 @@
 }
 
 - (void)performResumeRoutine {
-    [[self.operations copy] enumerateObjectsUsingBlock:^(SAOperation *operation, NSUInteger idx, BOOL *stop) {
+    [[self.operations copy] enumerateObjectsUsingBlock:^(COOperation *operation, NSUInteger idx, BOOL *stop) {
         if (operation.isReady) {
             [self _runSuboperation:operation];
         }
     }];
 }
 
-- (void)subOperationWasFinished:(SAOperation *)subOperation {
+- (void)subOperationWasFinished:(COOperation *)subOperation {
     @synchronized(self) {
         self.operationsCount--;
     

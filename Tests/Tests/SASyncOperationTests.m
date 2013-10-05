@@ -7,7 +7,7 @@
 //
 
 #import <SenTestingKit/SenTestingKit.h>
-#import "SASyncOperation.h"
+#import "COSyncOperation.h"
 #import "TestHelpers.h"
 
 
@@ -22,9 +22,9 @@
 - (void)test_syncOperation {
     __block BOOL soOver = NO;
 
-    SASyncOperation *syncOperation = [SASyncOperation new];
+    COSyncOperation *syncOperation = [COSyncOperation new];
 
-    [syncOperation run:^(SASyncOperation *so) {
+    [syncOperation run:^(COSyncOperation *so) {
 
         dispatch_async(dispatch_get_main_queue(), ^{
             dispatch_async(createQueue(), ^{
@@ -42,9 +42,9 @@
     dispatch_queue_t queue = dispatch_queue_create("some queue", NULL);
     __block BOOL soOver = NO;
 
-    SASyncOperation *syncOperation = [SASyncOperation new];
+    COSyncOperation *syncOperation = [COSyncOperation new];
 
-    [syncOperation runInQueue:queue operation:^(SASyncOperation *so) {
+    [syncOperation runInQueue:queue operation:^(COSyncOperation *so) {
         soOver = YES;
         [so finish];
     }];
@@ -58,11 +58,11 @@
     for (int i = 0; i < 10; i++) {
         __block BOOL soOver = NO;
 
-        SASyncOperation *syncOperation = [SASyncOperation new];
+        COSyncOperation *syncOperation = [COSyncOperation new];
 
         STAssertFalse(syncOperation.isFinished, nil);
 
-        [syncOperation runInQueue:queue operation:^(SASyncOperation *so) {
+        [syncOperation runInQueue:queue operation:^(COSyncOperation *so) {
             STAssertFalse(syncOperation.isFinished, nil);
 
             soOver = YES;
@@ -77,9 +77,9 @@
 - (void)testReRunningSyncOperation {
     __block int count = 0;
 
-    SASyncOperation *syncOperation = [SASyncOperation new];
+    COSyncOperation *syncOperation = [COSyncOperation new];
 
-    [syncOperation run:^(SASyncOperation *so) {
+    [syncOperation run:^(COSyncOperation *so) {
         count = count + 1;
 
         if (count == 1) {

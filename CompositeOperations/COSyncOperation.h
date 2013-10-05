@@ -1,18 +1,18 @@
 #import <Foundation/Foundation.h>
 
-#import "SATypedefs.h"
-#import "SAOperation.h"
+#import "COTypedefs.h"
+#import "COOperation.h"
 
-@interface SASyncOperation : SAOperation
+@interface COSyncOperation : COOperation
 
-@property (copy) SASyncOperationBlock operation;
+@property (copy) COSyncOperationBlock operation;
 
-- (void)run:(SASyncOperationBlock)operationBlock;
-- (void)runInQueue:(dispatch_queue_t)queue operation:(SASyncOperationBlock)operationBlock;
+- (void)run:(COSyncOperationBlock)operationBlock;
+- (void)runInQueue:(dispatch_queue_t)queue operation:(COSyncOperationBlock)operationBlock;
 
 @end
 
-@interface SASyncOperation ()
+@interface COSyncOperation ()
 
 @property BOOL isOnMainThread;
 @property dispatch_semaphore_t semaphore;

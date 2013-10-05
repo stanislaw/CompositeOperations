@@ -7,16 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <SenTestingKit/SenTestingKit.h>
 
-int main(int argc, const char * argv[])
-{
-
+int main(int argc, const char * argv[]) {
     @autoreleasepool {
-        
+
         // insert code here...
-        NSLog(@"Hello, World!");
-        
+        SenSelfTestMain();
     }
+
     return 0;
 }
 

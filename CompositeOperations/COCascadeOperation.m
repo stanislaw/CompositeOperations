@@ -1,17 +1,17 @@
-#import "SACascadeOperation.h"
-#import "SAQueues.h"
+#import "COCascadeOperation.h"
+#import "COQueues.h"
 
-@implementation SACascadeOperation
+@implementation COCascadeOperation
 
 #pragma mark
 #pragma mark Public API: Cascade operation
 
-- (void)run:(SACascadeOperationBlock)operationBlock completionHandler:(SACompletionBlock)completionHandler cancellationHandler:(SACancellationBlockForCascadeOperation)cancellationHandler {
+- (void)run:(COCascadeOperationBlock)operationBlock completionHandler:(COCompletionBlock)completionHandler cancellationHandler:(COCancellationBlockForCascadeOperation)cancellationHandler {
     self.operation = operationBlock;
 
-    __weak SACascadeOperation *weakSelf = self;
+    __weak COCascadeOperation *weakSelf = self;
     self.completionBlock = ^{
-        __strong SACascadeOperation *strongSelf = weakSelf;
+        __strong COCascadeOperation *strongSelf = weakSelf;
 
         if (strongSelf.isFinished) {
             if (completionHandler) completionHandler();
@@ -28,13 +28,13 @@
         }
     };
 
-    SARunOperation(self);
+    CORunOperation(self);
 }
 
 #pragma mark
 #pragma mark <SACompositeOperation>
 
-- (void)enqueueSuboperation:(SAOperation *)subOperation {
+- (void)enqueueSuboperation:(COOperation *)subOperation {
     [self _registerSuboperation:subOperation];
 }
 
@@ -42,7 +42,7 @@
     // TODO more conditions?
     if (self.isSuspended) return;
 
-    NSUInteger indexOfSuboperationToRun = [self.operations indexOfObjectPassingTest:^BOOL(SAOperation *operation, NSUInteger idx, BOOL *stop) {
+    NSUInteger indexOfSuboperationToRun = [self.operations indexOfObjectPassingTest:^BOOL(COOperation *operation, NSUInteger idx, BOOL *stop) {
         if (operation.isReady == YES) {
             *stop = YES;
             return YES;
@@ -59,7 +59,7 @@
 }
 
 - (void)performAwakeRoutine {            
-    [[self.operations copy] enumerateObjectsUsingBlock:^(SAOperation *operation, NSUInteger idx, BOOL *stop) {
+    [[self.operations copy] enumerateObjectsUsingBlock:^(COOperation *operation, NSUInteger idx, BOOL *stop) {
         if (operation.isFinished == NO) {
             [operation initPropertiesForRun];
         }
@@ -69,7 +69,7 @@
 }
 
 - (void)performResumeRoutine {
-    NSUInteger indexOfSuboperationToRun = [[self.operations copy] indexOfObjectPassingTest:^BOOL(SAOperation *operation, NSUInteger idx, BOOL *stop) {
+    NSUInteger indexOfSuboperationToRun = [[self.operations copy] indexOfObjectPassingTest:^BOOL(COOperation *operation, NSUInteger idx, BOOL *stop) {
         if (operation.isReady == YES) {
             *stop = YES;
             return YES;
@@ -83,7 +83,7 @@
     }
 }
 
-- (void)subOperationWasFinished:(SAOperation *)subOperation {
+- (void)subOperationWasFinished:(COOperation *)subOperation {
     [self performCheckpointRoutine];
 }
 

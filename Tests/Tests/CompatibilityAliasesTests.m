@@ -9,7 +9,7 @@
 #import <SenTestingKit/SenTestingKit.h>
 #import "TestHelpers.h"
 
-#import "SACompositeOperations.h"
+#import "CompositeOperations.h"
 
 @interface CompatibilityAliases : SenTestCase
 @end
@@ -17,8 +17,8 @@
 @implementation CompatibilityAliases
 
 - (void)test_CompatibilityAliases {
-    STAssertEquals(SACascadeOperation.class, SACascade.class, nil);
-    STAssertEquals(SATransactionalOperation.class, SATransaction.class, nil);
+    STAssertEquals(COCascadeOperation.class, COCascade.class, nil);
+    STAssertEquals(COTransactionalOperation.class, COTransaction.class, nil);
 }
 
 @end

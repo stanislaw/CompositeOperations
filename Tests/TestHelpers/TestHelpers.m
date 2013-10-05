@@ -8,7 +8,7 @@
 
 #import "TestHelpers.h"
 
-#import "SAQueues.h"
+#import "COQueues.h"
 
 dispatch_queue_t currentQueue() {
 
@@ -56,7 +56,7 @@ void asynchronousJob(asyncronousBlock block) {
 - (void) setUp {
     [super setUp];
     
-    SASetDefaultQueue(concurrentQueue());
+    COSetDefaultQueue(concurrentQueue());
 }
 
 @end

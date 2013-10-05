@@ -1,24 +1,24 @@
 #import <Foundation/Foundation.h>
-#import "SATypedefs.h"
+#import "COTypedefs.h"
 
-@class SAOperation;
+@class COOperation;
 
-@protocol SAOperationResolver <NSObject>
+@protocol COOperationResolver <NSObject>
 
-- (void)resolveOperation:(SAOperation *)operation;
-- (void)resolveOperation:(SAOperation *)operation usingResolutionStrategy:(id)resolutionStrategy fallbackHandler:(SACompletionBlock)fallbackHandler;
+- (void)resolveOperation:(COOperation *)operation;
+- (void)resolveOperation:(COOperation *)operation usingResolutionStrategy:(id)resolutionStrategy fallbackHandler:(COCompletionBlock)fallbackHandler;
 
 @end
 
-@interface SAOperationResolver : NSObject <SAOperationResolver>
+@interface COOperationResolver : NSObject <COOperationResolver>
 
 @property NSUInteger defaultNumberOfTimesToRerunOperation;
 @property NSUInteger defaultPauseInSecondsBeforeNextRunOfOperation;
 
 @end
 
-@interface SAOperationResolver ()
+@interface COOperationResolver ()
 
-- (void)awakeOperation:(SAOperation *)operation times:(NSUInteger)times eachAfterTimeInterval:(NSTimeInterval)timeInterval withAwakeBlock:(SAOperationBlock)awakeBlock fallbackHandler:(SACompletionBlock)fallbackHandler;
+- (void)awakeOperation:(COOperation *)operation times:(NSUInteger)times eachAfterTimeInterval:(NSTimeInterval)timeInterval withAwakeBlock:(COOperationBlock)awakeBlock fallbackHandler:(COCompletionBlock)fallbackHandler;
 
 @end

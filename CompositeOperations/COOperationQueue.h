@@ -1,23 +1,23 @@
 #import <Foundation/Foundation.h>
-#import "SAOperation.h"
+#import "COOperation.h"
 
 typedef enum {
-    SAOperationQueueSuspendedState   = -1,
-    SAOperationQueueNormalState       = 1
-} SAOperationQueueState;
+    COOperationQueueSuspendedState   = -1,
+    COOperationQueueNormalState       = 1
+} COOperationQueueState;
 
 typedef enum {
-    SAOperationQueueFIFO = 0,
-    SAOperationQueueLIFO,
-    SAOperationQueueAggressiveLIFO
-} SAOperationQueueType;
+    COOperationQueueFIFO = 0,
+    COOperationQueueLIFO,
+    COOperationQueueAggressiveLIFO
+} COOperationQueueType;
 
-@interface SAOperationQueue : NSObject {
+@interface COOperationQueue : NSObject {
     dispatch_queue_t _queue;
 }
 
 @property dispatch_queue_t queue;
-@property SAOperationQueueType queueType;
+@property COOperationQueueType queueType;
 
 @property (readonly) BOOL isSuspended;
 
@@ -27,7 +27,7 @@ typedef enum {
 @property (strong) NSMutableArray *pendingOperations;
 @property (strong) NSMutableArray *runningOperations;
 
-- (void)addOperationWithBlock:(SABlock)operationBlock;
+- (void)addOperationWithBlock:(COBlock)operationBlock;
 
 - (void)addOperation:(NSOperation *)operation;
 
@@ -45,9 +45,9 @@ typedef enum {
 @end
 
 
-@interface SAOperationQueue ()
+@interface COOperationQueue ()
 
-@property SAOperationQueueState state;
+@property COOperationQueueState state;
 @property (nonatomic, readonly) NSString *stateKey;
 
 - (void)_runNextOperationIfExists;

@@ -1,5 +1,5 @@
 //
-//  SAQueues.h
+//  COQueues.h
 //  SACompositeOperationsApp
 //
 //  Created by Stanislaw Pankevich on 11/26/12.
@@ -8,12 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-#import "SATypedefs.h"
+#import "COTypedefs.h"
 
-#import "SAOperation.h"
+#import "COOperation.h"
 
 dispatch_queue_t SADefaultQueue();
-void SASetDefaultQueue(dispatch_queue_t queue);
-void SARunInDefaultQueue(SABlock block);
+void COSetDefaultQueue(dispatch_queue_t queue);
+void CORunInDefaultQueue(COBlock block);
 
-void SARunOperation(SAOperation *operation);
+void CORunOperation(COOperation *operation);
