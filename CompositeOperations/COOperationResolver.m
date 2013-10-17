@@ -38,14 +38,17 @@
 
             // Decorate NSOperation's completionBlock, so it could run fallbackHandler():
             // It runs fallbackHandler() only if operation is still unfinished.
+
+            COBlock operationOriginalCompletionBlock = [operation.completionBlock copy];
+
             operation.completionBlock = ^{
                 __strong COOperation *strongOperation = weakOperation;
 
                 if (strongOperation.isFinished == NO && strongOperation.isCancelled == NO) {
                     if (fallbackHandler) fallbackHandler();
                 } else {
-                    if (strongOperation.completionBlock) {
-                        strongOperation.completionBlock();
+                    if (operationOriginalCompletionBlock) {
+                        operationOriginalCompletionBlock();
                     }
                 }
             };
