@@ -1,5 +1,13 @@
 # Changes in CompositeOperations
 
+## Version 0.4.10
+
+Release date: 2013-10-17
+
+### Fixed
+
+* Fixed issue with Resolution API: calls to COOperation's original completion handlers are now made properly.
+
 ## Version 0.4.8
 
 Release date: 2013-10-05
