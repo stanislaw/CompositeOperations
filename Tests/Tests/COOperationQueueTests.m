@@ -1,10 +1,3 @@
-//
-//  CascadeOperationsTests.m
-//  CompositeOperationsTests
-//
-//  Created by Stanislaw Pankevich on 10/20/12.
-//  Copyright (c) 2012 Stanislaw Pankevich. All rights reserved.
-//
 
 #import <SenTestingKit/SenTestingKit.h>
 

@@ -1,5 +1,11 @@
+// CompositeOperations
+//
+// CompositeOperations/COCompositeOperations.m
+//
+// Copyright (c) 2013 Stanislaw Pankevich
+// Released under the MIT license
+
 #import "CompositeOperations.h"
-#import "COOperationQueue.h"
 
 void  __attribute__((overloadable)) operation(COOperationBlock block) {
     COOperation *ao = [COOperation new];

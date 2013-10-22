@@ -1,10 +1,9 @@
+// CompositeOperations
 //
-//  SAResursiveCascadeOperation.h
-//  SACompositeOperationsApp
+// CompositeOperations/COCascadeOperation.h
 //
-//  Created by Stanislaw Pankevich on 11/20/12.
-//  Copyright (c) 2012 Stanislaw Pankevich. All rights reserved.
-//
+// Copyright (c) 2013 Stanislaw Pankevich
+// Released under the MIT license
 
 #import <Foundation/Foundation.h>
 

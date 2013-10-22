@@ -1,3 +1,10 @@
+// CompositeOperations
+//
+// CompositeOperations/COOperationResolver.m
+//
+// Copyright (c) 2013 Stanislaw Pankevich
+// Released under the MIT license
+
 #import "COOperationResolver.h"
 #import "COOperation.h"
 

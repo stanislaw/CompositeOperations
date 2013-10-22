@@ -1,10 +1,9 @@
+// CompositeOperations
 //
-//  COTransactionalOperation.m
-//  SACompositeOperations
+// CompositeOperations/COTransactionalOperation.m
 //
-//  Created by Stanislaw Pankevich on 10/20/12.
-//  Copyright (c) 2012 Stanislaw Pankevich. All rights reserved.
-//
+// Copyright (c) 2013 Stanislaw Pankevich
+// Released under the MIT license
 
 #import "COTransactionalOperation.h"
 #import "COQueues.h"

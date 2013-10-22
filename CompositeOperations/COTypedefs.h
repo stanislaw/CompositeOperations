@@ -1,3 +1,10 @@
+// CompositeOperations
+//
+// CompositeOperations/COTypedefs.h
+//
+// Copyright (c) 2013 Stanislaw Pankevich
+// Released under the MIT license
+
 @class COOperation;
 @class COSyncOperation;
 @class COTransactionalOperation;

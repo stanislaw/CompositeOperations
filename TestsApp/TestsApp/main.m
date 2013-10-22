@@ -1,10 +1,9 @@
+// CompositeOperations tests app
 //
-//  main.m
-//  TestsApp
+// TestsApp/main.m
 //
-//  Created by Stanislaw Pankevich on 10/5/13.
-//  Copyright (c) 2013 Stanislaw Pankevich. All rights reserved.
-//
+// Copyright (c) 2013 Stanislaw Pankevich
+// Released under the MIT license
 
 #import <Foundation/Foundation.h>
 #import <SenTestingKit/SenTestingKit.h>

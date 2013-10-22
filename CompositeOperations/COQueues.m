@@ -1,3 +1,10 @@
+// CompositeOperations
+//
+// CompositeOperations/COQueues.m
+//
+// Copyright (c) 2013 Stanislaw Pankevich
+// Released under the MIT license
+
 #import "COQueues.h"
 
 #import "COOperationQueue.h"

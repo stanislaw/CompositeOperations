@@ -1,3 +1,10 @@
+// CompositeOperations
+//
+// CompositeOperations/COOperationQueue.m
+//
+// Copyright (c) 2013 Stanislaw Pankevich
+// Released under the MIT license
+
 #import "COOperationQueue.h"
 
 static inline NSString * COKeyPathFromOperationQueueState(COOperationQueueState state) {

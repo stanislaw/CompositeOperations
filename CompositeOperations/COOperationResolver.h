@@ -1,3 +1,10 @@
+// CompositeOperations
+//
+// CompositeOperations/COOperationResolver.h
+//
+// Copyright (c) 2013 Stanislaw Pankevich
+// Released under the MIT license
+
 #import <Foundation/Foundation.h>
 #import "COTypedefs.h"
 

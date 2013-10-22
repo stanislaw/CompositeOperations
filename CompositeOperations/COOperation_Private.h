@@ -1,10 +1,9 @@
+// CompositeOperations
 //
-//  COOperation_Private.h
-//  TestsApp
+// CompositeOperations/COOperation_Private.h
 //
-//  Created by Stanislaw Pankevich on 10/23/13.
-//  Copyright (c) 2013 Stanislaw Pankevich. All rights reserved.
-//
+// Copyright (c) 2013 Stanislaw Pankevich
+// Released under the MIT license
 
 #import "COOperation.h"
 
