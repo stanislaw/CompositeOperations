@@ -3,41 +3,42 @@
 #import "COOperationResolver.h"
 #import "COQueues.h"
 
-@interface COOperationResolverTests : SenTestCase
-@end
+SPEC_BEGIN(COOperationResolver_Specs)
 
-@implementation COOperationResolverTests
+describe(@"COOperationResolver", ^{
+    describe(@"-awakeOperation:times:eachAfterTimeInterval:fallbackHandlerIfStillNotFinished:", ^{
+        it(@"should...", ^{
+            COSetDefaultQueue(concurrentQueue());
 
-// awakeOperation:times:eachAfterTimeInterval:fallbackHandlerIfStillNotFinished:
-- (void)test_awakeOperation_times_eachAfterTimeInterval_fallbackHandlerIfStillNotFinished {
-    __block BOOL blockFlag = NO;
-    
-    NSMutableString *regString = [NSMutableString string];
+            __block BOOL blockFlag = NO;
 
-    COOperationResolver *opResolver = [[COOperationResolver alloc] init];
+            NSMutableString *regString = [NSMutableString string];
 
-    COOperation *operation = [COOperation new];
-    operation.operation = ^(COOperation *operation) {
-        [regString appendString:@"1"];
+            COOperationResolver *opResolver = [[COOperationResolver alloc] init];
 
-        [opResolver awakeOperation:operation times:5 eachAfterTimeInterval:0 withAwakeBlock:^(COOperation *operation) {
-            [operation awake];
-        } fallbackHandler:^{
-            STAssertTrue([regString isEqualToString:@"11111"], nil);
+            COOperation *operation = [COOperation new];
+            operation.operation = ^(COOperation *operation) {
+                [regString appendString:@"1"];
 
-            STAssertTrue(operation.isExecuting, nil);
+                [opResolver awakeOperation:operation times:5 eachAfterTimeInterval:0 withAwakeBlock:^(COOperation *operation) {
+                    [operation awake];
+                } fallbackHandler:^{
+                    [[theValue([regString isEqualToString:@"11111"]) should] beYes];
 
-            blockFlag = YES;
-        }];
-    };
+                    [[theValue(operation.isExecuting) should] beYes];
 
-    [operation start];
+                    blockFlag = YES;
+                }];
+            };
+            
+            [operation start];
+            
+            while(blockFlag == NO) {}
+            
+            [[theValue(operation.isExecuting) should] beYes];
+            [[theValue(operation.numberOfRuns) should] equal:@(5)];
+        });
+    });
+});
 
-    while(blockFlag == NO) {}
-
-    STAssertTrue(operation.isExecuting, nil);
-    STAssertEquals(operation.numberOfRuns, (NSUInteger)5, nil);
-}
-
-
-@end
+SPEC_END
