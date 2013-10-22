@@ -20,15 +20,15 @@
 @implementation SAQueuesTests
 
 - (void) test_defaultQueue_and_setDefaultQueue {
-    STAssertTrue((SADefaultQueue() == concurrentQueue()), @"Expected default queue to be nil");
+    STAssertTrue((CODefaultQueue() == concurrentQueue()), @"Expected default queue to be nil");
 
     COSetDefaultQueue(dispatch_get_main_queue());
 
-    STAssertEquals(SADefaultQueue(), dispatch_get_main_queue(), @"Expected defaultQueue() to be equal to main_queue()");
+    STAssertEquals(CODefaultQueue(), dispatch_get_main_queue(), @"Expected defaultQueue() to be equal to main_queue()");
 
     COSetDefaultQueue(nil);
 
-    STAssertThrowsSpecific(SADefaultQueue(), NSException, @"Expected default queue to be nil after setting to nil by setDefaultQueue");
+    STAssertThrowsSpecific(CODefaultQueue(), NSException, @"Expected default queue to be nil after setting to nil by setDefaultQueue");
 }
 
 

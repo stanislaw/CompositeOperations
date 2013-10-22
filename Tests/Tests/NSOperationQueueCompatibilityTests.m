@@ -7,6 +7,8 @@
 #import "COTransactionalOperation.h"
 #import "COQueues.h"
 
+#import "COOperation_Private.h"
+
 @interface NSOperationQueueCompatibilityTests : SenTestCase
 @end
 

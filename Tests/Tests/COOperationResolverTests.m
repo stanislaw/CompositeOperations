@@ -2,6 +2,7 @@
 
 #import "COOperationResolver.h"
 #import "COQueues.h"
+#import "COOperation_Private.h"
 
 SPEC_BEGIN(COOperationResolver_Specs)
 

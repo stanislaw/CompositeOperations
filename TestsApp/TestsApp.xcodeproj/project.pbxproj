@@ -12,7 +12,6 @@
 		860EDB54180084C7001BEEEE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB53180084C7001BEEEE /* main.m */; };
 		860EDB58180084C7001BEEEE /* TestsApp.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 860EDB57180084C7001BEEEE /* TestsApp.1 */; };
 		860EDB7A18008535001BEEEE /* TestHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB6618008535001BEEEE /* TestHelpers.m */; };
-		860EDB7B18008535001BEEEE /* CompatibilityAliasesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB6818008535001BEEEE /* CompatibilityAliasesTests.m */; };
 		860EDB7C18008535001BEEEE /* CurrentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB6918008535001BEEEE /* CurrentTests.m */; };
 		860EDB7D18008535001BEEEE /* HighLoadTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB6A18008535001BEEEE /* HighLoadTests.m */; };
 		860EDB7E18008535001BEEEE /* NSOperationCompatibilityTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB6B18008535001BEEEE /* NSOperationCompatibilityTests.m */; };
@@ -54,6 +53,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		860AFBBF181734600094A8A8 /* COOperation_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = COOperation_Private.h; path = ../../../../../stanislaw/Work/Pods/CompositeOperations/CompositeOperations/COOperation_Private.h; sourceTree = "<group>"; };
 		860EDB4D180084C6001BEEEE /* TestsApp */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TestsApp; sourceTree = BUILT_PRODUCTS_DIR; };
 		860EDB50180084C6001BEEEE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		860EDB53180084C7001BEEEE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -61,7 +61,6 @@
 		860EDB57180084C7001BEEEE /* TestsApp.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = TestsApp.1; sourceTree = "<group>"; };
 		860EDB6518008535001BEEEE /* TestHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestHelpers.h; sourceTree = "<group>"; };
 		860EDB6618008535001BEEEE /* TestHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestHelpers.m; sourceTree = "<group>"; };
-		860EDB6818008535001BEEEE /* CompatibilityAliasesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompatibilityAliasesTests.m; sourceTree = "<group>"; };
 		860EDB6918008535001BEEEE /* CurrentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentTests.m; sourceTree = "<group>"; };
 		860EDB6A18008535001BEEEE /* HighLoadTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HighLoadTests.m; sourceTree = "<group>"; };
 		860EDB6B18008535001BEEEE /* NSOperationCompatibilityTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSOperationCompatibilityTests.m; sourceTree = "<group>"; };
@@ -185,7 +184,6 @@
 		860EDB6718008535001BEEEE /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				860EDB6818008535001BEEEE /* CompatibilityAliasesTests.m */,
 				860EDB6918008535001BEEEE /* CurrentTests.m */,
 				860EDB6A18008535001BEEEE /* HighLoadTests.m */,
 				860EDB6B18008535001BEEEE /* NSOperationCompatibilityTests.m */,
@@ -227,6 +225,7 @@
 				860EDB9E18008822001BEEEE /* COTransactionalOperation.h */,
 				860EDB9F18008822001BEEEE /* COTransactionalOperation.m */,
 				860EDBA018008822001BEEEE /* COTypedefs.h */,
+				860AFBBF181734600094A8A8 /* COOperation_Private.h */,
 			);
 			name = CompositeOperations;
 			path = ../CompositeOperations;
@@ -330,7 +329,6 @@
 				860EDBA318008822001BEEEE /* CompositeOperations.m in Sources */,
 				860EDB8518008535001BEEEE /* COOperationTests.m in Sources */,
 				860EDB7F18008535001BEEEE /* NSOperationQueueCompatibilityTests.m in Sources */,
-				860EDB7B18008535001BEEEE /* CompatibilityAliasesTests.m in Sources */,
 				860EDBA118008822001BEEEE /* COCascadeOperation.m in Sources */,
 				860EDBA718008822001BEEEE /* COQueues.m in Sources */,
 				860EDBA618008822001BEEEE /* COOperationResolver.m in Sources */,

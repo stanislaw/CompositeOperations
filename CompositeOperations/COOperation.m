@@ -1,7 +1,9 @@
 #import "COOperation.h"
+#import "COOperation_Private.h"
+
 #import "COQueues.h"
 
-static inline NSString * COKeyPathFromOperationState(_COOperationState state) {
+static inline NSString * COKeyPathFromOperationState(COOperationState state) {
     switch (state) {
         case COOperationCancelledState:
             return @"isCancelled";
@@ -49,7 +51,7 @@ static inline NSString * COKeyPathFromOperationState(_COOperationState state) {
     return YES;
 }
 
-- (void)setState:(_COOperationState)state {
+- (void)setState:(COOperationState)state {
     @synchronized(self) {
         NSString *oldStateKey = self.stateKey;
         NSString *newStateKey = COKeyPathFromOperationState(state);

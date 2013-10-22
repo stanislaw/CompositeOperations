@@ -1,6 +1,6 @@
 #import "COOperationQueue.h"
 
-static inline NSString * SAKeyPathFromOperationQueueState(COOperationQueueState state) {
+static inline NSString * COKeyPathFromOperationQueueState(COOperationQueueState state) {
     switch (state) {
         case COOperationQueueSuspendedState:
             return @"isSuspended";
@@ -31,7 +31,7 @@ static inline NSString * SAKeyPathFromOperationQueueState(COOperationQueueState 
 }
 
 - (NSString *)stateKey {
-    return SAKeyPathFromOperationQueueState(self.state);
+    return COKeyPathFromOperationQueueState(self.state);
 }
 
 #pragma mark

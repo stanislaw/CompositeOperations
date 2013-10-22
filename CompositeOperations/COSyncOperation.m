@@ -1,4 +1,5 @@
 #import "COSyncOperation.h"
+#import "COOperation_Private.h"
 
 @implementation COSyncOperation
 

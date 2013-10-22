@@ -1,10 +1,11 @@
 #import "COQueues.h"
 
 #import "COOperationQueue.h"
+#import "COOperation_Private.h"
 
 static dispatch_queue_t defaultQueue;
 
-dispatch_queue_t SADefaultQueue() {
+dispatch_queue_t CODefaultQueue() {
     if (defaultQueue)
         return defaultQueue;
     else
@@ -24,7 +25,7 @@ void COSetDefaultQueue(dispatch_queue_t queue) {
 }
 
 void SARunInDefaultQueue(COBlock block) {
-    dispatch_async(SADefaultQueue(), block);
+    dispatch_async(CODefaultQueue(), block);
 }
 
 void CORunOperation(COOperation *operation) {

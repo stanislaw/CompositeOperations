@@ -1,16 +1,16 @@
 #import <Foundation/Foundation.h>
 #import "COOperation.h"
 
-typedef enum {
+typedef NS_ENUM(NSInteger, COOperationQueueState) {
     COOperationQueueSuspendedState   = -1,
     COOperationQueueNormalState       = 1
-} COOperationQueueState;
+};
 
-typedef enum {
+typedef NS_ENUM(NSUInteger, COOperationQueueType) {
     COOperationQueueFIFO = 0,
     COOperationQueueLIFO,
     COOperationQueueAggressiveLIFO
-} COOperationQueueType;
+};
 
 @interface COOperationQueue : NSObject {
     dispatch_queue_t _queue;

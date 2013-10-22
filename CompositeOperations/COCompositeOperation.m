@@ -10,6 +10,7 @@
 
 #import "COQueues.h"
 
+#import "COOperation_Private.h"
 #import "COCascadeOperation.h"
 #import "COTransactionalOperation.h"
 #import "COTypedefs.h"
@@ -61,7 +62,7 @@
 #pragma mark Public API: Inner operations
 
 - (void)operation:(COOperationBlock)operationBlock {
-    [self operationInQueue:SADefaultQueue() operation:operationBlock];
+    [self operationInQueue:CODefaultQueue() operation:operationBlock];
 }
 
 - (void)operationInQueue:(dispatch_queue_t)queue operation:(COOperationBlock)operationBlock {

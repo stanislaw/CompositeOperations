@@ -11,6 +11,7 @@
 
 #import "COTransactionalOperation.h"
 #import "COQueues.h"
+#import "COOperation_Private.h"
 
 @interface TransactionalOperationsTests : SenTestCase
 @end

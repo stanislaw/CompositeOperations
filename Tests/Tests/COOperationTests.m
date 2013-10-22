@@ -12,6 +12,7 @@
 #import "COOperation.h"
 #import "COOperationQueue.h"
 #import "CompositeOperations.h"
+#import "COOperation_Private.h"
 
 @interface SAOperationTests : SenTestCase
 @end

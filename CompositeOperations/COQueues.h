@@ -12,7 +12,7 @@
 
 #import "COOperation.h"
 
-dispatch_queue_t SADefaultQueue();
+dispatch_queue_t CODefaultQueue();
 void COSetDefaultQueue(dispatch_queue_t queue);
 void CORunInDefaultQueue(COBlock block);
 

@@ -55,7 +55,7 @@
         }
         
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(timeInterval * NSEC_PER_SEC));
-        dispatch_after(popTime, SADefaultQueue(), ^(void){
+        dispatch_after(popTime, CODefaultQueue(), ^(void){
             awakeBlock(operation);
         });
     } else {

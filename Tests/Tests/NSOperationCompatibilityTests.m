@@ -3,6 +3,7 @@
 
 #import "CompositeOperations.h"
 #import "COCascadeOperation.h"
+#import "COOperation_Private.h"
 
 #import "COTransactionalOperation.h"
 #import "COQueues.h"

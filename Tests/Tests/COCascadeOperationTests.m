@@ -10,6 +10,8 @@
 #import "TestHelpers.h"
 
 #import "COCascadeOperation.h"
+#import "COOperation_Private.h"
+
 #import "COQueues.h"
 
 @interface COCascadeOperation (PrivateProperties)

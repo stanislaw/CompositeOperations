@@ -3,9 +3,6 @@
 @class COTransactionalOperation;
 @class COCascadeOperation;
 
-@compatibility_alias COCascade COCascadeOperation;
-@compatibility_alias COTransaction COTransactionalOperation;
-
 // Operation blocks
 typedef void (^COBlock)(void);
 typedef void (^COOperationBlock)(COOperation *operation);
