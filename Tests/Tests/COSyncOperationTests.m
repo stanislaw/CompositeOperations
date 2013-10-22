@@ -6,89 +6,96 @@
 //  Copyright (c) 2012 Stanislaw Pankevich. All rights reserved.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
-#import "COSyncOperation.h"
 #import "TestHelpers.h"
 
+#import "COSyncOperation.h"
 
-@interface SyncOperationsTests : SenTestCase
-@end
+SPEC_BEGIN(COSyncOperation_Specs)
 
-@implementation SyncOperationsTests
+describe(@"COSyncOperation", ^{
+    describe(@"-run:", ^{
+        it(@"should run operation", ^{
+            __block BOOL soOver = NO;
 
-- (void)setUp {
-}
+            COSyncOperation *syncOperation = [COSyncOperation new];
 
-- (void)test_syncOperation {
-    __block BOOL soOver = NO;
+            [syncOperation run:^(COSyncOperation *so) {
 
-    COSyncOperation *syncOperation = [COSyncOperation new];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    dispatch_async(createQueue(), ^{
+                        soOver = YES;
 
-    [syncOperation run:^(COSyncOperation *so) {
+                        [so finish];
+                    });
+                });
+            }];
+            
+            [[theValue(soOver) should] beYes];
+        });
+    });
 
-        dispatch_async(dispatch_get_main_queue(), ^{
-            dispatch_async(createQueue(), ^{
+    describe(@"-runInQueue:operation:", ^{
+        it(@"should ...", ^{
+            dispatch_queue_t queue = dispatch_queue_create("some queue", NULL);
+            __block BOOL soOver = NO;
+
+            COSyncOperation *syncOperation = [COSyncOperation new];
+
+            [syncOperation runInQueue:queue operation:^(COSyncOperation *so) {
                 soOver = YES;
-
                 [so finish];
+            }];
+            
+            [[theValue(soOver) should] beYes];
+        });
+
+        describe(@"Rough integration", ^{
+            it(@"", ^{
+                dispatch_queue_t queue = dispatch_queue_create("some queue", NULL);
+
+                for (int i = 0; i < 10; i++) {
+                    __block BOOL soOver = NO;
+
+                    COSyncOperation *syncOperation = [COSyncOperation new];
+
+                    [[theValue(syncOperation.isFinished) should] beNo];
+
+                    [syncOperation runInQueue:queue operation:^(COSyncOperation *so) {
+                        [[theValue(syncOperation.isFinished) should] beNo];
+
+                        soOver = YES;
+                        [so finish];
+                    }];
+                    
+                    [[theValue(syncOperation.isFinished) should] beYes];
+                    [[theValue(soOver) should] beYes];
+                }
+
             });
         });
-    }];
+    });
 
-    STAssertTrue(soOver, @"Expected soOver to be YES");
-}
+    describe(@"Rerunning sync operation", ^{
+        describe(@"-reRun", ^{
+            it(@"should ...", ^{
+                __block int count = 0;
 
-- (void)test_syncOperation_runInQueue {
-    dispatch_queue_t queue = dispatch_queue_create("some queue", NULL);
-    __block BOOL soOver = NO;
+                COSyncOperation *syncOperation = [COSyncOperation new];
 
-    COSyncOperation *syncOperation = [COSyncOperation new];
+                [syncOperation run:^(COSyncOperation *so) {
+                    count = count + 1;
 
-    [syncOperation runInQueue:queue operation:^(COSyncOperation *so) {
-        soOver = YES;
-        [so finish];
-    }];
+                    if (count == 1) {
+                        [so reRun];
+                    } else
+                        [so finish];
+                }];
+                
+                [[theValue(count) should] equal:@(2)];
+            });
+        });
+    });
 
-    STAssertTrue(soOver, @"Expected soOver to be YES");
-}
+});
 
-- (void)test_syncOperation_rough_integration {
-    dispatch_queue_t queue = dispatch_queue_create("some queue", NULL);
-
-    for (int i = 0; i < 10; i++) {
-        __block BOOL soOver = NO;
-
-        COSyncOperation *syncOperation = [COSyncOperation new];
-
-        STAssertFalse(syncOperation.isFinished, nil);
-
-        [syncOperation runInQueue:queue operation:^(COSyncOperation *so) {
-            STAssertFalse(syncOperation.isFinished, nil);
-
-            soOver = YES;
-            [so finish];
-        }];
-
-        STAssertTrue(syncOperation.isFinished, nil);
-        STAssertTrue(soOver, @"Expected soOver to be YES");
-    }
-}
-
-- (void)testReRunningSyncOperation {
-    __block int count = 0;
-
-    COSyncOperation *syncOperation = [COSyncOperation new];
-
-    [syncOperation run:^(COSyncOperation *so) {
-        count = count + 1;
-
-        if (count == 1) {
-            [so reRun];
-        } else
-            [so finish];
-    }];
-
-    STAssertEquals(count, 2, @"Expected count to equal 2");
-}
-
-@end
+SPEC_END
