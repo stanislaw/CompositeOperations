@@ -1,2 +1,2 @@
 test:
-	cd Tests; ./runtests
+	cd Tests; make

@@ -1,10 +1,7 @@
 #import "TestHelpers.h"
 
-@interface CurrentTests : SenTestCase
-@end
-
-@implementation CurrentTests
-
-
-
-@end
+SPEC_BEGIN(Current_Specs)
+describe(@"Current specs", ^{
+    
+});
+SPEC_END
