@@ -16,15 +16,30 @@ typedef NS_ENUM(NSInteger, COOperationState) {
     COOperationFinishedState    = 2,
 };
 
+static inline NSString * COKeyPathFromOperationState(COOperationState state) {
+    switch (state) {
+        case COOperationCancelledState:
+            return @"isCancelled";
+        case COOperationSuspendedState:
+            return @"isSuspended";
+        case COOperationReadyState:
+            return @"isReady";
+        case COOperationExecutingState:
+            return @"isExecuting";
+        case COOperationFinishedState:
+            return @"isFinished";
+        default:
+            return @"state";
+    }
+}
+
 @interface COOperation ()
 
 @property (nonatomic) COOperationState state;
-@property (nonatomic, readonly) NSString *stateKey;
 
 // Context operation
 @property (strong) COOperation *contextOperation;
 
 - (void)initPropertiesForRun;
-- (void)main;
 
 @end

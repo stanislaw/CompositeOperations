@@ -3,23 +3,6 @@
 
 #import "COQueues.h"
 
-static inline NSString * COKeyPathFromOperationState(COOperationState state) {
-    switch (state) {
-        case COOperationCancelledState:
-            return @"isCancelled";
-        case COOperationSuspendedState:
-            return @"isSuspended";
-        case COOperationReadyState:
-            return @"isReady";
-        case COOperationExecutingState:
-            return @"isExecuting";
-        case COOperationFinishedState:
-            return @"isFinished";
-        default:
-            return @"state";
-    }
-}
-
 @implementation COOperation
 
 - (id)init {
@@ -43,17 +26,13 @@ static inline NSString * COKeyPathFromOperationState(COOperationState state) {
 #pragma mark
 #pragma mark Properties
 
-- (NSString *)stateKey {
-    return COKeyPathFromOperationState(self.state);
-}
-
 - (BOOL)isConcurrent {
     return YES;
 }
 
 - (void)setState:(COOperationState)state {
     @synchronized(self) {
-        NSString *oldStateKey = self.stateKey;
+        NSString *oldStateKey = COKeyPathFromOperationState(self.state);
         NSString *newStateKey = COKeyPathFromOperationState(state);
 
         [self willChangeValueForKey:newStateKey];
@@ -226,7 +205,7 @@ static inline NSString * COKeyPathFromOperationState(COOperationState state) {
 #pragma mark NSObject
 
 - (NSString *)description {
-    NSString *description = [NSString stringWithFormat:@"%@ (state = %@, numberOfRuns = %u)", super.description, self.stateKey, (unsigned)self.numberOfRuns];
+    NSString *description = [NSString stringWithFormat:@"%@ (state = %@, numberOfRuns = %u)", super.description, COKeyPathFromOperationState(self.state), (unsigned)self.numberOfRuns];
 
     return description;
 }

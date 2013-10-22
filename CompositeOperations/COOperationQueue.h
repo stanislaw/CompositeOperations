@@ -48,7 +48,6 @@ typedef NS_ENUM(NSUInteger, COOperationQueueType) {
 @interface COOperationQueue ()
 
 @property COOperationQueueState state;
-@property (nonatomic, readonly) NSString *stateKey;
 
 - (void)_runNextOperationIfExists;
 

@@ -30,10 +30,6 @@ static inline NSString * COKeyPathFromOperationQueueState(COOperationQueueState 
     self.runningOperations = nil;
 }
 
-- (NSString *)stateKey {
-    return COKeyPathFromOperationQueueState(self.state);
-}
-
 #pragma mark
 #pragma mark Properties
 
@@ -237,7 +233,7 @@ static inline NSString * COKeyPathFromOperationQueueState(COOperationQueueState 
     NSString *description;
 
     @synchronized(self) {
-        description = [NSString stringWithFormat:@"%@ (\n\tstate = %@,\n\toperationCount = %u,\n\tpendingOperations = %@,\n\trunningOperations = %@,\n)", super.description, self.stateKey, (unsigned)self.operationCount, self.pendingOperations, self.runningOperations];
+        description = [NSString stringWithFormat:@"%@ (\n\tstate = %@,\n\toperationCount = %u,\n\tpendingOperations = %@,\n\trunningOperations = %@,\n)", super.description, COKeyPathFromOperationQueueState(self.state), (unsigned)self.operationCount, self.pendingOperations, self.runningOperations];
     }
 
     return description;
