@@ -13,7 +13,7 @@ You might be interested at this project if you use GCD and/or NSOperation, but w
 
 [![Build Status](https://travis-ci.org/stanislaw/CompositeOperations.png?branch=master)](https://travis-ci.org/stanislaw/CompositeOperations)
 
-## Status 2013.09.16
+## Status 2013.10.26
 
 The project still has alpha status. 
 
