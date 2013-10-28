@@ -4,8 +4,9 @@
  
 `CompositeOperations` is the attempt to build a higher-level composite operations framework on top of GCD. Its main features are:
 
+* Composite operations: sequential composition (`COCascadeOperation`), concurrent composition (`COTransactionalOperation`). 
 * Multistep asynchronous operations: chaining and synchronizing.
-* Operation composition: mixing (or combining) operations (See 'Combining Operations').
+* Mixing (or combining) composite operations into each other (See 'Combining Operations').
 * NSOperation/NSOperationQueue compatibility: all operations are NSOperation subclasses.
 * Nice block-based DSL.
 
