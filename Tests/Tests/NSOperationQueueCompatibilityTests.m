@@ -15,29 +15,7 @@
 
 @implementation NSOperationQueueCompatibilityTests
 
-- (void)testSyncOperation_in_NSOperationQueue_basic_test {
-    NSOperationQueue *opQueue = [[NSOperationQueue alloc] init];
-    
-    __block BOOL soOver = NO;
 
-    COSyncOperation *syncOperation = [COSyncOperation new];
-
-    syncOperation.operation = ^(COSyncOperation *so) {
-        soOver = YES;
-
-        dispatch_async(dispatch_get_main_queue(), ^{
-            dispatch_async(createQueue(), ^{
-                [so finish];
-            });
-        });
-    };
-
-    [opQueue addOperation:syncOperation];
-
-    while(!soOver);
-    
-    STAssertTrue(soOver, @"Expected soOver to be YES");
-}
 
 - (void)test_operation_in_NSOperationQueue_basic_test {
     NSOperationQueue *opQueue = [[NSOperationQueue alloc] init];

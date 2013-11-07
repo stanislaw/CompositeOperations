@@ -23,8 +23,6 @@
 		860EDB8418008535001BEEEE /* COOperationResolverTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB7118008535001BEEEE /* COOperationResolverTests.m */; };
 		860EDB8518008535001BEEEE /* COOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB7218008535001BEEEE /* COOperationTests.m */; };
 		860EDB8618008535001BEEEE /* COQueuesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB7318008535001BEEEE /* COQueuesTests.m */; };
-		860EDB8718008535001BEEEE /* COSyncOperation_NonBlocking_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB7418008535001BEEEE /* COSyncOperation_NonBlocking_Tests.m */; };
-		860EDB8818008535001BEEEE /* COSyncOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB7518008535001BEEEE /* COSyncOperationTests.m */; };
 		860EDB8918008535001BEEEE /* COTransactionalOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB7618008535001BEEEE /* COTransactionalOperationTests.m */; };
 		860EDB8A18008535001BEEEE /* TODO.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB7718008535001BEEEE /* TODO.m */; };
 		860EDB8C180087B9001BEEEE /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 860EDB8B180087B9001BEEEE /* SenTestingKit.framework */; };
@@ -35,7 +33,6 @@
 		860EDBA518008822001BEEEE /* COOperationQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB9718008822001BEEEE /* COOperationQueue.m */; };
 		860EDBA618008822001BEEEE /* COOperationResolver.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB9918008822001BEEEE /* COOperationResolver.m */; };
 		860EDBA718008822001BEEEE /* COQueues.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB9B18008822001BEEEE /* COQueues.m */; };
-		860EDBA818008822001BEEEE /* COSyncOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB9D18008822001BEEEE /* COSyncOperation.m */; };
 		860EDBA918008822001BEEEE /* COTransactionalOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB9F18008822001BEEEE /* COTransactionalOperation.m */; };
 /* End PBXBuildFile section */
 
@@ -72,8 +69,6 @@
 		860EDB7118008535001BEEEE /* COOperationResolverTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COOperationResolverTests.m; sourceTree = "<group>"; };
 		860EDB7218008535001BEEEE /* COOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COOperationTests.m; sourceTree = "<group>"; };
 		860EDB7318008535001BEEEE /* COQueuesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COQueuesTests.m; sourceTree = "<group>"; };
-		860EDB7418008535001BEEEE /* COSyncOperation_NonBlocking_Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COSyncOperation_NonBlocking_Tests.m; sourceTree = "<group>"; };
-		860EDB7518008535001BEEEE /* COSyncOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COSyncOperationTests.m; sourceTree = "<group>"; };
 		860EDB7618008535001BEEEE /* COTransactionalOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COTransactionalOperationTests.m; sourceTree = "<group>"; };
 		860EDB7718008535001BEEEE /* TODO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TODO.m; sourceTree = "<group>"; };
 		860EDB8B180087B9001BEEEE /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -91,8 +86,6 @@
 		860EDB9918008822001BEEEE /* COOperationResolver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COOperationResolver.m; sourceTree = "<group>"; };
 		860EDB9A18008822001BEEEE /* COQueues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COQueues.h; sourceTree = "<group>"; };
 		860EDB9B18008822001BEEEE /* COQueues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COQueues.m; sourceTree = "<group>"; };
-		860EDB9C18008822001BEEEE /* COSyncOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COSyncOperation.h; sourceTree = "<group>"; };
-		860EDB9D18008822001BEEEE /* COSyncOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COSyncOperation.m; sourceTree = "<group>"; };
 		860EDB9E18008822001BEEEE /* COTransactionalOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COTransactionalOperation.h; sourceTree = "<group>"; };
 		860EDB9F18008822001BEEEE /* COTransactionalOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COTransactionalOperation.m; sourceTree = "<group>"; };
 		860EDBA018008822001BEEEE /* COTypedefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COTypedefs.h; sourceTree = "<group>"; };
@@ -195,8 +188,6 @@
 				860EDB7118008535001BEEEE /* COOperationResolverTests.m */,
 				860EDB7218008535001BEEEE /* COOperationTests.m */,
 				860EDB7318008535001BEEEE /* COQueuesTests.m */,
-				860EDB7418008535001BEEEE /* COSyncOperation_NonBlocking_Tests.m */,
-				860EDB7518008535001BEEEE /* COSyncOperationTests.m */,
 				860EDB7618008535001BEEEE /* COTransactionalOperationTests.m */,
 				860EDB7718008535001BEEEE /* TODO.m */,
 			);
@@ -220,8 +211,6 @@
 				860EDB9918008822001BEEEE /* COOperationResolver.m */,
 				860EDB9A18008822001BEEEE /* COQueues.h */,
 				860EDB9B18008822001BEEEE /* COQueues.m */,
-				860EDB9C18008822001BEEEE /* COSyncOperation.h */,
-				860EDB9D18008822001BEEEE /* COSyncOperation.m */,
 				860EDB9E18008822001BEEEE /* COTransactionalOperation.h */,
 				860EDB9F18008822001BEEEE /* COTransactionalOperation.m */,
 				860EDBA018008822001BEEEE /* COTypedefs.h */,
@@ -319,12 +308,9 @@
 			files = (
 				860EDB8018008535001BEEEE /* COCascadeOperationTests.m in Sources */,
 				860EDB8418008535001BEEEE /* COOperationResolverTests.m in Sources */,
-				860EDBA818008822001BEEEE /* COSyncOperation.m in Sources */,
 				860EDB8918008535001BEEEE /* COTransactionalOperationTests.m in Sources */,
 				860EDB7E18008535001BEEEE /* NSOperationCompatibilityTests.m in Sources */,
-				860EDB8818008535001BEEEE /* COSyncOperationTests.m in Sources */,
 				860EDB7D18008535001BEEEE /* HighLoadTests.m in Sources */,
-				860EDB8718008535001BEEEE /* COSyncOperation_NonBlocking_Tests.m in Sources */,
 				860EDBA218008822001BEEEE /* COCompositeOperation.m in Sources */,
 				860EDBA318008822001BEEEE /* CompositeOperations.m in Sources */,
 				860EDB8518008535001BEEEE /* COOperationTests.m in Sources */,

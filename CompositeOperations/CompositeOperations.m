@@ -35,18 +35,6 @@ void  __attribute__((overloadable)) operation(id queue, COOperationBlock block, 
     [operation run:block completionHandler:completionHandler cancellationHandler:cancellationHandler];
 }
 
-void __attribute__((overloadable)) syncOperation(COSyncOperationBlock block) {
-    COSyncOperation *so = [COSyncOperation new];
-
-    [so run:block];
-}
-
-void __attribute__((overloadable)) syncOperation(dispatch_queue_t queue, COSyncOperationBlock block) {
-    COSyncOperation *so = [COSyncOperation new];
-    
-    [so runInQueue:queue operation:block];
-}
-
 void __attribute__((overloadable)) cascadeOperation(COCascadeOperationBlock block, COCompletionBlock completionHandler, COCancellationBlockForCascadeOperation cancellationHandler) {
     COCascadeOperation *co = [COCascadeOperation new];
 

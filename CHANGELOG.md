@@ -1,5 +1,11 @@
 # Changes in CompositeOperations
 
+## Master
+
+### Removed
+
+* Completely remove COSyncOperation. It will be extracted to a separate project.
+
 ## Version 0.4.10
 
 Release date: 2013-10-17

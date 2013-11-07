@@ -6,14 +6,12 @@
 // Released under the MIT license
 
 @class COOperation;
-@class COSyncOperation;
 @class COTransactionalOperation;
 @class COCascadeOperation;
 
 // Operation blocks
 typedef void (^COBlock)(void);
 typedef void (^COOperationBlock)(COOperation *operation);
-typedef void (^COSyncOperationBlock)(COSyncOperation *operation);
 typedef void (^COTransactionalOperationBlock)(COTransactionalOperation *transactionalOperation);
 typedef void (^COCascadeOperationBlock)(COCascadeOperation *cascadeOperation);
 

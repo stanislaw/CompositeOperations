@@ -3,7 +3,6 @@
 
 #import "TestHelpers.h"
 
-#import "COSyncOperation.h"
 #import "CompositeOperations.h"
 #import "COQueues.h"
 #import "COOperationQueue.h"
