@@ -16,9 +16,9 @@ You might be interested at this project if you use GCD and/or NSOperation, but w
 
 [![Build Status](https://travis-ci.org/stanislaw/CompositeOperations.png?branch=master)](https://travis-ci.org/stanislaw/CompositeOperations)
 
-## Status 2013.10.26
+## Status 2013.11.08
 
-The project still has alpha status. 
+The project has alpha status. 
 
 The author will be very thankful for any feedback: regarding the overall code design or the flow of particular operations.
 
