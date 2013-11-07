@@ -38,7 +38,12 @@ Then import `CompositeOperations.h` where you want to use CO operations.
 ```objective-c
 #import <CompositeOperations.h>
 ```
-## Defining and running operations
+
+## CompositeOperations DSL
+
+...
+
+### Defining and running operations
 
 Each of the operations can be run through its class initialization:
 
@@ -91,15 +96,9 @@ syncOperation(^(COSyncOperation *so) {
 });
 ```
 
-## Each operation yields itself to the block 
-
-All operations yield themselves into the block they declare (like `yield self` is done in Ruby world).
-
-...
-
 ## Finish rules.
 
-Non-composite operations: `COOperation` and `COSyncOperation` always must be finished somewhere inside their operation blocks. 
+Non-composite operations: `COOperation` and `COSyncOperation` must always be finished somewhere inside their operation blocks. 
 
 Composite operations: transactional and cascade must not be finished since they automatically become finished when all their sub-operations are done.
  
