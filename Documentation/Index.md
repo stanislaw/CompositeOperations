@@ -107,5 +107,15 @@ Composite operations: transactional and cascade must not be finished since they 
 
 Both `COTransactionalOperation` and `COCascadedOperation` have a possibility to inject each other in their bodies: for example, if you inject transactional operation with a number of asynchronous tasks into a cascaded operation, then this transactional operation will be executed when its turn in cascade queue comes. Then, at the moment of its execution, the task will be performed in transactional manner - after that, when all transactional tasks finish their jobs, the flow will return to continue executing tasks in synchronous, ordered cascade queue. And opposite: if you add cascaded operation to the transaction operation - its task of running cascade will be dispatched asynchronously.
 
-## ...
+## Alternative tools
+
+Any library implementing __Futures and promises__ pattern (http://en.wikipedia.org/wiki/Futures_and_promises can be a good alternative to this project. Author thinks it is just a matter of style and personal preferences.
+
+* [ReactiveCocoa](https://github.com/ReactiveCocoa/ReactiveCocoa)
+
+> A framework for composing and transforming streams of values
+
+* [couchdeveloper/RXPromise](https://github.com/couchdeveloper/RXPromise)
+
+> An Objective-C Class which implements the Promises/A+ specification.
 
