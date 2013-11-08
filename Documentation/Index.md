@@ -1,7 +1,7 @@
 # Documentation
 
 * [What sync, async and composite means here? (Glossary)](Glossary.md)
-* [Anatomy of four operations (in progress)](Anatomy.md)
+* [Anatomy (in progress)](Anatomy.md)
 
 ## Introduction
 
@@ -37,7 +37,7 @@ Then import `CompositeOperations.h` where you want to use CO operations.
 #import <CompositeOperations.h>
 ```
 
-## CompositeOperations DSL
+## CompositeOperations API
 
 ...
 
