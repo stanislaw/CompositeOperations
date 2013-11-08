@@ -1,8 +1,6 @@
 # Anatomy
 
-## Four operations
-
-### COOperation
+## COOperation
 
 The `COOperation` is just a block of code wrapped into an NSOperation subclass with additional capabilities: since COOperation yields itself to the block to be executed (see `Each operation yields itself to the block`), it is possible to get more control of operation's execution flow: it is possible to cancel, suspend/resume, rerun (and some more options) operation from inside its own operation body.
 
@@ -20,23 +18,7 @@ operation(concurrentQueue(), ^(COOperation *operation) {
 });
 ```
 
-### COSyncOperation
-
-``` objective-c
-syncOperation(^(COSyncOperation *so) {
-    doSomeThingMultiQueuedAndAsynchronous(^{
-        /*
-          ...Do stuff...
-        */
-
-        // and then call "finish" so original flow can continue:
-        [so finish];
-    });
-}); // <- The original flow will be stopped at this point waiting when 'so' operation will finish itself
-
-```
-
-### COTransactionalOperation
+## COTransactionalOperation
 
 The following example will run transactional operation - it will schedule 3 asynchronous suboperations (All 3 operations will be run in a queue set by COSetDefaultQueue()).
 
@@ -90,7 +72,7 @@ transactionalOperation(^(COTransactionalOperation *transaction) {
 
 ```
 
-### COCascadedOperation
+## COCascadedOperation
 
 ```objective-c
 dispatch_async(queue1, ^{

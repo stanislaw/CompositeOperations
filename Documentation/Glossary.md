@@ -1,15 +1,7 @@
-## What sync, async and composite means here? (Glossary)
+## What composite means here? (Glossary)
 
-The following words used here have their specific meaning in the context of this project: __sync__, __async__, __cascaded__, __transactional__, __composite__. 
+The following words used here have their specific meaning in the context of this project: __cascade__, __transactional__, __composite__. 
  
-__Sync__ The prefix "sync-" applied to some operation means, that this operation will be run synchronously: sync-operation will wait until the moment when something inside its operation block will explicitly finish it. It is important to note that sync-operation's operation block can contain any number of asynchronous jobs, queues switching and so on - sync-operation will just patiently stay waiting in its original queue/thread until the "finish" command is called from somewhere inside its operation body. 
-
-The only known real use case for sync-operation is unit tests where it is often needed to straighten the curly flow of asynchronous jobs and perform some test assertions on the results of their execution before the test will run out.
-
-Shortly: sync-operation runs operation and waits in the original queue/thread, it was called, to be finished from inside operation block. Addionally sync-operations can finish and rerun themselves in any given point of operation block (See "Each operation yields itself to the block").
-
-__Async__ The prefix "async-" applied to some operation means, that this operation is dispatched immediatedly to some queue (default or a given) by dispatch_async (on which all async-operations in this project are based), so the meaning of "async-" corresponds to the what "async" means in "dispatch_async". 
-
 __Transactional__ Transactional operation schedules the execution of a number of async sub-operations and runs a completion handler when they all finish their jobs. The key feature of transactional operation is that it doesn't care about the order in which its sub-operations run and finish themselves: completion handler is called at the moment when all of them will be done altoghether - after completion handler is called transactional operation finishes itself. 
  
 `COTransactionalOperation` due to its async- nature does not block its original queue/thread (it just schedules sub-operations blocks there) but provides a completion handler instead, which is called when all sub-operations are over.
@@ -21,3 +13,4 @@ __Cascade__ Cascade of operations: execute a sub-set of operations strictly one 
 __Composite__ In the context of this project "Composite operation" means "complex operation": transactional operation, cascaded operation, or their combination, "mixtum compositum" (See "Combining operations").
 
 __Suboperations__ Both cascade and transactional operations schedule and run suboperations declared inside their bodies. Each suboperation block generates COOperation class that runs sub-operation block assigned to it and also stores its parent context (cascade- or transactional-) to control parent operation's flow. Important: suboperations should not be run or touched standalone, but only from inside their corresponding cascade- or transactional- operational contexts only!
+
