@@ -29,8 +29,4 @@
 @end
 
 
-@interface COTransactionalOperation ()
 
-@property NSUInteger operationsCount;
-
-@end

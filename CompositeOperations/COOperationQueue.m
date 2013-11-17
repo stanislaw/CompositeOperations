@@ -122,9 +122,9 @@ static inline NSString * COKeyPathFromOperationQueueState(COOperationQueueState 
                 
                 break;
         }
-
-        [self _runNextOperationIfExists];
     }
+
+    [self _runNextOperationIfExists];
 }
 
 - (void)_runNextOperationIfExists {
@@ -173,18 +173,14 @@ static inline NSString * COKeyPathFromOperationQueueState(COOperationQueueState 
 
     @synchronized(self) {
         if ([keyPath isEqualToString:@"isFinished"] || [keyPath isEqualToString:@"isCancelled"]) {
-            BOOL done = [[change objectForKey:NSKeyValueChangeNewKey] boolValue];
+            [object removeObserver:self forKeyPath:@"isFinished"];
+            [object removeObserver:self forKeyPath:@"isCancelled"];
 
-            if (done) {
-                [object removeObserver:self forKeyPath:@"isFinished"];
-                [object removeObserver:self forKeyPath:@"isCancelled"];
-
-                [self.runningOperations removeObject:object];
-
-                [self _runNextOperationIfExists];
-            }
+            [self.runningOperations removeObject:object];
         }
     }
+
+    [self _runNextOperationIfExists];
 }
 
 #pragma mark

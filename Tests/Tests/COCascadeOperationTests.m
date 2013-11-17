@@ -317,7 +317,7 @@
         }];
     };
 
-    intentionallyUnfinishableCOperation.state = COOperationExecutingState;
+    intentionallyUnfinishableCOperation.state = COOperationStateExecuting;
     STAssertTrue(intentionallyUnfinishableCOperation.isExecuting, nil);
 
     [intentionallyUnfinishableCOperation awake];
@@ -786,11 +786,12 @@
 
         [co operation:^(COOperation *cao) {
             [cao finish];
-            isFinished = YES;
         }];
-    } completionHandler:nil cancellationHandler:nil];
+    } completionHandler:^{
+        isFinished = YES;
+    } cancellationHandler:nil];
 
-    while (!isFinished);
+    while (isFinished == NO) {}
 
     STAssertEquals((int)regArray.count, 2 * 100, nil);
 }

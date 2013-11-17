@@ -472,7 +472,7 @@
         }];
     };
 
-    intentionallyUnfinishableTOperation.state = COOperationExecutingState;
+    intentionallyUnfinishableTOperation.state = COOperationStateExecuting;
     STAssertTrue(intentionallyUnfinishableTOperation.isExecuting, nil);
     
     [intentionallyUnfinishableTOperation awake];

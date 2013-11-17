@@ -8,24 +8,24 @@
 #import "COOperation.h"
 
 typedef NS_ENUM(NSInteger, COOperationState) {
-    COOperationCancelledState   = -2,
-    COOperationSuspendedState   = -1,
-    COOperationReadyState       = 0,
-    COOperationExecutingState   = 1,
-    COOperationFinishedState    = 2,
+    COOperationStateCancelled   = -2,
+    COOperationStateSuspended   = -1,
+    COOperationStateReady       = 0,
+    COOperationStateExecuting   = 1,
+    COOperationStateFinished    = 2,
 };
 
 static inline NSString * COKeyPathFromOperationState(COOperationState state) {
     switch (state) {
-        case COOperationCancelledState:
+        case COOperationStateCancelled:
             return @"isCancelled";
-        case COOperationSuspendedState:
+        case COOperationStateSuspended:
             return @"isSuspended";
-        case COOperationReadyState:
+        case COOperationStateReady:
             return @"isReady";
-        case COOperationExecutingState:
+        case COOperationStateExecuting:
             return @"isExecuting";
-        case COOperationFinishedState:
+        case COOperationStateFinished:
             return @"isFinished";
         default:
             return @"state";

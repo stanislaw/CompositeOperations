@@ -65,7 +65,6 @@
 }
 
 - (void)operationInQueue:(dispatch_queue_t)queue operation:(COOperationBlock)operationBlock {
-    @synchronized(self) {
         COOperation *operation = [COOperation new];
 
 #if !OS_OBJECT_USE_OBJC
@@ -95,34 +94,31 @@
             }
         };
 #endif
-        
-        [self enqueueSuboperation:operation];
-    }
+
+    [self enqueueSuboperation:operation];
 }
 
 #pragma mark
 #pragma mark Public API: Inner composite operations
 
 - (void)cascadeOperation:(COCascadeOperationBlock)operationBlock {
-    @synchronized(self) {
-        COCascadeOperation *cascadeOperation = [COCascadeOperation new];
+    COCascadeOperation *cascadeOperation = [COCascadeOperation new];
 
-        cascadeOperation.operation = operationBlock;
+    cascadeOperation.operation = operationBlock;
 
-        __weak COCascadeOperation *weakCascadeOperation = cascadeOperation;
-        cascadeOperation.completionBlock = ^{
-            __strong COCascadeOperation *strongCascadeOperation = weakCascadeOperation;
+    __weak COCascadeOperation *weakCascadeOperation = cascadeOperation;
+    cascadeOperation.completionBlock = ^{
+        __strong COCascadeOperation *strongCascadeOperation = weakCascadeOperation;
 
-            if (strongCascadeOperation.isFinished) {
-            } else {
-                [strongCascadeOperation cancel];
-            }
+        if (strongCascadeOperation.isFinished) {
+        } else {
+            [strongCascadeOperation cancel];
+        }
 
-            strongCascadeOperation.completionBlock = nil;
-        };
+        strongCascadeOperation.completionBlock = nil;
+    };
 
-        [self enqueueSuboperation:cascadeOperation];
-    }
+    [self enqueueSuboperation:cascadeOperation];
 }
 
 - (void)transactionalOperation:(COTransactionalOperationBlock)operationBlock {
@@ -170,7 +166,7 @@
         if (self.isFinished == NO && self.isCancelled == NO && self.isSuspended == NO) {
             [self _cancelSuboperations:YES];
 
-            self.state = COOperationCancelledState;
+            self.state = COOperationStateCancelled;
         }
     }
 }
@@ -183,7 +179,7 @@
         if (self.numberOfRuns == 0) {
             [self reRun];
         } else {
-            self.state = COOperationExecutingState;
+            self.state = COOperationStateExecuting;
 
             [self performAwakeRoutine];
         }
@@ -194,28 +190,24 @@
 #pragma mark SAOperation: Suspend / Resume
 
 - (void)suspend {
-    @synchronized(self) {
-        if (self.isFinished == NO && self.isCancelled == NO && self.isSuspended == NO) {
-            [[self.operations copy] makeObjectsPerformSelector:@selector(suspend)];
+    if (self.isFinished == NO && self.isCancelled == NO && self.isSuspended == NO) {
+        [[self.operations copy] makeObjectsPerformSelector:@selector(suspend)];
 
-            [super suspend];
-        }
+        [super suspend];
     }
 }
 
 - (void)resume {
     if (self.isSuspended == NO) return;
 
-    @synchronized(self) {
-        if (self.numberOfRuns > 0) {
-            self.state = COOperationExecutingState;
+    if (self.numberOfRuns > 0) {
+        self.state = COOperationStateExecuting;
 
-            [self.operations makeObjectsPerformSelector:@selector(resume)];
+        [self.operations makeObjectsPerformSelector:@selector(resume)];
 
-            [self performResumeRoutine];
-        } else {
-            self.state = COOperationReadyState;
-        }
+        [self performResumeRoutine];
+    } else {
+        self.state = COOperationStateReady;
     }
 }
 
@@ -273,26 +265,34 @@
 }
 
 - (void)_runSuboperationAtIndex:(NSUInteger)indexOfSuboperationToRun {
-    COOperation *operation = [self.operations objectAtIndex:indexOfSuboperationToRun];
+    COOperation *operation;
+
+    @synchronized(self) {
+        operation = [self.operations objectAtIndex:indexOfSuboperationToRun];
+    }
 
     [self _runSuboperation:operation];
 }
 
 - (void)_cancelSuboperations:(BOOL)runCompletionBlocks {
+    NSArray *subOperations;
+
     @synchronized(self) {
-        [[self.operations copy] enumerateObjectsUsingBlock:^(COOperation *operation, NSUInteger idx, BOOL *stop) {
-            if (operation.isCancelled == NO && operation.isFinished == NO) {
-                if (operation.isReady == NO) {
-                    [operation removeObserver:self forKeyPath:@"isFinished"];
-                    [operation removeObserver:self forKeyPath:@"isCancelled"];
-                }
-
-                [operation cancel];
-
-                if (operation.completionBlock && runCompletionBlocks) operation.completionBlock();
-            }
-        }];
+        subOperations = [self.operations copy];
     }
+
+    [subOperations enumerateObjectsUsingBlock:^(COOperation *operation, NSUInteger idx, BOOL *stop) {
+        if (operation.isCancelled == NO && operation.isFinished == NO) {
+            if (operation.isReady == NO) {
+                [operation removeObserver:self forKeyPath:@"isFinished"];
+                [operation removeObserver:self forKeyPath:@"isCancelled"];
+            }
+
+            [operation cancel];
+
+            if (operation.completionBlock && runCompletionBlocks) operation.completionBlock();
+        }
+    }];
 }
 
 #pragma mark
@@ -303,20 +303,20 @@
                         change:(NSDictionary *)change
                        context:(void *)context {
 
-    @synchronized(self) {
-        if ([object isEqual:self]) {
-            [self _teardown];
-        } else {
+    if ([object isEqual:self]) {
+        [self _teardown];
+    } else {
+        @synchronized(self) {
             [object removeObserver:self forKeyPath:@"isFinished"];
             [object removeObserver:self forKeyPath:@"isCancelled"];
+        }
+        
+        COOperation *operation = (COOperation *)object;
 
-            COOperation *operation = (COOperation *)object;
-
-            if ([keyPath isEqual:@"isFinished"]) {
-                [self subOperationWasFinished:operation];
-            } else if ([keyPath isEqual:@"isCancelled"]) {
-                [self subOperationWasCancelled:operation];
-            }
+        if ([keyPath isEqual:@"isFinished"]) {
+            [self subOperationWasFinished:operation];
+        } else if ([keyPath isEqual:@"isCancelled"]) {
+            [self subOperationWasCancelled:operation];
         }
     }
 }

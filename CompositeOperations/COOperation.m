@@ -23,7 +23,7 @@
 }
 
 - (void)initPropertiesForRun {
-    self.state = COOperationReadyState;
+    self.state = COOperationStateReady;
 }
 
 - (void)dealloc {
@@ -51,15 +51,15 @@
 }
 
 - (BOOL)isReady {
-    return self.state == COOperationReadyState && super.isReady;
+    return self.state == COOperationStateReady && super.isReady;
 }
 
 - (BOOL)isExecuting {
-    return self.state == COOperationExecutingState;
+    return self.state == COOperationStateExecuting;
 }
 
 - (BOOL)isFinished {
-    return self.state == COOperationFinishedState;
+    return self.state == COOperationStateFinished;
 }
 
 #pragma mark
@@ -73,7 +73,7 @@
     if (self.isReady) {
         self.numberOfRuns++;
 
-        self.state = COOperationExecutingState;
+        self.state = COOperationStateExecuting;
 
         if (self.isCancelled || self.contextOperation.isCancelled) {
             [self finish];
@@ -142,21 +142,19 @@
 
 - (void)finish {
     if (self.isCancelled == NO) {
-        self.state = COOperationFinishedState;
+        self.state = COOperationStateFinished;
     }
 }
 
 - (BOOL)isCancelled {
-    return self.state == COOperationCancelledState;
+    return self.state == COOperationStateCancelled;
 }
 
 - (void)cancel {
-    @synchronized(self) {
-        if (self.isFinished == NO && self.isCancelled == NO && self.isSuspended == NO) {
-            self.state = COOperationCancelledState;
+    if (self.isFinished == NO && self.isCancelled == NO && self.isSuspended == NO) {
+        self.state = COOperationStateCancelled;
 
-            if (self.contextOperation == nil && self.completionBlock) self.completionBlock();
-        }
+        if (self.contextOperation == nil && self.completionBlock) self.completionBlock();
     }
 }
 
@@ -177,12 +175,12 @@
 #pragma mark Suspend / Resume
 
 - (BOOL)isSuspended {
-    return self.state == COOperationSuspendedState;
+    return self.state == COOperationStateSuspended;
 }
 
 - (void)suspend {
     if (self.isFinished == NO && self.isCancelled == NO && self.isSuspended == NO) {
-        self.state = COOperationSuspendedState;
+        self.state = COOperationStateSuspended;
     }
 }
 
@@ -193,7 +191,7 @@
     if (self.numberOfRuns > 0 && self.contextOperation == nil) {
         [self reRun];
     } else {
-        self.state = COOperationReadyState;
+        self.state = COOperationStateReady;
     }
 }
 

@@ -275,7 +275,7 @@
                 @synchronized(accResult) {
                    [accResult appendString:[NSString stringWithFormat:@"%d", i]];
                 }
-                
+
                 [tao finish];
             }];
         }
@@ -283,13 +283,14 @@
         passedHandler = YES;
     }, nil);
 
-    while (!passedHandler);
+    while (passedHandler == NO);
 
     STAssertEquals((int)countArr.count, 30, @"Expected count to be equal 30");
     STAssertTrue(passedHandler, @"Expected passedHandler to be equal YES");
     NSLog(@"%s: accResult is: %@", __PRETTY_FUNCTION__, accResult);
 
     COSetDefaultQueue(nil);
+
 }
 
 - (void) test_transactionalOperation_in_operation_queue {

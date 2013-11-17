@@ -9,12 +9,20 @@
 #import "COQueues.h"
 #import "COOperation_Private.h"
 
+@interface COTransactionalOperation ()
+@property NSUInteger operationsCount;
+@end
+
 @implementation COTransactionalOperation
 
-- (void)initPropertiesForRun {
-    [super initPropertiesForRun];
+- (instancetype)init {
+    self = [super init];
+
+    if (self == nil) return nil;
 
     self.operationsCount = 0;
+
+    return self;
 }
 
 #pragma mark
@@ -50,10 +58,10 @@
 
 - (void)enqueueSuboperation:(COOperation *)subOperation {
     if (self.isFinished) [NSException raise: NSInvalidArgumentException format: @"[%@-%@] suboperation cannot be added to the finished transactional operation", NSStringFromClass(self.class), NSStringFromSelector(_cmd)];
-    
-    [self _registerSuboperation:subOperation];
-    
+
     self.operationsCount++;
+
+    [self _registerSuboperation:subOperation];
 
     if (self.isSuspended == NO) {
         NSUInteger areThereCancelledOperations = [[self.operations copy] indexOfObjectPassingTest:^BOOL(COOperation *operation, NSUInteger idx, BOOL *stop) {
@@ -100,7 +108,7 @@
 - (void)subOperationWasFinished:(COOperation *)subOperation {
     @synchronized(self) {
         self.operationsCount--;
-    
+
         [self performCheckpointRoutine];
     }
 }
