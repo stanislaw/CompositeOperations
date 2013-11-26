@@ -7,6 +7,7 @@
 * Composite operations: sequential composition (`COCascadeOperation`), concurrent composition (`COTransactionalOperation`). 
 * Multistep asynchronous operations: chaining and synchronizing.
 * Mixing (or combining) composite operations into each other (See 'Combining Operations').
+* CompositeOperations is non-blocking: none of its operations blocks the thread it is executing on.
 * NSOperation/NSOperationQueue compatibility: all operations are NSOperation subclasses.
 * Nice block-based DSL.
 * COOperationQueue: analogue of NSOperation designed to work with composite operations. FIFO, LIFO, "agressive LIFO" orders support.
