@@ -29,3 +29,7 @@ Documentation is [coming](https://github.com/stanislaw/CompositeOperations/blob/
 
 Copyright (c) 2013 Stanislaw Pankevich. See LICENSE for details.
 
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/stanislaw/compositeoperations/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
