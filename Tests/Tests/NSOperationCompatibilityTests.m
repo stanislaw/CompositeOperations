@@ -17,7 +17,7 @@ static BOOL isFinishedNotificationSent;
 
 @implementation NSOperationCompatibilityTests
 
-- (void)test_SAOperation_basic_KVO_notifications {
+- (void)test_COOperation_basic_KVO_notifications {
     isExecutingNotificationSent = NO;
 
     COOperation *operation = [COOperation new];

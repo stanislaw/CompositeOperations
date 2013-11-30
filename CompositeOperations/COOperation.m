@@ -196,21 +196,10 @@
 }
 
 #pragma mark
-#pragma mark Resolution
-
-- (void)resolveWithResolver:(id <COOperationResolver>)operationResolver {
-    [operationResolver resolveOperation:self];
-}
-
-- (void)resolveWithResolver:(id <COOperationResolver>)operationResolver usingResolutionStrategy:(id)resolutionStrategy fallbackHandler:(COCompletionBlock)fallbackHandler {
-    [operationResolver resolveOperation:self usingResolutionStrategy:resolutionStrategy fallbackHandler:fallbackHandler];
-}
-
-#pragma mark
 #pragma mark NSObject
 
 - (NSString *)description {
-    NSString *description = [NSString stringWithFormat:@"%@ (state = %@, numberOfRuns = %u)", super.description, COKeyPathFromOperationState(self.state), (unsigned)self.numberOfRuns];
+    NSString *description = [NSString stringWithFormat:@"%@ (state = %@, numberOfRuns = %lu)", super.description, COKeyPathFromOperationState(self.state), self.numberOfRuns];
 
     return description;
 }

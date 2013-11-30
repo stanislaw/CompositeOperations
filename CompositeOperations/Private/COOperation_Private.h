@@ -41,4 +41,6 @@ static inline NSString * COKeyPathFromOperationState(COOperationState state) {
 
 - (void)initPropertiesForRun;
 
+@property NSUInteger numberOfRuns;
+
 @end

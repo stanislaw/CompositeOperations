@@ -13,20 +13,20 @@
 @interface COCompositeOperation : COOperation
 
 - (id)initWithConcurrencyType:(COCompositeOperationConcurrencyType)concurrencyType;
-@property (copy) COCompositeOperationBlock operation;
 
-// Public API: Inner operations
-- (void)operation:(COOperationBlock)operationBlock;
-- (void)operationInQueue:(dispatch_queue_t)queue operation:(COOperationBlock)operationBlock;
+@property (copy) COCompositeOperationBlock operation;
 
 - (void)run:(COCompositeOperationBlock)operationBlock __attribute__((unavailable("must run cascade operation with 'run:completionHandler:cancellationHandler:' instead.")));
 - (void)runInQueue:(dispatch_queue_t)queue operation:(COCompositeOperationBlock)operationBlock __attribute__((unavailable("must run cascade operation with 'run:completionHandler:cancellationHandler:' instead.")));
 
 - (void)run:(COCompositeOperationBlock)operationBlock completionHandler:(COCompletionBlock)completionHandler cancellationHandler:(COCancellationBlockForCompositeOperation)cancellationHandler;
 
+// Public API: Inner operations
+- (void)operation:(COOperationBlock)operationBlock;
+- (void)operationInQueue:(dispatch_queue_t)queue operation:(COOperationBlock)operationBlock;
 
 // Public API: Inner composite operations
-- (void)compositeOperation:(COCompositeOperationConcurrencyType)concurrencyType block: (COCompositeOperationBlock)operationBlock;
+- (void)compositeOperation:(COCompositeOperationConcurrencyType)concurrencyType operation: (COCompositeOperationBlock)operationBlock;
 
 // Shared data
 @property (strong) id sharedData;

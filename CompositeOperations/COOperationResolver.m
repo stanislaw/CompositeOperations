@@ -6,7 +6,9 @@
 // Released under the MIT license
 
 #import "COOperationResolver.h"
+
 #import "COOperation.h"
+#import "COOperation_Private.h"
 
 #import "COQueues.h"
 

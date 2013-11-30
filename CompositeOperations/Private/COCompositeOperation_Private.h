@@ -1,10 +1,9 @@
+// CompositeOperations
 //
-//  COCompositeOperation_Private.h
-//  TestsApp
+// CompositeOperations/COCompositeOperation_Private.h
 //
-//  Created by Stanislaw Pankevich on 30/11/13.
-//  Copyright (c) 2013 Stanislaw Pankevich. All rights reserved.
-//
+// Copyright (c) 2013 Stanislaw Pankevich
+// Released under the MIT license
 
 #import "COCompositeOperation.h"
 
@@ -19,6 +18,9 @@
 - (void)_runSuboperation:(COOperation *)subOperation;
 - (void)_runSuboperationAtIndex:(NSUInteger)indexOfSuboperationToRun;
 
-- (void)_cancelSuboperations:(BOOL)runCompletionBlocks;
+- (void)_cancelOperations:(BOOL)runCompletionBlocks;
+
+- (void)_operationWasCancelled:(COOperation *)subOperation;
+- (void)_operationWasFinished:(COOperation *)subOperation;
 
 @end

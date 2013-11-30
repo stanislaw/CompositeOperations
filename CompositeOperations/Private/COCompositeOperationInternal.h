@@ -1,19 +1,19 @@
+// CompositeOperations
 //
-//  COCompositeOperationInternal.h
-//  TestsApp
+// CompositeOperations/COCompositeOperationInternal.h
 //
-//  Created by Stanislaw Pankevich on 30/11/13.
-//  Copyright (c) 2013 Stanislaw Pankevich. All rights reserved.
-//
+// Copyright (c) 2013 Stanislaw Pankevich
+// Released under the MIT license
 
 #import <Foundation/Foundation.h>
 
-#import "COCompositeOperation.h"
+#import "COTypedefs.h"
 
-@interface COCompositeOperationInternal : NSObject
+@protocol COCompositeOperationInternal <NSObject>
+
+- (instancetype)initWithCompositeOperation:(COCompositeOperation *)compositeOperation;
 
 @property (weak, nonatomic) COCompositeOperation *compositeOperation;
-- (instancetype)initWithCompositeOperation:(COCompositeOperation *)compositeOperation;
 
 - (void)_enqueueSuboperation:(COOperation *)subOperation;
 

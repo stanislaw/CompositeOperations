@@ -1,6 +1,6 @@
 // CompositeOperations
 //
-// CompositeOperations/COCompositeOperation.m
+// CompositeOperations/COCompositeSerialOperationInternal.m
 //
 // Copyright (c) 2013 Stanislaw Pankevich
 // Released under the MIT license
@@ -13,6 +13,18 @@
 #import "COQueues.h"
 
 @implementation COCompositeSerialOperationInternal
+
+@synthesize compositeOperation = _compositeOperation;
+
+- (instancetype)initWithCompositeOperation:(COCompositeOperation *)compositeOperation {
+    self = [self init];
+
+    if (self == nil) return nil;
+
+    self.compositeOperation = compositeOperation;
+
+    return self;
+}
 
 - (void)_enqueueSuboperation:(COOperation *)subOperation {
     [self.compositeOperation _registerSuboperation:subOperation];

@@ -12,14 +12,11 @@
 
 #import "COOperation_Private.h"
 
-#import "COCompositeOperationInternal.h"
 #import "COCompositeSerialOperationInternal.h"
 #import "COCompositeConcurrentOperationInternal.h"
 
 @interface COCompositeOperation ()
-
-@property (strong, nonatomic) COCompositeOperationInternal *internal;
-
+@property (strong, nonatomic) id <COCompositeOperationInternal> internal;
 @end
 
 
@@ -31,7 +28,7 @@
             sharedData = _sharedData;
 
 - (id)init {
-    @throw [NSException exceptionWithName:NSGenericException reason:@"Must not run -init - use designated initialize -[CompositeOperation initWithConcurrencyType:] instead" userInfo:nil];
+    @throw [NSException exceptionWithName:NSGenericException reason:@"Must not run -[COCompositeOperation init]. Use designated initialize -[CompositeOperation initWithConcurrencyType:] instead!" userInfo:nil];
     return nil;
 }
 
@@ -95,7 +92,7 @@
 
             strongSelf.completionBlock = nil;
         } else if (cancellationHandler) {
-            [strongSelf _cancelSuboperations:NO];
+            [strongSelf _cancelOperations:NO];
 
             cancellationHandler(strongSelf);
         } else {
@@ -107,6 +104,9 @@
     
     CORunOperation(self);
 }
+
+#pragma mark
+#pragma mark Public API: Inner operations
 
 - (void)operation:(COOperationBlock)operationBlock {
     [self operationInQueue:CODefaultQueue() operation:operationBlock];
@@ -149,7 +149,7 @@
 #pragma mark
 #pragma mark Public API: Inner composite operations
 
-- (void)compositeOperation:(COCompositeOperationConcurrencyType)concurrencyType block: (COCompositeOperationBlock)operationBlock {
+- (void)compositeOperation:(COCompositeOperationConcurrencyType)concurrencyType operation: (COCompositeOperationBlock)operationBlock {
     COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:concurrencyType];
 
     compositeOperation.operation = operationBlock;
@@ -179,7 +179,7 @@
 }
 
 #pragma mark
-#pragma mark SAOperation
+#pragma mark COOperation
 
 - (void)main {
     self.operation(self);
@@ -192,7 +192,7 @@
 - (void)cancel {
     @synchronized(self) {
         if (self.isFinished == NO && self.isCancelled == NO && self.isSuspended == NO) {
-            [self _cancelSuboperations:YES];
+            [self _cancelOperations:YES];
 
             self.state = COOperationStateCancelled;
         }
@@ -200,7 +200,7 @@
 }
 
 #pragma mark
-#pragma mark SAOperation: Rerun / Awake
+#pragma mark COOperation: Rerun / Awake
 
 - (void)awake {
     if (self.isCancelled == NO && self.isFinished == NO) {
@@ -215,13 +215,15 @@
 }
 
 #pragma mark
-#pragma mark SAOperation: Suspend / Resume
+#pragma mark COOperation: Suspend / Resume
 
 - (void)suspend {
     if (self.isFinished == NO && self.isCancelled == NO && self.isSuspended == NO) {
-        [[self.operations copy] makeObjectsPerformSelector:@selector(suspend)];
+        @synchronized(self) {
+            [self.operations makeObjectsPerformSelector:@selector(suspend)];
 
-        [super suspend];
+            [super suspend];
+        }
     }
 }
 
@@ -240,7 +242,57 @@
 }
 
 #pragma mark
-#pragma mark Private methods
+#pragma mark KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context {
+
+    if ([object isEqual:self]) {
+        [self _teardown];
+    } else {
+        @synchronized(self) {
+            [object removeObserver:self forKeyPath:@"isFinished"];
+            [object removeObserver:self forKeyPath:@"isCancelled"];
+        }
+
+        COOperation *operation = (COOperation *)object;
+
+        if ([keyPath isEqual:@"isFinished"]) {
+            [self _operationWasFinished:operation];
+        } else if ([keyPath isEqual:@"isCancelled"]) {
+            [self _operationWasCancelled:operation];
+        }
+    }
+}
+
+#pragma mark
+#pragma mark Private (level 0)
+
+- (void)_cancelOperations:(BOOL)runCompletionBlocks {
+    NSArray *operations;
+
+    @synchronized(self) {
+        operations = [self.operations copy];
+    }
+
+    [operations enumerateObjectsUsingBlock:^(COOperation *operation, NSUInteger idx, BOOL *stop) {
+        if (operation.isCancelled == NO && operation.isFinished == NO) {
+            if (operation.isReady == NO) {
+                [operation removeObserver:self forKeyPath:@"isFinished"];
+                [operation removeObserver:self forKeyPath:@"isCancelled"];
+            }
+
+            [operation cancel];
+
+            if (operation.completionBlock && runCompletionBlocks) operation.completionBlock();
+        }
+    }];
+}
+
+#pragma mark
+#pragma mark Private (level 1)
 
 - (void)_teardown {
     for (COOperation *operation in self.operations) {
@@ -248,10 +300,6 @@
     }
 
     self.operations = nil;
-}
-
-- (void)_enqueueSuboperation:(COOperation *)subOperation {
-    //
 }
 
 - (void)_registerSuboperation:(COOperation *)subOperation {
@@ -287,60 +335,19 @@
     [self _runSuboperation:operation];
 }
 
-- (void)_cancelSuboperations:(BOOL)runCompletionBlocks {
-    NSArray *subOperations;
-
+- (void)_operationWasCancelled:(COOperation *)subOperation {
+    // TODO: cancelled when operation is suspended
     @synchronized(self) {
-        subOperations = [self.operations copy];
+        self.completionBlock();
     }
-
-    [subOperations enumerateObjectsUsingBlock:^(COOperation *operation, NSUInteger idx, BOOL *stop) {
-        if (operation.isCancelled == NO && operation.isFinished == NO) {
-            if (operation.isReady == NO) {
-                [operation removeObserver:self forKeyPath:@"isFinished"];
-                [operation removeObserver:self forKeyPath:@"isCancelled"];
-            }
-
-            [operation cancel];
-
-            if (operation.completionBlock && runCompletionBlocks) operation.completionBlock();
-        }
-    }];
 }
 
-- (void)subOperationWasCancelled:(COOperation *)subOperation {
-    self.completionBlock();
-}
-
-- (void)subOperationWasFinished:(COOperation *)subOperation {
+- (void)_operationWasFinished:(COOperation *)subOperation {
     @synchronized(self) {
         [self.operations removeObject:subOperation];
     }
 
     [self.internal _performCheckpointRoutine];
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath
-                      ofObject:(id)object
-                        change:(NSDictionary *)change
-                       context:(void *)context {
-
-    if ([object isEqual:self]) {
-        [self _teardown];
-    } else {
-        @synchronized(self) {
-            [object removeObserver:self forKeyPath:@"isFinished"];
-            [object removeObserver:self forKeyPath:@"isCancelled"];
-        }
-
-        COOperation *operation = (COOperation *)object;
-
-        if ([keyPath isEqual:@"isFinished"]) {
-            [self subOperationWasFinished:operation];
-        } else if ([keyPath isEqual:@"isCancelled"]) {
-            [self subOperationWasCancelled:operation];
-        }
-    }
 }
 
 @end

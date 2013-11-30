@@ -7,10 +7,10 @@
 #import "CompositeOperations.h"
 #import "COOperation_Private.h"
 
-@interface SAOperationTests : SenTestCase
+@interface COOperationTests : SenTestCase
 @end
 
-@implementation SAOperationTests
+@implementation COOperationTests
 
 #pragma mark
 #pragma mark NSOperation's roots

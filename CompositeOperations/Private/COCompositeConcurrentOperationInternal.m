@@ -1,6 +1,6 @@
 // CompositeOperations
 //
-// CompositeOperations/COCompositeOperation.m
+// CompositeOperations/COCompositeConcurrentOperationInternal.m
 //
 // Copyright (c) 2013 Stanislaw Pankevich
 // Released under the MIT license
@@ -11,10 +11,19 @@
 #import "COOperation_Private.h"
 #import "COCompositeOperation_Private.h"
 
-@interface COCompositeConcurrentOperationInternal ()
-@end
-
 @implementation COCompositeConcurrentOperationInternal
+
+@synthesize compositeOperation = _compositeOperation;
+
+- (instancetype)initWithCompositeOperation:(COCompositeOperation *)compositeOperation {
+    self = [self init];
+
+    if (self == nil) return nil;
+
+    self.compositeOperation = compositeOperation;
+
+    return self;
+}
 
 - (void)_enqueueSuboperation:(COOperation *)subOperation {
     if (self.compositeOperation.isFinished) [NSException raise: NSInvalidArgumentException format: @"[%@-%@] suboperation cannot be added to the finished transactional operation", NSStringFromClass(self.class), NSStringFromSelector(_cmd)];
@@ -22,7 +31,7 @@
     [self.compositeOperation _registerSuboperation:subOperation];
 
     if (self.compositeOperation.isSuspended == NO) {
-        __block NSUInteger areThereCancelledOperations;
+        NSUInteger areThereCancelledOperations;
 
         @synchronized(self.compositeOperation) {
             areThereCancelledOperations = [self.compositeOperation.operations indexOfObjectPassingTest:^BOOL(COOperation *operation, NSUInteger idx, BOOL *stop) {
@@ -45,7 +54,7 @@
 
 - (void)_performCheckpointRoutine {
     if (self.compositeOperation.allSuboperationsRegistered && self.compositeOperation.isCancelled == NO) {
-        __block NSUInteger operationsCount;
+        NSUInteger operationsCount;
 
         @synchronized(self.compositeOperation) {
             operationsCount = self.compositeOperation.operations.count;

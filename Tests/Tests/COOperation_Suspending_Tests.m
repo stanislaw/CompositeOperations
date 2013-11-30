@@ -3,10 +3,10 @@
 
 #import "COOperation.h"
 
-@interface SAOperation_Suspending_Tests : SenTestCase
+@interface COOperation_Suspending_Tests : SenTestCase
 @end
 
-@implementation SAOperation_Suspending_Tests
+@implementation COOperation_Suspending_Tests
 
 - (void)test_suspend_whenNotRunning {
     __block BOOL isDone = NO;

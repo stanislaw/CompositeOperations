@@ -178,7 +178,7 @@
             });
         }];
 
-        [compositeOperation compositeOperation:COCompositeOperationConcurrent block:^(COCompositeOperation *to) {
+        [compositeOperation compositeOperation:COCompositeOperationConcurrent operation:^(COCompositeOperation *to) {
             [to operation:^(COOperation *tao) {
                 @synchronized(countArr) {
                     [countArr addObject:@1];
@@ -345,28 +345,30 @@
     __block BOOL isFinished = NO;
     NSMutableArray *countArr = [NSMutableArray array];
 
-    compositeOperation(COCompositeOperationConcurrent, ^(COCompositeOperation *to) {
-        [to operationInQueue:concurrentQueue() operation:^(COOperation *tao) {
+    compositeOperation(COCompositeOperationConcurrent, ^(COCompositeOperation *compositeOperation) {
+        [compositeOperation operationInQueue:concurrentQueue() operation:^(COOperation *operation) {
             @synchronized(countArr) {
                 [countArr addObject:@1];
             }
-            [tao finish];
+            [operation finish];
         }];
-        [to operationInQueue:concurrentQueue() operation:^(COOperation *tao) {
+        [compositeOperation operationInQueue:concurrentQueue() operation:^(COOperation *operation) {
             @synchronized(countArr) {
                 [countArr addObject:@1];
             }
-            [tao finish];
+            [operation finish];
         }];
-        [to operationInQueue:concurrentQueue() operation:^(COOperation *tao) {
+        [compositeOperation operationInQueue:concurrentQueue() operation:^(COOperation *operation) {
             @synchronized(countArr) {
                 [countArr addObject:@1];
             }
-            [tao finish];
+            [operation finish];
         }];
     }, ^{
         isFinished = YES;
-    }, nil);
+    }, ^(COCompositeOperation *compositeOperation){
+        raiseShouldNotReachHere();
+    });
 
     while (!isFinished);
 
@@ -396,7 +398,7 @@
                 });
             }];
 
-            [to compositeOperation:COCompositeOperationConcurrent block:^(COCompositeOperation *co) {
+            [to compositeOperation:COCompositeOperationConcurrent operation:^(COCompositeOperation *co) {
                 [co operation:^(COOperation *o) {
                     @synchronized(countArr) {
                         [countArr addObject:@1];
@@ -432,21 +434,21 @@
     compositeOperation(COCompositeOperationConcurrent, ^(COCompositeOperation *compositeOperation) {
         cascOp = compositeOperation;
         
-        [compositeOperation compositeOperation:COCompositeOperationConcurrent block:^(COCompositeOperation *compositeOperation) {
-            [compositeOperation compositeOperation:COCompositeOperationConcurrent block:^(COCompositeOperation *compositeOperation) {
-                [compositeOperation compositeOperation:COCompositeOperationConcurrent block:^(COCompositeOperation *compositeOperation) {
-                    [compositeOperation compositeOperation:COCompositeOperationConcurrent block:^(COCompositeOperation *compositeOperation) {
+        [compositeOperation compositeOperation:COCompositeOperationConcurrent operation:^(COCompositeOperation *compositeOperation) {
+            [compositeOperation compositeOperation:COCompositeOperationSerial operation:^(COCompositeOperation *compositeOperation) {
+                [compositeOperation compositeOperation:COCompositeOperationConcurrent operation:^(COCompositeOperation *compositeOperation) {
+                    [compositeOperation compositeOperation:COCompositeOperationConcurrent operation:^(COCompositeOperation *compositeOperation) {
                         [compositeOperation operation:^(COOperation *operation) {
                             [operation finish];
                         }];
 
-                        [compositeOperation compositeOperation:COCompositeOperationConcurrent block:^(COCompositeOperation *compositeOperation) {
+                        [compositeOperation compositeOperation:COCompositeOperationConcurrent operation:^(COCompositeOperation *compositeOperation) {
                             [compositeOperation operation:^(COOperation *operation) {
                                 [operation finish];
                             }];
                         }];
 
-                        [compositeOperation compositeOperation:COCompositeOperationConcurrent block:^(COCompositeOperation *compositeOperation) {
+                        [compositeOperation compositeOperation:COCompositeOperationConcurrent operation:^(COCompositeOperation *compositeOperation) {
                             [compositeOperation operation:^(COOperation *operation) {
                                 reachedTheLastAndTheMostNestedOperation = YES;
                                 [operation finish];

@@ -7,7 +7,6 @@
 
 #import <Foundation/Foundation.h>
 #import "COTypedefs.h"
-#import "COOperationResolver.h"
 
 @interface COOperation : NSOperation
 
@@ -19,8 +18,6 @@
 @property (readonly) BOOL isFinished;
 @property (readonly) BOOL isCancelled;
 @property (readonly) BOOL isSuspended;
-
-@property NSUInteger numberOfRuns;
 
 - (void)run:(COOperationBlock)operationBlock;
 - (void)runInQueue:(dispatch_queue_t)queue operation:(COOperationBlock)operationBlock;
@@ -37,9 +34,5 @@
 // Suspending
 - (void)suspend;
 - (void)resume;
-
-// Resolution
-- (void)resolveWithResolver:(id <COOperationResolver>)operationResolver;
-- (void)resolveWithResolver:(id <COOperationResolver>)operationResolver usingResolutionStrategy:(id)resolutionStrategy fallbackHandler:(COCompletionBlock)fallbackHandler;
 
 @end
