@@ -6,20 +6,22 @@
 // Released under the MIT license
 
 @class COOperation;
-@class COTransactionalOperation;
-@class COCascadeOperation;
+@class COCompositeOperation;
 
 // Operation blocks
 typedef void (^COBlock)(void);
 typedef void (^COOperationBlock)(COOperation *operation);
-typedef void (^COTransactionalOperationBlock)(COTransactionalOperation *transactionalOperation);
-typedef void (^COCascadeOperationBlock)(COCascadeOperation *cascadeOperation);
+typedef void (^COCompositeOperationBlock)(COCompositeOperation *compositeOperation);
 
 // Completion and cancellation blocks
 // Gotcha: in the following typedef the second "void" is important to have overloading picked up
 typedef void (^COCompletionBlock)(void);
 typedef void (^COCancellationBlockForOperation)(void);
-typedef void (^COCancellationBlockForTransactionalOperation)(COTransactionalOperation *transactionalOperation);
-typedef void (^COCancellationBlockForCascadeOperation)(COCascadeOperation *cascadeOperation);
+typedef void (^COCancellationBlockForCompositeOperation)(COCompositeOperation *compositeOperation);
 
 typedef void (^COModificationBlock)(id data);
+
+typedef NS_ENUM(NSUInteger, COCompositeOperationConcurrencyType) {
+    COCompositeOperationSerial = 1,
+    COCompositeOperationConcurrent = 4
+};

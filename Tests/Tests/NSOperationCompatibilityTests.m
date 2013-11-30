@@ -3,10 +3,10 @@
 #import "TestHelpers.h"
 
 #import "CompositeOperations.h"
-#import "COCascadeOperation.h"
+#import "COCompositeOperation.h"
 #import "COOperation_Private.h"
 
-#import "COTransactionalOperation.h"
+#import "COCompositeOperation.h"
 #import "COQueues.h"
 
 @interface NSOperationCompatibilityTests : SenTestCase

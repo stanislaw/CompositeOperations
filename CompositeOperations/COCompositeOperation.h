@@ -8,45 +8,30 @@
 #import <Foundation/Foundation.h>
 
 #import "COOperation.h"
+#import "COTypedefs.h"
 
-@protocol COCompositeOperation <NSObject>
-- (void)enqueueSuboperation:(COOperation *)subOperation;
+@interface COCompositeOperation : COOperation
 
-- (void)performCheckpointRoutine;
-- (void)performAwakeRoutine;
-- (void)performResumeRoutine;
-
-- (void)subOperationWasFinished:(COOperation *)subOperation;
-- (void)subOperationWasCancelled:(COOperation *)subOperation;
-@end
-
-@interface COAbstractCompositeOperation : COOperation
+- (id)initWithConcurrencyType:(COCompositeOperationConcurrencyType)concurrencyType;
+@property (copy) COCompositeOperationBlock operation;
 
 // Public API: Inner operations
 - (void)operation:(COOperationBlock)operationBlock;
 - (void)operationInQueue:(dispatch_queue_t)queue operation:(COOperationBlock)operationBlock;
 
+- (void)run:(COCompositeOperationBlock)operationBlock __attribute__((unavailable("must run cascade operation with 'run:completionHandler:cancellationHandler:' instead.")));
+- (void)runInQueue:(dispatch_queue_t)queue operation:(COCompositeOperationBlock)operationBlock __attribute__((unavailable("must run cascade operation with 'run:completionHandler:cancellationHandler:' instead.")));
+
+- (void)run:(COCompositeOperationBlock)operationBlock completionHandler:(COCompletionBlock)completionHandler cancellationHandler:(COCancellationBlockForCompositeOperation)cancellationHandler;
+
+
 // Public API: Inner composite operations
-- (void)transactionalOperation:(COTransactionalOperationBlock)operationBlock;
-- (void)cascadeOperation:(COCascadeOperationBlock)operationBlock;
+- (void)compositeOperation:(COCompositeOperationConcurrencyType)concurrencyType block: (COCompositeOperationBlock)operationBlock;
 
 // Shared data
 @property (strong) id sharedData;
 - (void)modifySharedData:(COModificationBlock)modificationBlock;
-
-@end
-
-@interface COAbstractCompositeOperation () <COCompositeOperation>
-
-@property (strong) NSMutableArray *operations;
+@property (strong, nonatomic) NSMutableArray *operations;
 @property BOOL allSuboperationsRegistered;
-
-- (void)_teardown;
-
-- (void)_registerSuboperation:(COOperation *)subOperation;
-- (void)_runSuboperation:(COOperation *)subOperation;
-- (void)_runSuboperationAtIndex:(NSUInteger)indexOfSuboperationToRun;
-
-- (void)_cancelSuboperations:(BOOL)runCompletionBlocks;
 
 @end

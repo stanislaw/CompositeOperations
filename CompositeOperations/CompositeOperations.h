@@ -10,8 +10,7 @@
 #import "COTypedefs.h"
 
 #import "COOperation.h"
-#import "COTransactionalOperation.h"
-#import "COCascadeOperation.h"
+#import "COCompositeOperation.h"
 
 #import "COOperationQueue.h"
 
@@ -20,8 +19,6 @@ void  __attribute__((overloadable)) operation(dispatch_queue_t queue, COOperatio
 void  __attribute__((overloadable)) operation(id queue, COOperationBlock block);
 void  __attribute__((overloadable)) operation(id queue, COOperationBlock block, COCompletionBlock completionHandler, COCancellationBlockForOperation cancellationHandler);
 
-void __attribute__((overloadable)) cascadeOperation(COCascadeOperationBlock block, COCompletionBlock completionHandler, COCancellationBlockForCascadeOperation cancellationHandler);
-void __attribute__((overloadable)) cascadeOperation(id queue, COCascadeOperationBlock block, COCompletionBlock completionHandler, COCancellationBlockForCascadeOperation cancellationHandler);
+void __attribute__((overloadable)) compositeOperation(COCompositeOperationConcurrencyType concurrencyType, COCompositeOperationBlock block, COCompletionBlock completionHandler, COCancellationBlockForCompositeOperation cancellationHandler);
+void __attribute__((overloadable)) compositeOperation(COCompositeOperationConcurrencyType concurrencyType, id queue, COCompositeOperationBlock block, COCompletionBlock completionHandler, COCancellationBlockForCompositeOperation cancellationHandler);
 
-void __attribute__((overloadable)) transactionalOperation(COTransactionalOperationBlock block, COCompletionBlock completionHandler, COCancellationBlockForTransactionalOperation cancellationHandler);
-void __attribute__((overloadable)) transactionalOperation(id queue, COTransactionalOperationBlock block, COCompletionBlock completionHandler, COCancellationBlockForTransactionalOperation cancellationHandler);

@@ -3,9 +3,9 @@
 #import "TestHelpers.h"
 
 #import "CompositeOperations.h"
-#import "COCascadeOperation.h"
+#import "COCompositeOperation.h"
 
-#import "COTransactionalOperation.h"
+#import "COCompositeOperation.h"
 #import "COQueues.h"
 
 #import "COOperation_Private.h"
@@ -38,16 +38,16 @@
     STAssertTrue(oOver, @"Expected aoOver to be YES");
 }
 
-- (void)test_cascadeOperation_in_NSOperationQueue_basic_test {
+- (void)test_compositeOperation_in_NSOperationQueue_basic_test {
     NSOperationQueue *opQueue = [[NSOperationQueue alloc] init];
     
     __block int count = 0;
     __block BOOL isFinished = NO;
     __block BOOL firstJobIsDone = NO, secondJobIsDone = NO, thirdJobIsDone = NO;
 
-    COCascadeOperation *cOperation = [COCascadeOperation new];
+    COCompositeOperation *cOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
 
-    cOperation.operation = ^(COCascadeOperation *co) {
+    cOperation.operation = ^(COCompositeOperation *co) {
         [co operation:^(COOperation *cao) {
             asynchronousJob(^{
                 count = count + 1;
@@ -102,14 +102,14 @@
     STAssertEquals(count, 3, @"Expected count to be equal 3");
 }
 
-- (void)test_cascadeOperation_in_NSOperationQueue {
+- (void)test_compositeOperation_in_NSOperationQueue {
     NSOperationQueue *opQueue = [[NSOperationQueue alloc] init];
 
     __block int count = 0;
     __block BOOL isFinished = NO;
     __block BOOL firstJobIsDone = NO, secondJobIsDone = NO, thirdJobIsDone = NO;
 
-    cascadeOperation(opQueue, ^(COCascadeOperation *co) {
+    compositeOperation(COCompositeOperationSerial, opQueue, ^(COCompositeOperation *co) {
         [co operation:^(COOperation *cao) {
             asynchronousJob(^{
                 count = count + 1;
@@ -168,22 +168,22 @@
 
     NSOperationQueue *opQueue = [[NSOperationQueue alloc] init];
 
-    COTransactionalOperation *to = [COTransactionalOperation new];
+    COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent];
 
-    to.operation = ^(COTransactionalOperation *to) {
-        [to operationInQueue:concurrentQueue() operation:^(COOperation *tao) {
+    compositeOperation.operation = ^(COCompositeOperation *compositeOperation) {
+        [compositeOperation operationInQueue:concurrentQueue() operation:^(COOperation *tao) {
             @synchronized(countArr) {
                 [countArr addObject:@1];
             }
             [tao finish];
         }];
-        [to operationInQueue:concurrentQueue() operation:^(COOperation *tao) {
+        [compositeOperation operationInQueue:concurrentQueue() operation:^(COOperation *tao) {
             @synchronized(countArr) {
                 [countArr addObject:@1];
             }
             [tao finish];
         }];
-        [to operationInQueue:concurrentQueue() operation:^(COOperation *tao) {
+        [compositeOperation operationInQueue:concurrentQueue() operation:^(COOperation *tao) {
             @synchronized(countArr) {
                 [countArr addObject:@1];
             }
@@ -191,11 +191,11 @@
         }];
     };
 
-    to.completionBlock = ^{
+    compositeOperation.completionBlock = ^{
         isFinished = YES;
     };
 
-    [opQueue addOperation:to];
+    [opQueue addOperation:compositeOperation];
     
     while (!isFinished);
 
@@ -208,7 +208,7 @@
 
     NSOperationQueue *opQueue = [[NSOperationQueue alloc] init];
 
-    transactionalOperation(opQueue, ^(COTransactionalOperation *to) {
+    compositeOperation(COCompositeOperationConcurrent, opQueue, ^(COCompositeOperation *to) {
         [to operationInQueue:concurrentQueue() operation:^(COOperation *tao) {
             @synchronized(countArr) {
                 [countArr addObject:@1];

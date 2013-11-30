@@ -3,9 +3,8 @@
 #import "TestHelpers.h"
 
 #import "CompositeOperations.h"
-#import "COCascadeOperation.h"
+#import "COCompositeOperation.h"
 
-#import "COTransactionalOperation.h"
 #import "COQueues.h"
 
 @interface HighLoadTests : SenTestCase
@@ -15,7 +14,7 @@ static int const N = 10;
 
 @implementation HighLoadTests
 
-- (void) test_operation_high_load {
+- (void)test_operation_high_load {
     NSMutableArray *countArr = [NSMutableArray array];
 
     __block BOOL isFinished = NO;
@@ -27,8 +26,9 @@ static int const N = 10;
                 [countArr addObject:@1];
             }
 
-            if (j == N) isFinished = YES;
             [o finish];
+
+            if (j == N) isFinished = YES;
         });
     }
 
@@ -41,9 +41,9 @@ static int const N = 10;
 
     __block BOOL isFinished = NO;
 
-    COTransactionalOperation *to = [COTransactionalOperation new];
+    COCompositeOperation *to = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent];
 
-    [to run:^(COTransactionalOperation *to) {
+    [to run:^(COCompositeOperation *to) {
         for (int j = 1; j <= N; j++) {
             [to operation:^(COOperation *o) {
                 @synchronized(countArr) {

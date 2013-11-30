@@ -59,6 +59,9 @@ static int finishedOperationsCount;
 }
 
 - (void)test_COOperationQueue_addOperation_max_limit_0 {
+    for(int i = 0; i < 1; i++) {
+    finishedOperationsCount = 0;
+
     int N = 100;
 
     NSMutableArray *countArr = [NSMutableArray array];
@@ -94,6 +97,7 @@ static int finishedOperationsCount;
     STAssertEquals((int)countArr.count, N, nil);
 
     STAssertEquals(finishedOperationsCount, N, @"Expected finishedOperationsCount to be 100");
+    }
 }
 
 - (void)test_COOperationQueue_addOperation_max_limit_1 {

@@ -63,8 +63,8 @@
     __block BOOL isFinished = NO;
     __block BOOL firstJobIsDone = NO, secondJobIsDone = NO, thirdJobIsDone = NO;
 
-    cascadeOperation(^(COCascadeOperation *rco) {
-        [rco operation:^(COOperation *rao) {
+    compositeOperation(COCompositeOperationSerial, ^(COCompositeOperation *compositeOperation) {
+        [compositeOperation operation:^(COOperation *rao) {
             asynchronousJob(^{
                 count = count + 1;
 
@@ -79,7 +79,7 @@
             });
         }];
 
-        [rco operation:^(COOperation *rao) {
+        [compositeOperation operation:^(COOperation *rao) {
             asynchronousJob(^{
                 count = count + 1;
 
@@ -95,7 +95,7 @@
             });
         }];
 
-        [rco operation:^(COOperation *rao) {
+        [compositeOperation operation:^(COOperation *rao) {
             asynchronousJob(^{
                 count = count + 1;
 
@@ -123,8 +123,8 @@
 
     __block NSMutableString *accResult = [NSMutableString string];
 
-    cascadeOperation(^(COCascadeOperation *co) {
-        [co operation:^(COOperation *rao) {
+    compositeOperation(COCompositeOperationSerial, ^(COCompositeOperation *compositeOperation) {
+        [compositeOperation operation:^(COOperation *rao) {
             asynchronousJob(^{
                 @synchronized(countArr) {
                     [countArr addObject:@1];
@@ -142,7 +142,7 @@
             });
         }];
 
-        [co operation:^(COOperation *rao) {
+        [compositeOperation operation:^(COOperation *rao) {
             asynchronousJob(^{
                 @synchronized(countArr) {
                     [countArr addObject:@1];
@@ -161,7 +161,7 @@
             });
         }];
 
-        [co operation:^(COOperation *rao) {
+        [compositeOperation operation:^(COOperation *rao) {
             asynchronousJob(^{
                 @synchronized(countArr) {
                     [countArr addObject:@1];
@@ -178,7 +178,7 @@
             });
         }];
 
-        [co transactionalOperation:^(COTransactionalOperation *to) {
+        [compositeOperation compositeOperation:COCompositeOperationConcurrent block:^(COCompositeOperation *to) {
             [to operation:^(COOperation *tao) {
                 @synchronized(countArr) {
                     [countArr addObject:@1];
@@ -204,7 +204,7 @@
             }];
         }];
 
-        [co operation:^(COOperation *cuo) {
+        [compositeOperation operation:^(COOperation *cuo) {
             [cuo finish];
             isFinished = YES;
         }];
@@ -217,15 +217,15 @@
 
 }
 
-- (void)test_cascadeOperation_in_operation_queue {
+- (void)test_compositeOperation_in_operation_queue {
     COOperationQueue *opQueue = [COOperationQueue new];
     opQueue.queue = concurrentQueue();
     
     __block int count = 0;
     __block BOOL isFinished = NO;
 
-    cascadeOperation(opQueue, ^(COCascadeOperation *sco) {
-        [sco operation:^(COOperation *cao) {
+    compositeOperation(COCompositeOperationSerial, opQueue, ^(COCompositeOperation *compositeOperation) {
+        [compositeOperation operation:^(COOperation *cao) {
             count = count + 1;
 
             STAssertEquals((int)count, 1, @"Expected count to be equal 1 inside the first operation");
@@ -233,7 +233,7 @@
             [cao finish];
         }];
 
-        [sco operation:^(COOperation *cao) {
+        [compositeOperation operation:^(COOperation *cao) {
             count = count + 1;
 
             STAssertEquals((int)count, 2, @"Expected count to be equal 2 inside the second operation");
@@ -241,7 +241,7 @@
             [cao finish];
         }];
 
-        [sco operation:^(COOperation *cao) {
+        [compositeOperation operation:^(COOperation *cao) {
             count = count + 1;
 
             STAssertEquals((int)count, 3, @"Expected count to be equal 3 inside the third operation");
@@ -264,9 +264,9 @@
 
     COSetDefaultQueue(concurrentQueue());
     
-    transactionalOperation(^(COTransactionalOperation *to) {
+    compositeOperation(COCompositeOperationConcurrent, ^(COCompositeOperation *compositeOperation) {
         for (int i = 1; i <= 30; i++) {
-            [to operation:^(COOperation *tao) {
+            [compositeOperation operation:^(COOperation *operation) {
 
                 @synchronized(countArr) {
                     [countArr addObject:@1];
@@ -276,7 +276,7 @@
                    [accResult appendString:[NSString stringWithFormat:@"%d", i]];
                 }
 
-                [tao finish];
+                [operation finish];
             }];
         }
     }, ^{
@@ -303,7 +303,7 @@
     STAssertEquals((int)opQueue.pendingOperations.count, 0, nil);
     STAssertEquals((int)opQueue.runningOperations.count, 0, nil);
 
-    transactionalOperation(opQueue, ^(COTransactionalOperation *to) {
+    compositeOperation(COCompositeOperationConcurrent, opQueue, ^(COCompositeOperation *to) {
         STAssertEquals((int)opQueue.runningOperations.count, 1, nil);
 
         [to operation:^(COOperation *tao) {
@@ -334,7 +334,7 @@
         }];
     }, ^{
         isFinished = YES;
-    }, ^(COTransactionalOperation *to){});
+    }, ^(COCompositeOperation *to){});
 
     while (!isFinished);
 
@@ -345,7 +345,7 @@
     __block BOOL isFinished = NO;
     NSMutableArray *countArr = [NSMutableArray array];
 
-    transactionalOperation(^(COTransactionalOperation *to) {
+    compositeOperation(COCompositeOperationConcurrent, ^(COCompositeOperation *to) {
         [to operationInQueue:concurrentQueue() operation:^(COOperation *tao) {
             @synchronized(countArr) {
                 [countArr addObject:@1];
@@ -379,7 +379,7 @@
     NSMutableArray *countArr = [NSMutableArray array];
 
     dispatch_sync(createQueue(), ^{
-        transactionalOperation(^(COTransactionalOperation *to) {
+        compositeOperation(COCompositeOperationConcurrent, ^(COCompositeOperation *to) {
             [to operation:^(COOperation *o) {
                 @synchronized(countArr) {
                     [countArr addObject:@1];
@@ -396,7 +396,7 @@
                 });
             }];
 
-            [to cascadeOperation:^(COCascadeOperation *co) {
+            [to compositeOperation:COCompositeOperationConcurrent block:^(COCompositeOperation *co) {
                 [co operation:^(COOperation *o) {
                     @synchronized(countArr) {
                         [countArr addObject:@1];
@@ -427,27 +427,27 @@
     __block BOOL isDone = NO;
     __block BOOL reachedTheLastAndTheMostNestedOperation = NO;
     
-    __block COCascadeOperation *cascOp;
+    __block COCompositeOperation *cascOp;
 
-    cascadeOperation(^(COCascadeOperation *cascadeOperation) {
-        cascOp = cascadeOperation;
+    compositeOperation(COCompositeOperationConcurrent, ^(COCompositeOperation *compositeOperation) {
+        cascOp = compositeOperation;
         
-        [cascadeOperation cascadeOperation:^(COCascadeOperation *cascadeOperation) {
-            [cascadeOperation cascadeOperation:^(COCascadeOperation *cascadeOperation) {
-                [cascadeOperation transactionalOperation:^(COTransactionalOperation *transactionalOperation) {
-                    [transactionalOperation cascadeOperation:^(COCascadeOperation *cascadeOperation) {
-                        [cascadeOperation operation:^(COOperation *operation) {
+        [compositeOperation compositeOperation:COCompositeOperationConcurrent block:^(COCompositeOperation *compositeOperation) {
+            [compositeOperation compositeOperation:COCompositeOperationConcurrent block:^(COCompositeOperation *compositeOperation) {
+                [compositeOperation compositeOperation:COCompositeOperationConcurrent block:^(COCompositeOperation *compositeOperation) {
+                    [compositeOperation compositeOperation:COCompositeOperationConcurrent block:^(COCompositeOperation *compositeOperation) {
+                        [compositeOperation operation:^(COOperation *operation) {
                             [operation finish];
                         }];
 
-                        [transactionalOperation cascadeOperation:^(COCascadeOperation *cascadeOperation) {
-                            [cascadeOperation operation:^(COOperation *operation) {
+                        [compositeOperation compositeOperation:COCompositeOperationConcurrent block:^(COCompositeOperation *compositeOperation) {
+                            [compositeOperation operation:^(COOperation *operation) {
                                 [operation finish];
                             }];
                         }];
 
-                        [transactionalOperation cascadeOperation:^(COCascadeOperation *cascadeOperation) {
-                            [cascadeOperation operation:^(COOperation *operation) {
+                        [compositeOperation compositeOperation:COCompositeOperationConcurrent block:^(COCompositeOperation *compositeOperation) {
+                            [compositeOperation operation:^(COOperation *operation) {
                                 reachedTheLastAndTheMostNestedOperation = YES;
                                 [operation finish];
                             }];
@@ -455,19 +455,21 @@
                     }];
                 }];
 
-                [cascadeOperation operation:^(COOperation *operation) {
-                    isDone = YES;
+                [compositeOperation operation:^(COOperation *operation) {
+                    [operation finish];
                 }];
             }];
         }];
 
-        [cascadeOperation operation:^(COOperation *operation) {
+        [compositeOperation operation:^(COOperation *operation) {
             [operation finish];
         }];
     }, ^{
+        isDone = YES;
+
         STAssertTrue(cascOp.isFinished, nil);
         STAssertTrue(reachedTheLastAndTheMostNestedOperation, nil);
-    }, ^(COCascadeOperation *cascade){
+    }, ^(COCompositeOperation *cascade){
         raiseShouldNotReachHere();
     });
 

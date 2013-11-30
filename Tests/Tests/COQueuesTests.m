@@ -2,26 +2,27 @@
 #import <SenTestingKit/SenTestingKit.h>
 #import "TestHelpers.h"
 
-#import "COCascadeOperation.h"
-#import "COTransactionalOperation.h"
+#import "COCompositeOperation.h"
+#import "COCompositeOperation.h"
 
 #import "COQueues.h"
 
-@interface SAQueuesTests : SenTestCase
-@end
+SPEC_BEGIN(SAQueuesSpecs)
 
-@implementation SAQueuesTests
+describe(@"SAQueues", ^{
+    it(@"", ^{
+        [[theValue(CODefaultQueue() == concurrentQueue()) should] beYes];
 
-- (void) test_defaultQueue_and_setDefaultQueue {
-    STAssertTrue((CODefaultQueue() == concurrentQueue()), @"Expected default queue to be nil");
+        COSetDefaultQueue(dispatch_get_main_queue());
 
-    COSetDefaultQueue(dispatch_get_main_queue());
+        [[theValue(CODefaultQueue() == dispatch_get_main_queue()) should] beYes];
 
-    STAssertEquals(CODefaultQueue(), dispatch_get_main_queue(), @"Expected defaultQueue() to be equal to main_queue()");
+        COSetDefaultQueue(nil);
 
-    COSetDefaultQueue(nil);
+        [[theBlock(^{
+            CODefaultQueue();
+        }) should] raiseWithName:NSInternalInconsistencyException];
+    });
+});
 
-    STAssertThrowsSpecific(CODefaultQueue(), NSException, @"Expected default queue to be nil after setting to nil by setDefaultQueue");
-}
-
-@end
+SPEC_END

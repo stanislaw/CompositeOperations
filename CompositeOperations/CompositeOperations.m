@@ -35,28 +35,15 @@ void  __attribute__((overloadable)) operation(id queue, COOperationBlock block, 
     [operation run:block completionHandler:completionHandler cancellationHandler:cancellationHandler];
 }
 
-void __attribute__((overloadable)) cascadeOperation(COCascadeOperationBlock block, COCompletionBlock completionHandler, COCancellationBlockForCascadeOperation cancellationHandler) {
-    COCascadeOperation *co = [COCascadeOperation new];
+void __attribute__((overloadable)) compositeOperation(COCompositeOperationConcurrencyType concurrencyType, COCompositeOperationBlock block, COCompletionBlock completionHandler, COCancellationBlockForCompositeOperation cancellationHandler) {
+    COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:concurrencyType];
 
-    [co run:block completionHandler:completionHandler cancellationHandler:cancellationHandler];
+    [compositeOperation run:block completionHandler:completionHandler cancellationHandler:cancellationHandler];
 }
 
-void __attribute__((overloadable)) cascadeOperation(id queue, COCascadeOperationBlock block, COCompletionBlock completionHandler, COCancellationBlockForCascadeOperation cancellationHandler) {
-    COCascadeOperation *co = [COCascadeOperation new];
-    co.operationQueue = queue;
+void __attribute__((overloadable)) compositeOperation(COCompositeOperationConcurrencyType concurrencyType, id queue, COCompositeOperationBlock block, COCompletionBlock completionHandler, COCancellationBlockForCompositeOperation cancellationHandler) {
+    COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:concurrencyType];
+    compositeOperation.operationQueue = queue;
     
-    [co run:block completionHandler:completionHandler cancellationHandler:cancellationHandler];
-}
-
-void __attribute__((overloadable)) transactionalOperation(COTransactionalOperationBlock block, COCompletionBlock completionHandler, COCancellationBlockForTransactionalOperation cancellationHandler) {
-    COTransactionalOperation *to = [COTransactionalOperation new];
-    
-    [to run:block completionHandler:completionHandler cancellationHandler:cancellationHandler];
-}
-
-void __attribute__((overloadable)) transactionalOperation(id queue, COTransactionalOperationBlock block, COCompletionBlock completionHandler, COCancellationBlockForTransactionalOperation cancellationHandler) {
-    COTransactionalOperation *to = [COTransactionalOperation new];
-    to.operationQueue = queue;
-
-    [to run:block completionHandler:completionHandler cancellationHandler:cancellationHandler];
+    [compositeOperation run:block completionHandler:completionHandler cancellationHandler:cancellationHandler];
 }

@@ -13,10 +13,13 @@
 static dispatch_queue_t defaultQueue;
 
 dispatch_queue_t CODefaultQueue() {
-    if (defaultQueue)
+    if (defaultQueue) {
         return defaultQueue;
-    else
+    } else {
+        //        return dispatch_queue_create("com.CompositeOperations.default_queue", DISPATCH_QUEUE_CONCURRENT);
+
         @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:[NSString stringWithFormat:@"SAQueues: defaultQueue should be defined, %s, %d, %s", __FILE__, __LINE__, __PRETTY_FUNCTION__] userInfo:nil];
+    }
 }
 
 void COSetDefaultQueue(dispatch_queue_t queue) {
