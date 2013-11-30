@@ -22,7 +22,7 @@
     COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
 
     [compositeOperation run:^(COCompositeOperation *compositeOperation) {
-        [compositeOperation operation:^(COOperation *cao) {
+        [compositeOperation operationWithBlock:^(COOperation *cao) {
             asynchronousJob(^{
                 count = count + 1;
 
@@ -37,7 +37,7 @@
             });
         }];
 
-        [compositeOperation operation:^(COOperation *cao) {
+        [compositeOperation operationWithBlock:^(COOperation *cao) {
             asynchronousJob(^{
                 count = count + 1;
 
@@ -53,7 +53,7 @@
             });
         }];
 
-        [compositeOperation operation:^(COOperation *cao) {
+        [compositeOperation operationWithBlock:^(COOperation *cao) {
             asynchronousJob(^{
                 count = count + 1;
 
@@ -145,7 +145,7 @@
     COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
 
     [compositeOperation run:^(COCompositeOperation *compositeOperation) {
-        [compositeOperation operation:^(COOperation *operation) {
+        [compositeOperation operationWithBlock:^(COOperation *operation) {
             STAssertFalse(compositeOperation.isCancelled, nil);
 
             [compositeOperation suspend]; // Suspends cascade and all suboperations
@@ -159,7 +159,7 @@
             isFinished = YES;
         }];
 
-        [compositeOperation operation:^(COOperation *operation) {
+        [compositeOperation operationWithBlock:^(COOperation *operation) {
             raiseShouldNotReachHere();
         }];
     } completionHandler:nil cancellationHandler:nil];
@@ -175,7 +175,7 @@
     COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
 
     [compositeOperation run:^(COCompositeOperation *compositeOperation) {
-        [compositeOperation operation:^(COOperation *operation) {
+        [compositeOperation operationWithBlock:^(COOperation *operation) {
             [compositeOperation suspend]; // Suspends cascade and all suboperations
 
             STAssertTrue(operation.isSuspended, nil);
@@ -187,7 +187,7 @@
             isFinished = YES;
         }];
 
-        [compositeOperation operation:^(COOperation *operation) {
+        [compositeOperation operationWithBlock:^(COOperation *operation) {
             raiseShouldNotReachHere();
         }];
     } completionHandler:nil cancellationHandler:nil];
@@ -204,7 +204,7 @@
     COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
 
     [compositeOperation run:^(COCompositeOperation *compositeOperation) {
-        [compositeOperation operation:^(COOperation *operation) {
+        [compositeOperation operationWithBlock:^(COOperation *operation) {
             [compositeOperation suspend]; // Suspends cascade and all suboperations
 
             [compositeOperation.operations enumerateObjectsUsingBlock:^(COOperation *operation, NSUInteger idx, BOOL *stop) {
@@ -218,7 +218,7 @@
             isFinished = YES;
         }];
 
-        [compositeOperation operation:^(COOperation *operation) {
+        [compositeOperation operationWithBlock:^(COOperation *operation) {
             STAssertTrue(operation.isExecuting, nil);
 
             isFinished = YES;
@@ -252,12 +252,12 @@
     COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
 
     [compositeOperation run:^(COCompositeOperation *compositeOperation) {
-        [compositeOperation operation:^(COOperation *o) {
+        [compositeOperation operationWithBlock:^(COOperation *o) {
             [regString appendString:@"1"];
             [o finish];
         }];
 
-        [compositeOperation operation:^(COOperation *operation) {
+        [compositeOperation operationWithBlock:^(COOperation *operation) {
             STAssertTrue(compositeOperation.isExecuting, nil);
 
             secondOperationRunTimes = @(secondOperationRunTimes.intValue + 1);
@@ -270,7 +270,7 @@
             }
         }];
 
-        [compositeOperation operation:^(COOperation *o) {
+        [compositeOperation operationWithBlock:^(COOperation *o) {
             STAssertTrue([regString isEqualToString:@"12"], nil);
             [regString appendString:@"3"];
             
@@ -305,7 +305,7 @@
     COCompositeOperation *intentionallyUnfinishableCOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
 
     intentionallyUnfinishableCOperation.operation = ^(COCompositeOperation *co) {
-        [co operation:^(COOperation *operation) {
+        [co operationWithBlock:^(COOperation *operation) {
             [operation finish];
             blockFlag = YES;
         }];
@@ -326,7 +326,7 @@
     COCompositeOperation *intentionallyUnfinishableCOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
 
     intentionallyUnfinishableCOperation.operation = ^(COCompositeOperation *co) {
-        [co operation:^(COOperation *operation) {
+        [co operationWithBlock:^(COOperation *operation) {
             raiseShouldNotReachHere();
         }];
     };
@@ -344,7 +344,7 @@
     COCompositeOperation *intentionallyUnfinishableCOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
 
     intentionallyUnfinishableCOperation.operation = ^(COCompositeOperation *co) {
-        [co operation:^(COOperation *operation) {
+        [co operationWithBlock:^(COOperation *operation) {
             raiseShouldNotReachHere();
         }];
     };
@@ -368,7 +368,7 @@
     COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
 
     [compositeOperation run:^(COCompositeOperation *co) {
-        [compositeOperation operation:^(COOperation *o) {
+        [compositeOperation operationWithBlock:^(COOperation *o) {
             for (COOperation *operation in co.operations) {
                 STAssertFalse(operation.isCancelled, nil);
             }
@@ -386,7 +386,7 @@
             isFinished = YES;
         }];
 
-        [compositeOperation operation:^(COOperation *o) {
+        [compositeOperation operationWithBlock:^(COOperation *o) {
             raiseShouldNotReachHere();
         }];
     } completionHandler:nil cancellationHandler:^(COCompositeOperation *compositeOperation){
@@ -417,7 +417,7 @@
         STAssertEquals((int)opQueue.pendingOperations.count, 0, nil);
         STAssertEquals((int)opQueue.runningOperations.count, 1, nil);
 
-        [compositeOperation operation:^(COOperation *cao) {
+        [compositeOperation operationWithBlock:^(COOperation *cao) {
             asynchronousJob(^{
                 @synchronized(countArr) {
                     [countArr addObject:@1];
@@ -426,7 +426,7 @@
             });
         }];
         
-        [compositeOperation operation:^(COOperation *cao) {
+        [compositeOperation operationWithBlock:^(COOperation *cao) {
             asynchronousJob(^{
                 @synchronized(countArr) {
                     [countArr addObject:@1];
@@ -435,7 +435,7 @@
             });
         }];
 
-        [compositeOperation operation:^(COOperation *cuo) {
+        [compositeOperation operationWithBlock:^(COOperation *cuo) {
             @synchronized(countArr) {
                 [countArr addObject:@1];
             }
@@ -454,7 +454,7 @@
     COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
 
     [compositeOperation run:^(COCompositeOperation *compositeOperation) {
-        [compositeOperation operation:^(COOperation *cao) {
+        [compositeOperation operationWithBlock:^(COOperation *cao) {
             STAssertEquals(dispatch_get_current_queue(), concurrentQueue(), @"Expected unit operation to be run in the same queue the test is run");
 
             [cao finish];
@@ -475,7 +475,7 @@
     COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
 
     [compositeOperation run:^(COCompositeOperation *compositeOperation) {
-        [compositeOperation operation:^(COOperation *cao) {
+        [compositeOperation operationWithBlock:^(COOperation *cao) {
             STAssertTrue([someVar isEqualToString:@"pickmeup"], @"Expected someVar to be picked up by first operation");
             [cao finish];
             isFinished = YES;
@@ -494,7 +494,7 @@
     COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
 
     [compositeOperation run:^(COCompositeOperation *co) {
-        [compositeOperation operation:^(COOperation *cao) {
+        [compositeOperation operationWithBlock:^(COOperation *cao) {
             STAssertEquals(dispatch_get_current_queue(), concurrentQueue(), @"Expected unit operation to be run in concurrentQueue()");
 
             [cao finish];
@@ -515,12 +515,12 @@
     COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
 
     [compositeOperation run:^(COCompositeOperation *co) {
-        [co operation:^(COOperation *cao) {
+        [co operationWithBlock:^(COOperation *cao) {
             co.sharedData = data;
             [cao finish];
         }];
 
-        [co operation:^(COOperation *cao) {
+        [co operationWithBlock:^(COOperation *cao) {
             NSString *sharedData = co.sharedData;
 
             STAssertTrue([sharedData isEqualToString:data], @"Expected shared data to be set in the first operation and be accessible from the second operation");
@@ -541,7 +541,7 @@
     COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
 
     [compositeOperation run:^(COCompositeOperation *compositeOperation) {
-        [compositeOperation operationInQueue:concurrentQueue() operation:^(COOperation *cao) {
+        [compositeOperation operationInQueue:concurrentQueue() withBlock:^(COOperation *cao) {
             count = count + 1;
 
             STAssertFalse(firstJobIsDone, @"Expected firstJobIsDone to be NO");
@@ -554,7 +554,7 @@
             [cao finish];
         }];
 
-        [compositeOperation operationInQueue:concurrentQueue() operation:^(COOperation *cao) {
+        [compositeOperation operationInQueue:concurrentQueue() withBlock:^(COOperation *cao) {
             count = count + 1;
 
             STAssertTrue(firstJobIsDone, @"Expected firstJobIsDone to be YES");
@@ -568,7 +568,7 @@
             [cao finish];
         }];
 
-        [compositeOperation operationInQueue:concurrentQueue() operation:^(COOperation *cao) {
+        [compositeOperation operationInQueue:concurrentQueue() withBlock:^(COOperation *cao) {
             count = count + 1;
 
             STAssertTrue(firstJobIsDone, @"Expected firstJobIsDone to be YES");
@@ -594,19 +594,19 @@
     COCompositeOperation *cOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
 
     [cOperation run:^(COCompositeOperation *co) {
-        [co operation:^(COOperation *cuo) {
+        [co operationWithBlock:^(COOperation *cuo) {
             [cuo finish];
         }];
 
         [co compositeOperation:COCompositeOperationConcurrent operation:^(COCompositeOperation *to1) {
-            [to1 operation:^(COOperation *tao) {
+            [to1 operationWithBlock:^(COOperation *tao) {
                 @synchronized(countArr) {
                     [countArr addObject:@1];
                 }
                 [tao finish];
             }];
 
-            [to1 operation:^(COOperation *tao) {
+            [to1 operationWithBlock:^(COOperation *tao) {
                 @synchronized(countArr) {
                     [countArr addObject:@1];
                 }
@@ -614,7 +614,7 @@
             }];
         }];
 
-        [co operation:^(COOperation *cuo) {
+        [co operationWithBlock:^(COOperation *cuo) {
             isFinished = YES;
         }];
     } completionHandler:nil cancellationHandler:nil];
@@ -633,12 +633,12 @@
     [compositeOperation run:^(COCompositeOperation *compositeOperation) {
         [compositeOperation compositeOperation:COCompositeOperationConcurrent operation:^(COCompositeOperation *to1) {
 
-            [to1 operation:^(COOperation *tao) {
+            [to1 operationWithBlock:^(COOperation *tao) {
                 [tao cancel];
             }];
         }];
 
-        [compositeOperation operation:^(COOperation *cuo) {
+        [compositeOperation operationWithBlock:^(COOperation *cuo) {
             raiseShouldNotReachHere();
         }];
     } completionHandler:nil cancellationHandler:^(COCompositeOperation *coperation){
@@ -668,7 +668,7 @@
 
     createQueue();
     [cOperation run:^(COCompositeOperation *co) {
-        [co operation:^(COOperation *cao) {
+        [co operationWithBlock:^(COOperation *cao) {
             asynchronousJob(^{
                 count = count + 1;
 
@@ -683,7 +683,7 @@
             });
         }];
 
-        [co operation:^(COOperation *cao) {
+        [co operationWithBlock:^(COOperation *cao) {
             asynchronousJob(^{
                 count = count + 1;
 
@@ -699,7 +699,7 @@
             });
         }];
 
-        [co operation:^(COOperation *cao) {
+        [co operationWithBlock:^(COOperation *cao) {
             asynchronousJob(^{
                 asynchronousJob(^{
                     asynchronousJob(^{
@@ -737,7 +737,7 @@
     COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
 
     [compositeOperation run:^(COCompositeOperation *compositeOperation) {
-        [compositeOperation operation:^(COOperation *cao) {
+        [compositeOperation operationWithBlock:^(COOperation *cao) {
             [cao finish];
         }];
 
@@ -745,7 +745,7 @@
 
         while(loop-- > 0) {
             [compositeOperation compositeOperation:COCompositeOperationConcurrent operation:^(COCompositeOperation *to1) {
-                [to1 operation:^(COOperation *tao) {
+                [to1 operationWithBlock:^(COOperation *tao) {
                     @synchronized(regArray) {
                         [regArray addObject:@1];
                     }
@@ -753,7 +753,7 @@
                     [tao finish];
                 }];
 
-                [to1 operation:^(COOperation *tao) {
+                [to1 operationWithBlock:^(COOperation *tao) {
                     @synchronized(regArray) {
                         [regArray addObject:@1];
                     }
@@ -767,14 +767,14 @@
 
         while(loop-- > 0) {
             [compositeOperation compositeOperation:COCompositeOperationConcurrent operation:^(COCompositeOperation *to1) {
-                [to1 operation:^(COOperation *tao) {
+                [to1 operationWithBlock:^(COOperation *tao) {
                     @synchronized(regArray) {
                         [regArray removeLastObject];
                     }
                     [tao finish];
                 }];
 
-                [to1 operation:^(COOperation *tao) {
+                [to1 operationWithBlock:^(COOperation *tao) {
                     @synchronized(regArray) {
                         [regArray addObject:@1];
                     }
@@ -783,7 +783,7 @@
             }];
         }
 
-        [compositeOperation operation:^(COOperation *cao) {
+        [compositeOperation operationWithBlock:^(COOperation *cao) {
             [cao finish];
         }];
     } completionHandler:^{

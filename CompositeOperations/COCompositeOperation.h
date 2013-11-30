@@ -22,8 +22,8 @@
 - (void)run:(COCompositeOperationBlock)operationBlock completionHandler:(COCompletionBlock)completionHandler cancellationHandler:(COCancellationBlockForCompositeOperation)cancellationHandler;
 
 // Public API: Inner operations
-- (void)operation:(COOperationBlock)operationBlock;
-- (void)operationInQueue:(dispatch_queue_t)queue operation:(COOperationBlock)operationBlock;
+- (void)operationWithBlock:(COOperationBlock)operationBlock;
+- (void)operationInQueue:(dispatch_queue_t)queue withBlock:(COOperationBlock)operationBlock;
 
 // Public API: Inner composite operations
 - (void)compositeOperation:(COCompositeOperationConcurrencyType)concurrencyType operation: (COCompositeOperationBlock)operationBlock;

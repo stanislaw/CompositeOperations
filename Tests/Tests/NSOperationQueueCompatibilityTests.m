@@ -48,7 +48,7 @@
     COCompositeOperation *cOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
 
     cOperation.operation = ^(COCompositeOperation *co) {
-        [co operation:^(COOperation *cao) {
+        [co operationWithBlock:^(COOperation *cao) {
             asynchronousJob(^{
                 count = count + 1;
 
@@ -63,7 +63,7 @@
             });
         }];
 
-        [co operation:^(COOperation *cao) {
+        [co operationWithBlock:^(COOperation *cao) {
             asynchronousJob(^{
                 count = count + 1;
 
@@ -79,7 +79,7 @@
             });
         }];
 
-        [co operation:^(COOperation *cao) {
+        [co operationWithBlock:^(COOperation *cao) {
             asynchronousJob(^{
                 count = count + 1;
 
@@ -110,7 +110,7 @@
     __block BOOL firstJobIsDone = NO, secondJobIsDone = NO, thirdJobIsDone = NO;
 
     compositeOperation(COCompositeOperationSerial, opQueue, ^(COCompositeOperation *co) {
-        [co operation:^(COOperation *cao) {
+        [co operationWithBlock:^(COOperation *cao) {
             asynchronousJob(^{
                 count = count + 1;
 
@@ -125,7 +125,7 @@
             });
         }];
 
-        [co operation:^(COOperation *cao) {
+        [co operationWithBlock:^(COOperation *cao) {
             asynchronousJob(^{
                 count = count + 1;
 
@@ -141,7 +141,7 @@
             });
         }];
 
-        [co operation:^(COOperation *cao) {
+        [co operationWithBlock:^(COOperation *cao) {
             asynchronousJob(^{
                 count = count + 1;
 
@@ -171,19 +171,19 @@
     COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent];
 
     compositeOperation.operation = ^(COCompositeOperation *compositeOperation) {
-        [compositeOperation operationInQueue:concurrentQueue() operation:^(COOperation *tao) {
+        [compositeOperation operationInQueue:concurrentQueue() withBlock:^(COOperation *tao) {
             @synchronized(countArr) {
                 [countArr addObject:@1];
             }
             [tao finish];
         }];
-        [compositeOperation operationInQueue:concurrentQueue() operation:^(COOperation *tao) {
+        [compositeOperation operationInQueue:concurrentQueue() withBlock:^(COOperation *tao) {
             @synchronized(countArr) {
                 [countArr addObject:@1];
             }
             [tao finish];
         }];
-        [compositeOperation operationInQueue:concurrentQueue() operation:^(COOperation *tao) {
+        [compositeOperation operationInQueue:concurrentQueue() withBlock:^(COOperation *tao) {
             @synchronized(countArr) {
                 [countArr addObject:@1];
             }
@@ -209,19 +209,19 @@
     NSOperationQueue *opQueue = [[NSOperationQueue alloc] init];
 
     compositeOperation(COCompositeOperationConcurrent, opQueue, ^(COCompositeOperation *to) {
-        [to operationInQueue:concurrentQueue() operation:^(COOperation *tao) {
+        [to operationInQueue:concurrentQueue() withBlock:^(COOperation *tao) {
             @synchronized(countArr) {
                 [countArr addObject:@1];
             }
             [tao finish];
         }];
-        [to operationInQueue:concurrentQueue() operation:^(COOperation *tao) {
+        [to operationInQueue:concurrentQueue() withBlock:^(COOperation *tao) {
             @synchronized(countArr) {
                 [countArr addObject:@1];
             }
             [tao finish];
         }];
-        [to operationInQueue:concurrentQueue() operation:^(COOperation *tao) {
+        [to operationInQueue:concurrentQueue() withBlock:^(COOperation *tao) {
             @synchronized(countArr) {
                 [countArr addObject:@1];
             }

@@ -45,7 +45,7 @@ static int const N = 10;
 
     [to run:^(COCompositeOperation *to) {
         for (int j = 1; j <= N; j++) {
-            [to operation:^(COOperation *o) {
+            [to operationWithBlock:^(COOperation *o) {
                 @synchronized(countArr) {
                     [countArr addObject:@1];
                 }

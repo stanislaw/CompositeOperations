@@ -108,11 +108,11 @@
 #pragma mark
 #pragma mark Public API: Inner operations
 
-- (void)operation:(COOperationBlock)operationBlock {
-    [self operationInQueue:CODefaultQueue() operation:operationBlock];
+- (void)operationWithBlock:(COOperationBlock)operationBlock {
+    [self operationInQueue:CODefaultQueue() withBlock:operationBlock];
 }
 
-- (void)operationInQueue:(dispatch_queue_t)queue operation:(COOperationBlock)operationBlock {
+- (void)operationInQueue:(dispatch_queue_t)queue withBlock:(COOperationBlock)operationBlock {
         COOperation *operation = [COOperation new];
 
 #if !OS_OBJECT_USE_OBJC
