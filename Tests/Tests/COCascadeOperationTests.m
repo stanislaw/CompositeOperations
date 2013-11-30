@@ -4,6 +4,7 @@
 
 #import "COCompositeOperation.h"
 #import "COOperation_Private.h"
+#import "COCompositeOperation_Private.h"
 
 #import "COQueues.h"
 #import "COOperationQueue.h"

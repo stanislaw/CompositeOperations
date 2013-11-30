@@ -31,7 +31,5 @@
 // Shared data
 @property (strong) id sharedData;
 - (void)modifySharedData:(COModificationBlock)modificationBlock;
-@property (strong, nonatomic) NSMutableArray *operations;
-@property BOOL allSuboperationsRegistered;
 
 @end

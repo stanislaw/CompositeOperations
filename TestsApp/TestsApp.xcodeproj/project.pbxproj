@@ -92,6 +92,7 @@
 		8684D689184A424D00B2902B /* COCompositeSerialOperationInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COCompositeSerialOperationInternal.h; sourceTree = "<group>"; };
 		8684D68A184A424D00B2902B /* COCompositeSerialOperationInternal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COCompositeSerialOperationInternal.m; sourceTree = "<group>"; };
 		8684D68B184A424D00B2902B /* COOperation_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COOperation_Private.h; sourceTree = "<group>"; };
+		8684D6A7184A8DBE00B2902B /* COCompositeOperation_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = COCompositeOperation_Private.h; sourceTree = "<group>"; };
 		F4ADEE41A0E7474AB857DDBB /* libPods-TestsApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TestsApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FEB14E77372742B39B17759B /* Pods-TestsApp.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestsApp.xcconfig"; path = "Pods/Pods-TestsApp.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -229,6 +230,7 @@
 				8684D689184A424D00B2902B /* COCompositeSerialOperationInternal.h */,
 				8684D68A184A424D00B2902B /* COCompositeSerialOperationInternal.m */,
 				8684D68B184A424D00B2902B /* COOperation_Private.h */,
+				8684D6A7184A8DBE00B2902B /* COCompositeOperation_Private.h */,
 			);
 			path = Private;
 			sourceTree = "<group>";

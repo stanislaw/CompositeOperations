@@ -6,6 +6,7 @@
 // Released under the MIT license
 
 #import "COCompositeOperation.h"
+#import "COCompositeOperation_Private.h"
 
 #import "COQueues.h"
 
@@ -47,12 +48,12 @@
         NSParameterAssert(NO);
     }
     
-    [self addObserver:self.internal
+    [self addObserver:self
            forKeyPath:@"isFinished"
               options:NSKeyValueObservingOptionNew
               context:NULL];
 
-    [self addObserver:self.internal
+    [self addObserver:self
            forKeyPath:@"isCancelled"
               options:NSKeyValueObservingOptionNew
               context:NULL];
@@ -70,8 +71,8 @@
 }
 
 - (void)dealloc {
-    [self removeObserver:self.internal forKeyPath:@"isFinished"];
-    [self removeObserver:self.internal forKeyPath:@"isCancelled"];
+    [self removeObserver:self forKeyPath:@"isFinished"];
+    [self removeObserver:self forKeyPath:@"isCancelled"];
 
     _sharedData = nil;
     _operation = nil;
@@ -94,7 +95,7 @@
 
             strongSelf.completionBlock = nil;
         } else if (cancellationHandler) {
-            [strongSelf.internal _cancelSuboperations:NO];
+            [strongSelf _cancelSuboperations:NO];
 
             cancellationHandler(strongSelf);
         } else {
@@ -142,7 +143,7 @@
         };
 #endif
 
-    [self.internal enqueueSuboperation:operation];
+    [self.internal _enqueueSuboperation:operation];
 }
 
 #pragma mark
@@ -165,7 +166,7 @@
         strongCompositeOperation.completionBlock = nil;
     };
 
-    [self.internal enqueueSuboperation:compositeOperation];
+    [self.internal _enqueueSuboperation:compositeOperation];
 }
 
 #pragma mark
@@ -185,13 +186,13 @@
 
     self.allSuboperationsRegistered = YES;
 
-    [self.internal performCheckpointRoutine];
+    [self.internal _performCheckpointRoutine];
 }
 
 - (void)cancel {
     @synchronized(self) {
         if (self.isFinished == NO && self.isCancelled == NO && self.isSuspended == NO) {
-            [self.internal _cancelSuboperations:YES];
+            [self _cancelSuboperations:YES];
 
             self.state = COOperationStateCancelled;
         }
@@ -208,7 +209,7 @@
         } else {
             self.state = COOperationStateExecuting;
 
-            [self.internal performAwakeRoutine];
+            [self.internal _performAwakeRoutine];
         }
     }
 }
@@ -232,9 +233,113 @@
 
         [self.operations makeObjectsPerformSelector:@selector(resume)];
 
-        [self.internal performResumeRoutine];
+        [self.internal _performResumeRoutine];
     } else {
         self.state = COOperationStateReady;
+    }
+}
+
+#pragma mark
+#pragma mark Private methods
+
+- (void)_teardown {
+    for (COOperation *operation in self.operations) {
+        operation.contextOperation = nil;
+    }
+
+    self.operations = nil;
+}
+
+- (void)_enqueueSuboperation:(COOperation *)subOperation {
+    //
+}
+
+- (void)_registerSuboperation:(COOperation *)subOperation {
+    subOperation.contextOperation = self;
+    subOperation.operationQueue = self.operationQueue;
+
+    @synchronized(self) {
+        [self.operations addObject:subOperation];
+    }
+}
+
+- (void)_runSuboperation:(COOperation *)subOperation {
+    [subOperation addObserver:self
+                   forKeyPath:@"isFinished"
+                      options:NSKeyValueObservingOptionNew
+                      context:NULL];
+
+    [subOperation addObserver:self
+                   forKeyPath:@"isCancelled"
+                      options:NSKeyValueObservingOptionNew
+                      context:NULL];
+
+    CORunOperation(subOperation);
+}
+
+- (void)_runSuboperationAtIndex:(NSUInteger)indexOfSuboperationToRun {
+    COOperation *operation;
+
+    @synchronized(self) {
+        operation = [self.operations objectAtIndex:indexOfSuboperationToRun];
+    }
+
+    [self _runSuboperation:operation];
+}
+
+- (void)_cancelSuboperations:(BOOL)runCompletionBlocks {
+    NSArray *subOperations;
+
+    @synchronized(self) {
+        subOperations = [self.operations copy];
+    }
+
+    [subOperations enumerateObjectsUsingBlock:^(COOperation *operation, NSUInteger idx, BOOL *stop) {
+        if (operation.isCancelled == NO && operation.isFinished == NO) {
+            if (operation.isReady == NO) {
+                [operation removeObserver:self forKeyPath:@"isFinished"];
+                [operation removeObserver:self forKeyPath:@"isCancelled"];
+            }
+
+            [operation cancel];
+
+            if (operation.completionBlock && runCompletionBlocks) operation.completionBlock();
+        }
+    }];
+}
+
+- (void)subOperationWasCancelled:(COOperation *)subOperation {
+    self.completionBlock();
+}
+
+- (void)subOperationWasFinished:(COOperation *)subOperation {
+    @synchronized(self) {
+        [self.operations removeObject:subOperation];
+    }
+
+    [self.internal _performCheckpointRoutine];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context {
+
+    if ([object isEqual:self]) {
+        [self _teardown];
+    } else {
+        @synchronized(self) {
+            [object removeObserver:self forKeyPath:@"isFinished"];
+            [object removeObserver:self forKeyPath:@"isCancelled"];
+        }
+
+        COOperation *operation = (COOperation *)object;
+
+        if ([keyPath isEqual:@"isFinished"]) {
+            [self subOperationWasFinished:operation];
+        } else if ([keyPath isEqual:@"isCancelled"]) {
+            [self subOperationWasCancelled:operation];
+        }
     }
 }
 

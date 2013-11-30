@@ -5,6 +5,8 @@
 #import "COCompositeOperation.h"
 #import "COQueues.h"
 #import "COOperation_Private.h"
+#import "COCompositeOperation_Private.h"
+
 #import "COOperationQueue.h"
 
 @interface TransactionalOperationsTests : SenTestCase

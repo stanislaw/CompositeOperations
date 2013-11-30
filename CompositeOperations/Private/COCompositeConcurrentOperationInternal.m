@@ -7,17 +7,19 @@
 
 #import "COCompositeConcurrentOperationInternal.h"
 #import "COQueues.h"
+
 #import "COOperation_Private.h"
+#import "COCompositeOperation_Private.h"
 
 @interface COCompositeConcurrentOperationInternal ()
 @end
 
 @implementation COCompositeConcurrentOperationInternal
 
-- (void)enqueueSuboperation:(COOperation *)subOperation {
+- (void)_enqueueSuboperation:(COOperation *)subOperation {
     if (self.compositeOperation.isFinished) [NSException raise: NSInvalidArgumentException format: @"[%@-%@] suboperation cannot be added to the finished transactional operation", NSStringFromClass(self.class), NSStringFromSelector(_cmd)];
 
-    [self _registerSuboperation:subOperation];
+    [self.compositeOperation _registerSuboperation:subOperation];
 
     if (self.compositeOperation.isSuspended == NO) {
         __block NSUInteger areThereCancelledOperations;
@@ -34,14 +36,14 @@
         }
 
         if (self.compositeOperation.isCancelled == NO && areThereCancelledOperations == NSNotFound) {
-            [self _runSuboperation:subOperation];
+            [self.compositeOperation _runSuboperation:subOperation];
         } else {
             [subOperation cancel];
         }
     }
 }
 
-- (void)performCheckpointRoutine {
+- (void)_performCheckpointRoutine {
     if (self.compositeOperation.allSuboperationsRegistered && self.compositeOperation.isCancelled == NO) {
         __block NSUInteger operationsCount;
 
@@ -55,20 +57,20 @@
     }
 }
 
-- (void)performAwakeRoutine {
+- (void)_performAwakeRoutine {
     [[self.compositeOperation.operations copy] enumerateObjectsUsingBlock:^(COOperation *operation, NSUInteger idx, BOOL *stop) {
         if (operation.isFinished == NO) {
             [operation initPropertiesForRun];
         }
     }];
 
-    [self performResumeRoutine];
+    [self _performResumeRoutine];
 }
 
-- (void)performResumeRoutine {
+- (void)_performResumeRoutine {
     [[self.compositeOperation.operations copy] enumerateObjectsUsingBlock:^(COOperation *operation, NSUInteger idx, BOOL *stop) {
         if (operation.isReady) {
-            [self _runSuboperation:operation];
+            [self.compositeOperation _runSuboperation:operation];
         }
     }];
 }

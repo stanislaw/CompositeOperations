@@ -6,16 +6,19 @@
 // Released under the MIT license
 
 #import "COCompositeSerialOperationInternal.h"
-#import "COQueues.h"
+
 #import "COOperation_Private.h"
+#import "COCompositeOperation_Private.h"
+
+#import "COQueues.h"
 
 @implementation COCompositeSerialOperationInternal
 
-- (void)enqueueSuboperation:(COOperation *)subOperation {
-    [self _registerSuboperation:subOperation];
+- (void)_enqueueSuboperation:(COOperation *)subOperation {
+    [self.compositeOperation _registerSuboperation:subOperation];
 }
 
-- (void)performCheckpointRoutine {
+- (void)_performCheckpointRoutine {
     // TODO more conditions?
     if (self.compositeOperation.isSuspended) return;
 
@@ -31,21 +34,21 @@
     if (indexOfSuboperationToRun == NSNotFound) {
         [self.compositeOperation finish];
     } else {
-        [self _runSuboperationAtIndex:indexOfSuboperationToRun];
+        [self.compositeOperation _runSuboperationAtIndex:indexOfSuboperationToRun];
     }
 }
 
-- (void)performAwakeRoutine {            
+- (void)_performAwakeRoutine {
     [[self.compositeOperation.operations copy] enumerateObjectsUsingBlock:^(COOperation *operation, NSUInteger idx, BOOL *stop) {
         if (operation.isFinished == NO) {
             [operation initPropertiesForRun];
         }
     }];
 
-    [self performCheckpointRoutine];
+    [self _performCheckpointRoutine];
 }
 
-- (void)performResumeRoutine {
+- (void)_performResumeRoutine {
     NSUInteger indexOfSuboperationToRun = [[self.compositeOperation.operations copy] indexOfObjectPassingTest:^BOOL(COOperation *operation, NSUInteger idx, BOOL *stop) {
         if (operation.isReady == YES) {
             *stop = YES;
@@ -56,7 +59,7 @@
     }];
 
     if (indexOfSuboperationToRun != NSNotFound) {
-        [self _runSuboperationAtIndex:indexOfSuboperationToRun];
+        [self.compositeOperation _runSuboperationAtIndex:indexOfSuboperationToRun];
     }
 }
 
