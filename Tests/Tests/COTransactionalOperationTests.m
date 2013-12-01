@@ -373,8 +373,9 @@
 
         [compositeOperation operationInQueue:serialQueue() withBlock:^(COOperation *operation) {
 
-            // It should both times be serialQueue() 
-            STAssertTrue(dispatch_get_current_queue() == serialQueue(), nil);
+            // It should both times be serialQueue()
+            BOOL queuesAreEqual = currentQueue() == serialQueue();
+            STAssertTrue(queuesAreEqual, nil);
             
             // First time it will just run out without finish or cancel
             // And on the second it will actually finish itself

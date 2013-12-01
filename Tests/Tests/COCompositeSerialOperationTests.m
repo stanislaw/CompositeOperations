@@ -454,7 +454,7 @@
 
     [compositeOperation run:^(COCompositeOperation *compositeOperation) {
         [compositeOperation operationWithBlock:^(COOperation *cao) {
-            STAssertEquals(dispatch_get_current_queue(), concurrentQueue(), @"Expected unit operation to be run in the same queue the test is run");
+            STAssertEquals(currentQueue(), concurrentQueue(), @"Expected unit operation to be run in the same queue the test is run");
 
             [cao finish];
             isFinished = YES;
@@ -494,7 +494,7 @@
 
     [compositeOperation run:^(COCompositeOperation *co) {
         [compositeOperation operationWithBlock:^(COOperation *cao) {
-            STAssertEquals(dispatch_get_current_queue(), concurrentQueue(), @"Expected unit operation to be run in concurrentQueue()");
+            STAssertEquals(currentQueue(), concurrentQueue(), @"Expected unit operation to be run in concurrentQueue()");
 
             [cao finish];
             isFinished = YES;

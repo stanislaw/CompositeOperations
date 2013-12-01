@@ -13,15 +13,19 @@ FRAMEWORKS_PATH:= -F/Applications/Xcode.app/Contents/Developer/Library/Framework
 FRAMEWORKS:= -framework Foundation -framework SenTestingKit
 LIBRARIES:= -lobjc
 
+COMPOSITE_OPERATIONS_INCLUDE_PATHS = $(foreach directory, $(sort $(dir $(call find-recursive,$(PROJECT_DIR)/CompositeOperations,*))), \
+    -I$(directory) \
+  )
+
 KIWI_INCLUDE_PATHS = $(foreach directory, $(sort $(dir $(call find-recursive,$(shell pwd)/Kiwi,*))), \
     -I$(directory) \
   )
 
-INCLUDE_PATHS:= -I$(PROJECT_DIR)/CompositeOperations \
+INCLUDE_PATHS:=  $(COMPOSITE_OPERATIONS_INCLUDE_PATHS) \
                 -I$(TESTS_DIR)/TestHelpers \
                  $(KIWI_INCLUDE_PATHS)
 
-SOURCE_COMPOSITE_OPERATIONS = $(wildcard $(PROJECT_DIR)/CompositeOperations/*.m)
+SOURCE_COMPOSITE_OPERATIONS = $(call find-recursive,$(PROJECT_DIR)/CompositeOperations,*.m)
 					
 SOURCE_TEST_SUITE = $(wildcard $(TESTS_DIR)/Tests/*.m)
 
