@@ -44,7 +44,9 @@
     } else {
         NSParameterAssert(NO);
     }
-    
+
+    self.concurrencyType = concurrencyType;
+
     [self addObserver:self
            forKeyPath:@"isFinished"
               options:NSKeyValueObservingOptionNew
@@ -107,6 +109,42 @@
 
 #pragma mark
 #pragma mark Public API: Inner operations
+
+- (void)operation:(COOperation *)operation {
+    NSParameterAssert(operation && operation.operation);
+
+    COOperationBlock originalOperationBlock = operation.operation;
+
+#if !OS_OBJECT_USE_OBJC
+    dispatch_retain(queue);
+#endif
+
+    COOperationBlock operationBlockInQueue = ^(COOperation *op) {
+        dispatch_async(CODefaultQueue(), ^{
+            // Ensuring isExecuting == YES to not run operations which have been already cancelled on contextOperation level
+            if (op.isExecuting == YES && op.contextOperation.isExecuting == YES) {
+                originalOperationBlock(op);
+            }
+        });
+    };
+
+    operation.operation = operationBlockInQueue;
+
+#if !OS_OBJECT_USE_OBJC
+    COOperation *weakOperation = operation;
+    operation.completionBlock = ^{
+        __strong COOperation *strongOperation = weakOperation;
+
+        if (strongOperation.isFinished || strongOperation.isCancelled) {
+            dispatch_release(queue);
+
+            strongOperation.completionBlock = nil;
+        }
+    };
+#endif
+
+    [self.internal _enqueueSuboperation:operation];
+}
 
 - (void)operationWithBlock:(COOperationBlock)operationBlock {
     [self operationInQueue:CODefaultQueue() withBlock:operationBlock];
@@ -265,6 +303,13 @@
             [self _operationWasCancelled:operation];
         }
     }
+}
+
+#pragma mark
+#pragma mark <NSCopying>
+
+- (id)copyWithZone:(NSZone *)zone {
+    return nil;
 }
 
 #pragma mark

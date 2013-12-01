@@ -195,17 +195,25 @@
     }
 }
 
+
 #pragma mark
-#pragma mark NSObject
+#pragma mark <NSCopying>
+
+- (id)copyWithZone:(NSZone *)zone {
+    COOperation *operation = [[[self class] alloc] init];
+
+    operation.operation = self.operation;
+
+    return operation;
+}
+
+#pragma mark
+#pragma mark <NSObject>
 
 - (NSString *)description {
     NSString *description = [NSString stringWithFormat:@"%@ (state = %@, numberOfRuns = %lu)", super.description, COKeyPathFromOperationState(self.state), self.numberOfRuns];
 
     return description;
-}
-
-- (NSString *)debugDescription {
-    return self.description;
 }
 
 @end

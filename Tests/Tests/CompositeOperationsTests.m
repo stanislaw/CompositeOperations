@@ -58,7 +58,7 @@
     STAssertTrue(oOver, @"Expected aoOver to be YES");
 }
 
-- (void)testCascadeOperation {
+- (void)test_CompositeSerialOperation {
     __block int count = 0;
     __block BOOL isFinished = NO;
     __block BOOL firstJobIsDone = NO, secondJobIsDone = NO, thirdJobIsDone = NO;
@@ -114,6 +114,33 @@
     while (!isFinished);
 
     STAssertEquals(count, 3, @"Expected count to be equal 3");
+}
+
+- (void)test_CompositeSerialOperation_operation {
+    __block BOOL isFinished = NO;
+    NSMutableArray *registry = [NSMutableArray array];
+
+    COOperation *operation = [COOperation new];
+    operation.operation = ^(COOperation *operation) {
+        asynchronousJob(^{
+            [registry addObject:@(1)];
+            [operation finish];
+        });
+    };
+
+    compositeOperation(COCompositeOperationSerial, ^(COCompositeOperation *compositeOperation) {
+        [compositeOperation operation:[operation copy]];
+        [compositeOperation operation:[operation copy]];
+        [compositeOperation operation:[operation copy]];
+    }, ^{
+        isFinished = YES;
+    }, ^(COCompositeOperation *compositeOperation){
+        raiseShouldNotReachHere();
+    });
+    
+    while (!isFinished);
+
+    STAssertTrue(registry.count == 3, nil);
 }
 
 - (void)testCascadeOperation_Integration {

@@ -6,10 +6,13 @@
 // Released under the MIT license
 
 #import "COCompositeOperation.h"
+#import "COTypedefs.h"
 
 @interface COCompositeOperation ()
 
 @property (strong, nonatomic) NSMutableArray *operations;
+@property COCompositeOperationConcurrencyType concurrencyType;
+
 @property BOOL allSuboperationsRegistered;
 
 - (void)_teardown;
