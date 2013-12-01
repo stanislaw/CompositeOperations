@@ -211,7 +211,7 @@
 #pragma mark <NSObject>
 
 - (NSString *)description {
-    NSString *description = [NSString stringWithFormat:@"%@ (state = %@, numberOfRuns = %lu)", super.description, COKeyPathFromOperationState(self.state), self.numberOfRuns];
+    NSString *description = [NSString stringWithFormat:@"%@ (state = %@, numberOfRuns = %lu)", super.description, COKeyPathFromOperationState(self.state), (unsigned long)self.numberOfRuns];
 
     return description;
 }

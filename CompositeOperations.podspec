@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   }
 
   s.source = { :git => 'https://github.com/stanislaw/CompositeOperations.git', :tag => s.version.to_s }
-  s.source_files = 'CompositeOperations/*.{h,m}'
+  s.source_files = 'CompositeOperations/**/*.{h,m}'
   s.private_header_files = 'CompositeOperations/Private/*.h'
 
   s.requires_arc = true

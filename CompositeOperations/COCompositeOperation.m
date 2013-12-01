@@ -113,10 +113,6 @@
 
     COOperationBlock originalOperationBlock = operation.operation;
 
-#if !OS_OBJECT_USE_OBJC
-    dispatch_retain(queue);
-#endif
-
     COOperationBlock operationBlockInQueue = ^(COOperation *op) {
         dispatch_async(CODefaultQueue(), ^{
             // Ensuring isExecuting == YES to not run operations which have been already cancelled on contextOperation level
@@ -127,19 +123,6 @@
     };
 
     operation.operation = operationBlockInQueue;
-
-#if !OS_OBJECT_USE_OBJC
-    COOperation *weakOperation = operation;
-    operation.completionBlock = ^{
-        __strong COOperation *strongOperation = weakOperation;
-
-        if (strongOperation.isFinished || strongOperation.isCancelled) {
-            dispatch_release(queue);
-
-            strongOperation.completionBlock = nil;
-        }
-    };
-#endif
 
     [self.internal _enqueueSuboperation:operation];
 }
