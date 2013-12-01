@@ -6,6 +6,7 @@
 #import "COOperationQueue.h"
 #import "CompositeOperations.h"
 #import "COOperation_Private.h"
+#import "COQueues.h"
 
 @interface COOperationTests : SenTestCase
 @end
@@ -84,6 +85,38 @@
     STAssertTrue(oOver, @"Expected aoOver to be YES");
 }
 #endif
+
+#pragma mark
+#pragma mark -[COOperation resolveWithOperation:]
+
+- (void)test_resolveWithOperation {
+    __block BOOL isFinished = NO;
+
+    COOperation *operation = [COOperation new];
+    COOperation *anotherOperation = [COOperation new];
+    anotherOperation.operation = ^(COOperation *operation){
+        [operation finish];
+    };
+
+    operation.operation = ^(COOperation *operation){
+        [operation resolveWithOperation:anotherOperation];
+    };
+
+    operation.completionBlock = ^{
+        isFinished = YES;
+    };
+
+    CORunOperation(operation);
+
+    while(isFinished == NO) {}
+
+    STAssertTrue(isFinished, nil);
+    STAssertTrue(operation.isFinished, nil);
+    STAssertTrue(anotherOperation.isFinished, nil);
+}
+
+#pragma mark
+
 
 // Ensures, that -[COOperation cancel] has no effect on operations suspended when ready
 - (void)test_cancel_should_not_work_on_suspended_operations {

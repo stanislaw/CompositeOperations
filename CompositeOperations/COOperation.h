@@ -35,4 +35,7 @@
 - (void)suspend;
 - (void)resume;
 
+// Resolution
+- (void)resolveWithOperation:(COOperation *)operation;
+
 @end

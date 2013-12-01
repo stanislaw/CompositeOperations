@@ -105,11 +105,15 @@
     self.operation = operationBlockInQueue;
 
 #if !OS_OBJECT_USE_OBJC
+    void (^originalCompletionBlock)(void) = self.completionBlock;
+
     COOperation *weakSelf = self;
     self.completionBlock = ^{
         __strong COOperation *strongSelf = weakSelf;
 
         if (strongSelf.isFinished || strongSelf.isCancelled) {
+            [originalCompletionBlock invoke];
+
             dispatch_release(queue);
 
             strongSelf.completionBlock = nil;
@@ -133,6 +137,7 @@
             strongSelf.completionBlock = nil;
         } else if (cancellationHandler) {
             cancellationHandler();
+
             strongSelf.completionBlock = nil;
         }
     };
@@ -154,7 +159,7 @@
     if (self.isFinished == NO && self.isCancelled == NO && self.isSuspended == NO) {
         self.state = COOperationStateCancelled;
 
-        if (self.contextOperation == nil && self.completionBlock) self.completionBlock();
+        if (self.completionBlock) self.completionBlock();
     }
 }
 
@@ -195,6 +200,35 @@
     }
 }
 
+#pragma mark
+#pragma mark Resolution
+
+- (void)resolveWithOperation:(COOperation *)operation {
+
+    void (^originalCompletionBlock)(void) = operation.completionBlock;
+
+    __weak COOperation *weakOperation = operation;
+
+    operation.completionBlock = ^{
+        __strong COOperation *strongOperation = weakOperation;
+
+        if (strongOperation.isFinished) {
+            [originalCompletionBlock invoke];
+
+            [self finish];
+
+            strongOperation.completionBlock = nil;
+        } else if (strongOperation.isCancelled) {
+            [originalCompletionBlock invoke];
+
+            [self cancel];
+
+            strongOperation.completionBlock = nil;
+        }
+    };
+
+    CORunOperation(operation);
+}
 
 #pragma mark
 #pragma mark <NSCopying>
