@@ -11,8 +11,13 @@ describe(@"Current specs", ^{
         //COSetDefaultQueue(concurrentQueue());
     });
 
-//    it(@"", ^{
-//          
-//    });
+    it(@"", ^{
+
+        /*
+        COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent];
+
+        NSLog(@"%@",compositeOperation);
+         */
+    });
 });
 SPEC_END

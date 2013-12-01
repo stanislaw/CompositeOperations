@@ -417,7 +417,9 @@
 #pragma mark <NSObject>
 
 - (NSString *)description {
-    NSString *description = [NSString stringWithFormat:@"%@ (debugLabel = %@; concurrencyType = %lu; state = %@; numberOfRuns = %lu; operations = %@)", [super description], self.debugLabel, self.concurrencyType, COKeyPathFromOperationState(self.state), (unsigned long)self.numberOfRuns, self.operations];
+    NSString *concurrencyString = self.concurrencyType == COCompositeOperationConcurrent ? @"Concurrent" : @"Serial";
+
+    NSString *description = [NSString stringWithFormat:@"<%@[%@]: %p> (state = %@; numberOfRuns = %lu; operations = %@)", NSStringFromClass([self class]), concurrencyString, self, COKeyPathFromOperationState(self.state), (unsigned long)self.numberOfRuns, self.operations.count > 0 ? self.operations : nil];
 
     return description;
 }
