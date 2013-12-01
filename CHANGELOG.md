@@ -2,6 +2,38 @@
 
 ## Master
 
+----
+
+## Versions 0.5.0-0.5.3
+
+Release date: 2013-12-01
+
+### Complete rewrite of the whole project!
+
+* COTransactionalOperation and COCascadeOperation has been replaced by one COCompositeOperation with two types of concurrency: `COCompositeOperationSerial` and `COCompositeOperationConcurrent`.
+
+CompositeOperation has the only designated initializer:
+
+```objective-c
+COCompositeOperation *compositeOperation = [[CompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent]; ...
+```
+
+* New methods: `-[COCompositeOperation compositeOperation:]` to run COOperation, and `-[COCompositeOperation compositeOperation:withBlock:]`.
+
+* New experimental method: `- (void)resolveWithOperation:(COOperation *)operation;` to delegate operation's resolution to another operation.
+
+* AFNetworking-inspired `COStateTransitionIsValid` - C function that defines transition map beetween operation states. This map includes error codes for inappropriate transitions.
+
+* All completion handlers now all have `(id result)` argument, all cancellation handlers now have `(COOperation *operation, NSError *error)` or `(COCompositeOperation *compositeOperation, NSError *error)`.
+
+* Number of thread safety related fixes.
+
+----
+
+## Version 0.4.12
+
+Release date: 2013-11-17
+
 ### Removed
 
 * Completely remove COSyncOperation. It will be extracted to a separate project.
