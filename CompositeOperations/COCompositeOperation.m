@@ -11,6 +11,7 @@
 #import "COQueues.h"
 
 #import "COOperation_Private.h"
+#import "COCompositeOperation_Private.h"
 
 #import "COCompositeSerialOperationInternal.h"
 #import "COCompositeConcurrentOperationInternal.h"
@@ -25,7 +26,8 @@
 @synthesize operation = _operation,
             operations = _operations,
             operationQueue = _operationQueue,
-            sharedData = _sharedData;
+            data = _data,
+            error = _error;
 
 - (id)init {
     @throw [NSException exceptionWithName:NSGenericException reason:@"Must not run -[COCompositeOperation init]. Use designated initialize -[CompositeOperation initWithConcurrencyType:] instead!" userInfo:nil];
@@ -68,17 +70,19 @@
     self.operations = [NSMutableArray array];
     self.allSuboperationsRegistered = NO;
 
-    self.sharedData = nil;
+    self.data = nil;
+    self.error = nil;
 }
 
 - (void)dealloc {
     [self removeObserver:self forKeyPath:@"isFinished"];
     [self removeObserver:self forKeyPath:@"isCancelled"];
 
-    _sharedData = nil;
+    _data = nil;
     _operation = nil;
     _operationQueue = nil;
     _internal = nil;
+    _error = nil;
 }
 
 #pragma mark
@@ -92,13 +96,13 @@
         __strong COCompositeOperation *strongSelf = weakSelf;
 
         if (strongSelf.isFinished) {
-            if (completionHandler) completionHandler();
+            if (completionHandler) completionHandler(strongSelf.data);
 
             strongSelf.completionBlock = nil;
         } else if (cancellationHandler) {
             [strongSelf _cancelOperations:NO];
 
-            cancellationHandler(strongSelf);
+            cancellationHandler(strongSelf, strongSelf.error);
         } else {
             [strongSelf cancel];
 
@@ -226,11 +230,11 @@
 }
 
 #pragma mark
-#pragma mark Public API: Shared data
+#pragma mark Public API: Data
 
-- (void)modifySharedData:(COModificationBlock)modificationBlock {
+- (void)safelyAccessData:(COModificationBlock)modificationBlock {
     @synchronized(self) {
-        modificationBlock(self.sharedData);
+        self.data = modificationBlock(self.data);
     }
 }
 
@@ -331,24 +335,23 @@
 #pragma mark Private (level 0)
 
 - (void)_cancelOperations:(BOOL)runCompletionBlocks {
-    NSArray *operations;
-
     @synchronized(self) {
-        operations = [self.operations copy];
-    }
+        [self.operations enumerateObjectsUsingBlock:^(COOperation *operation, NSUInteger idx, BOOL *stop) {
+            if (operation.isCancelled == NO && operation.isFinished == NO) {
+                if (operation.isReady == NO) {
+                    [operation removeObserver:self forKeyPath:@"isFinished"];
+                    [operation removeObserver:self forKeyPath:@"isCancelled"];
+                }
 
-    [operations enumerateObjectsUsingBlock:^(COOperation *operation, NSUInteger idx, BOOL *stop) {
-        if (operation.isCancelled == NO && operation.isFinished == NO) {
-            if (operation.isReady == NO) {
-                [operation removeObserver:self forKeyPath:@"isFinished"];
-                [operation removeObserver:self forKeyPath:@"isCancelled"];
+                [operation cancel];
+
+                if (runCompletionBlocks && operation.completionBlock) {
+                    operation.completionBlock();
+                }
             }
+        }];
 
-            [operation cancel];
-
-            if (operation.completionBlock && runCompletionBlocks) operation.completionBlock();
-        }
-    }];
+    }
 }
 
 #pragma mark
@@ -358,6 +361,9 @@
     for (COOperation *operation in self.operations) {
         operation.contextOperation = nil;
     }
+
+    // TODO: this fixes the issue when -main calls -_performCheckpointRoutineIncrementingNumberOfFinishedOperations at the moment after some of operations cancelled the whole composite operation (self), when instead -isCancelled state it also re-triggers -finish
+    self.completionBlock = nil;
 
     self.operations = nil;
 }
@@ -398,7 +404,8 @@
 - (void)_operationWasCancelled:(COOperation *)subOperation {
     // TODO: cancelled when operation is suspended
     @synchronized(self) {
-        self.completionBlock();
+        self.error = subOperation.error;
+        [self.completionBlock invoke];
     }
 }
 

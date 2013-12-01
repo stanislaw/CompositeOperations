@@ -13,7 +13,7 @@
 @protocol COOperationResolver <NSObject>
 
 - (void)resolveOperation:(COOperation *)operation;
-- (void)resolveOperation:(COOperation *)operation usingResolutionStrategy:(id)resolutionStrategy fallbackHandler:(COCompletionBlock)fallbackHandler;
+- (void)resolveOperation:(COOperation *)operation usingResolutionStrategy:(id)resolutionStrategy fallbackHandler:(COBlock)fallbackHandler;
 
 @end
 
@@ -26,6 +26,6 @@
 
 @interface COOperationResolver ()
 
-- (void)awakeOperation:(COOperation *)operation times:(NSUInteger)times eachAfterTimeInterval:(NSTimeInterval)timeInterval withAwakeBlock:(COOperationBlock)awakeBlock fallbackHandler:(COCompletionBlock)fallbackHandler;
+- (void)awakeOperation:(COOperation *)operation times:(NSUInteger)times eachAfterTimeInterval:(NSTimeInterval)timeInterval withAwakeBlock:(COOperationBlock)awakeBlock fallbackHandler:(COBlock)fallbackHandler;
 
 @end

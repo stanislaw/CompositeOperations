@@ -52,7 +52,7 @@ for (int i = 0; i < N; i++) {
                         [o finish];
                     }];
                 }
-            } completionHandler:^{
+            } completionHandler:^(id result){
                 isFinished = YES;
             } cancellationHandler:nil];
             
@@ -192,7 +192,7 @@ for (int i = 0; i < N; i++) {
                     [compositeOperation operationWithBlock:^(COOperation *cao) {
                         [cao finish];
                     }];
-                } completionHandler:^{
+                } completionHandler:^(id result){
                     isFinished = YES;
                 } cancellationHandler:nil];
                 

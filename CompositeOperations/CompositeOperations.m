@@ -19,7 +19,7 @@ void  __attribute__((overloadable)) operation(dispatch_queue_t queue, COOperatio
     [operation runInQueue:queue operation:block];
 }
 
-void  __attribute__((overloadable)) operation(id queue, COOperationBlock block) {
+void  __attribute__((overloadable)) operation(COOperationQueue *queue, COOperationBlock block) {
     COOperation *operation = [COOperation new];
 
     operation.operationQueue = queue;
@@ -27,12 +27,24 @@ void  __attribute__((overloadable)) operation(id queue, COOperationBlock block) 
     [operation run:block];
 }
 
-void  __attribute__((overloadable)) operation(id queue, COOperationBlock block, COCompletionBlock completionHandler, COCancellationBlockForOperation cancellationHandler) {
+void  __attribute__((overloadable)) operation(COOperationQueue *queue, COOperationBlock block, COCompletionBlock completionHandler, COCancellationBlockForOperation cancellationHandler) {
     COOperation *operation = [COOperation new];
 
     operation.operationQueue = queue;
 
     [operation run:block completionHandler:completionHandler cancellationHandler:cancellationHandler];
+}
+
+void  __attribute__((overloadable)) operation(COOperation *otherOperation, COCompletionBlock completionHandler, COCancellationBlockForOperation cancellationHandler) {
+    COOperation *operation = [COOperation new];
+
+    [operation run:^(COOperation *operation) {
+        [operation resolveWithOperation:otherOperation];
+    } completionHandler:^(id result) {
+        completionHandler(result);
+    } cancellationHandler:^(COOperation *operation, NSError *error) {
+        cancellationHandler(operation, error);
+    }];
 }
 
 void __attribute__((overloadable)) compositeOperation(COCompositeOperationConcurrencyType concurrencyType, COCompositeOperationBlock block, COCompletionBlock completionHandler, COCancellationBlockForCompositeOperation cancellationHandler) {

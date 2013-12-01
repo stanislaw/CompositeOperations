@@ -51,11 +51,33 @@
         oOver = YES;
     });
 
-    while (!oOver) {}
+    while (oOver == NO) {}
 
     STAssertEquals((int)opQueue.runningOperations.count, 0, nil);
 
     STAssertTrue(oOver, @"Expected aoOver to be YES");
+}
+
+
+- (void)test_operation_resolveOperation {
+    __block BOOL isFinished = NO;
+
+    NSString *predefinedResult = @("Result");
+
+    COOperation *otherOperation = [COOperation new];
+    otherOperation.operation = ^(COOperation *operation){
+        [operation finishWithResult:predefinedResult];
+    };
+
+    operation(otherOperation, ^(id result) {
+        STAssertTrue([result isEqualToString:predefinedResult], nil);
+
+        isFinished = YES;
+    }, ^(COOperation *operation, NSError *error) {
+        raiseShouldNotReachHere();
+    });
+
+    while (isFinished == NO) {}
 }
 
 - (void)test_CompositeSerialOperation {
@@ -132,9 +154,9 @@
         [compositeOperation operation:[operation copy]];
         [compositeOperation operation:[operation copy]];
         [compositeOperation operation:[operation copy]];
-    }, ^{
+    }, ^(id result){
         isFinished = YES;
-    }, ^(COCompositeOperation *compositeOperation){
+    }, ^(COCompositeOperation *compositeOperation, NSError *error){
         raiseShouldNotReachHere();
     });
     
@@ -165,9 +187,9 @@
 
     compositeOperation(COCompositeOperationSerial, ^(COCompositeOperation *mixedCompositeOperation) {
         [mixedCompositeOperation compositeOperation:innerCompositeOperation];
-    }, ^{
+    }, ^(id result){
         isFinished = YES;
-    }, ^(COCompositeOperation *compositeOperation){
+    }, ^(COCompositeOperation *compositeOperation, NSError *error){
         raiseShouldNotReachHere();
     });
 
@@ -340,7 +362,7 @@
                 [operation finish];
             }];
         }
-    }, ^{
+    }, ^(id result){
         passedHandler = YES;
     }, nil);
 
@@ -393,9 +415,9 @@
 
             [tao finish];
         }];
-    }, ^{
+    }, ^(id result){
         isFinished = YES;
-    }, ^(COCompositeOperation *to){
+    }, ^(COCompositeOperation *to, NSError *error){
         raiseShouldNotReachHere();
     });
 
@@ -427,9 +449,9 @@
             }
             [operation finish];
         }];
-    }, ^{
+    }, ^(id result){
         isFinished = YES;
-    }, ^(COCompositeOperation *compositeOperation){
+    }, ^(COCompositeOperation *compositeOperation, NSError *error){
         raiseShouldNotReachHere();
     });
 
@@ -476,7 +498,7 @@
                     [o finish];
                 }];
             }];
-        }, ^{
+        }, ^(id result){
             passedHandler = YES;
             isFinished = YES;
         }, nil);
@@ -529,12 +551,12 @@
         [compositeOperation operationWithBlock:^(COOperation *operation) {
             [operation finish];
         }];
-    }, ^{
+    }, ^(id result){
         isDone = YES;
 
         STAssertTrue(cascOp.isFinished, nil);
         STAssertTrue(reachedTheLastAndTheMostNestedOperation, nil);
-    }, ^(COCompositeOperation *compositeOperation){
+    }, ^(COCompositeOperation *compositeOperation, NSError *error){
         raiseShouldNotReachHere();
     });
 
@@ -554,9 +576,9 @@
     operation(queue, ^(COOperation *operation) {
         op = operation;
         [operation cancel];
-    }, ^{
+    }, ^(id result){
         raiseShouldNotReachHere();
-    }, ^{
+    }, ^(COOperation *operation, NSError *error){
         STAssertTrue(op.isCancelled, nil);
 
         blockFlag = YES;

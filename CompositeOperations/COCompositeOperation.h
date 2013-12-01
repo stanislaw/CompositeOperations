@@ -32,7 +32,7 @@
 - (void)compositeOperation:(COCompositeOperationConcurrencyType)concurrencyType withBlock: (COCompositeOperationBlock)operationBlock;
 
 // Shared data
-@property (strong) id sharedData;
-- (void)modifySharedData:(COModificationBlock)modificationBlock;
+@property (strong, nonatomic) id data;
+- (void)safelyAccessData:(COModificationBlock)modificationBlock;
 
 @end

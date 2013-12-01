@@ -28,7 +28,7 @@
 }
 
 // Default implementation, should be extended in subclasses
-- (void)resolveOperation:(COOperation *)operation usingResolutionStrategy:(id)resolutionStrategy fallbackHandler:(COCompletionBlock)fallbackHandler {
+- (void)resolveOperation:(COOperation *)operation usingResolutionStrategy:(id)resolutionStrategy fallbackHandler:(COBlock)fallbackHandler {
 
     [self awakeOperation:operation times:self.defaultNumberOfTimesToRerunOperation eachAfterTimeInterval:self.defaultPauseInSecondsBeforeNextRunOfOperation withAwakeBlock:^(COOperation *operation) {
         [operation awake];
@@ -37,7 +37,7 @@
     }];
 }
 
-- (void)awakeOperation:(COOperation *)operation times:(NSUInteger)times eachAfterTimeInterval:(NSTimeInterval)timeInterval withAwakeBlock:(COOperationBlock)awakeBlock fallbackHandler:(COCompletionBlock)fallbackHandler {
+- (void)awakeOperation:(COOperation *)operation times:(NSUInteger)times eachAfterTimeInterval:(NSTimeInterval)timeInterval withAwakeBlock:(COOperationBlock)awakeBlock fallbackHandler:(COBlock)fallbackHandler {
 
     if (operation.numberOfRuns < times) {
 

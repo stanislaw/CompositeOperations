@@ -358,13 +358,13 @@ describe(@"COCompositeOperationSerial", ^{
 
                     [o finish];
                 }];
-            } completionHandler:^{
+            } completionHandler:^(id result){
                 [[theValue(compositeOperation.isFinished) should] beYes];
 
                 [[theValue([regString isEqualToString:@"123"]) should] beYes];
 
                 blockFlag = YES;
-            } cancellationHandler:^(COCompositeOperation *compositeOperation) {
+            } cancellationHandler:^(COCompositeOperation *compositeOperation, NSError *error) {
                 [[theValue(compositeOperation.isExecuting) should] beYes];
 
                 [[theValue([regString isEqualToString:@"1"]) should] beYes];
@@ -451,16 +451,20 @@ describe(@"COCompositeOperationSerial", ^{
 
             [compositeOperation run:^(COCompositeOperation *co) {
                 [co operationWithBlock:^(COOperation *cao) {
-                    co.sharedData = data;
+                    [co safelyAccessData:^(id _data) {
+                        return data;
+                    }];
 
                     [cao finish];
                 }];
 
                 [co operationWithBlock:^(COOperation *cao) {
-                    NSString *sharedData = co.sharedData;
+                    [co safelyAccessData:^id(id _data) {
+                        [[theValue([_data isEqualToString:data]) should] beYes];
 
-                    [[theValue([sharedData isEqualToString:data]) should] beYes];
-                    
+                        return nil;
+                    }];
+
                     isFinished = YES;
                     [cao finish];
                 }];
@@ -487,9 +491,9 @@ describe(@"COCompositeOperationSerial", ^{
                     [compositeOperation operationWithBlock:^(COOperation *operation) {
                         raiseShouldNotReachHere();
                     }];
-                } completionHandler:^{
+                } completionHandler:^(id result){
                     raiseShouldNotReachHere();
-                } cancellationHandler:^(COCompositeOperation *compositeOperation) {
+                } cancellationHandler:^(COCompositeOperation *compositeOperation, NSError *error) {
                     NSLog(@"%@", [compositeOperation.operations valueForKey:@"completionBlock"]);
 
                     for (COOperation *operation in compositeOperation.operations) {
@@ -516,7 +520,7 @@ describe(@"COCompositeOperationSerial", ^{
                     [compositeOperation operationWithBlock:^(COOperation *operation) {
                         raiseShouldNotReachHere();
                     }];
-                } completionHandler:^{
+                } completionHandler:^(id result){
                     raiseShouldNotReachHere();
                 } cancellationHandler:nil];
                 
@@ -588,7 +592,7 @@ describe(@"COCompositeOperationSerial", ^{
                     [outerCompositeOperation operationWithBlock:^(COOperation *cuo) {
                         raiseShouldNotReachHere();
                     }];
-                } completionHandler:nil cancellationHandler:^(COCompositeOperation *outerCompositeOperation){
+                } completionHandler:nil cancellationHandler:^(COCompositeOperation *outerCompositeOperation, NSError *error){
                     COCompositeOperation *innerCompositeOperation = [outerCompositeOperation.operations objectAtIndex:0];
 
                     for (COOperation *operation in innerCompositeOperation.operations) {
@@ -633,7 +637,7 @@ describe(@"COCompositeOperationSerial", ^{
                     [compositeOperation operationWithBlock:^(COOperation *o) {
                         raiseShouldNotReachHere();
                     }];
-                } completionHandler:nil cancellationHandler:^(COCompositeOperation *compositeOperation){
+                } completionHandler:nil cancellationHandler:^(COCompositeOperation *compositeOperation, NSError *error){
                     [[theValue(compositeOperation.isCancelled) should] beNo];
                     cancellationHandlerWasRun = YES;
                 }];

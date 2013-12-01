@@ -217,9 +217,9 @@
 
     [operation run:^(COOperation *operation) {
         [operation cancel];
-    } completionHandler:^{
+    } completionHandler:^(id result){
         raiseShouldNotReachHere();
-    } cancellationHandler:^{
+    } cancellationHandler:^(COOperation *operation, NSError *error) {
         STAssertTrue(operation.isCancelled, nil);
 
         blockFlag = YES;

@@ -225,7 +225,7 @@
             }
             [tao finish];
         }];
-    }, ^{
+    }, ^(id result){
         isFinished = YES;
     }, nil);
 

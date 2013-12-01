@@ -299,14 +299,14 @@ static int finishedOperationsCount;
         // Nothing intentionally - operation will never be run
         // Because it will be replaced by the following operation
         raiseShouldNotReachHere();
-    }, ^{}, ^{
+    }, ^(id result){}, ^(COOperation *operation, NSError *error){
         isFinished = YES;
     });
 
     operation(operationQueue, ^(COOperation *operation) {
         raiseShouldNotReachHere();
-    }, ^{
-    }, ^{
+    }, ^(id result){
+    }, ^(COOperation *operation, NSError *error){
     });
 
     while(isFinished == NO);

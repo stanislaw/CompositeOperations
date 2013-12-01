@@ -36,6 +36,10 @@ static inline NSString * COKeyPathFromOperationState(COOperationState state) {
 
 @property (nonatomic) COOperationState state;
 
+@property (strong, nonatomic) id data;
+
+@property (strong, nonatomic) NSError *error;
+
 // Context operation
 @property (strong) COOperation *contextOperation;
 

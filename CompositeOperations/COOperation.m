@@ -234,7 +234,7 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
 
     // Context (composite operation) executes completionBlocks of its operation,
     // He only standalone COOperation's completionBlocks are executed.
-    if (self.contextOperation == nil) {
+    if (self.contextOperation == nil && self.isCancelled) {
         if (self.completionBlock) self.completionBlock();
     }
 }

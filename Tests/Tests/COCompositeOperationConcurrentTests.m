@@ -46,7 +46,7 @@ describe(@"", ^{
                     [operation finish];
                 }
             }];
-        } completionHandler:^{
+        } completionHandler:^(id result) {
             isFinishedSecond = YES;
         } cancellationHandler:nil];
 
@@ -81,7 +81,7 @@ describe(@"", ^{
                     [tao finish];
                 }];
             }
-        } completionHandler:^{
+        } completionHandler:^(id result){
             isFinished = YES;
         } cancellationHandler:nil];
 
@@ -125,13 +125,13 @@ describe(@"", ^{
             [compositeOperation operationInQueue:serialQueue() withBlock:^(COOperation *o) {
                 // Intentionally unfinished operation
             }];
-        } completionHandler:^{
+        } completionHandler:^(id result) {
             NSLog(@"operations: %@", compositeOperation.operations);
             NSLog(@"self: %@", compositeOperation);
             NSLog(@"Call stack: %@", [NSThread callStackSymbols]);
             
             raiseShouldNotReachHere();
-        } cancellationHandler:^(COCompositeOperation *compositeOperation) {
+        } cancellationHandler:^(COCompositeOperation *compositeOperation, NSError *error) {
             for (COOperation *operation in compositeOperation.operations) {
                 [[theValue(operation.isCancelled) should] beYes];
             }
@@ -143,6 +143,7 @@ describe(@"", ^{
     });
 
     it(@"Ensures that if cancellationHandler is defined, -[COOperation cancel] of suboperation cancels suboperations, NOT cancels composite concurrent operation automatically and runs a cancellation handler, so it could be decided what to do with a composite concurrent operation.", ^{
+        for (int i = 0; i < 100; i++) {
         __block BOOL isFinished = NO;
 
         COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent];
@@ -151,9 +152,8 @@ describe(@"", ^{
             [compositeOperation operationInQueue:serialQueue() withBlock:^(COOperation *o) {
                 [o cancel];
             }];
-        } completionHandler:^{
-            raiseShouldNotReachHere();
-        } cancellationHandler:^(COCompositeOperation *compositeOperation) {
+        } completionHandler:^(id result) {
+        } cancellationHandler:^(COCompositeOperation *compositeOperation, NSError *error) {
             [[theValue(compositeOperation.isExecuting) should] beYes]; // cancellation handler is provided
             [[theValue(compositeOperation.isCancelled) should] beNo]; // so the composite operation is not cancelled automatically
 
@@ -170,6 +170,8 @@ describe(@"", ^{
         }];
 
         while (isFinished == NO);
+
+        }
     });
 
     it(@"", ^{
@@ -191,7 +193,7 @@ describe(@"", ^{
                 else
                     [tao finish];
             }];
-        } completionHandler:^{
+        } completionHandler:^(id result){
             isFinished = YES;
         } cancellationHandler:nil];
 
@@ -211,9 +213,9 @@ describe(@"", ^{
                 [compositeOperation operationWithBlock:^(COOperation *o) {
                     [o cancel];
                 }];
-            } completionHandler:^{
+            } completionHandler:^(id result){
                 raiseShouldNotReachHere();
-            } cancellationHandler:^(COCompositeOperation *compositeOperation) {
+            } cancellationHandler:^(COCompositeOperation *compositeOperation, NSError *error) {
                 for (COOperation *operation in compositeOperation.operations) {
                     [[operation.completionBlock shouldNot] beNil];
                 }
@@ -236,7 +238,7 @@ describe(@"", ^{
 
                     isFinished = YES;
                 }];
-            } completionHandler:^{
+            } completionHandler:^(id result){
                 raiseShouldNotReachHere();
             } cancellationHandler:nil];
 
@@ -285,7 +287,7 @@ describe(@"", ^{
                             [operation finish];
                         }
                     }];
-                } completionHandler:^{
+                } completionHandler:^(id result){
                     isFinished = YES;
                 } cancellationHandler:nil];
 

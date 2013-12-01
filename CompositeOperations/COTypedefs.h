@@ -15,11 +15,11 @@ typedef void (^COCompositeOperationBlock)(COCompositeOperation *compositeOperati
 
 // Completion and cancellation blocks
 // Gotcha: in the following typedef the second "void" is important to have overloading picked up
-typedef void (^COCompletionBlock)(void);
-typedef void (^COCancellationBlockForOperation)(void);
-typedef void (^COCancellationBlockForCompositeOperation)(COCompositeOperation *compositeOperation);
+typedef void (^COCompletionBlock)(id result);
+typedef void (^COCancellationBlockForOperation)(COOperation *operation, NSError *error);
+typedef void (^COCancellationBlockForCompositeOperation)(COCompositeOperation *compositeOperation, NSError *error);
 
-typedef void (^COModificationBlock)(id data);
+typedef id (^COModificationBlock)(id data);
 
 typedef NS_ENUM(NSUInteger, COCompositeOperationConcurrencyType) {
     COCompositeOperationSerial = 1,
