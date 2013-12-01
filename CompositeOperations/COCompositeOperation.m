@@ -45,8 +45,6 @@
         NSParameterAssert(NO);
     }
 
-    self.concurrencyType = concurrencyType;
-
     [self addObserver:self
            forKeyPath:@"isFinished"
               options:NSKeyValueObservingOptionNew
@@ -187,7 +185,7 @@
 #pragma mark
 #pragma mark Public API: Inner composite operations
 
-- (void)compositeOperation:(COCompositeOperationConcurrencyType)concurrencyType operation: (COCompositeOperationBlock)operationBlock {
+- (void)compositeOperation:(COCompositeOperationConcurrencyType)concurrencyType withBlock: (COCompositeOperationBlock)operationBlock {
     COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:concurrencyType];
 
     compositeOperation.operation = operationBlock;

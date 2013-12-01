@@ -205,7 +205,7 @@
             });
         }];
 
-        [compositeOperation compositeOperation:COCompositeOperationConcurrent operation:^(COCompositeOperation *to) {
+        [compositeOperation compositeOperation:COCompositeOperationConcurrent withBlock:^(COCompositeOperation *to) {
             [to operationWithBlock:^(COOperation *tao) {
                 @synchronized(countArr) {
                     [countArr addObject:@1];
@@ -425,7 +425,7 @@
                 });
             }];
 
-            [to compositeOperation:COCompositeOperationConcurrent operation:^(COCompositeOperation *co) {
+            [to compositeOperation:COCompositeOperationConcurrent withBlock:^(COCompositeOperation *co) {
                 [co operationWithBlock:^(COOperation *o) {
                     @synchronized(countArr) {
                         [countArr addObject:@1];
@@ -461,21 +461,21 @@
     compositeOperation(COCompositeOperationConcurrent, ^(COCompositeOperation *compositeOperation) {
         cascOp = compositeOperation;
         
-        [compositeOperation compositeOperation:COCompositeOperationConcurrent operation:^(COCompositeOperation *compositeOperation) {
-            [compositeOperation compositeOperation:COCompositeOperationSerial operation:^(COCompositeOperation *compositeOperation) {
-                [compositeOperation compositeOperation:COCompositeOperationConcurrent operation:^(COCompositeOperation *compositeOperation) {
-                    [compositeOperation compositeOperation:COCompositeOperationConcurrent operation:^(COCompositeOperation *compositeOperation) {
+        [compositeOperation compositeOperation:COCompositeOperationConcurrent withBlock:^(COCompositeOperation *compositeOperation) {
+            [compositeOperation compositeOperation:COCompositeOperationSerial withBlock:^(COCompositeOperation *compositeOperation) {
+                [compositeOperation compositeOperation:COCompositeOperationConcurrent withBlock:^(COCompositeOperation *compositeOperation) {
+                    [compositeOperation compositeOperation:COCompositeOperationConcurrent withBlock:^(COCompositeOperation *compositeOperation) {
                         [compositeOperation operationWithBlock:^(COOperation *operation) {
                             [operation finish];
                         }];
 
-                        [compositeOperation compositeOperation:COCompositeOperationConcurrent operation:^(COCompositeOperation *compositeOperation) {
+                        [compositeOperation compositeOperation:COCompositeOperationConcurrent withBlock:^(COCompositeOperation *compositeOperation) {
                             [compositeOperation operationWithBlock:^(COOperation *operation) {
                                 [operation finish];
                             }];
                         }];
 
-                        [compositeOperation compositeOperation:COCompositeOperationConcurrent operation:^(COCompositeOperation *compositeOperation) {
+                        [compositeOperation compositeOperation:COCompositeOperationConcurrent withBlock:^(COCompositeOperation *compositeOperation) {
                             [compositeOperation operationWithBlock:^(COOperation *operation) {
                                 reachedTheLastAndTheMostNestedOperation = YES;
                                 [operation finish];

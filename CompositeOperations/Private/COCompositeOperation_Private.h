@@ -11,7 +11,6 @@
 @interface COCompositeOperation ()
 
 @property (strong, nonatomic) NSMutableArray *operations;
-@property COCompositeOperationConcurrencyType concurrencyType;
 
 @property BOOL allSuboperationsRegistered;
 

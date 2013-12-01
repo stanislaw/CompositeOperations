@@ -598,7 +598,7 @@
             [cuo finish];
         }];
 
-        [co compositeOperation:COCompositeOperationConcurrent operation:^(COCompositeOperation *to1) {
+        [co compositeOperation:COCompositeOperationConcurrent withBlock:^(COCompositeOperation *to1) {
             [to1 operationWithBlock:^(COOperation *tao) {
                 @synchronized(countArr) {
                     [countArr addObject:@1];
@@ -631,7 +631,7 @@
     COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
 
     [compositeOperation run:^(COCompositeOperation *compositeOperation) {
-        [compositeOperation compositeOperation:COCompositeOperationConcurrent operation:^(COCompositeOperation *to1) {
+        [compositeOperation compositeOperation:COCompositeOperationConcurrent withBlock:^(COCompositeOperation *to1) {
 
             [to1 operationWithBlock:^(COOperation *tao) {
                 [tao cancel];
@@ -744,7 +744,7 @@
         int loop = 100;
 
         while(loop-- > 0) {
-            [compositeOperation compositeOperation:COCompositeOperationConcurrent operation:^(COCompositeOperation *to1) {
+            [compositeOperation compositeOperation:COCompositeOperationConcurrent withBlock:^(COCompositeOperation *to1) {
                 [to1 operationWithBlock:^(COOperation *tao) {
                     @synchronized(regArray) {
                         [regArray addObject:@1];
@@ -766,7 +766,7 @@
         loop = 20;
 
         while(loop-- > 0) {
-            [compositeOperation compositeOperation:COCompositeOperationConcurrent operation:^(COCompositeOperation *to1) {
+            [compositeOperation compositeOperation:COCompositeOperationConcurrent withBlock:^(COCompositeOperation *to1) {
                 [to1 operationWithBlock:^(COOperation *tao) {
                     @synchronized(regArray) {
                         [regArray removeLastObject];

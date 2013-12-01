@@ -27,7 +27,7 @@
 - (void)operationInQueue:(dispatch_queue_t)queue withBlock:(COOperationBlock)operationBlock;
 
 // Public API: Inner composite operations
-- (void)compositeOperation:(COCompositeOperationConcurrencyType)concurrencyType operation: (COCompositeOperationBlock)operationBlock;
+- (void)compositeOperation:(COCompositeOperationConcurrencyType)concurrencyType withBlock: (COCompositeOperationBlock)operationBlock;
 
 // Shared data
 @property (strong) id sharedData;
