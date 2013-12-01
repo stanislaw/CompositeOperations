@@ -9,13 +9,13 @@
 
 #import "COOperationQueue.h"
 
-@interface TransactionalOperationsTests : SenTestCase
+@interface CompositeConcurrentOperationTests : SenTestCase
 @end
 
-@implementation TransactionalOperationsTests
+@implementation CompositeConcurrentOperationTests
 
-// Ensures that -[COOperation cancel] of suboperation cancels all operations in a transaction
-- (void) testTransactionalOperation_cancel {
+// Ensures that -[COOperation cancel] of suboperation cancels all operations in a composite concurrent operation
+- (void) test_CompositeConcurrentOperation_cancel {
     __block BOOL isFinished = NO;
 
     COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent];
@@ -66,8 +66,8 @@
     }
 }
 
-// Ensures that if cancellationHandler is defined, -[COOperation cancel] of suboperation cancels suboperations, NOT cancels transaction automatically and runs a cancellation handler, so it could be decided what to do with a transaction.
-- (void) testTransactionalOperation_cancel_cancellation_handler {
+// Ensures that if cancellationHandler is defined, -[COOperation cancel] of suboperation cancels suboperations, NOT cancels composite concurrent operation automatically and runs a cancellation handler, so it could be decided what to do with a composite concurrent operation.
+- (void) testCompositeSerialOperation_cancel_cancellation_handler {
     __block BOOL isFinished = NO;
 
     COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent];
@@ -80,7 +80,7 @@
         raiseShouldNotReachHere();
     } cancellationHandler:^(COCompositeOperation *compositeOperation) {
         STAssertTrue(compositeOperation.isExecuting, nil);  // cancellation handler is provided
-        STAssertFalse(compositeOperation.isCancelled, nil); // so the transaction is not cancelled automatically
+        STAssertFalse(compositeOperation.isCancelled, nil); // so the composite operation is not cancelled automatically
 
         [compositeOperation cancel];
 
@@ -103,7 +103,7 @@
 #if !OS_OBJECT_USE_OBJC
 
 // Ensures that -[COCompositeOperation cancel] does not run and remove completionBlocks of suboperations ("soft cancel") when cancellationHandler is provided.
-- (void)test_transactionalOperation_cancel_does_not_runs_suboperations_completionBlocks_if_cancellation_handler_is_provided {
+- (void)test_tCOCompositeOperationConcurrent_cancel_does_not_runs_suboperations_completionBlocks_if_cancellation_handler_is_provided {
     __block BOOL isFinished = NO;
 
     COCompositeOperation *tOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent];
@@ -126,7 +126,7 @@
 }
 
 // Ensures that -[COCompositeOperation cancel] DOES run and remove completionBlocks of suboperations ("soft cancel") when cancellationHandler is not provided.
-- (void)test_transactionalOperation_cancel_does_run_suboperations_completionBlocks_if_cancellation_handler_is_provided {
+- (void)test_COCompositeOperationConcurrent_cancel_does_run_suboperations_completionBlocks_if_cancellation_handler_is_provided {
     __block BOOL isFinished = NO;
 
     COCompositeOperation *tOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent];
@@ -152,7 +152,7 @@
 
 #pragma mark
 
-- (void) testTransactionalOperation_reRun {
+- (void) test_CompositeConcurrentOperation_rerun {
     int N = 10;
     
     __block BOOL isFinished = NO;
@@ -180,7 +180,7 @@
     STAssertEquals((int)countArr.count, N, @"Expected count to be equal N");
 }
 
-- (void)test_transactionalOperation_in_operation_queue {
+- (void)test_COCompositeOperationConcurrent_in_operation_queue {
     __block BOOL isFinished = NO;
     NSMutableArray *countArr = [NSMutableArray array];
 
@@ -191,8 +191,8 @@
     COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent];
     compositeOperation.operationQueue = opQueue;
 
-    STAssertEquals((int)opQueue.pendingOperations.count, 0, @"Expected to be 0 pending operations before transactional operation");
-    STAssertEquals((int)opQueue.runningOperations.count, 0, @"Expected to be 0 running operations before transactional operation");
+    STAssertEquals((int)opQueue.pendingOperations.count, 0, nil);
+    STAssertEquals((int)opQueue.runningOperations.count, 0, nil);
     
     [compositeOperation run:^(COCompositeOperation *compositeOperation) {
         STAssertEquals((int)opQueue.pendingOperations.count, 0, nil);
@@ -220,7 +220,7 @@
         }];
     } completionHandler:^{
         isFinished = YES;
-        STAssertEquals((int)opQueue.pendingOperations.count, 0, @"Expected to be 0 pending operations when running inside completion handler");
+        STAssertEquals((int)opQueue.pendingOperations.count, 0, nil);
     } cancellationHandler:nil];
     
     while (!isFinished);
@@ -228,12 +228,12 @@
 
     while(opQueue.runningOperations.count > 0);
 
-    STAssertEquals((int)opQueue.runningOperations.count, 0, @"Expected to be 0 running operations before transactional operation");
+    STAssertEquals((int)opQueue.runningOperations.count, 0, nil);
 }
 
 
 
-- (void) test_transactionalOperation_operationInQueue {
+- (void) test_COCompositeOperationConcurrent_operationInQueue {
     __block BOOL isFinished = NO;
 
     NSMutableArray *countArr = [NSMutableArray array];
@@ -263,7 +263,7 @@
     NSLog(@"%s: accResult is: %@", __PRETTY_FUNCTION__, accResult);
 }
 
-- (void) test_transactionalOperation_with_defaultQueue_set {
+- (void) test_COCompositeOperationConcurrent_with_defaultQueue_set {
     COSetDefaultQueue(concurrentQueue());
     NSMutableArray *countArr = [NSMutableArray array];
     __block BOOL isFinished = NO;
@@ -307,30 +307,30 @@
 #pragma mark
 #pragma mark Resume / suspend
 
-// Ensures that -[COCompositeOperation resume] reruns left suspended operation if cascade operation was suspended in the body of successful previous sub-operation
+// Ensures that -[COCompositeOperation resume] reruns left suspended operation if composite serial operation was suspended in the body of successful previous sub-operation
 
-- (void)test_transactionalOperation_resume_runs_all_suspended_operations_if_cascade_operation_was_suspended_in_th_body_of_successful_previous_sub_operation {
+- (void)test_COCompositeOperationConcurrent_resume_runs_all_suspended_operations_if_composite_serial_operation_was_suspended_in_th_body_of_successful_previous_sub_operation {
     int N = 10;
     
     for(int i = 1; i <= N; i++) {
         __block BOOL isFinished = NO;
         
-        __block BOOL transactionHaveAlreadyBeenSuspended = NO;
+        __block BOOL compositeConcurrentOperationHaveAlreadyBeenSuspended = NO;
         
-        COCompositeOperation *tOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent];
+        COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent];
 
-        [tOperation run:^(COCompositeOperation *transaction) {
-            [transaction operationInQueue:serialQueue() withBlock:^(COOperation *operation) {
+        [compositeOperation run:^(COCompositeOperation *compositeOperation) {
+            [compositeOperation operationInQueue:serialQueue() withBlock:^(COOperation *operation) {
                 [operation finish];
                 
                 STAssertTrue(operation.isFinished, nil);
             }];
 
-            [transaction operationInQueue:serialQueue() withBlock:^(COOperation *operation) {
+            [compositeOperation operationInQueue:serialQueue() withBlock:^(COOperation *operation) {
                 // First time it will just run out without finish or cancel
                 // And on the second it will actually finish itself
-                if (transactionHaveAlreadyBeenSuspended == NO) {
-                    [transaction suspend]; // transaction cascade and all suboperations
+                if (compositeConcurrentOperationHaveAlreadyBeenSuspended == NO) {
+                    [compositeOperation suspend];
 
                     STAssertTrue(operation.isSuspended, nil); // The first time operation is run - it is suspended by first operation
                 } else {
@@ -343,43 +343,43 @@
             }];
         } completionHandler:nil cancellationHandler:nil];
 
-        while (!isFinished || !tOperation.isSuspended);
+        while (!isFinished || !compositeOperation.isSuspended);
 
         isFinished = NO;
 
-        transactionHaveAlreadyBeenSuspended = YES;
-        [tOperation resume];
+        compositeConcurrentOperationHaveAlreadyBeenSuspended = YES;
+        [compositeOperation resume];
 
-        while (!isFinished || !tOperation.isFinished) {}
-        STAssertTrue(tOperation.isFinished, nil);
+        while (!isFinished || !compositeOperation.isFinished) {}
+        STAssertTrue(compositeOperation.isFinished, nil);
     }
 }
 
-- (void)test_transactionalOperation_resume_runs_all_suspended_operations_in_the_same_queues_they_were_originally_scheduled {
+- (void)test_COCompositeOperationConcurrent_resume_runs_all_suspended_operations_in_the_same_queues_they_were_originally_scheduled {
     __block BOOL isFinished = NO;
 
-    __block BOOL transactionHaveAlreadyBeenSuspended = NO;
+    __block BOOL compositeConcurrentOperationHaveAlreadyBeenSuspended = NO;
 
-    COCompositeOperation *tOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent];
+    COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent];
 
     COSetDefaultQueue(concurrentQueue());
     
-    [tOperation run:^(COCompositeOperation *transaction) {
-        [transaction operationInQueue:serialQueue() withBlock:^(COOperation *operation) {
+    [compositeOperation run:^(COCompositeOperation *compositeOperation) {
+        [compositeOperation operationInQueue:serialQueue() withBlock:^(COOperation *operation) {
             [operation finish];
 
             STAssertTrue(operation.isFinished, nil);
         }];
 
-        [transaction operationInQueue:serialQueue() withBlock:^(COOperation *operation) {
+        [compositeOperation operationInQueue:serialQueue() withBlock:^(COOperation *operation) {
 
             // It should both times be serialQueue() 
             STAssertTrue(dispatch_get_current_queue() == serialQueue(), nil);
             
             // First time it will just run out without finish or cancel
             // And on the second it will actually finish itself
-            if (transactionHaveAlreadyBeenSuspended == NO) {
-                [transaction suspend]; // transaction cascade and all suboperations
+            if (compositeConcurrentOperationHaveAlreadyBeenSuspended == NO) {
+                [compositeOperation suspend];
             } else {
                 [operation finish];
             }
@@ -388,23 +388,23 @@
         }];
     } completionHandler:nil cancellationHandler:nil];
 
-    while (!isFinished || !tOperation.isSuspended);
+    while (!isFinished || !compositeOperation.isSuspended);
 
     isFinished = NO;
 
-    transactionHaveAlreadyBeenSuspended = YES;
-    [tOperation resume];
+    compositeConcurrentOperationHaveAlreadyBeenSuspended = YES;
+    [compositeOperation resume];
 
-    while (!isFinished || !tOperation.isFinished) {}
-    STAssertTrue(tOperation.isFinished, nil);
+    while (!isFinished || !compositeOperation.isFinished) {}
+    STAssertTrue(compositeOperation.isFinished, nil);
 }
 
 #pragma mark
 #pragma mark reRun / awake
 
-// Ensures that -[TransactionalOperation awake] awakes(i.e. reruns) all unfinished operations.
+// Ensures that -[COCompositeOperation(Concurrent) awake] awakes(i.e. reruns) all unfinished operations.
 
-- (void)test_transactionalOperation_awake {
+- (void)test_COCompositeOperationConcurrent_awake {
     COSetDefaultQueue(serialQueue());
     
     NSMutableArray *regArray = [NSMutableArray new];
@@ -462,8 +462,8 @@
     while(blockFlag == NO){}
 }
 
-// Ensures that -[TransactionalOperation awake] HAS effect on executing operations
-- (void)test_transactionalOperation_awake_has_effect_on_executing_operations {
+// Ensures that -[COCompositeOperationConcurrent awake] HAS effect on executing operations
+- (void)test_COCompositeOperationConcurrent_awake_has_effect_on_executing_operations {
     __block BOOL blockFlag = NO;
     
     COCompositeOperation *intentionallyUnfinishableTOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent];
@@ -485,8 +485,8 @@
     STAssertTrue(intentionallyUnfinishableTOperation.isFinished, nil);
 }
 
-// Ensures that -[TransactionalOperation awake] has no effect on finished operations
-- (void)test_transactionalOperation_awake_has_no_effect_on_finished_operations {
+// Ensures that -[COCompositeOperation[Concurrent] awake] has no effect on finished operations
+- (void)test_COCompositeOperationConcurrent_awake_has_no_effect_on_finished_operations {
     COCompositeOperation *intentionallyUnfinishableTOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent];
 
     intentionallyUnfinishableTOperation.operation = ^(COCompositeOperation *co) {
@@ -503,8 +503,8 @@
     STAssertTrue(intentionallyUnfinishableTOperation.isFinished, nil);
 }
 
-// Ensures that -[TransactionalOperation awake] has no effect on cancelled operations
-- (void)test_transactionalOperation_awake_has_no_effect_on_cancelled_operations {
+// Ensures that -[COCompositeOperation[Concurrent] awake] has no effect on cancelled operations
+- (void)test_COCompositeOperationConcurrent_awake_has_no_effect_on_cancelled_operations {
     COCompositeOperation *intentionallyUnfinishableTOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent];
 
     intentionallyUnfinishableTOperation.operation = ^(COCompositeOperation *co) {

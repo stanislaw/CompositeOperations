@@ -20,7 +20,7 @@ operation(concurrentQueue(), ^(COOperation *operation) {
 
 ## COCompositeOperation
 
-### COCompositeOperationSerial
+### COCompositeOperation[Serial]
 
 ```objective-c
 dispatch_async(queue1, ^{
@@ -140,7 +140,7 @@ compositeOperation(^(COCompositeOperation *compositeOperation) {
     // At this point - after the outer block have just run - all operations are scheduled to be run in CODefaultQueue()
 }, nil, nil);
 ```
-### COCompositeOperationConcurrent
+### COCompositeOperation[Concurrent]
 
 The following example will run composite concurrent operation - it will schedule 3 asynchronous suboperations (All 3 operations will be run in a queue set by COSetDefaultQueue()).
 

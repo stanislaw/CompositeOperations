@@ -36,7 +36,7 @@ static int const N = 10;
     STAssertEquals((int)countArr.count, N, [NSString stringWithFormat:@"Expected count to be equal %d", N]);
 }
 
-- (void) test_transactionalOperation_high_load {
+- (void) test_COCompositeOperationConcurrent_high_load {
     NSMutableArray *countArr = [NSMutableArray array];
 
     __block BOOL isFinished = NO;

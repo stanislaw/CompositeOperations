@@ -162,7 +162,7 @@
     STAssertEquals(count, 3, @"Expected count to be equal 3");
 }
 
-- (void) test_transactionalOperation_in_NSOperationQueue_basic_test {
+- (void) test_COCompositeOperationConcurrent_in_NSOperationQueue_basic_test {
     __block BOOL isFinished = NO;
     NSMutableArray *countArr = [NSMutableArray array];
 
@@ -202,7 +202,7 @@
     STAssertEquals((int)countArr.count, 3, @"Expected count to be equal 3");
 }
 
-- (void) test_transactionalOperation_in_NSOperationQueue {
+- (void) test_COCompositeOperationConcurrent_in_NSOperationQueue {
     __block BOOL isFinished = NO;
     NSMutableArray *countArr = [NSMutableArray array];
 

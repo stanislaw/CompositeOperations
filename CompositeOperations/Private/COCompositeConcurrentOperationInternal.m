@@ -26,7 +26,7 @@
 }
 
 - (void)_enqueueSuboperation:(COOperation *)subOperation {
-    if (self.compositeOperation.isFinished) [NSException raise: NSInvalidArgumentException format: @"[%@-%@] suboperation cannot be added to the finished transactional operation", NSStringFromClass(self.class), NSStringFromSelector(_cmd)];
+    if (self.compositeOperation.isFinished) [NSException raise: NSInvalidArgumentException format: @"[%@-%@] suboperation cannot be added to the finished composite concurrent operation", NSStringFromClass(self.class), NSStringFromSelector(_cmd)];
 
     [self.compositeOperation _registerSuboperation:subOperation];
 

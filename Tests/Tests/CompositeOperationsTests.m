@@ -177,7 +177,7 @@
 }
 
 
-- (void)testCascadeOperation_Integration {
+- (void)test_compositeSerialOperation_Integration {
     NSMutableArray *countArr = [NSMutableArray array];
     __block BOOL isFinished = NO;
     __block BOOL firstJobIsDone = NO, secondJobIsDone = NO, thirdJobIsDone = NO;
@@ -317,7 +317,7 @@
     STAssertEquals(count, 3, @"Expected count to be equal 3");
 }
 
-- (void)testTransactionalOperation {
+- (void)test_compositeConcurrentOperation {
     __block BOOL passedHandler = NO;
     
     NSMutableArray *countArr = [NSMutableArray array];
@@ -354,7 +354,7 @@
 
 }
 
-- (void) test_transactionalOperation_in_operation_queue {
+- (void) test_COCompositeOperationConcurrent_in_operation_queue {
     __block BOOL isFinished = NO;
     NSMutableArray *countArr = [NSMutableArray array];
 
@@ -402,7 +402,7 @@
     STAssertEquals((int)countArr.count, 3, @"Expected count to be equal 3");
 }
 
-- (void) testTransactionalOperation_operationInQueue {
+- (void) test_compositeConcurrentOperation_operationInQueue {
     __block BOOL isFinished = NO;
     NSMutableArray *countArr = [NSMutableArray array];
 
@@ -436,7 +436,7 @@
     STAssertEquals((int)countArr.count, 3, @"Expected count to be equal 3");
 }
 
-- (void) testTransactionalOperation_Integration {
+- (void) test_compositeConcurrentOperation_Integration {
     __block BOOL isFinished = NO;
     __block BOOL passedHandler = NO;
     NSMutableArray *countArr = [NSMutableArray array];
@@ -486,7 +486,7 @@
     STAssertTrue(passedHandler, @"Expected passedHandler to be equal YES");
 }
 
-- (void)test_nestingCascadeAndTranscationalOperations_roughIntegration {
+- (void)test_nesting_composite_operations_roughIntegration {
     __block BOOL isDone = NO;
     __block BOOL reachedTheLastAndTheMostNestedOperation = NO;
     
@@ -532,7 +532,7 @@
 
         STAssertTrue(cascOp.isFinished, nil);
         STAssertTrue(reachedTheLastAndTheMostNestedOperation, nil);
-    }, ^(COCompositeOperation *cascade){
+    }, ^(COCompositeOperation *compositeOperation){
         raiseShouldNotReachHere();
     });
 

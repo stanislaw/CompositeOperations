@@ -16,8 +16,8 @@
 
 @property (copy) COCompositeOperationBlock operation;
 
-- (void)run:(COCompositeOperationBlock)operationBlock __attribute__((unavailable("must run cascade operation with 'run:completionHandler:cancellationHandler:' instead.")));
-- (void)runInQueue:(dispatch_queue_t)queue operation:(COCompositeOperationBlock)operationBlock __attribute__((unavailable("must run cascade operation with 'run:completionHandler:cancellationHandler:' instead.")));
+- (void)run:(COCompositeOperationBlock)operationBlock __attribute__((unavailable("must run composite operation with 'run:completionHandler:cancellationHandler:' instead.")));
+- (void)runInQueue:(dispatch_queue_t)queue operation:(COCompositeOperationBlock)operationBlock __attribute__((unavailable("must run composite operation with 'run:completionHandler:cancellationHandler:' instead.")));
 
 // Public API: main runner
 - (void)run:(COCompositeOperationBlock)operationBlock completionHandler:(COCompletionBlock)completionHandler cancellationHandler:(COCancellationBlockForCompositeOperation)cancellationHandler;

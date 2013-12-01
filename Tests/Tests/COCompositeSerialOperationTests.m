@@ -9,12 +9,12 @@
 #import "COQueues.h"
 #import "COOperationQueue.h"
 
-@interface CascadeOperationsTests : SenTestCase
+@interface CompositeSerialOperationTests : SenTestCase
 @end
 
-@implementation CascadeOperationsTests
+@implementation CompositeSerialOperationTests
 
-- (void)testCascadeOperation {
+- (void)test_compositeSerialOperation {
     __block int count = 0;
     __block BOOL isFinished = NO;
     __block BOOL firstJobIsDone = NO, secondJobIsDone = NO, thirdJobIsDone = NO;
@@ -139,7 +139,7 @@
 
 // Ensures that -[COCompositeOperation suspend] suspends self and inner operations.
 
-- (void)testCascadeOperation_suspend_suspends_self_and_inner_operations {
+- (void)test_compositeSerialOperation_suspend_suspends_self_and_inner_operations {
     __block BOOL isFinished = NO;
 
     COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
@@ -148,7 +148,7 @@
         [compositeOperation operationWithBlock:^(COOperation *operation) {
             STAssertFalse(compositeOperation.isCancelled, nil);
 
-            [compositeOperation suspend]; // Suspends cascade and all suboperations
+            [compositeOperation suspend]; // Suspends composite operation and all suboperations
             
             STAssertTrue(compositeOperation.isSuspended, nil);
 
@@ -169,14 +169,14 @@
 
 // Ensures that -[COCompositeOperation suspend] suspends self and inner operations so that -cancel of inner operations does hot have effect.
 
-- (void)testCascadeOperation_suspend_suspends_self_and_inner_operations_so_than_cancellation_of_inner_operation_does_not_have_effect {
+- (void)test_compositeSerialOperation_suspend_suspends_self_and_inner_operations_so_than_cancellation_of_inner_operation_does_not_have_effect {
     __block BOOL isFinished = NO;
 
     COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
 
     [compositeOperation run:^(COCompositeOperation *compositeOperation) {
         [compositeOperation operationWithBlock:^(COOperation *operation) {
-            [compositeOperation suspend]; // Suspends cascade and all suboperations
+            [compositeOperation suspend]; // Suspends composite operation and all suboperations
 
             STAssertTrue(operation.isSuspended, nil);
 
@@ -196,16 +196,15 @@
 }
 
 
-// Ensures that -[COCompositeOperation resume] runs next operation at current index if cascade operation was suspended in the body of successful previous sub-operation
-
-- (void)testCascadeOperation_resume_runs_next_operation_at_current_index_if_cascade_operation_was_suspended_in_th_body_of_successful_previous_sub_operation {
+// Ensures that -[COCompositeOperation[Serial] resume] runs next operation at current index if composite serial operation  was suspended in the body of successful previous sub-operation
+- (void)test_compositeSerialOperation_resume_runs_next_operation_at_current_index_if_composite_serial_operation_was_suspended_in_th_body_of_successful_previous_sub_operation {
     __block BOOL isFinished = NO;
 
     COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
 
     [compositeOperation run:^(COCompositeOperation *compositeOperation) {
         [compositeOperation operationWithBlock:^(COOperation *operation) {
-            [compositeOperation suspend]; // Suspends cascade and all suboperations
+            [compositeOperation suspend]; // Suspends composite operation and all suboperations
 
             [compositeOperation.operations enumerateObjectsUsingBlock:^(COOperation *operation, NSUInteger idx, BOOL *stop) {
                 STAssertTrue(operation.isSuspended, nil);
@@ -241,7 +240,7 @@
 #pragma mark
 #pragma mark reRun / awake
 
-// Ensures that -[CascadeOperation awake] awakes(i.e. reruns) all unfinished operations.
+// Ensures that -[CompositeOperation[Serial] awake] awakes(i.e. reruns) all unfinished operations.
 
 - (void)test_compositeOperation_awake {
     NSMutableString *regString = [NSMutableString new];
@@ -339,7 +338,7 @@
     STAssertTrue(intentionallyUnfinishableCOperation.isFinished, nil);
 }
 
-// Ensures that -[TransactionalOperation awake] has no effect on cancelled operations
+// Ensures that -[CompositeOperation[Serial] awake] has no effect on cancelled operations
 - (void)test_compositeOperation_awake_has_no_effect_on_cancelled_operations {
     COCompositeOperation *intentionallyUnfinishableCOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
 
@@ -361,7 +360,7 @@
 
 #pragma mark
 
-- (void)testCascadeOperation_cancel_inner_operation {
+- (void)test_compositeSerialOperation_cancel_inner_operation {
     __block BOOL isFinished = NO;
     __block BOOL cancellationHandlerWasRun = NO;
     
@@ -507,7 +506,7 @@
     COSetDefaultQueue(nil);
 }
 
-- (void)testCascadeOperation_sharedData {
+- (void)test_compositeSerialOperation_sharedData {
     __block BOOL isFinished = NO;
 
     __block NSString *data = @"1";
@@ -533,7 +532,7 @@
     while (!isFinished);
 }
 
-- (void)testCascadeOperationUsingOperationInQueue {
+- (void)test_compositeSerialOperation_UsingOperationInQueue {
     __block int count = 0;
     __block BOOL isFinished = NO;
     __block BOOL firstJobIsDone = NO, secondJobIsDone = NO, thirdJobIsDone = NO;
@@ -587,7 +586,7 @@
     STAssertEquals(count, 3, @"Expected count to be equal 3");
 }
 
-- (void)test_transactionalOperation_inside_compositeOperation {
+- (void)test_COCompositeOperationConcurrent_inside_COCompositeOperationSerial {
     NSMutableArray *countArr = [NSMutableArray array];
     __block BOOL isFinished = NO;
 
@@ -624,8 +623,7 @@
     STAssertEquals((int)countArr.count, 2, @"Expected count to be equal 2");
 }
 
-// Ensures that if suboperation of transactional operation, that in its turn is a suboperation of a cascade operation, is cancelled, then all suboperations of transactional sub-operation and transactional operation itself are cancelled.
-- (void)test_transactionalOperation_inside_compositeOperation_cancellationHandlers {
+- (void)test_COCompositeOperationConcurrent_inside_compositeOperation_cancellationHandlers {
     __block BOOL isFinished = NO;
 
     COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
@@ -657,7 +655,7 @@
     while (!isFinished);    
 }
 
-- (void)testCascadeOperation_IntegrationTest {
+- (void)test_compositeSerialOperation_IntegrationTest {
 
     for (int i = 0; i < 100; i++) {
     __block int count = 0;
@@ -728,7 +726,7 @@
     }
 }
 
-- (void)testTransactionalOperationBeingInsideCascadeOperation_RoughIntegrationTest {
+- (void)testCompositeConcurrentOperationBeingInsideCompositeSerialOperation_RoughIntegrationTest {
     for (int i = 0; i < 1; i++) {
     NSMutableArray *regArray = [NSMutableArray new];
     
