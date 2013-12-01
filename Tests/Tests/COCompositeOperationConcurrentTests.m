@@ -59,180 +59,257 @@ describe(@"", ^{
 
         [[theValue(compositeOperation.isFinished) should] beYes];
     });
+
+    it(@"", ^{
+        __block BOOL isFinished = NO;
+
+        NSMutableArray *countArr = [NSMutableArray array];
+
+        __block NSMutableString *accResult = [NSMutableString string];
+
+        COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent];;
+
+        [compositeOperation run:^(COCompositeOperation *compositeOperation) {
+            for (int i = 1; i <= 10; i++) {
+                [compositeOperation operationInQueue:concurrentQueue() withBlock:^(COOperation *tao) {
+                    @synchronized(countArr) {
+                        [countArr addObject:@1];
+                    }
+                    NSString *ind = [NSString stringWithFormat:@"%d", i];
+                    [accResult appendString:ind];
+
+                    [tao finish];
+                }];
+            }
+        } completionHandler:^{
+            isFinished = YES;
+        } cancellationHandler:nil];
+
+        while (isFinished == NO);
+
+        [[theValue(countArr.count) should] equal:@(10)];
+
+        NSLog(@"%s: accResult is: %@", __PRETTY_FUNCTION__, accResult);
+    });
+
+    it(@"Ensures that -[COOperation cancel] of suboperation cancels all operations in a composite concurrent operation", ^{
+        __block BOOL isFinished = NO;
+
+        COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent];
+
+        [compositeOperation run:^(COCompositeOperation *compositeOperation) {
+            [compositeOperation operationInQueue:serialQueue() withBlock:^(COOperation *o) {
+                // Intentionally unfinished operation
+            }];
+
+            [compositeOperation operationInQueue:serialQueue() withBlock:^(COOperation *operation) {
+                [[theValue(operation.isCancelled) should] beNo];
+
+                @synchronized(compositeOperation) {
+                    for (COOperation *operation in compositeOperation.operations) {
+                        [[theValue(operation.isCancelled) should] beNo];
+                        [[theValue(operation.isFinished) should] beNo];
+                    }
+                }
+
+                [operation cancel];
+
+                @synchronized(compositeOperation) {
+                    for (COOperation *operation in compositeOperation.operations) {
+                        [[theValue(operation.isCancelled) should] beYes];
+                        [[theValue(operation.isFinished) should] beNo];
+                    }
+                }
+            }];
+
+            [compositeOperation operationInQueue:serialQueue() withBlock:^(COOperation *o) {
+                // Intentionally unfinished operation
+            }];
+        } completionHandler:^{
+            NSLog(@"operations: %@", compositeOperation.operations);
+            NSLog(@"self: %@", compositeOperation);
+            NSLog(@"Call stack: %@", [NSThread callStackSymbols]);
+            
+            raiseShouldNotReachHere();
+        } cancellationHandler:^(COCompositeOperation *compositeOperation) {
+            for (COOperation *operation in compositeOperation.operations) {
+                [[theValue(operation.isCancelled) should] beYes];
+            }
+
+            isFinished = YES;
+        }];
+
+        while (isFinished == NO);
+    });
+
+    it(@"Ensures that if cancellationHandler is defined, -[COOperation cancel] of suboperation cancels suboperations, NOT cancels composite concurrent operation automatically and runs a cancellation handler, so it could be decided what to do with a composite concurrent operation.", ^{
+        __block BOOL isFinished = NO;
+
+        COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent];
+
+        [compositeOperation run:^(COCompositeOperation *to) {
+            [compositeOperation operationInQueue:serialQueue() withBlock:^(COOperation *o) {
+                [o cancel];
+            }];
+        } completionHandler:^{
+            raiseShouldNotReachHere();
+        } cancellationHandler:^(COCompositeOperation *compositeOperation) {
+            [[theValue(compositeOperation.isExecuting) should] beYes]; // cancellation handler is provided
+            [[theValue(compositeOperation.isCancelled) should] beNo]; // so the composite operation is not cancelled automatically
+
+            [compositeOperation cancel];
+
+            [[theValue(compositeOperation.isExecuting) should] beNo];
+            [[theValue(compositeOperation.isCancelled) should] beYes];
+
+            for (COOperation *operation in compositeOperation.operations) {
+                [[theValue(operation.isCancelled) should] beYes];
+            }
+
+            isFinished = YES;
+        }];
+
+        while (isFinished == NO);
+    });
+
+    it(@"", ^{
+        int N = 10;
+
+        __block BOOL isFinished = NO;
+        NSMutableArray *countArr = [NSMutableArray array];
+
+        COCompositeOperation *to = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent];
+
+        [to run:^(COCompositeOperation *to) {
+            [to operationInQueue:concurrentQueue() withBlock:^(COOperation *tao) {
+                @synchronized(countArr) {
+                    [countArr addObject:@1];
+                }
+
+                if (countArr.count < N)
+                    [tao reRun];
+                else
+                    [tao finish];
+            }];
+        } completionHandler:^{
+            isFinished = YES;
+        } cancellationHandler:nil];
+
+        while (!isFinished);
+        
+        [[theValue(countArr.count) should] equal:@(N)];
+    });
+
+    describe(@"!OS_OBJECT_USE_OBJC", ^{
+#if !OS_OBJECT_USE_OBJC
+        it(@"Ensures that -[COCompositeOperation cancel] does not run and remove completionBlocks of suboperations ('soft cancel') when cancellationHandler is provided.", ^{
+            __block BOOL isFinished = NO;
+
+            COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent];
+
+            [compositeOperation run:^(COCompositeOperation *compositeOperation) {
+                [compositeOperation operationWithBlock:^(COOperation *o) {
+                    [o cancel];
+                }];
+            } completionHandler:^{
+                raiseShouldNotReachHere();
+            } cancellationHandler:^(COCompositeOperation *compositeOperation) {
+                for (COOperation *operation in compositeOperation.operations) {
+                    [[operation.completionBlock shouldNot] beNil];
+                }
+                
+                isFinished = YES;
+            }];
+            
+            while (!isFinished);
+
+        });
+
+        it(@"Ensures that -[COCompositeOperation cancel] DOES run and remove completionBlocks of suboperations ('soft cancel') when cancellationHandler is not provided.", ^{
+            __block BOOL isFinished = NO;
+
+            COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent];
+
+            [compositeOperation run:^(COCompositeOperation *to) {
+                [to operationWithBlock:^(COOperation *o) {
+                    [o cancel];
+
+                    isFinished = YES;
+                }];
+            } completionHandler:^{
+                raiseShouldNotReachHere();
+            } cancellationHandler:nil];
+
+            while (isFinished == NO);
+            
+            for (COOperation *operation in compositeOperation.operations) {
+                [[operation.completionBlock should] beNil];
+            }
+        });
+#endif
+    });
+
+    describe(@"Suspend / Resume", ^{
+        it(@"Ensures that -[COCompositeOperation resume] reruns left suspended operation if composite serial operation was suspended in the body of successful previous sub-operation", ^{
+            int N = 1;
+
+            for(int i = 1; i <= N; i++) {
+                __block BOOL isFinished = NO;
+
+                __block BOOL compositeConcurrentOperationHaveAlreadyBeenSuspended = NO;
+
+                COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent];
+
+                [compositeOperation run:^(COCompositeOperation *compositeOperation) {
+                    [compositeOperation operationInQueue:serialQueue() withBlock:^(COOperation *operation) {
+                        [operation finish];
+
+                        [[theValue(compositeOperation.isFinished) should] beNo];
+                        [[theValue(operation.isFinished) should] beYes];
+                    }];
+
+                    [compositeOperation operationInQueue:serialQueue() withBlock:^(COOperation *operation) {
+
+                        [[theValue(compositeOperation.isFinished) should] beNo];
+
+                        // First time it will just run out without finish or cancel
+                        // And on the second it will actually finish itself
+                        if (compositeConcurrentOperationHaveAlreadyBeenSuspended == NO) {
+                            [compositeOperation suspend];
+
+                            [[theValue(operation.isSuspended) should] beYes];
+                            isFinished = YES;
+                        } else {
+                            [[theValue(operation.isExecuting) should] beYes]; // The second time operation is run - it was resumed
+
+                            [operation finish];
+                        }
+                    }];
+                } completionHandler:^{
+                    isFinished = YES;
+                } cancellationHandler:nil];
+
+                while (isFinished == NO);
+                [[theValue(compositeOperation.isFinished) should] beNo];
+
+                isFinished = NO;
+                
+                [[theValue(compositeOperation.isFinished) should] beNo];
+
+                compositeConcurrentOperationHaveAlreadyBeenSuspended = YES;
+                [compositeOperation resume];
+                
+                while (isFinished == NO) {};
+                
+                [[theValue(compositeOperation.isFinished) should] beYes];
+            }
+
+        });
+    });
 });
 
 SPEC_END
 
-//@interface CompositeConcurrentOperationTests : SenTestCase
-//@end
-
-//@implementation CompositeConcurrentOperationTests
-
-//// Ensures that -[COOperation cancel] of suboperation cancels all operations in a composite concurrent operation
-//- (void) test_CompositeConcurrentOperation_cancel {
-//    __block BOOL isFinished = NO;
-//
-//    COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent];
-//
-//    [compositeOperation run:^(COCompositeOperation *compositeOperation) {
-//        [compositeOperation operationInQueue:serialQueue() withBlock:^(COOperation *o) {
-//            // Intentionally unfinished operation
-//        }];
-//
-//        [compositeOperation operationInQueue:serialQueue() withBlock:^(COOperation *o) {
-//            STAssertFalse(o.isCancelled, nil);
-//
-//            @synchronized(compositeOperation) {
-//                for (COOperation *operation in [compositeOperation.operations copy]) {
-//                    STAssertFalse(operation.isFinished, nil);
-//                    STAssertFalse(operation.isCancelled, nil);
-//                }
-//            }
-//
-//            [o cancel];
-//
-//            @synchronized(compositeOperation) {
-//                for (COOperation *operation in [compositeOperation.operations copy]) {
-//                    STAssertFalse(operation.isFinished, nil);
-//                    STAssertTrue(operation.isCancelled, nil);
-//                }
-//            }
-//        }];
-//        
-//        [compositeOperation operationInQueue:serialQueue() withBlock:^(COOperation *o) {
-//            // Intentionally unfinished operation
-//        }];
-//    } completionHandler:^{
-//        NSLog(@"operations: %@", compositeOperation.operations);
-//        NSLog(@"self: %@", compositeOperation);
-//        
-//        NSLog(@"Call stack: %@", [NSThread callStackSymbols]);
-//        raiseShouldNotReachHere();
-//    } cancellationHandler:^(COCompositeOperation *compositeOperation) {
-//        isFinished = YES;
-//    }];
-//
-//    while (!isFinished);
-//
-//    for (COOperation *operation in compositeOperation.operations) {
-//        NSString *errMessage = [NSString stringWithFormat:@"Expected all operations to be cancelled after cancelling third sub-operation: %@", operation];
-//        STAssertTrue(operation.isCancelled, errMessage);
-//    }
-//}
-//
-//// Ensures that if cancellationHandler is defined, -[COOperation cancel] of suboperation cancels suboperations, NOT cancels composite concurrent operation automatically and runs a cancellation handler, so it could be decided what to do with a composite concurrent operation.
-//- (void) testCompositeSerialOperation_cancel_cancellation_handler {
-//    __block BOOL isFinished = NO;
-//
-//    COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent];
-//
-//    [compositeOperation run:^(COCompositeOperation *to) {
-//        [compositeOperation operationInQueue:serialQueue() withBlock:^(COOperation *o) {
-//            [o cancel];
-//        }];
-//    } completionHandler:^{
-//        raiseShouldNotReachHere();
-//    } cancellationHandler:^(COCompositeOperation *compositeOperation) {
-//        STAssertTrue(compositeOperation.isExecuting, nil);  // cancellation handler is provided
-//        STAssertFalse(compositeOperation.isCancelled, nil); // so the composite operation is not cancelled automatically
-//
-//        [compositeOperation cancel];
-//
-//        STAssertFalse(compositeOperation.isExecuting, nil);
-//        STAssertTrue(compositeOperation.isCancelled, nil);
-//        
-//        isFinished = YES;
-//    }];
-//
-//    while (!isFinished);
-//
-//    for (COOperation *operation in compositeOperation.operations) {
-//        STAssertTrue(operation.isCancelled, @"Expected all operations to be cancelled after cancelling third sub-operation");
-//    }
-//}
-//
-//#pragma mark
-//#pragma mark COCompositeOperation: assigns NSOperation's operationBlocks to its suboperations.
-//
-//#if !OS_OBJECT_USE_OBJC
-//
-//// Ensures that -[COCompositeOperation cancel] does not run and remove completionBlocks of suboperations ("soft cancel") when cancellationHandler is provided.
-//- (void)test_tCOCompositeOperationConcurrent_cancel_does_not_runs_suboperations_completionBlocks_if_cancellation_handler_is_provided {
-//    __block BOOL isFinished = NO;
-//
-//    COCompositeOperation *tOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent];
-//
-//    [tOperation run:^(COCompositeOperation *to) {
-//        [to operation:^(COOperation *o) {
-//            [o cancel];
-//        }];
-//    } completionHandler:^{
-//        raiseShouldNotReachHere();
-//    } cancellationHandler:^(COCompositeOperation *compositeOperation) {
-//        for (COOperation *operation in compositeOperation.operations) {
-//            STAssertNotNil(operation.completionBlock, nil);
-//        }
-//
-//        isFinished = YES;
-//    }];
-//
-//    while (!isFinished);
-//}
-//
-//// Ensures that -[COCompositeOperation cancel] DOES run and remove completionBlocks of suboperations ("soft cancel") when cancellationHandler is not provided.
-//- (void)test_COCompositeOperationConcurrent_cancel_does_run_suboperations_completionBlocks_if_cancellation_handler_is_provided {
-//    __block BOOL isFinished = NO;
-//
-//    COCompositeOperation *tOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent];
-//
-//    [tOperation run:^(COCompositeOperation *to) {
-//        [to operation:^(COOperation *o) {
-//            [o cancel];
-//
-//            isFinished = YES;
-//        }];
-//    } completionHandler:^{
-//        raiseShouldNotReachHere();
-//    } cancellationHandler:nil];
-//
-//    while (!isFinished);
-//
-//    for (COOperation *operation in tOperation.operations) {
-//        STAssertNotNil(operation.completionBlock, nil);
-//    }
-//}
-//
-//#endif
-//
-//#pragma mark
-//
-//- (void) test_CompositeConcurrentOperation_rerun {
-//    int N = 10;
-//    
-//    __block BOOL isFinished = NO;
-//    NSMutableArray *countArr = [NSMutableArray array];
-//
-//    COCompositeOperation *to = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent];
-//
-//    [to run:^(COCompositeOperation *to) {
-//        [to operationInQueue:concurrentQueue() withBlock:^(COOperation *tao) {
-//            @synchronized(countArr) {
-//                [countArr addObject:@1];
-//            }
-//            
-//            if (countArr.count < N)
-//                [tao reRun];
-//            else
-//                [tao finish];
-//        }];
-//    } completionHandler:^{
-//        isFinished = YES;
-//    } cancellationHandler:nil];
-//
-//    while (!isFinished);
-//
-//    STAssertEquals((int)countArr.count, N, @"Expected count to be equal N");
-//}
 //
 //- (void)test_COCompositeOperationConcurrent_in_operation_queue {
 //    __block BOOL isFinished = NO;
@@ -285,39 +362,7 @@ SPEC_END
 //    STAssertTrue(opQueue.runningOperations.count == 0, nil);
 //}
 //
-//
-//
-//- (void) test_COCompositeOperationConcurrent_operationInQueue {
-//    __block BOOL isFinished = NO;
-//
-//    NSMutableArray *countArr = [NSMutableArray array];
-//
-//    __block NSMutableString *accResult = [NSMutableString string];
-//
-//    COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent];;
-//
-//    [compositeOperation run:^(COCompositeOperation *compositeOperation) {
-//        for (int i = 1; i <= 10; i++) {
-//            [compositeOperation operationInQueue:concurrentQueue() withBlock:^(COOperation *tao) {
-//                @synchronized(countArr) {
-//                    [countArr addObject:@1];
-//                }
-//                NSString *ind = [NSString stringWithFormat:@"%d", i];
-//                [accResult appendString:ind];
-//
-//                [tao finish];
-//            }];
-//        }
-//    } completionHandler:^{
-//        isFinished = YES;
-//    } cancellationHandler:nil];
-//
-//    while (!isFinished);
-//
-//    STAssertEquals((int)countArr.count, 10, @"Expected count to be equal 10");
-//    NSLog(@"%s: accResult is: %@", __PRETTY_FUNCTION__, accResult);
-//}
-//
+
 //- (void) test_COCompositeOperationConcurrent_with_defaultQueue_set {
 //    COSetDefaultQueue(concurrentQueue());
 //    NSMutableArray *countArr = [NSMutableArray array];
@@ -359,65 +404,6 @@ SPEC_END
 //    NSLog(@"%s: accResult is: %@", __PRETTY_FUNCTION__, accResult);
 //}
 //
-//#pragma mark
-//#pragma mark Resume / suspend
-//
-//// Ensures that -[COCompositeOperation resume] reruns left suspended operation if composite serial operation was suspended in the body of successful previous sub-operation
-//
-//- (void)test_COCompositeOperationConcurrent_resume_runs_all_suspended_operations_if_composite_serial_operation_was_suspended_in_th_body_of_successful_previous_sub_operation {
-//    int N = 1;
-//    
-//    for(int i = 1; i <= N; i++) {
-//        __block BOOL isFinished = NO;
-//        
-//        __block BOOL compositeConcurrentOperationHaveAlreadyBeenSuspended = NO;
-//        
-//        COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent];
-//
-//        [compositeOperation run:^(COCompositeOperation *compositeOperation) {
-//            [compositeOperation operationInQueue:serialQueue() withBlock:^(COOperation *operation) {
-//                [operation finish];
-//
-//                STAssertTrue(compositeOperation.isFinished == NO, nil);
-//                STAssertTrue(operation.isFinished, nil);
-//            }];
-//
-//            [compositeOperation operationInQueue:serialQueue() withBlock:^(COOperation *operation) {
-//
-//                STAssertTrue(compositeOperation.isFinished == NO, nil);
-//                
-//                // First time it will just run out without finish or cancel
-//                // And on the second it will actually finish itself
-//                if (compositeConcurrentOperationHaveAlreadyBeenSuspended == NO) {
-//                    [compositeOperation suspend];
-//
-//                    STAssertTrue(operation.isSuspended, nil); // The first time operation is run - it is suspended by first operation
-//                    isFinished = YES;
-//                } else {
-//                    STAssertTrue(operation.isExecuting, nil); // The second time operation is run - it was resumed
-//
-//                    [operation finish];
-//                }
-//            }];
-//        } completionHandler:^{
-//            isFinished = YES;
-//        } cancellationHandler:nil];
-//
-//        while (isFinished == NO);
-//        STAssertTrue(compositeOperation.isFinished == NO, nil);
-//
-//        isFinished = NO;
-//
-//        STAssertTrue(compositeOperation.isFinished == NO, nil);
-//
-//        compositeConcurrentOperationHaveAlreadyBeenSuspended = YES;
-//        [compositeOperation resume];
-//
-//        while (isFinished == NO) {};
-//
-//        STAssertTrue(compositeOperation.isFinished, nil);
-//    }
-//}
 
 //
 //#pragma mark

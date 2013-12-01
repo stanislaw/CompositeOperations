@@ -25,7 +25,7 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
                 case COOperationStateSuspended:
                     return YES;
                 case COOperationStateExecuting:
-                    return YES;
+                    return NO; // Should it be -1
                 default:
                     return -1;
             }
@@ -224,7 +224,9 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
 - (void)cancel {
     self.state = COOperationStateCancelled;
 
-    if (self.isCancelled) {
+    // Context (composite operation) executes completionBlocks of its operation,
+    // He only standalone COOperation's completionBlocks are executed.
+    if (self.contextOperation == nil) {
         if (self.completionBlock) self.completionBlock();
     }
 }

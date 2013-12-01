@@ -15,8 +15,6 @@
 
 @implementation NSOperationQueueCompatibilityTests
 
-
-
 - (void)test_operation_in_NSOperationQueue_basic_test {
     NSOperationQueue *opQueue = [[NSOperationQueue alloc] init];
     

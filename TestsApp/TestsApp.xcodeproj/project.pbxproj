@@ -20,6 +20,16 @@
 		860EDBA618008822001BEEEE /* COOperationResolver.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB9918008822001BEEEE /* COOperationResolver.m */; };
 		860EDBA718008822001BEEEE /* COQueues.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB9B18008822001BEEEE /* COQueues.m */; };
 		862329D7184BA5630001C034 /* COCompositeSerialOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB6D18008535001BEEEE /* COCompositeSerialOperationTests.m */; };
+		862329DB184BBC580001C034 /* HighLoadIntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB6A18008535001BEEEE /* HighLoadIntegrationTests.m */; };
+		862329DC184BBF960001C034 /* NSOperationCompatibilityTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB6B18008535001BEEEE /* NSOperationCompatibilityTests.m */; };
+		862329DD184BBF960001C034 /* NSOperationQueueCompatibilityTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB6C18008535001BEEEE /* NSOperationQueueCompatibilityTests.m */; };
+		862329DE184BBF960001C034 /* CompositeOperationsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB6E18008535001BEEEE /* CompositeOperationsTests.m */; };
+		862329DF184BBF960001C034 /* COOperation_Suspending_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB6F18008535001BEEEE /* COOperation_Suspending_Tests.m */; };
+		862329E0184BBF960001C034 /* COOperationQueueTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB7018008535001BEEEE /* COOperationQueueTests.m */; };
+		862329E1184BBF960001C034 /* COOperationResolverTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB7118008535001BEEEE /* COOperationResolverTests.m */; };
+		862329E2184BBF960001C034 /* COOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB7218008535001BEEEE /* COOperationTests.m */; };
+		862329E3184BBF960001C034 /* COQueuesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB7318008535001BEEEE /* COQueuesTests.m */; };
+		862329E4184BBF960001C034 /* COCompositeOperationConcurrentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB7618008535001BEEEE /* COCompositeOperationConcurrentTests.m */; };
 		8684D68C184A424D00B2902B /* COCompositeConcurrentOperationInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = 8684D686184A424D00B2902B /* COCompositeConcurrentOperationInternal.m */; };
 		8684D68E184A424D00B2902B /* COCompositeSerialOperationInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = 8684D68A184A424D00B2902B /* COCompositeSerialOperationInternal.m */; };
 /* End PBXBuildFile section */
@@ -46,7 +56,7 @@
 		860EDB6518008535001BEEEE /* TestHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestHelpers.h; sourceTree = "<group>"; };
 		860EDB6618008535001BEEEE /* TestHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestHelpers.m; sourceTree = "<group>"; };
 		860EDB6918008535001BEEEE /* CurrentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentTests.m; sourceTree = "<group>"; };
-		860EDB6A18008535001BEEEE /* HighLoadTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HighLoadTests.m; sourceTree = "<group>"; };
+		860EDB6A18008535001BEEEE /* HighLoadIntegrationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HighLoadIntegrationTests.m; sourceTree = "<group>"; };
 		860EDB6B18008535001BEEEE /* NSOperationCompatibilityTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSOperationCompatibilityTests.m; sourceTree = "<group>"; };
 		860EDB6C18008535001BEEEE /* NSOperationQueueCompatibilityTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSOperationQueueCompatibilityTests.m; sourceTree = "<group>"; };
 		860EDB6D18008535001BEEEE /* COCompositeSerialOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COCompositeSerialOperationTests.m; sourceTree = "<group>"; };
@@ -168,7 +178,7 @@
 			isa = PBXGroup;
 			children = (
 				860EDB6918008535001BEEEE /* CurrentTests.m */,
-				860EDB6A18008535001BEEEE /* HighLoadTests.m */,
+				860EDB6A18008535001BEEEE /* HighLoadIntegrationTests.m */,
 				860EDB6B18008535001BEEEE /* NSOperationCompatibilityTests.m */,
 				860EDB6C18008535001BEEEE /* NSOperationQueueCompatibilityTests.m */,
 				860EDB6D18008535001BEEEE /* COCompositeSerialOperationTests.m */,
@@ -309,12 +319,22 @@
 				8684D68C184A424D00B2902B /* COCompositeConcurrentOperationInternal.m in Sources */,
 				860EDBA218008822001BEEEE /* COCompositeOperation.m in Sources */,
 				860EDBA318008822001BEEEE /* CompositeOperations.m in Sources */,
+				862329E3184BBF960001C034 /* COQueuesTests.m in Sources */,
 				860EDBA718008822001BEEEE /* COQueues.m in Sources */,
+				862329DB184BBC580001C034 /* HighLoadIntegrationTests.m in Sources */,
 				860EDBA618008822001BEEEE /* COOperationResolver.m in Sources */,
+				862329E2184BBF960001C034 /* COOperationTests.m in Sources */,
+				862329E4184BBF960001C034 /* COCompositeOperationConcurrentTests.m in Sources */,
+				862329E0184BBF960001C034 /* COOperationQueueTests.m in Sources */,
 				860EDBA518008822001BEEEE /* COOperationQueue.m in Sources */,
+				862329DE184BBF960001C034 /* CompositeOperationsTests.m in Sources */,
+				862329DD184BBF960001C034 /* NSOperationQueueCompatibilityTests.m in Sources */,
+				862329DC184BBF960001C034 /* NSOperationCompatibilityTests.m in Sources */,
 				860EDBA418008822001BEEEE /* COOperation.m in Sources */,
 				860EDB54180084C7001BEEEE /* main.m in Sources */,
 				8684D68E184A424D00B2902B /* COCompositeSerialOperationInternal.m in Sources */,
+				862329DF184BBF960001C034 /* COOperation_Suspending_Tests.m in Sources */,
+				862329E1184BBF960001C034 /* COOperationResolverTests.m in Sources */,
 				860EDB7A18008535001BEEEE /* TestHelpers.m in Sources */,
 				862329D7184BA5630001C034 /* COCompositeSerialOperationTests.m in Sources */,
 			);
