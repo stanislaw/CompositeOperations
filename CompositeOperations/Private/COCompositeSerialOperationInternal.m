@@ -30,18 +30,29 @@
     [self.compositeOperation _registerSuboperation:subOperation];
 }
 
-- (void)_performCheckpointRoutine {
-    // TODO more conditions?
-    if (self.compositeOperation.isSuspended) return;
+- (void)_performCheckpointRoutineIncrementingNumberOfFinishedOperations:(BOOL)increment {
+    NSUInteger indexOfSuboperationToRun = NSNotFound;
 
-    NSUInteger indexOfSuboperationToRun = [[self.compositeOperation.operations copy] indexOfObjectPassingTest:^BOOL(COOperation *operation, NSUInteger idx, BOOL *stop) {
-        if (operation.isReady == YES) {
-            *stop = YES;
-            return YES;
-        } else {
-            return NO;
+    @synchronized(self.compositeOperation) {
+        if (increment) {
+            self.compositeOperation.finishedOperationsCount++;
         }
-    }];
+
+        if (self.compositeOperation.allSuboperationsRegistered && (self.compositeOperation.finishedOperationsCount == self.compositeOperation.operations.count)) {
+            
+        } else {
+            if (self.compositeOperation.isSuspended) return;
+
+            indexOfSuboperationToRun = [self.compositeOperation.operations  indexOfObjectPassingTest:^BOOL(COOperation *operation, NSUInteger idx, BOOL *stop) {
+                if (operation.isReady == YES) {
+                    *stop = YES;
+                    return YES;
+                } else {
+                    return NO;
+                }
+            }];
+        }
+    }
 
     if (indexOfSuboperationToRun == NSNotFound) {
         [self.compositeOperation finish];
@@ -57,7 +68,7 @@
         }
     }];
 
-    [self _performCheckpointRoutine];
+    [self _performCheckpointRoutineIncrementingNumberOfFinishedOperations:NO];
 }
 
 - (void)_performResumeRoutine {

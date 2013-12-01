@@ -52,18 +52,21 @@
     }
 }
 
-- (void)_performCheckpointRoutine {
-    if (self.compositeOperation.allSuboperationsRegistered && self.compositeOperation.isCancelled == NO) {
-        NSUInteger operationsCount;
+- (void)_performCheckpointRoutineIncrementingNumberOfFinishedOperations:(BOOL)increment {
+    BOOL shouldFinish = NO;
 
-        @synchronized(self.compositeOperation) {
-            operationsCount = self.compositeOperation.operations.count;
+    @synchronized(self.compositeOperation) {
+        if (increment) {
+            self.compositeOperation.finishedOperationsCount++;
         }
-        
-        if (operationsCount == 0) {
-            [self.compositeOperation finish];
-        }
+
+        shouldFinish = (self.compositeOperation.allSuboperationsRegistered && (self.compositeOperation.finishedOperationsCount == self.compositeOperation.operations.count));
     }
+
+    if (shouldFinish) {
+        [self.compositeOperation finish];
+    }
+
 }
 
 - (void)_performAwakeRoutine {

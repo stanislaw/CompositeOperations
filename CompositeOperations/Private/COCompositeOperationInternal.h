@@ -17,7 +17,7 @@
 
 - (void)_enqueueSuboperation:(COOperation *)subOperation;
 
-- (void)_performCheckpointRoutine;
+- (void)_performCheckpointRoutineIncrementingNumberOfFinishedOperations:(BOOL)increment;
 - (void)_performAwakeRoutine;
 - (void)_performResumeRoutine;
 

@@ -45,6 +45,8 @@
         NSParameterAssert(NO);
     }
 
+    self.concurrencyType = concurrencyType;
+
     [self addObserver:self
            forKeyPath:@"isFinished"
               options:NSKeyValueObservingOptionNew
@@ -55,6 +57,8 @@
               options:NSKeyValueObservingOptionNew
               context:NULL];
 
+    self.finishedOperationsCount = 0;
+    
     return self;
 }
 
@@ -113,6 +117,10 @@
 
     COOperationBlock originalOperationBlock = operation.operation;
 
+#if !OS_OBJECT_USE_OBJC
+    dispatch_retain(CODefaultQueue());
+#endif
+
     COOperationBlock operationBlockInQueue = ^(COOperation *op) {
         dispatch_async(CODefaultQueue(), ^{
             // Ensuring isExecuting == YES to not run operations which have been already cancelled on contextOperation level
@@ -123,6 +131,19 @@
     };
 
     operation.operation = operationBlockInQueue;
+
+#if !OS_OBJECT_USE_OBJC
+    COOperation *weakOperation = operation;
+    operation.completionBlock = ^{
+        __strong COOperation *strongOperation = weakOperation;
+
+        if (strongOperation.isFinished || strongOperation.isCancelled) {
+            dispatch_release(CODefaultQueue());
+
+            strongOperation.completionBlock = nil;
+        }
+    };
+#endif
 
     [self.internal _enqueueSuboperation:operation];
 }
@@ -219,9 +240,10 @@
 - (void)main {
     self.operation(self);
 
-    self.allSuboperationsRegistered = YES;
-
-    [self.internal _performCheckpointRoutine];
+    @synchronized(self) {
+        self.allSuboperationsRegistered = YES;
+        [self.internal _performCheckpointRoutineIncrementingNumberOfFinishedOperations:NO];
+    }
 }
 
 - (void)cancel {
@@ -280,10 +302,9 @@
 #pragma mark KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-
     if ([object isEqual:self]) {
         [self _teardown];
-    } else {
+    } else {        
         @synchronized(self) {
             [object removeObserver:self forKeyPath:@"isFinished"];
             [object removeObserver:self forKeyPath:@"isCancelled"];
@@ -382,11 +403,16 @@
 }
 
 - (void)_operationWasFinished:(COOperation *)subOperation {
-    @synchronized(self) {
-        [self.operations removeObject:subOperation];
-    }
+    [self.internal _performCheckpointRoutineIncrementingNumberOfFinishedOperations:YES];
+}
 
-    [self.internal _performCheckpointRoutine];
+#pragma mark
+#pragma mark <NSObject>
+
+- (NSString *)description {
+    NSString *description = [NSString stringWithFormat:@"%@ (debugLabel = %@; concurrencyType = %lu; state = %@; numberOfRuns = %lu; operations = %@)", [super description], self.debugLabel, self.concurrencyType, COKeyPathFromOperationState(self.state), (unsigned long)self.numberOfRuns, self.operations];
+
+    return description;
 }
 
 @end

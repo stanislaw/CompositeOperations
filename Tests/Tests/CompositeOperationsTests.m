@@ -395,9 +395,11 @@
         }];
     }, ^{
         isFinished = YES;
-    }, ^(COCompositeOperation *to){});
+    }, ^(COCompositeOperation *to){
+        raiseShouldNotReachHere();
+    });
 
-    while (!isFinished);
+    while (isFinished == NO);
 
     STAssertEquals((int)countArr.count, 3, @"Expected count to be equal 3");
 }

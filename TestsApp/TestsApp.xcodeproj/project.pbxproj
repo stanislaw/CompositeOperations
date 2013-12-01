@@ -19,21 +19,9 @@
 		860EDBA518008822001BEEEE /* COOperationQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB9718008822001BEEEE /* COOperationQueue.m */; };
 		860EDBA618008822001BEEEE /* COOperationResolver.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB9918008822001BEEEE /* COOperationResolver.m */; };
 		860EDBA718008822001BEEEE /* COQueues.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB9B18008822001BEEEE /* COQueues.m */; };
+		862329D7184BA5630001C034 /* COCompositeSerialOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB6D18008535001BEEEE /* COCompositeSerialOperationTests.m */; };
 		8684D68C184A424D00B2902B /* COCompositeConcurrentOperationInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = 8684D686184A424D00B2902B /* COCompositeConcurrentOperationInternal.m */; };
 		8684D68E184A424D00B2902B /* COCompositeSerialOperationInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = 8684D68A184A424D00B2902B /* COCompositeSerialOperationInternal.m */; };
-		8684D69A184A769600B2902B /* NSOperationCompatibilityTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB6B18008535001BEEEE /* NSOperationCompatibilityTests.m */; };
-		8684D69B184A769600B2902B /* NSOperationQueueCompatibilityTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB6C18008535001BEEEE /* NSOperationQueueCompatibilityTests.m */; };
-		8684D69C184A769600B2902B /* COCompositeSerialOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB6D18008535001BEEEE /* COCompositeSerialOperationTests.m */; };
-		8684D69D184A769600B2902B /* CompositeOperationsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB6E18008535001BEEEE /* CompositeOperationsTests.m */; };
-		8684D69E184A769600B2902B /* COOperation_Suspending_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB6F18008535001BEEEE /* COOperation_Suspending_Tests.m */; };
-		8684D69F184A769600B2902B /* COOperationQueueTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB7018008535001BEEEE /* COOperationQueueTests.m */; };
-		8684D6A0184A769600B2902B /* COOperationResolverTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB7118008535001BEEEE /* COOperationResolverTests.m */; };
-		8684D6A1184A769600B2902B /* COOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB7218008535001BEEEE /* COOperationTests.m */; };
-		8684D6A2184A769600B2902B /* COQueuesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB7318008535001BEEEE /* COQueuesTests.m */; };
-		8684D6A3184A769600B2902B /* COTransactionalOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB7618008535001BEEEE /* COTransactionalOperationTests.m */; };
-		8684D6A4184A769600B2902B /* TODO.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB7718008535001BEEEE /* TODO.m */; };
-		8684D6A5184A7E9D00B2902B /* HighLoadTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB6A18008535001BEEEE /* HighLoadTests.m */; };
-		8684D6A6184A7EFD00B2902B /* CurrentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB6918008535001BEEEE /* CurrentTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -68,7 +56,7 @@
 		860EDB7118008535001BEEEE /* COOperationResolverTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COOperationResolverTests.m; sourceTree = "<group>"; };
 		860EDB7218008535001BEEEE /* COOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COOperationTests.m; sourceTree = "<group>"; };
 		860EDB7318008535001BEEEE /* COQueuesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COQueuesTests.m; sourceTree = "<group>"; };
-		860EDB7618008535001BEEEE /* COTransactionalOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COTransactionalOperationTests.m; sourceTree = "<group>"; };
+		860EDB7618008535001BEEEE /* COCompositeOperationConcurrentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COCompositeOperationConcurrentTests.m; sourceTree = "<group>"; };
 		860EDB7718008535001BEEEE /* TODO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TODO.m; sourceTree = "<group>"; };
 		860EDB8B180087B9001BEEEE /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		860EDB9018008822001BEEEE /* COCompositeOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COCompositeOperation.h; sourceTree = "<group>"; };
@@ -190,7 +178,7 @@
 				860EDB7118008535001BEEEE /* COOperationResolverTests.m */,
 				860EDB7218008535001BEEEE /* COOperationTests.m */,
 				860EDB7318008535001BEEEE /* COQueuesTests.m */,
-				860EDB7618008535001BEEEE /* COTransactionalOperationTests.m */,
+				860EDB7618008535001BEEEE /* COCompositeOperationConcurrentTests.m */,
 				860EDB7718008535001BEEEE /* TODO.m */,
 			);
 			path = Tests;
@@ -318,29 +306,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8684D69C184A769600B2902B /* COCompositeSerialOperationTests.m in Sources */,
 				8684D68C184A424D00B2902B /* COCompositeConcurrentOperationInternal.m in Sources */,
 				860EDBA218008822001BEEEE /* COCompositeOperation.m in Sources */,
-				8684D6A2184A769600B2902B /* COQueuesTests.m in Sources */,
 				860EDBA318008822001BEEEE /* CompositeOperations.m in Sources */,
 				860EDBA718008822001BEEEE /* COQueues.m in Sources */,
 				860EDBA618008822001BEEEE /* COOperationResolver.m in Sources */,
-				8684D6A1184A769600B2902B /* COOperationTests.m in Sources */,
-				8684D69F184A769600B2902B /* COOperationQueueTests.m in Sources */,
 				860EDBA518008822001BEEEE /* COOperationQueue.m in Sources */,
-				8684D69D184A769600B2902B /* CompositeOperationsTests.m in Sources */,
-				8684D69B184A769600B2902B /* NSOperationQueueCompatibilityTests.m in Sources */,
 				860EDBA418008822001BEEEE /* COOperation.m in Sources */,
 				860EDB54180084C7001BEEEE /* main.m in Sources */,
 				8684D68E184A424D00B2902B /* COCompositeSerialOperationInternal.m in Sources */,
-				8684D6A6184A7EFD00B2902B /* CurrentTests.m in Sources */,
-				8684D6A4184A769600B2902B /* TODO.m in Sources */,
-				8684D69A184A769600B2902B /* NSOperationCompatibilityTests.m in Sources */,
-				8684D69E184A769600B2902B /* COOperation_Suspending_Tests.m in Sources */,
-				8684D6A0184A769600B2902B /* COOperationResolverTests.m in Sources */,
-				8684D6A3184A769600B2902B /* COTransactionalOperationTests.m in Sources */,
 				860EDB7A18008535001BEEEE /* TestHelpers.m in Sources */,
-				8684D6A5184A7E9D00B2902B /* HighLoadTests.m in Sources */,
+				862329D7184BA5630001C034 /* COCompositeSerialOperationTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -378,7 +354,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 			};
@@ -410,7 +386,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx;
 			};
 			name = Release;

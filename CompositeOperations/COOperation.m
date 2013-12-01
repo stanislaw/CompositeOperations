@@ -58,6 +58,7 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
 
         case COOperationStateFinished:
             return -1;
+            
         default:
             return -1;
     }

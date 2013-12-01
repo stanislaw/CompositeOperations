@@ -21,7 +21,7 @@ describe(@"COOperationResolver", ^{
             COOperation *operation = [COOperation new];
             operation.operation = ^(COOperation *operation) {
                 [regString appendString:@"1"];
-
+                
                 [opResolver awakeOperation:operation times:5 eachAfterTimeInterval:0 withAwakeBlock:^(COOperation *operation) {
                     [operation awake];
                 } fallbackHandler:^{
