@@ -10,6 +10,59 @@
 
 #import "COQueues.h"
 
+static inline int COStateTransitionIsValid(COOperationState fromState, COOperationState toState, BOOL inContext) {
+    switch (fromState) {
+        case COOperationStateReady:
+            return YES;
+        case COOperationStateExecuting:
+            switch (toState) {
+                case COOperationStateReady:
+                    return YES;
+                case COOperationStateCancelled:
+                    return YES;
+                case COOperationStateFinished:
+                    return YES;
+                case COOperationStateSuspended:
+                    return YES;
+                case COOperationStateExecuting:
+                    return YES;
+                default:
+                    return -1;
+            }
+
+        case COOperationStateSuspended:
+            switch (toState) {
+                case COOperationStateReady:
+                    return YES;
+                case COOperationStateExecuting:
+                    return YES;
+                case COOperationStateFinished:
+                    return YES;
+                case COOperationStateCancelled:
+                    return NO;
+                default:
+                    return -1;
+            }
+
+        case COOperationStateCancelled:
+            switch (toState) {
+                case COOperationStateReady:
+                    return inContext;
+                case COOperationStateExecuting:
+                    return -1;
+                case COOperationStateFinished:
+                    return YES;
+                default:
+                    return -1;
+            }
+
+        case COOperationStateFinished:
+            return -1;
+        default:
+            return -1;
+    }
+}
+
 @implementation COOperation
 
 - (id)init {
@@ -38,7 +91,20 @@
 }
 
 - (void)setState:(COOperationState)state {
+    if (COStateTransitionIsValid(self.state, state, !!self.contextOperation) == NO) {
+        return;
+    }
+    
     @synchronized(self) {
+        if (COStateTransitionIsValid(self.state, state, !!self.contextOperation) == NO) {
+            return;
+        }
+
+        if (COStateTransitionIsValid(self.state, state, !!self.contextOperation) == -1) {
+            NSLog(@"%@: transition from %@ to %@ is invalid", self, COKeyPathFromOperationState(self.state), COKeyPathFromOperationState(state));
+            abort();
+        };
+
         NSString *oldStateKey = COKeyPathFromOperationState(self.state);
         NSString *newStateKey = COKeyPathFromOperationState(state);
 
@@ -56,6 +122,10 @@
 
 - (BOOL)isExecuting {
     return self.state == COOperationStateExecuting;
+}
+
+- (BOOL)isCancelled {
+    return self.state == COOperationStateCancelled;
 }
 
 - (BOOL)isFinished {
@@ -146,13 +216,7 @@
 }
 
 - (void)finish {
-    if (self.isCancelled == NO) {
-        self.state = COOperationStateFinished;
-    }
-}
-
-- (BOOL)isCancelled {
-    return self.state == COOperationStateCancelled;
+    self.state = COOperationStateFinished;
 }
 
 - (void)cancel {
