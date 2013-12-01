@@ -1,7 +1,5 @@
 # Documentation
 
-* [Anatomy (in progress)](Anatomy.md)
-
 ## Introduction
 
 The idea of this code comes from the logic of one iPhone app which involved a large number of complex (or "composite") operations, i.e.  operations consisting of multiple sub-operations: sometimes these operations should have to be run strictly one after another, so that particular operation depends on the results of preceding operations (serial order) and sometimes it is needed to run two or three operations in a random order but having a completion handler called when all of these operations are done (concurrent order).
@@ -38,7 +36,7 @@ Then import `CompositeOperations.h` where you want to use CO operations.
 
 ## CompositeOperations API
 
-...
+Coming soon...
 
 ## Alternative tools
 
