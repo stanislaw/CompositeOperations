@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'CompositeOperations'
-  s.version = '0.4.12'
+  s.version = '0.5.0'
 
   s.license = 'MIT'
 
@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
 
   s.source = { :git => 'https://github.com/stanislaw/CompositeOperations.git', :tag => s.version.to_s }
   s.source_files = 'CompositeOperations/*.{h,m}'
-  s.private_header_files = 'CompositeOperations/COCompositeOperation_Private.h'
+  s.private_header_files = 'CompositeOperations/Private/*.h'
 
   s.requires_arc = true
 
