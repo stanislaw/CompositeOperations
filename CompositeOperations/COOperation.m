@@ -101,8 +101,9 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
         }
 
         if (COStateTransitionIsValid(self.state, state, !!self.contextOperation) == -1) {
-            NSLog(@"%@: transition from %@ to %@ is invalid", self, COKeyPathFromOperationState(self.state), COKeyPathFromOperationState(state));
-            abort();
+            NSString *errMessage = [NSString stringWithFormat:@"%@: transition from %@ to %@ is invalid", self, COKeyPathFromOperationState(self.state), COKeyPathFromOperationState(state)];
+
+            @throw [NSException exceptionWithName:NSGenericException reason:errMessage userInfo:nil];
         };
 
         NSString *oldStateKey = COKeyPathFromOperationState(self.state);
@@ -220,9 +221,9 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
 }
 
 - (void)cancel {
-    if (self.isFinished == NO && self.isCancelled == NO && self.isSuspended == NO) {
-        self.state = COOperationStateCancelled;
+    self.state = COOperationStateCancelled;
 
+    if (self.isCancelled) {
         if (self.completionBlock) self.completionBlock();
     }
 }
@@ -309,7 +310,7 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
 #pragma mark <NSObject>
 
 - (NSString *)description {
-    NSString *description = [NSString stringWithFormat:@"%@ (state = %@, numberOfRuns = %lu)", super.description, COKeyPathFromOperationState(self.state), (unsigned long)self.numberOfRuns];
+    NSString *description = [NSString stringWithFormat:@"%@ (debugLabel = %@; state = %@; numberOfRuns = %lu)", super.description, self.debugLabel, COKeyPathFromOperationState(self.state), (unsigned long)self.numberOfRuns];
 
     return description;
 }

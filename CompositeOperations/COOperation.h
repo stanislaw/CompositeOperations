@@ -10,6 +10,8 @@
 
 @interface COOperation : NSOperation
 
+@property (copy) NSString *debugLabel;
+
 @property (copy) COOperationBlock operation;
 @property (strong) id operationQueue;
 
