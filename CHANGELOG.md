@@ -4,7 +4,7 @@
 
 ----
 
-## Versions 0.5.0-0.5.3
+## Versions 0.5.0-0.5.4
 
 Release date: 2013-12-01
 
@@ -27,6 +27,8 @@ COCompositeOperation *compositeOperation = [[CompositeOperation alloc] initWithC
 * All completion handlers now all have `(id result)` argument, all cancellation handlers now have `(COOperation *operation, NSError *error)` or `(COCompositeOperation *compositeOperation, NSError *error)`.
 
 * Number of thread safety related fixes.
+
+* Better `-[COCompositeOperation description]`.
 
 ----
 
