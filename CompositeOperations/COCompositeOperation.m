@@ -185,21 +185,37 @@
 #pragma mark
 #pragma mark Public API: Inner composite operations
 
+- (void)compositeOperation:(COCompositeOperation *)compositeOperation {
+    __weak COCompositeOperation *weakCompositeOperation = compositeOperation;
+
+    compositeOperation.completionBlock = ^{
+        __strong COCompositeOperation *strongCompositeOperation = weakCompositeOperation;
+
+        if (strongCompositeOperation.isFinished) {
+            strongCompositeOperation.completionBlock = nil;
+        } else {
+            [strongCompositeOperation cancel];
+        }
+    };
+
+    [self.internal _enqueueSuboperation:compositeOperation];
+}
+
 - (void)compositeOperation:(COCompositeOperationConcurrencyType)concurrencyType withBlock: (COCompositeOperationBlock)operationBlock {
     COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:concurrencyType];
 
     compositeOperation.operation = operationBlock;
 
     __weak COCompositeOperation *weakCompositeOperation = compositeOperation;
+    
     compositeOperation.completionBlock = ^{
         __strong COCompositeOperation *strongCompositeOperation = weakCompositeOperation;
 
         if (strongCompositeOperation.isFinished) {
+            strongCompositeOperation.completionBlock = nil;
         } else {
             [strongCompositeOperation cancel];
         }
-
-        strongCompositeOperation.completionBlock = nil;
     };
 
     [self.internal _enqueueSuboperation:compositeOperation];
@@ -280,10 +296,7 @@
 #pragma mark
 #pragma mark KVO
 
-- (void)observeValueForKeyPath:(NSString *)keyPath
-                      ofObject:(id)object
-                        change:(NSDictionary *)change
-                       context:(void *)context {
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
 
     if ([object isEqual:self]) {
         [self _teardown];

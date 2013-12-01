@@ -19,6 +19,7 @@
 - (void)run:(COCompositeOperationBlock)operationBlock __attribute__((unavailable("must run cascade operation with 'run:completionHandler:cancellationHandler:' instead.")));
 - (void)runInQueue:(dispatch_queue_t)queue operation:(COCompositeOperationBlock)operationBlock __attribute__((unavailable("must run cascade operation with 'run:completionHandler:cancellationHandler:' instead.")));
 
+// Public API: main runner
 - (void)run:(COCompositeOperationBlock)operationBlock completionHandler:(COCompletionBlock)completionHandler cancellationHandler:(COCancellationBlockForCompositeOperation)cancellationHandler;
 
 // Public API: Inner operations
@@ -27,6 +28,7 @@
 - (void)operationInQueue:(dispatch_queue_t)queue withBlock:(COOperationBlock)operationBlock;
 
 // Public API: Inner composite operations
+- (void)compositeOperation:(COCompositeOperation *)compositeOperation;
 - (void)compositeOperation:(COCompositeOperationConcurrencyType)concurrencyType withBlock: (COCompositeOperationBlock)operationBlock;
 
 // Shared data

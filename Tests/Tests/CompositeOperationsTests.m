@@ -143,6 +143,40 @@
     STAssertTrue(registry.count == 3, nil);
 }
 
+- (void)test_CompositeSerialOperation_compositeOperation {
+    __block BOOL isFinished = NO;
+    NSMutableArray *registry = [NSMutableArray array];
+
+    COOperation *operation = [COOperation new];
+    operation.operation = ^(COOperation *operation) {
+        asynchronousJob(^{
+            [registry addObject:@(1)];
+            [operation finish];
+        });
+    };
+
+    COCompositeOperation *innerCompositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent];
+
+    innerCompositeOperation.operation = ^(COCompositeOperation *compositeOperation) {
+        [compositeOperation operation:[operation copy]];
+        [compositeOperation operation:[operation copy]];
+        [compositeOperation operation:[operation copy]];
+    };
+
+    compositeOperation(COCompositeOperationSerial, ^(COCompositeOperation *mixedCompositeOperation) {
+        [mixedCompositeOperation compositeOperation:innerCompositeOperation];
+    }, ^{
+        isFinished = YES;
+    }, ^(COCompositeOperation *compositeOperation){
+        raiseShouldNotReachHere();
+    });
+
+    while (isFinished == NO) {};
+
+    STAssertTrue(registry.count == 3, nil);
+}
+
+
 - (void)testCascadeOperation_Integration {
     NSMutableArray *countArr = [NSMutableArray array];
     __block BOOL isFinished = NO;
