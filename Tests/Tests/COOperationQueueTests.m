@@ -42,19 +42,19 @@ static int finishedOperationsCount;
 }
 
 - (void)test_addOperationWithBlock {
-    __block BOOL done = NO;
+    __block BOOL isFinished = NO;
 
     COOperationQueue *opQueue = [COOperationQueue new];
     opQueue.maximumOperationsLimit = 0;
     opQueue.queue = concurrentQueue();
 
     [opQueue addOperationWithBlock:^{
-        done = YES;
+        isFinished = YES;
     }];
 
-    while(!done || opQueue.runningOperations.count != 0) {}
+    while(!isFinished || opQueue.runningOperations.count != 0) {}
 
-    STAssertTrue(done, nil);
+    STAssertTrue(isFinished, nil);
     STAssertEquals((int)opQueue.runningOperations.count, 0, nil);
 }
 
@@ -283,7 +283,7 @@ static int finishedOperationsCount;
 }
 
 - (void)test_aggressive_LIFO {
-    __block BOOL flag = NO;
+    __block BOOL isFinished = NO;
     
     COOperationQueue *operationQueue = [COOperationQueue new];
 
@@ -300,7 +300,7 @@ static int finishedOperationsCount;
         // Because it will be replaced by the following operation
         raiseShouldNotReachHere();
     }, ^{}, ^{
-        flag = YES;
+        isFinished = YES;
     });
 
     operation(operationQueue, ^(COOperation *operation) {
@@ -309,9 +309,9 @@ static int finishedOperationsCount;
     }, ^{
     });
 
-    while(flag == NO);
+    while(isFinished == NO);
 
-    STAssertTrue(flag, nil);
+    STAssertTrue(isFinished, nil);
     STAssertEquals((int)operationQueue.pendingOperations.count, 1, nil);
 }
 

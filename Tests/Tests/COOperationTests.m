@@ -17,19 +17,19 @@
 
 // Suprisingly ensures that new COOperation instance when called with -finish, triggers its completionBlock, even when its main body is undefined.
 - (void)test_NSOperationCallsCompletionBlockWhenFinished_evenWithoutActualyStartMainCalls {
-    __block BOOL flag = NO;
+    __block BOOL isFinished = NO;
 
     COOperation *operation = [COOperation new];
 
     operation.completionBlock = ^{
-        flag = YES;
+        isFinished = YES;
     };
 
     [operation finish];
 
-    while (flag == NO);
+    while (isFinished == NO);
 
-    STAssertTrue(flag, nil);
+    STAssertTrue(isFinished, nil);
 }
 
 #pragma mark

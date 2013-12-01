@@ -138,7 +138,7 @@
         raiseShouldNotReachHere();
     });
     
-    while (!isFinished);
+    while (isFinished == NO);
 
     STAssertTrue(registry.count == 3, nil);
 }
