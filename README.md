@@ -4,14 +4,14 @@
  
 `CompositeOperations` is the attempt to build a higher-level composite operations framework on top of GCD. Its main features are:
 
-* Composite operations: sequential composition (`COCascadeOperation`), concurrent composition (`COTransactionalOperation`). 
+* Composite operations - two types of composition: sequential composition - `COCompositeOperationSerial`, concurrent composition - `COCompositeOperationConcurrent`. 
 * Multistep asynchronous operations: chaining and synchronizing.
 * Mixing (or combining) composite operations into each other (See 'Combining Operations').
 * CompositeOperations is non-blocking: none of its operations blocks the thread it is executing on.
 * NSOperation/NSOperationQueue compatibility: all operations are NSOperation subclasses.
 * Nice block-based DSL.
-* COOperationQueue: analogue of NSOperation designed to work with composite operations. FIFO, LIFO, "agressive LIFO" orders support.
-* Experimental API: operation resolution API - special COOperationResolver class to decide what to do with problematic operations that need resolution.
+* COOperationQueue: analogue of NSOperationQueue designed to work with composite operations. FIFO, LIFO, "agressive LIFO" orders support.
+* Experimental API: operation resolution API - special COOperationResolver class to decide what to do with problematic operations that need specific general attention.
 
 You might be interested at this project if you use GCD and/or NSOperation, but want it to be on a higher level of abstraction: you need to implement the complex flows of operations and for some reasons you are not satisfied with what NSOperationQueue/NSOperation can do out of a box.
 
@@ -28,7 +28,6 @@ Documentation is [coming](https://github.com/stanislaw/CompositeOperations/blob/
 ## Copyright
 
 Copyright (c) 2013 Stanislaw Pankevich. See LICENSE for details.
-
 
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/stanislaw/compositeoperations/trend.png)](https://bitdeli.com/free "Bitdeli Badge")

@@ -18,61 +18,9 @@ operation(concurrentQueue(), ^(COOperation *operation) {
 });
 ```
 
-## COTransactionalOperation
+## COCompositeOperation
 
-The following example will run transactional operation - it will schedule 3 asynchronous suboperations (All 3 operations will be run in a queue set by COSetDefaultQueue()).
-
-The order of execution:
-
-1. The outer transactional operation block - schedules suboperations.
-2. All 3 suboperations will be run in an order dictated by the CO default queue (serial or concurrent - both are fine)
-3. Completion handler if all suboperations finished or cancellation handler if at least one suboperation was cancelled
-
-```objective-c
-COSetDefaultQueue(concurrentQueue());
-
-transactionalOperation(^(COTransactionalOperation *transaction) {
-    [transaction operation:^(COOperation *operation) {
-        /* 
-          I'am the first suboperation in order but since I am inside a transaction (not a cascade!) 
-          it is not guaranteed that I actually will be the first to be run 
-          since CODefaultQueue() is concurrent...
-
-          ...Do stuff...
-        */
-
-        [operation finish]; // or maybe [operation cancel]
-    }];
-    [transaction operation:^(COOperation *operation) {
-        /*
-          ...Do stuff...
-        */
-
-        [operation finish]; // or maybe [operation cancel]
-    }];
-    [transaction operation:^(COOperation *operation) {
-        /*
-          ...Do stuff...
-        */
-
-        [operation finish]; // or maybe [operation cancel]
-    }];
-}, ^{
-    /*
-      ...Completion handler code...
-    */
-
-}, ^(COTransactionalOperation *transaction){
-    /*
-      ...Cancellation handler code...
-      ...called immediatedly if at least one of suboperations is cancelled.
-      ...here maybe resolve transaction somehow: rerun, rerun after, or cancel... see <COOperationResolver>
-    */
-});
-
-```
-
-## COCascadedOperation
+### COCompositeOperationSerial
 
 ```objective-c
 dispatch_async(queue1, ^{
@@ -101,8 +49,8 @@ dispatch_async(queue1, ^{
 
 // ...turns into 
 
-cascadeOperation(^(COCascadeOperation *cascade){
-    [cascade operationInQueue:queue1 operation:^(COOperation *operation){
+compositeOperation(COCompositeOperationSerial, ^(COCompositeOperation *compositeOperation){
+    [compositeOperation operationInQueue:queue1 withBlock:^(COOperation *operation){
         /* 
           ...first job... 
         */
@@ -110,7 +58,7 @@ cascadeOperation(^(COCascadeOperation *cascade){
         [operation finish]; // or maybe [operation cancel]...
     }];
     
-    [cascade operationInQueue:queue2 operation:^(COOperation *operation){
+    [compositeOperation operationInQueue:queue2 withBlock:^(COOperation *operation){
         /* 
           ...second job... 
         */
@@ -118,7 +66,7 @@ cascadeOperation(^(COCascadeOperation *cascade){
         [operation finish]; // or maybe [operation cancel]...
     }];
    
-    [cascade operationInQueue:queue3 operation:^(COOperation *operation){
+    [compositeOperation operationInQueue:queue3 withBlock:^(COOperation *operation){
         /* 
           ...third job... 
         */
@@ -126,7 +74,7 @@ cascadeOperation(^(COCascadeOperation *cascade){
         [operation finish]; // or maybe [operation cancel]...
     }]; 
 
-    [cascade operationInQueue:queue4 operation:^(COOperation *operation){
+    [compositeOperation operationInQueue:queue4 withBlock:^(COOperation *operation){
         /* 
           ...fourth job... 
         */
@@ -139,22 +87,22 @@ cascadeOperation(^(COCascadeOperation *cascade){
       
       ...called if all three suboperations were finished
     */
-}, ^(COCascadeOperation *cascade){
+}, ^(COCompositeOperation *compositeOperation){
     /*
       ...Cancellation handler code... 
       
       ...called immediatedly if at least one suboperation was cancelled
      
-      Here decide what to do with *cascade* then
+      Here decide what to do with *the whole composite operation* then
     */
 });
 ```
 
-The following will run cascade operation - it will schedule 3 asynchronous suboperations (All 3 operations will be run in a queue set by COSetDefaultQueue()).
+The following will run serial composite operation - it will schedule 3 asynchronous suboperations (All 3 operations will be run in a queue set by COSetDefaultQueue()).
 
 The order of execution:
 
-1. The outer cascade operation block - schedules suboperations:
+1. The outer composite operation block - schedules suboperations:
 2. First suboperation
 3. Second suboperation
 4. Third suboperation
@@ -162,8 +110,8 @@ The order of execution:
 ```objective-c
 COSetDefaultQueue(someQueue());
 
-cascadeOperation(^(COCascadeOperation *co) {
-    [co operation:^(COOperation *o) {
+compositeOperation(^(COCompositeOperation *compositeOperation) {
+    [compositeOperation operationWithBlock:^(COOperation *o) {
         /*
           The first suboperation to run:
           ...Do stuff...
@@ -172,7 +120,7 @@ cascadeOperation(^(COCascadeOperation *co) {
         [o finish];
     }];
 
-    [co operation:^(COOperation *o) {
+    [compositeOperation operationWithBlock:^(COOperation *o) {
         /*
           The second suboperation to run:
           ...Do stuff...
@@ -181,7 +129,7 @@ cascadeOperation(^(COCascadeOperation *co) {
         [o finish];
     }];
 
-    [co operation:^(COOperation *o) {
+    [compositeOperation operationWithBlock:^(COOperation *o) {
         /* 
           The third suboperation to run:
           ...Do stuff...
@@ -192,5 +140,59 @@ cascadeOperation(^(COCascadeOperation *co) {
     // At this point - after the outer block have just run - all operations are scheduled to be run in CODefaultQueue()
 }, nil, nil);
 ```
+### COCompositeOperationConcurrent
+
+The following example will run composite concurrent operation - it will schedule 3 asynchronous suboperations (All 3 operations will be run in a queue set by COSetDefaultQueue()).
+
+The order of execution:
+
+1. The outer composite operation block - schedules suboperations.
+2. All 3 suboperations will be run in an order dictated by the CO default queue (serial or concurrent - both are fine)
+3. Completion handler if all suboperations finished or cancellation handler if at least one suboperation was cancelled
+
+```objective-c
+COSetDefaultQueue(concurrentQueue());
+
+compositeOperation(^(COCompositeOperation *compositeOperation) {
+    [compositeOperation operation:^(COOperation *operation) {
+        /* 
+          I'am the first suboperation in order but since I am inside a concurrent operation (not serial!) 
+          it is not guaranteed that I actually will be the first to be run 
+          since CODefaultQueue() is concurrent...
+
+          ...Do stuff...
+        */
+
+        [operation finish]; // or maybe [operation cancel]
+    }];
+    [compositeOperation operation:^(COOperation *operation) {
+        /*
+          ...Do stuff...
+        */
+
+        [operation finish]; // or maybe [operation cancel]
+    }];
+    [compositeOperation operation:^(COOperation *operation) {
+        /*
+          ...Do stuff...
+        */
+
+        [operation finish]; // or maybe [operation cancel]
+    }];
+}, ^{
+    /*
+      ...Completion handler code...
+    */
+
+}, ^(COCompositeOperation *compositeOperation){
+    /*
+      ...Cancellation handler code...
+      ...called immediatedly if at least one of suboperations is cancelled.
+      ...here maybe resolve composite operation somehow: rerun, rerun after, or cancel... see <COOperationResolver>
+    */
+});
+
+```
+
 
 
