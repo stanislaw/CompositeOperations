@@ -47,7 +47,7 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
         case COOperationStateCancelled:
             switch (toState) {
                 case COOperationStateReady:
-                    return inContext;
+                    return inContext ?: -1;
                 case COOperationStateExecuting:
                     return -1;
                 case COOperationStateFinished:
@@ -204,11 +204,11 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
         __strong COOperation *strongSelf = weakSelf;
 
         if (strongSelf.isFinished) {
-            if (completionHandler) completionHandler();
+            if (completionHandler) completionHandler(strongSelf.data);
 
             strongSelf.completionBlock = nil;
         } else if (cancellationHandler) {
-            cancellationHandler();
+            cancellationHandler(strongSelf, strongSelf.error);
 
             strongSelf.completionBlock = nil;
         }
@@ -221,6 +221,14 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
     self.state = COOperationStateFinished;
 }
 
+- (void)finishWithResult:(id)result {
+    @synchronized(self) {
+        self.data = result;
+    }
+
+    [self finish];
+}
+
 - (void)cancel {
     self.state = COOperationStateCancelled;
 
@@ -229,6 +237,14 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
     if (self.contextOperation == nil) {
         if (self.completionBlock) self.completionBlock();
     }
+}
+
+- (void)cancelWithError:(NSError *)error {
+    @synchronized(self) {
+        self.error = error;
+    }
+
+    [self cancel];
 }
 
 #pragma mark
@@ -281,13 +297,16 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
         __strong COOperation *strongOperation = weakOperation;
 
         if (strongOperation.isFinished) {
+            
             [originalCompletionBlock invoke];
 
-            [self finish];
+            [self finishWithResult:strongOperation.data];
 
             strongOperation.completionBlock = nil;
         } else if (strongOperation.isCancelled) {
             [originalCompletionBlock invoke];
+
+            self.error = strongOperation.error;
 
             [self cancel];
 

@@ -13,6 +13,7 @@
 @property (copy) NSString *debugLabel;
 
 @property (copy) COOperationBlock operation;
+
 @property (strong) id operationQueue;
 
 @property (readonly) BOOL isReady;
@@ -26,8 +27,12 @@
 - (void)run:(COOperationBlock)operationBlock completionHandler:(COCompletionBlock)completionHandler cancellationHandler:(COCancellationBlockForOperation)cancellationHandler;
 
 - (void)start;
-- (void)finish;
+
 - (void)cancel;
+- (void)cancelWithError:(NSError *)error;
+
+- (void)finish;
+- (void)finishWithResult:(id)result;
 
 // Rerunning
 - (void)reRun;
