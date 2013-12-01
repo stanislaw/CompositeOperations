@@ -110,7 +110,7 @@ The order of execution:
 ```objective-c
 COSetDefaultQueue(someQueue());
 
-compositeOperation(^(COCompositeOperation *compositeOperation) {
+compositeOperation(COCompositeOperationSerial, ^(COCompositeOperation *compositeOperation) {
     [compositeOperation operationWithBlock:^(COOperation *o) {
         /*
           The first suboperation to run:
@@ -153,7 +153,7 @@ The order of execution:
 ```objective-c
 COSetDefaultQueue(concurrentQueue());
 
-compositeOperation(^(COCompositeOperation *compositeOperation) {
+compositeOperation(COCompositeOperationConcurrent, ^(COCompositeOperation *compositeOperation) {
     [compositeOperation operation:^(COOperation *operation) {
         /* 
           I'am the first suboperation in order but since I am inside a concurrent operation (not serial!) 
