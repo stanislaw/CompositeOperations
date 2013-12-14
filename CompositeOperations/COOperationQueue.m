@@ -184,11 +184,6 @@ static inline NSString * COKeyPathFromOperationQueueState(COOperationQueueState 
     if (self.isSuspended == NO) {
         @synchronized(self) {
             self.state = COOperationQueueSuspendedState;
-                        
-            [[self.pendingOperations copy] makeObjectsPerformSelector:@selector(suspend)];
-
-            // Do not suspend operations that are on the fly
-            // [[self.runningOperations copy] makeObjectsPerformSelector:@selector(suspend)];
         }
     } else {
         // Should an exception be raised here?
@@ -198,10 +193,9 @@ static inline NSString * COKeyPathFromOperationQueueState(COOperationQueueState 
 - (void)resume {
     @synchronized(self) {
         self.state = COOperationQueueNormalState;
-
-        [[self.pendingOperations copy] makeObjectsPerformSelector:@selector(resume)];
-        [[self.runningOperations copy] makeObjectsPerformSelector:@selector(resume)];
     }
+
+    [self _runNextOperationIfExists];
 }
 
 #pragma mark
