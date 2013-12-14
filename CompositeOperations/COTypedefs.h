@@ -15,9 +15,11 @@ typedef void (^COCompositeOperationBlock)(COCompositeOperation *compositeOperati
 
 // Completion and cancellation blocks
 // Gotcha: in the following typedef the second "void" is important to have overloading picked up
-typedef void (^COCompletionBlock)(id result);
-typedef void (^COCancellationBlockForOperation)(COOperation *operation, NSError *error);
-typedef void (^COCancellationBlockForCompositeOperation)(COCompositeOperation *compositeOperation, NSError *error);
+typedef void (^COOperationCompletionBlock)(id result);
+typedef void (^COOperationCancellationBlock)(COOperation *operation, NSError *error);
+
+typedef void (^COCompositeOperationCompletionBlock)(NSArray *result);
+typedef void (^COCompositeOperationCancellationBlock)(COCompositeOperation *compositeOperation, NSError *error);
 
 typedef id (^COModificationBlock)(id data);
 

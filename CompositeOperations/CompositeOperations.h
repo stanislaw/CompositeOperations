@@ -17,10 +17,10 @@
 void  __attribute__((overloadable)) operation(COOperationBlock block);
 void  __attribute__((overloadable)) operation(dispatch_queue_t queue, COOperationBlock block);
 void  __attribute__((overloadable)) operation(COOperationQueue *queue, COOperationBlock block);
-void  __attribute__((overloadable)) operation(COOperationQueue *queue, COOperationBlock block, COCompletionBlock completionHandler, COCancellationBlockForOperation cancellationHandler);
-void  __attribute__((overloadable)) operation(COOperation *otherOperation, COCompletionBlock completionHandler, COCancellationBlockForOperation cancellationHandler);
+void  __attribute__((overloadable)) operation(COOperationQueue *queue, COOperationBlock block, COOperationCompletionBlock completionHandler, COOperationCancellationBlock cancellationHandler);
+void  __attribute__((overloadable)) operation(COOperation *otherOperation, COOperationCompletionBlock completionHandler, COOperationCancellationBlock cancellationHandler);
 
 
-void __attribute__((overloadable)) compositeOperation(COCompositeOperationConcurrencyType concurrencyType, COCompositeOperationBlock block, COCompletionBlock completionHandler, COCancellationBlockForCompositeOperation cancellationHandler);
-void __attribute__((overloadable)) compositeOperation(COCompositeOperationConcurrencyType concurrencyType, id queue, COCompositeOperationBlock block, COCompletionBlock completionHandler, COCancellationBlockForCompositeOperation cancellationHandler);
+void __attribute__((overloadable)) compositeOperation(COCompositeOperationConcurrencyType concurrencyType, COCompositeOperationBlock block, COCompositeOperationCompletionBlock completionHandler, COCompositeOperationCancellationBlock cancellationHandler);
+void __attribute__((overloadable)) compositeOperation(COCompositeOperationConcurrencyType concurrencyType, id queue, COCompositeOperationBlock block, COCompositeOperationCompletionBlock completionHandler, COCompositeOperationCancellationBlock cancellationHandler);
 

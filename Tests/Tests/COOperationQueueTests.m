@@ -77,7 +77,7 @@ static int finishedOperationsCount;
     while (countDown-- > 0) {
         COOperation *o = [COOperation new];
 
-        o.operation = ^(COOperation *operation) {
+        o.operationBlock = ^(COOperation *operation) {
             @synchronized(countArr) {
                 [countArr addObject:@1];
             }
@@ -111,7 +111,7 @@ static int finishedOperationsCount;
     int countDown = 10;
     while (countDown-- > 0 ) {
         COOperation *o = [COOperation new];
-        o.operation = ^(COOperation *o) {
+        o.operationBlock = ^(COOperation *o) {
             STAssertEquals((int)opQueue.runningOperations.count, 1, nil);
 
             @synchronized(countArr) {
@@ -147,7 +147,7 @@ static int finishedOperationsCount;
     while (countDown-- > 0 ) {
         COOperation *o = [COOperation new];
         
-        o.operation = ^(COOperation *o) {
+        o.operationBlock = ^(COOperation *o) {
             @synchronized(countArr) {
                 [countArr addObject:@1];
             }
@@ -173,113 +173,6 @@ static int finishedOperationsCount;
     while (!finished);
 
     STAssertEquals((int)countArr.count, 5, nil);
-}
-
-// COOperationQueue suspends only pendingOperations - it does not touch on-the-fly operations, leaving them to manage their states.
-// But when resuming, it does call 'resume' on both pending and running operations.
-- (void)test_suspend_and_resume {
-    COOperationQueue *opQueue = [[COOperationQueue alloc] init];
-    opQueue.queue = concurrentQueue();
-    opQueue.maximumOperationsLimit = 2;
-
-    COOperationBlock operation = ^(COOperation *operation) { /* Just nothing! */ };
-
-    COOperation *operationA = [COOperation new];
-    COOperation *operationB = [COOperation new];
-    COOperation *operationC = [COOperation new];
-    COOperation *operationD = [COOperation new];
-
-    operationA.operation = operation;
-    operationB.operation = operation;
-    operationC.operation = operation;
-    operationD.operation = operation;
-
-    [opQueue addOperation:operationA];
-    [opQueue addOperation:operationB];
-    [opQueue addOperation:operationC];
-    [opQueue addOperation:operationD];
-
-    // Wait while all operations are queued
-    while(![[opQueue.runningOperations objectAtIndex:0] isExecuting]) {}
-    while(![[opQueue.runningOperations objectAtIndex:1] isExecuting]) {}
-
-    STAssertFalse(opQueue.isSuspended, nil);
-
-    STAssertEquals((int)opQueue.pendingOperations.count, 2, nil);
-    STAssertEquals((int)opQueue.runningOperations.count, 2, nil);
-
-    [opQueue suspend];
-
-    STAssertTrue(opQueue.isSuspended, nil);
-
-    // Pending operations should have all been suspended
-    for (COOperation *operation in opQueue.pendingOperations) {
-        STAssertTrue(operation.isSuspended, nil);
-    }
-
-    // Running operations should have not all been suspended - they should have isExecuting state
-    for (COOperation *operation in opQueue.runningOperations) {
-        STAssertTrue(operation.isExecuting, nil);
-    }
-
-    [opQueue resume];
-
-    STAssertFalse(opQueue.isSuspended, nil);
-
-    // Pending operations should have all been resumed and become ready again
-    for (COOperation *operation in opQueue.pendingOperations) {
-        STAssertTrue(operation.isReady, nil);
-    }
-
-    // Running operations should be executing - their states have not been changed
-    for (COOperation *operation in opQueue.runningOperations) {
-        STAssertTrue(operation.isExecuting, nil);
-    }
-}
-
-// Though COOperationQueue does not suspend on-the-fly operations, it does resume them if they did suspend themselves before.
-- (void)test_suspend_and_resume_one_of_operations_suspends_itself_on_ {
-    COOperationQueue *opQueue = [[COOperationQueue alloc] init];
-    opQueue.queue = concurrentQueue();
-    opQueue.maximumOperationsLimit = 1;
-
-    COOperation *operationA = [COOperation new];
-    COOperation *operationB = [COOperation new];
-
-    operationA.operation = ^(COOperation *operation) { [operation suspend]; };
-    operationB.operation = ^(COOperation *operation) { /* Just nothing! */ };
-
-    [opQueue addOperation:operationA];
-    [opQueue addOperation:operationB];
-
-    // Wait while all operations are queued
-    while(![[opQueue.runningOperations objectAtIndex:0] isSuspended]) {}
-
-    STAssertFalse(opQueue.isSuspended, nil);
-
-    STAssertEquals((int)opQueue.pendingOperations.count, 1, nil);
-    STAssertEquals((int)opQueue.runningOperations.count, 1, nil);
-
-    [opQueue suspend];
-
-    STAssertTrue(opQueue.isSuspended, nil);
-
-    // Pending operation B should have been suspended by opQueue
-    STAssertTrue(operationB.isSuspended, nil);
-
-    // Running operation A should have been suspended by itself
-    STAssertTrue(operationA.isSuspended, nil);
-
-    [opQueue resume];
-
-    STAssertFalse(opQueue.isSuspended, nil);
-
-    // Pending operation B should have all been resumed and become ready again
-    STAssertTrue(operationB.isReady, nil);
-
-
-    // Running operation A should again have made itself suspended since it was rerun after opQueue had been resumed
-    STAssertTrue(operationA.isSuspended, nil);
 }
 
 - (void)test_aggressive_LIFO {

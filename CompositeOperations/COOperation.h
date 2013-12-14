@@ -10,21 +10,17 @@
 
 @interface COOperation : NSOperation
 
-@property (copy) NSString *debugLabel;
-
-@property (copy) COOperationBlock operation;
+@property (copy) COOperationBlock operationBlock;
 
 @property (strong) id operationQueue;
 
 @property (readonly) BOOL isReady;
 @property (readonly) BOOL isExecuting;
 @property (readonly) BOOL isFinished;
-@property (readonly) BOOL isCancelled;
-@property (readonly) BOOL isSuspended;
 
 - (void)run:(COOperationBlock)operationBlock;
 - (void)runInQueue:(dispatch_queue_t)queue operation:(COOperationBlock)operationBlock;
-- (void)run:(COOperationBlock)operationBlock completionHandler:(COCompletionBlock)completionHandler cancellationHandler:(COCancellationBlockForOperation)cancellationHandler;
+- (void)run:(COOperationBlock)operationBlock completionHandler:(COOperationCompletionBlock)completionHandler cancellationHandler:(COOperationCancellationBlock)cancellationHandler;
 
 - (void)start;
 
@@ -34,15 +30,9 @@
 - (void)finish;
 - (void)finishWithResult:(id)result;
 
-// Rerunning
-- (void)reRun;
-- (void)awake;
-
-// Suspending
-- (void)suspend;
-- (void)resume;
-
 // Resolution
 - (void)resolveWithOperation:(COOperation *)operation;
+
+@property (copy) NSString *debugLabel;
 
 @end

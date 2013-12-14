@@ -20,6 +20,8 @@ describe(@"COCompositeOperationSerial", ^{
         it(@"should run composite operation", ^{
             __block int count = 0;
             __block BOOL isFinished = NO;
+            __block BOOL completionBlockWasRun = NO;
+
             __block BOOL firstJobIsDone = NO, secondJobIsDone = NO, thirdJobIsDone = NO;
 
             COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
@@ -27,6 +29,7 @@ describe(@"COCompositeOperationSerial", ^{
             [compositeOperation run:^(COCompositeOperation *compositeOperation) {
                 [compositeOperation operationWithBlock:^(COOperation *cao) {
                     asynchronousJob(^{
+                        NSLog(@"RX 1");
                         count = count + 1;
 
                         [[theValue(firstJobIsDone) should] beNo];
@@ -36,12 +39,18 @@ describe(@"COCompositeOperationSerial", ^{
                         [[theValue(count) should] equal:@(1)];
 
                         firstJobIsDone = YES;
+
                         [cao finish];
+
+                        for (COOperation *op in compositeOperation.dependencies) {
+                            NSLog(@"lala %@", op.dependencies);
+                        }
                     });
                 }];
 
                 [compositeOperation operationWithBlock:^(COOperation *cao) {
                     asynchronousJob(^{
+                        NSLog(@"RX 2");
                         count = count + 1;
 
                         [[theValue(firstJobIsDone) should] beYes];
@@ -58,6 +67,7 @@ describe(@"COCompositeOperationSerial", ^{
 
                 [compositeOperation operationWithBlock:^(COOperation *cao) {
                     asynchronousJob(^{
+                        NSLog(@"RX 3");
                         count = count + 1;
 
                         [[theValue(firstJobIsDone) should] beYes];
@@ -70,11 +80,14 @@ describe(@"COCompositeOperationSerial", ^{
                         [cao finish];
                     });
                 }];
-            } completionHandler:nil cancellationHandler:nil];
+            } completionHandler:^(id result){
+                completionBlockWasRun = YES;
+            } cancellationHandler:nil];
             
-            while (isFinished == NO);
+            while (isFinished == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, NO);
             
             [[theValue(count) should] equal:@(3)];
+            [[theValue(completionBlockWasRun) should] beYes];
         });
     });
 
@@ -130,59 +143,9 @@ describe(@"COCompositeOperationSerial", ^{
                 }];
             } completionHandler:nil cancellationHandler:nil];
             
-            while (!isFinished);
-            
+            while (isFinished == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, NO);
+
             [[theValue(count) should] equal:@(3)];
-        });
-    });
-
-    describe(@"Running inside COOperationQueue", ^{
-        it(@"", ^{
-            NSMutableArray *countArr = [NSMutableArray array];
-            __block BOOL isFinished = NO;
-
-            COOperationQueue *opQueue = [COOperationQueue new];
-            opQueue.queue = createQueue();
-
-            COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
-
-            compositeOperation.operationQueue = opQueue;
-            [[theValue(opQueue.pendingOperations.count) should] equal:@(0)];
-            [[theValue(opQueue.runningOperations.count) should] equal:@(0)];
-
-            [compositeOperation run:^(COCompositeOperation *compositeOperation) {
-                [[theValue(opQueue.pendingOperations.count) should] equal:@(0)];
-                [[theValue(opQueue.runningOperations.count) should] equal:@(1)];
-
-                [compositeOperation operationWithBlock:^(COOperation *cao) {
-                    asynchronousJob(^{
-                        @synchronized(countArr) {
-                            [countArr addObject:@1];
-                        }
-                        [cao finish];
-                    });
-                }];
-
-                [compositeOperation operationWithBlock:^(COOperation *cao) {
-                    asynchronousJob(^{
-                        @synchronized(countArr) {
-                            [countArr addObject:@1];
-                        }
-                        [cao finish];
-                    });
-                }];
-
-                [compositeOperation operationWithBlock:^(COOperation *cuo) {
-                    @synchronized(countArr) {
-                        [countArr addObject:@1];
-                    }
-                    isFinished = YES;
-                }];
-            } completionHandler:nil cancellationHandler:nil];
-            
-            while (!isFinished);
-            
-            [[theValue(countArr.count) should] equal:@(3)];
         });
     });
 
@@ -190,6 +153,7 @@ describe(@"COCompositeOperationSerial", ^{
         describe(@"Default dispatch queue", ^{
             it(@"should run operation inside CODefaultQueue()", ^{
                 __block BOOL isFinished = NO;
+                COSetDefaultQueue(concurrentQueue());
 
                 COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
 
@@ -202,7 +166,7 @@ describe(@"COCompositeOperationSerial", ^{
                     }];
                 } completionHandler:nil cancellationHandler:nil];
 
-                while (!isFinished);
+                while (isFinished == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, NO);
             });
 
             it(@"should run operation inside CODefaultQueue()", ^{
@@ -221,223 +185,82 @@ describe(@"COCompositeOperationSerial", ^{
                     }];
                 } completionHandler:nil cancellationHandler:nil];
 
-                while (isFinished == NO);
-
-                COSetDefaultQueue(nil);
+                while (isFinished == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, NO);
             });
         });
     });
 
-    describe(@"Suspend / Resume", ^{
-        it(@"Ensures that -[COCompositeOperation suspend] suspends self and inner operations.", ^{
-            __block BOOL isFinished = NO;
+    describe(@"Cancellation", ^{
+        describe(@"First operation is cancelled (-cancel)", ^{
+            it(@"should propagate cancellation on all operations", ^{
+                for (int i = 0; i < 1; i++) {
+                __block BOOL isFinished = NO;
 
-            COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
+                COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
 
-            [compositeOperation run:^(COCompositeOperation *compositeOperation) {
-                [compositeOperation operationWithBlock:^(COOperation *operation) {
-                    [[theValue(compositeOperation.isCancelled) should] beNo];
-
-                    [compositeOperation suspend]; // Suspends composite operation and all suboperations
-
-                    [[theValue(compositeOperation.isSuspended) should] beYes];
-
-                    [compositeOperation.operations enumerateObjectsUsingBlock:^(COOperation *operation, NSUInteger idx, BOOL *stop) {
-                        [[theValue(operation.isSuspended) should] beYes];
-                    }];
-
-                    isFinished = YES;
-                }];
-
-                [compositeOperation operationWithBlock:^(COOperation *operation) {
-                    raiseShouldNotReachHere();
-                }];
-            } completionHandler:nil cancellationHandler:nil];
-            
-            while (isFinished == NO);
-        });
-
-        it(@"Ensures that -[COCompositeOperation suspend] suspends self and inner operations so that -cancel of inner operations does hot have effect.", ^{
-            __block BOOL isFinished = NO;
-
-            COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
-
-            [compositeOperation run:^(COCompositeOperation *compositeOperation) {
-                [compositeOperation operationWithBlock:^(COOperation *operation) {
-                    [compositeOperation suspend]; // Suspends composite operation and all suboperations
-
-                    [[theValue(operation.isSuspended) should] beYes];
-
-                    [operation cancel]; // Has no effect
-
-                    [[theValue(operation.isSuspended) should] beYes];
-
-                    isFinished = YES;
-                }];
-
-                [compositeOperation operationWithBlock:^(COOperation *operation) {
-                    raiseShouldNotReachHere();
-                }];
-            } completionHandler:nil cancellationHandler:nil];
-            
-            while (!isFinished);
-        });
-
-        it(@"Ensures that -[COCompositeOperation[Serial] resume] runs next operation at current index if composite serial operation  was suspended in the body of successful previous sub-operation", ^{
-            __block BOOL isFinished = NO;
-
-            COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
-
-            [compositeOperation run:^(COCompositeOperation *compositeOperation) {
-                [compositeOperation operationWithBlock:^(COOperation *operation) {
-                    [compositeOperation suspend]; // Suspends composite operation and all suboperations
-
-                    [compositeOperation.operations enumerateObjectsUsingBlock:^(COOperation *operation, NSUInteger idx, BOOL *stop) {
-                        [[theValue(operation.isSuspended) should] beYes];
-                    }];
-
-                    [operation finish];
-
-                    [[theValue(operation.isFinished) should] beYes];
-
-                    isFinished = YES;
-                }];
-
-                [compositeOperation operationWithBlock:^(COOperation *operation) {
-                    [[theValue(operation.isExecuting) should] beYes];
-
-                    isFinished = YES;
-
-                    [operation finish];
-                }];
-            } completionHandler:nil cancellationHandler:nil];
-            
-            while (isFinished == NO);
-            
-            isFinished = NO;
-            
-            [compositeOperation resume];
-            
-            while (isFinished == NO || !compositeOperation.isFinished) {}
-
-            [[theValue(compositeOperation.isFinished) should] beYes];
-        });
-    });
-
-    describe(@"reRun / awake", ^{
-        it(@"Ensures that -[CompositeOperation[Serial] awake] awakes(i.e. reruns) all unfinished operations.", ^{
-            NSMutableString *regString = [NSMutableString new];
-
-            __block BOOL blockFlag = NO;
-            __block NSNumber *secondOperationRunTimes = @(0);
-
-            COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
-
-            [compositeOperation run:^(COCompositeOperation *compositeOperation) {
-                [compositeOperation operationWithBlock:^(COOperation *o) {
-                    [regString appendString:@"1"];
-                    [o finish];
-                }];
-
-                [compositeOperation operationWithBlock:^(COOperation *operation) {
-                    [[theValue(compositeOperation.isExecuting) should] beYes];
-
-                    secondOperationRunTimes = @(secondOperationRunTimes.intValue + 1);
-
-                    if ([secondOperationRunTimes isEqualToNumber:@(1)]) {
+                [compositeOperation run:^(COCompositeOperation *compositeOperation) {
+                    [compositeOperation operationWithBlock:^(COOperation *operation) {
                         [operation cancel];
-                    } else {
-                        [regString appendString:@"2"];
+                    }];
+
+                    [compositeOperation operationWithBlock:^(COOperation *operation) {
                         [operation finish];
+                    }];
+
+                    [compositeOperation operationWithBlock:^(COOperation *operation) {
+                        [operation finish];
+                    }];
+                } completionHandler:^(NSArray *result){
+                    raiseShouldNotReachHere();
+                } cancellationHandler:^(COCompositeOperation *compositeOperation, NSError *error) {
+                    [[theValue(compositeOperation.isCancelled) should] beYes];
+
+                    for (COOperation *operation in compositeOperation.internalDependencies) {
+                        [[theValue(operation.isFinished) should] beYes];
                     }
+
+                    isFinished = YES;
                 }];
 
-                [compositeOperation operationWithBlock:^(COOperation *o) {
-                    [[theValue([regString isEqualToString:@"12"]) should] beYes];
-                    [regString appendString:@"3"];
-
-                    [o finish];
-                }];
-            } completionHandler:^(id result){
-                [[theValue(compositeOperation.isFinished) should] beYes];
-
-                [[theValue([regString isEqualToString:@"123"]) should] beYes];
-
-                blockFlag = YES;
-            } cancellationHandler:^(COCompositeOperation *compositeOperation, NSError *error) {
-                [[theValue(compositeOperation.isExecuting) should] beYes];
-
-                [[theValue([regString isEqualToString:@"1"]) should] beYes];
-
-                blockFlag = YES;
-            }];
-            
-            while(blockFlag == NO);
-            
-            blockFlag = NO;
-            
-            [compositeOperation awake];
-            
-            while(blockFlag == NO){}
+                while (isFinished == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, NO);
+                }
+            });
         });
 
-        it(@"Ensures that -[COCompositeOperation awake] HAS effect on executing operations", ^{
-            __block BOOL blockFlag = NO;
+        describe(@"First operation is cancelled (-cancelWithError:)", ^{
+            it(@"should propagate cancellation on all operations and pass NSError to composite operation", ^{
+                __block BOOL isFinished = NO;
+                NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:1 userInfo:nil];
 
-            COCompositeOperation *intentionallyUnfinishableCOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
+                COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
 
-            intentionallyUnfinishableCOperation.operation = ^(COCompositeOperation *co) {
-                [co operationWithBlock:^(COOperation *operation) {
-                    [operation finish];
-                    blockFlag = YES;
-                }];
-            };
+                [compositeOperation run:^(COCompositeOperation *compositeOperation) {
+                    [compositeOperation operationWithBlock:^(COOperation *operation) {
+                        [operation cancelWithError:error];
+                    }];
 
-            intentionallyUnfinishableCOperation.state = COOperationStateExecuting;
-            [[theValue(intentionallyUnfinishableCOperation.isExecuting) should] beYes];
-            
-            [intentionallyUnfinishableCOperation awake];
-            
-            while(blockFlag == NO) {};
+                    [compositeOperation operationWithBlock:^(COOperation *operation) {
+                        raiseShouldNotReachHere();
+                    }];
 
-            [[theValue(intentionallyUnfinishableCOperation.isFinished) should] beYes];
-        });
-
-        it(@"Ensures that -[COCompositeOperation awake] has no effect on finished operations", ^{
-            COCompositeOperation *intentionallyUnfinishableCOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
-
-            intentionallyUnfinishableCOperation.operation = ^(COCompositeOperation *co) {
-                [co operationWithBlock:^(COOperation *operation) {
+                    [compositeOperation operationWithBlock:^(COOperation *cao) {
+                        raiseShouldNotReachHere();
+                    }];
+                } completionHandler:^(id result){
                     raiseShouldNotReachHere();
+                } cancellationHandler:^(COCompositeOperation *compositeOperation, NSError *_error) {
+                    [[theValue([_error isEqual:error]) should] beYes];
+                    
+                    for (COOperation *operation in compositeOperation.internalDependencies) {
+                        [[theValue(operation.isCancelled) should] beYes];
+                        [[theValue(operation.isFinished) should] beYes];
+                    }
+
+                    isFinished = YES;
                 }];
-            };
 
-            [[theValue(intentionallyUnfinishableCOperation.isReady) should] beYes];
-
-            [intentionallyUnfinishableCOperation finish];
-
-            [[theValue(intentionallyUnfinishableCOperation.isFinished) should] beYes];
-            [intentionallyUnfinishableCOperation awake];
-            [[theValue(intentionallyUnfinishableCOperation.isFinished) should] beYes];
-        });
-
-        it(@"Ensures that -[CompositeOperation[Serial] awake] has no effect on cancelled operations", ^{
-            COCompositeOperation *intentionallyUnfinishableCOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
-
-            intentionallyUnfinishableCOperation.operation = ^(COCompositeOperation *co) {
-                [co operationWithBlock:^(COOperation *operation) {
-                    raiseShouldNotReachHere();
-                }];
-            };
-
-            [[theValue(intentionallyUnfinishableCOperation.isReady) should] beYes];
-            [intentionallyUnfinishableCOperation cancel];
-
-            [[theValue(intentionallyUnfinishableCOperation.isCancelled) should] beYes];
-
-            [intentionallyUnfinishableCOperation awake];
-            
-            [[theValue(intentionallyUnfinishableCOperation.isCancelled) should] beYes];
+                while (isFinished == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, NO);
+            });
         });
     });
 
@@ -470,72 +293,11 @@ describe(@"COCompositeOperationSerial", ^{
                 }];
             } completionHandler:nil cancellationHandler:nil];
             
-            while (isFinished == NO);
+            while (isFinished == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, NO);
         });
     });
 
-    describe(@"Internals", ^{
-
-        describe(@"!OS_OBJECT_USE_OBJC", ^{
-#if !OS_OBJECT_USE_OBJC
-            it(@"COCompositeOperation: assigns NSOperation's operationBlocks to its suboperations. Ensures that -[COCompositeOperation cancel] does not run and remove completionBlocks of suboperations (\"soft cancel\") when cancellationHandler is provided.", ^{
-                __block BOOL isFinished = NO;
-
-                COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
-
-                [compositeOperation run:^(COCompositeOperation *compositeOperation) {
-                    [compositeOperation operationWithBlock:^(COOperation *operation) {
-                        [operation cancel];
-                    }];
-
-                    [compositeOperation operationWithBlock:^(COOperation *operation) {
-                        raiseShouldNotReachHere();
-                    }];
-                } completionHandler:^(id result){
-                    raiseShouldNotReachHere();
-                } cancellationHandler:^(COCompositeOperation *compositeOperation, NSError *error) {
-                    NSLog(@"%@", [compositeOperation.operations valueForKey:@"completionBlock"]);
-
-                    for (COOperation *operation in compositeOperation.operations) {
-                        [[operation.completionBlock shouldNot] beNil];
-                    }
-                    isFinished = YES;
-                }];
-
-                while (isFinished == NO);
-            });
-
-            it(@"Ensures that -[COCompositeOperation cancel] DOES run and remove completionBlocks of suboperations (\"soft cancel\") when cancellationHandler is not provided.", ^{
-                __block BOOL isFinished = NO;
-
-                COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
-
-                [compositeOperation run:^(COCompositeOperation *compositeOperation) {
-                    [compositeOperation operationWithBlock:^(COOperation *operation) {
-                        [compositeOperation cancel];
-                        
-                        isFinished = YES;
-                    }];
-                    
-                    [compositeOperation operationWithBlock:^(COOperation *operation) {
-                        raiseShouldNotReachHere();
-                    }];
-                } completionHandler:^(id result){
-                    raiseShouldNotReachHere();
-                } cancellationHandler:nil];
-                
-                while (isFinished == NO);
-                
-                for (COOperation *operation in compositeOperation.operations) {
-                    [[operation.completionBlock should] beNil];
-                }
-            });
-#endif
-        });
-
-    });
-
-    describe(@"Nested composite operations", ^{
+    pending(@"Nested composite operations", ^{
         describe(@"", ^{
             it(@"", ^{
                 NSMutableArray *countArr = [NSMutableArray array];
@@ -565,92 +327,17 @@ describe(@"COCompositeOperationSerial", ^{
                     }];
                     
                     [co operationWithBlock:^(COOperation *cuo) {
+                        abort();
                         isFinished = YES;
                     }];
                 } completionHandler:nil cancellationHandler:nil];
                 
-                while (isFinished == NO);
-                
+                while (isFinished == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, NO);
+
                 [[theValue(countArr.count) should] equal:@(2)];
             });
         });
-
-        describe(@"Cancellation semantics", ^{
-            it(@"#1", ^{
-                __block BOOL isFinished = NO;
-
-                COCompositeOperation *outerCompositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
-
-                [outerCompositeOperation run:^(COCompositeOperation *outerCompositeOperation) {
-                    [outerCompositeOperation compositeOperation:COCompositeOperationConcurrent withBlock:^(COCompositeOperation *to1) {
-
-                        [to1 operationWithBlock:^(COOperation *tao) {
-                            [tao cancel];
-                        }];
-                    }];
-
-                    [outerCompositeOperation operationWithBlock:^(COOperation *cuo) {
-                        raiseShouldNotReachHere();
-                    }];
-                } completionHandler:nil cancellationHandler:^(COCompositeOperation *outerCompositeOperation, NSError *error){
-                    COCompositeOperation *innerCompositeOperation = [outerCompositeOperation.operations objectAtIndex:0];
-
-                    for (COOperation *operation in innerCompositeOperation.operations) {
-                        [[theValue(operation.isCancelled) should] beYes];
-                    }
-
-                    for (COOperation *operation in outerCompositeOperation.operations) {
-                        [[theValue(operation.isCancelled) should] beYes];
-                    }
-                    
-                    isFinished = YES;
-                }];
-                
-                while (!isFinished);
-            });
-
-            it(@"#2", ^{
-                __block BOOL isFinished = NO;
-                __block BOOL cancellationHandlerWasRun = NO;
-
-                COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
-
-                [compositeOperation run:^(COCompositeOperation *compositeOperation) {
-                    [compositeOperation operationWithBlock:^(COOperation *o) {
-                        for (COOperation *operation in compositeOperation.operations) {
-                            [[theValue(operation.isCancelled) should] beNo];
-                        }
-
-                        [[theValue(compositeOperation.isCancelled) should] beNo];
-
-                        [o cancel];
-
-                        [[theValue(compositeOperation.isCancelled) should] beNo];
-
-                        for (COOperation *operation in compositeOperation.operations) {
-                            [[theValue(operation.isCancelled) should] beYes];
-                        }
-
-                        isFinished = YES;
-                    }];
-
-                    [compositeOperation operationWithBlock:^(COOperation *o) {
-                        raiseShouldNotReachHere();
-                    }];
-                } completionHandler:nil cancellationHandler:^(COCompositeOperation *compositeOperation, NSError *error){
-                    [[theValue(compositeOperation.isCancelled) should] beNo];
-                    cancellationHandlerWasRun = YES;
-                }];
-                
-                while (!isFinished || !cancellationHandlerWasRun);
-
-                [[theValue(isFinished) should] beYes];
-                [[theValue(cancellationHandlerWasRun) should] beYes];
-            });
-        });
     });
-
-
 });
 
 SPEC_END

@@ -14,13 +14,13 @@
 
 - (id)initWithConcurrencyType:(COCompositeOperationConcurrencyType)concurrencyType;
 
-@property (copy) COCompositeOperationBlock operation;
+@property (copy) COCompositeOperationBlock operationBlock;
 
 - (void)run:(COCompositeOperationBlock)operationBlock __attribute__((unavailable("must run composite operation with 'run:completionHandler:cancellationHandler:' instead.")));
 - (void)runInQueue:(dispatch_queue_t)queue operation:(COCompositeOperationBlock)operationBlock __attribute__((unavailable("must run composite operation with 'run:completionHandler:cancellationHandler:' instead.")));
 
 // Public API: main runner
-- (void)run:(COCompositeOperationBlock)operationBlock completionHandler:(COCompletionBlock)completionHandler cancellationHandler:(COCancellationBlockForCompositeOperation)cancellationHandler;
+- (void)run:(COCompositeOperationBlock)operationBlock completionHandler:(COCompositeOperationCompletionBlock)completionHandler cancellationHandler:(COCompositeOperationCancellationBlock)cancellationHandler;
 
 // Public API: Inner operations
 - (void)operation:(COOperation *)operation;

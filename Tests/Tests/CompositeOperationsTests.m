@@ -18,77 +18,87 @@
         [o finish];
     });
 
-    while (!oOver) {}
+    while (oOver == NO) {
+        CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, YES);
+    }
 
     STAssertTrue(oOver, @"Expected aoOver to be YES");
 }
 
-- (void)test_operation_in_queue {
-    __block BOOL oOver = NO;
-
-    operation(concurrentQueue(), ^(COOperation *o) {
-        oOver = YES;
-        [o finish];
-    });
-
-    while (!oOver) {}
-
-    STAssertTrue(oOver, @"Expected aoOver to be YES");
-}
-
-- (void)test_operation_in_operation_queue {
-    __block BOOL oOver = NO;
-    
-    COOperationQueue *opQueue = [COOperationQueue new];
-    opQueue.queue = createQueue();
-
-    STAssertEquals((int)opQueue.pendingOperations.count, 0, nil);
-    STAssertEquals((int)opQueue.runningOperations.count, 0, nil);
-    
-    operation(opQueue, ^(COOperation *o) {
-        STAssertEquals((int)opQueue.runningOperations.count, 1, nil);
-        [o finish];
-        oOver = YES;
-    });
-
-    while (oOver == NO) {}
-
-    STAssertEquals((int)opQueue.runningOperations.count, 0, nil);
-
-    STAssertTrue(oOver, @"Expected aoOver to be YES");
-}
-
-
-- (void)test_operation_resolveOperation {
-    __block BOOL isFinished = NO;
-
-    NSString *predefinedResult = @("Result");
-
-    COOperation *otherOperation = [COOperation new];
-    otherOperation.operation = ^(COOperation *operation){
-        [operation finishWithResult:predefinedResult];
-    };
-
-    operation(otherOperation, ^(id result) {
-        STAssertTrue([result isEqualToString:predefinedResult], nil);
-
-        isFinished = YES;
-    }, ^(COOperation *operation, NSError *error) {
-        raiseShouldNotReachHere();
-    });
-
-    while (isFinished == NO) {}
-}
+//- (void)test_operation_in_queue {
+//    __block BOOL oOver = NO;
+//
+//    operation(concurrentQueue(), ^(COOperation *o) {
+//        oOver = YES;
+//        [o finish];
+//    });
+//
+//    while (!oOver) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, YES);
+//
+//    STAssertTrue(oOver, @"Expected aoOver to be YES");
+//}
+//
+//- (void)test_operation_in_operation_queue {
+//    __block BOOL oOver = NO;
+//    
+//    COOperationQueue *opQueue = [COOperationQueue new];
+//    opQueue.queue = createQueue();
+//
+//    STAssertEquals((int)opQueue.pendingOperations.count, 0, nil);
+//    STAssertEquals((int)opQueue.runningOperations.count, 0, nil);
+//    
+//    operation(opQueue, ^(COOperation *o) {
+//        STAssertEquals((int)opQueue.runningOperations.count, 1, nil);
+//        [o finish];
+//        oOver = YES;
+//    });
+//
+//    while (oOver == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, YES);
+//
+//    STAssertEquals((int)opQueue.runningOperations.count, 0, nil);
+//
+//    STAssertTrue(oOver, @"Expected aoOver to be YES");
+//}
+//
+//
+//- (void)test_operation_resolveOperation {
+//    __block BOOL isFinished = NO;
+//
+//    NSString *predefinedResult = @("Result");
+//
+//    COOperation *otherOperation = [COOperation new];
+//    otherOperation.operation = ^(COOperation *operation){
+//        [operation finishWithResult:predefinedResult];
+//    };
+//
+//    operation(otherOperation, ^(id result) {
+//        STAssertTrue([result isEqualToString:predefinedResult], nil);
+//
+//        isFinished = YES;
+//    }, ^(COOperation *operation, NSError *error) {
+//        raiseShouldNotReachHere();
+//    });
+//
+//    while (isFinished == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, YES);
+//}
 
 - (void)test_CompositeSerialOperation {
+    for (int i = 0; i < 10; i++) {
     __block int count = 0;
     __block BOOL isFinished = NO;
     __block BOOL firstJobIsDone = NO, secondJobIsDone = NO, thirdJobIsDone = NO;
 
+    __block COCompositeOperation *__compositeOperation;
+
     compositeOperation(COCompositeOperationSerial, ^(COCompositeOperation *compositeOperation) {
-        [compositeOperation operationWithBlock:^(COOperation *rao) {
+        __compositeOperation = compositeOperation;
+        compositeOperation.debugLabel = [@(i) stringValue];
+        [compositeOperation operationWithBlock:^(COOperation *operation) {
+            operation.debugLabel = [NSString stringWithFormat:@"%@.%@", @(i), @(1)];
             asynchronousJob(^{
                 count = count + 1;
+
+                NSAssert(operation.dependencies.count == 0, nil);
 
                 STAssertFalse(firstJobIsDone, @"Expected firstJobIsDone to be NO");
                 STAssertFalse(secondJobIsDone, @"Expected secondJobIsDone to be NO");
@@ -97,11 +107,15 @@
                 STAssertEquals((int)count, 1, @"Expected count to be equal 1 inside the first operation");
 
                 firstJobIsDone = YES;
-                [rao finish];
+                [operation finish];
             });
         }];
 
-        [compositeOperation operationWithBlock:^(COOperation *rao) {
+        [compositeOperation operationWithBlock:^(COOperation *operation) {
+            operation.debugLabel = [NSString stringWithFormat:@"%@.%@", @(i), @(2)];
+            NSAssert(operation.dependencies.count == 1, nil);
+            NSAssert(((COOperation *)operation.dependencies.lastObject).isFinished, nil);
+
             asynchronousJob(^{
                 count = count + 1;
 
@@ -113,11 +127,15 @@
 
                 secondJobIsDone = YES;
 
-                [rao finish];
+                [operation finish];
             });
         }];
 
-        [compositeOperation operationWithBlock:^(COOperation *rao) {
+        [compositeOperation operationWithBlock:^(COOperation *operation) {
+            operation.debugLabel = [NSString stringWithFormat:@"%@.%@", @(i), @(3)];
+            NSAssert(operation.dependencies.count == 1, nil);
+            NSAssert(((COOperation *)operation.dependencies.lastObject).isFinished, nil);
+
             asynchronousJob(^{
                 count = count + 1;
 
@@ -127,15 +145,20 @@
 
                 STAssertEquals((int)count, 3, @"Expected count to be equal 3 inside the third operation");
 
-                isFinished = YES;
-                [rao finish];
+                [operation finish];
             });
         }];
-    }, nil, nil);
+    }, ^(id result) {
+        isFinished = YES;
+    }, nil);
     
-    while (!isFinished);
+        while (isFinished == NO) {
+            CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.025, YES);
+        }
 
     STAssertEquals(count, 3, @"Expected count to be equal 3");
+
+    }
 }
 
 - (void)test_CompositeSerialOperation_operation {
@@ -143,7 +166,7 @@
     NSMutableArray *registry = [NSMutableArray array];
 
     COOperation *operation = [COOperation new];
-    operation.operation = ^(COOperation *operation) {
+    operation.operationBlock = ^(COOperation *operation) {
         asynchronousJob(^{
             [registry addObject:@(1)];
             [operation finish];
@@ -154,23 +177,58 @@
         [compositeOperation operation:[operation copy]];
         [compositeOperation operation:[operation copy]];
         [compositeOperation operation:[operation copy]];
-    }, ^(id result){
+    }, ^(NSArray *result){
         isFinished = YES;
     }, ^(COCompositeOperation *compositeOperation, NSError *error){
         raiseShouldNotReachHere();
     });
     
-    while (isFinished == NO);
+    while (isFinished == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, YES);
 
     STAssertTrue(registry.count == 3, nil);
 }
 
-- (void)test_CompositeSerialOperation_compositeOperation {
+- (void)test_COCompositeOperationSerial_mixed_in_COCompositeOperationSerial_using_operation_method {
     __block BOOL isFinished = NO;
     NSMutableArray *registry = [NSMutableArray array];
 
     COOperation *operation = [COOperation new];
-    operation.operation = ^(COOperation *operation) {
+    operation.operationBlock = ^(COOperation *operation) {
+        asynchronousJob(^{
+            [registry addObject:@(1)];
+            [operation finish];
+        });
+    };
+
+    COCompositeOperation *innerCompositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
+
+    innerCompositeOperation.operationBlock = ^(COCompositeOperation *compositeOperation) {
+        [compositeOperation operation:[operation copy]];
+        [compositeOperation operation:[operation copy]];
+        [compositeOperation operation:[operation copy]];
+    };
+
+    compositeOperation(COCompositeOperationSerial, ^(COCompositeOperation *mixedCompositeOperation) {
+        [mixedCompositeOperation compositeOperation:innerCompositeOperation];
+    }, ^(NSArray *result){
+        isFinished = YES;
+    }, ^(COCompositeOperation *compositeOperation, NSError *error){
+        raiseShouldNotReachHere();
+    });
+
+    while (isFinished == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, YES);
+
+    STAssertTrue(registry.count == 3, nil);
+}
+
+- (void)test_COCompositeOperationConcurrent_mixed_in_COCompositeOperationSerial_using_operation_method {
+    __block BOOL isFinished = NO;
+    __block BOOL completionHandlerWasRun = NO;
+
+    NSMutableArray *registry = [NSMutableArray array];
+
+    COOperation *operation = [COOperation new];
+    operation.operationBlock = ^(COOperation *operation) {
         asynchronousJob(^{
             [registry addObject:@(1)];
             [operation finish];
@@ -179,7 +237,7 @@
 
     COCompositeOperation *innerCompositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent];
 
-    innerCompositeOperation.operation = ^(COCompositeOperation *compositeOperation) {
+    innerCompositeOperation.operationBlock = ^(COCompositeOperation *compositeOperation) {
         [compositeOperation operation:[operation copy]];
         [compositeOperation operation:[operation copy]];
         [compositeOperation operation:[operation copy]];
@@ -187,117 +245,54 @@
 
     compositeOperation(COCompositeOperationSerial, ^(COCompositeOperation *mixedCompositeOperation) {
         [mixedCompositeOperation compositeOperation:innerCompositeOperation];
-    }, ^(id result){
+    }, ^(NSArray *result){
+        completionHandlerWasRun = YES;
         isFinished = YES;
     }, ^(COCompositeOperation *compositeOperation, NSError *error){
         raiseShouldNotReachHere();
     });
 
-    while (isFinished == NO) {};
+    while (isFinished == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, YES);
 
     STAssertTrue(registry.count == 3, nil);
+    STAssertTrue(completionHandlerWasRun, nil);
 }
 
-
-- (void)test_compositeSerialOperation_Integration {
-    NSMutableArray *countArr = [NSMutableArray array];
+- (void)test_COCompositeOperationConcurrent_mixed_in_COCompositeOperationConcurrent_using_operation_method {
     __block BOOL isFinished = NO;
-    __block BOOL firstJobIsDone = NO, secondJobIsDone = NO, thirdJobIsDone = NO;
+    __block BOOL completionHandlerWasRun = NO;
 
-    __block NSMutableString *accResult = [NSMutableString string];
+    NSMutableArray *registry = [NSMutableArray array];
 
-    compositeOperation(COCompositeOperationSerial, ^(COCompositeOperation *compositeOperation) {
-        [compositeOperation operationWithBlock:^(COOperation *rao) {
-            asynchronousJob(^{
-                @synchronized(countArr) {
-                    [countArr addObject:@1];
-                }
-                [accResult appendString:@"c1"];
+    COOperation *operation = [COOperation new];
+    operation.operationBlock = ^(COOperation *operation) {
+        asynchronousJob(^{
+            [registry addObject:@(1)];
+            [operation finish];
+        });
+    };
 
-                STAssertFalse(firstJobIsDone, @"Expected firstJobIsDone to be NO");
-                STAssertFalse(secondJobIsDone, @"Expected secondJobIsDone to be NO");
-                STAssertFalse(thirdJobIsDone, @"Expected thirdJobIsDone to be NO");
+    COCompositeOperation *innerCompositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent];
 
-                STAssertEquals((int)countArr.count, 1, @"Expected count to be equal 1 inside the first operation");
+    innerCompositeOperation.operationBlock = ^(COCompositeOperation *compositeOperation) {
+        [compositeOperation operation:[operation copy]];
+        [compositeOperation operation:[operation copy]];
+        [compositeOperation operation:[operation copy]];
+    };
 
-                firstJobIsDone = YES;
-                [rao finish];
-            });
-        }];
+    compositeOperation(COCompositeOperationConcurrent, ^(COCompositeOperation *mixedCompositeOperation) {
+        [mixedCompositeOperation compositeOperation:innerCompositeOperation];
+    }, ^(NSArray *result){
+        completionHandlerWasRun = YES;
+        isFinished = YES;
+    }, ^(COCompositeOperation *compositeOperation, NSError *error){
+        raiseShouldNotReachHere();
+    });
 
-        [compositeOperation operationWithBlock:^(COOperation *rao) {
-            asynchronousJob(^{
-                @synchronized(countArr) {
-                    [countArr addObject:@1];
-                }
-                [accResult appendString:@"c2"];
+    while (isFinished == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, YES);
 
-                STAssertTrue(firstJobIsDone, @"Expected firstJobIsDone to be YES");
-                STAssertFalse(secondJobIsDone, @"Expected secondJobIsDone to be NO");
-                STAssertFalse(thirdJobIsDone, @"Expected thirdJobIsDone to be NO");
-
-                STAssertEquals((int)countArr.count, 2, @"Expected count to be equal 2 inside the second operation");
-
-                secondJobIsDone = YES;
-
-                [rao finish];
-            });
-        }];
-
-        [compositeOperation operationWithBlock:^(COOperation *rao) {
-            asynchronousJob(^{
-                @synchronized(countArr) {
-                    [countArr addObject:@1];
-                }
-                [accResult appendString:@"c3"];
-                
-                STAssertTrue(firstJobIsDone, @"Expected firstJobIsDone to be YES");
-                STAssertTrue(secondJobIsDone, @"Expected secondJobIsDone to be YES");
-                STAssertFalse(thirdJobIsDone, @"Expected thirdJobIsDone to be NO");
-
-                STAssertEquals((int)countArr.count, 3, @"Expected count to be equal 3 inside the third operation");
-
-                [rao finish];
-            });
-        }];
-
-        [compositeOperation compositeOperation:COCompositeOperationConcurrent withBlock:^(COCompositeOperation *to) {
-            [to operationWithBlock:^(COOperation *tao) {
-                @synchronized(countArr) {
-                    [countArr addObject:@1];
-                }
-                [accResult appendString:@"t1"];
-                [tao finish];
-            }];
-
-            [to operationWithBlock:^(COOperation *tao) {
-                @synchronized(countArr) {
-                    [countArr addObject:@1];
-                }
-                [accResult appendString:@"t2"];
-                [tao finish];
-            }];
-
-            [to operationWithBlock:^(COOperation *tao) {
-                @synchronized(countArr) {
-                    [countArr addObject:@1];
-                }
-                [accResult appendString:@"t3"];
-                [tao finish];
-            }];
-        }];
-
-        [compositeOperation operationWithBlock:^(COOperation *cuo) {
-            [cuo finish];
-            isFinished = YES;
-        }];
-    }, nil, nil);
-    
-    while (!isFinished);
-
-    STAssertEquals((int)countArr.count, 6, @"Expected count to be equal 6");
-    NSLog(@"%s: accResult is: %@", __PRETTY_FUNCTION__, accResult);
-
+    STAssertTrue(registry.count == 3, nil);
+    STAssertTrue(completionHandlerWasRun, nil);
 }
 
 - (void)test_compositeOperation_in_operation_queue {
@@ -334,7 +329,7 @@
         }];
     }, nil, nil);
 
-    while (!isFinished);
+    while (!isFinished) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, YES);
     
     STAssertEquals(count, 3, @"Expected count to be equal 3");
 }
@@ -366,29 +361,22 @@
         passedHandler = YES;
     }, nil);
 
-    while (passedHandler == NO);
+    while (passedHandler == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, YES);
 
     STAssertEquals((int)countArr.count, 30, @"Expected count to be equal 30");
     STAssertTrue(passedHandler, @"Expected passedHandler to be equal YES");
     NSLog(@"%s: accResult is: %@", __PRETTY_FUNCTION__, accResult);
-
-    COSetDefaultQueue(nil);
-
 }
 
-- (void) test_COCompositeOperationConcurrent_in_operation_queue {
+
+- (void)test_COCompositeOperationConcurrent_in_operation_queue {
     __block BOOL isFinished = NO;
     NSMutableArray *countArr = [NSMutableArray array];
 
     COOperationQueue *opQueue = [COOperationQueue new];
     opQueue.queue = createQueue();
 
-    STAssertEquals((int)opQueue.pendingOperations.count, 0, nil);
-    STAssertEquals((int)opQueue.runningOperations.count, 0, nil);
-
     compositeOperation(COCompositeOperationConcurrent, opQueue, ^(COCompositeOperation *to) {
-        STAssertEquals((int)opQueue.runningOperations.count, 1, nil);
-
         [to operationWithBlock:^(COOperation *tao) {
 
             @synchronized(countArr) {
@@ -415,13 +403,13 @@
 
             [tao finish];
         }];
-    }, ^(id result){
+    }, ^(NSArray *result){
         isFinished = YES;
     }, ^(COCompositeOperation *to, NSError *error){
         raiseShouldNotReachHere();
     });
 
-    while (isFinished == NO);
+    while (isFinished == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, YES);
 
     STAssertEquals((int)countArr.count, 3, @"Expected count to be equal 3");
 }
@@ -449,65 +437,101 @@
             }
             [operation finish];
         }];
-    }, ^(id result){
+    }, ^(NSArray *result){
         isFinished = YES;
     }, ^(COCompositeOperation *compositeOperation, NSError *error){
         raiseShouldNotReachHere();
     });
 
-    while (!isFinished);
+    while (!isFinished) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, YES);
 
     STAssertEquals((int)countArr.count, 3, @"Expected count to be equal 3");
 }
 
-- (void) test_compositeConcurrentOperation_Integration {
+- (void) test_compositeSerialOperation_Integration {
+    static dispatch_once_t onceToken;
+
+    for (int i = 0; i < 10; i++) {
+    onceToken = 0;
+
     __block BOOL isFinished = NO;
     __block BOOL passedHandler = NO;
     NSMutableArray *countArr = [NSMutableArray array];
 
     dispatch_sync(createQueue(), ^{
-        compositeOperation(COCompositeOperationConcurrent, ^(COCompositeOperation *to) {
-            [to operationWithBlock:^(COOperation *o) {
-                @synchronized(countArr) {
-                    [countArr addObject:@1];
-                }
+        __block COCompositeOperation *__compositeOperation;
+        compositeOperation(COCompositeOperationSerial, ^(COCompositeOperation *compositeOperation) {
+            compositeOperation.debugLabel = [NSString stringWithFormat:@"Composite operation #%@", @(i)];
+
+            __compositeOperation = compositeOperation;
+            [compositeOperation operationWithBlock:^(COOperation *o) {
+                o.debugLabel = [@(1) stringValue];
+
+                NSAssert(countArr.count == 0, nil);
+
+                [countArr addObject:@1];
+
                 [o finish];
             }];
 
-            [to operationWithBlock:^(COOperation *o) {
+            [compositeOperation operationWithBlock:^(COOperation *o) {
+                NSAssert(countArr.count == 1, nil);
+
+                o.debugLabel = [@(2) stringValue];
                 asynchronousJob(^{
-                    @synchronized(countArr) {
-                        [countArr addObject:@1];
-                    }
+                    NSAssert(countArr.count == 1, nil);
+
+                    [countArr addObject:@2];
+
                     [o finish];
                 });
             }];
 
-            [to compositeOperation:COCompositeOperationConcurrent withBlock:^(COCompositeOperation *co) {
-                [co operationWithBlock:^(COOperation *o) {
-                    @synchronized(countArr) {
-                        [countArr addObject:@1];
-                    }
-                    [o finish];
+            [compositeOperation compositeOperation:COCompositeOperationSerial withBlock:^(COCompositeOperation *innerCompositeOperation) {
+                innerCompositeOperation.debugLabel = [@(3) stringValue];
+
+                dispatch_once_and_next_time(&onceToken, ^{
+                    //
+                }, ^{
+                    abort();
+                });
+
+                NSString *reason = [NSString stringWithFormat:@"Expected countArr.count to be equal 2.... Inner composite operation of operation %@, countArr: %@", innerCompositeOperation, countArr];
+
+                NSAssert(countArr.count == 2, reason);
+
+                [innerCompositeOperation operationWithBlock:^(COOperation *operation) {
+                    operation.debugLabel = [@(3.1) stringValue];
+
+                    [countArr addObject:@3];
+
+                    [operation finish];
                 }];
 
-                [co operationWithBlock:^(COOperation *o) {
-                    @synchronized(countArr) {
-                        [countArr addObject:@1];
-                    }
-                    [o finish];
+                [innerCompositeOperation operationWithBlock:^(COOperation *operation) {
+                    operation.debugLabel = [@(3.2) stringValue];
+
+                    [countArr addObject:@4];
+
+                    [operation finish];
                 }];
             }];
         }, ^(id result){
+            NSString *reason = [NSString stringWithFormat:@"Expected countArr to be 4, got: %lu, operation: %@", countArr.count, __compositeOperation];
+            NSAssert(countArr.count == 4, reason);
             passedHandler = YES;
             isFinished = YES;
         }, nil);
 
-        while (!isFinished);
+        while (isFinished == NO) {
+            CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.025, YES);
+        }
     });
     
-    STAssertEquals((int)countArr.count, 4, @"Expected count to be equal 3");
+    STAssertEquals((int)countArr.count, 4, nil);
     STAssertTrue(passedHandler, @"Expected passedHandler to be equal YES");
+
+    }
 }
 
 - (void)test_nesting_composite_operations_roughIntegration {
@@ -551,7 +575,7 @@
         [compositeOperation operationWithBlock:^(COOperation *operation) {
             [operation finish];
         }];
-    }, ^(id result){
+    }, ^(NSArray *result){
         isDone = YES;
 
         STAssertTrue(cascOp.isFinished, nil);
@@ -560,10 +584,8 @@
         raiseShouldNotReachHere();
     });
 
-    while(!isDone) {}
+    while(!isDone) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, YES);
 }
-
-//
 
 - (void)test_run_completionHandler_cancellationHandler {
     __block BOOL blockFlag = NO;
@@ -584,7 +606,7 @@
         blockFlag = YES;
     });
 
-    while(blockFlag == NO);
+    while(blockFlag == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, YES);
 }
 
 @end

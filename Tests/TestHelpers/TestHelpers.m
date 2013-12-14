@@ -18,7 +18,7 @@ dispatch_queue_t serialQueue() {
     static dispatch_once_t onceToken;
     
     dispatch_once(&onceToken, ^{
-        _serialQueue = dispatch_queue_create("SACompositeOperations.queue.serial", DISPATCH_QUEUE_SERIAL);
+        _serialQueue = dispatch_queue_create("com.CompositeOperations.Tests.queue.serial", DISPATCH_QUEUE_SERIAL);
     });
 
     return _serialQueue;
@@ -35,7 +35,7 @@ dispatch_queue_t concurrentQueue() {
 }
 
 dispatch_queue_t createQueue() {
-    return dispatch_queue_create("SACompositeOperations.queue.serial.random", NULL);
+    return dispatch_queue_create("com.CompositeOperations.Tests.queue.serial.random", NULL);
 }
 
 void asynchronousJob(asyncronousBlock block) {

@@ -8,8 +8,6 @@
 #import "COOperation.h"
 
 typedef NS_ENUM(NSInteger, COOperationState) {
-    COOperationStateCancelled   = -2,
-    COOperationStateSuspended   = -1,
     COOperationStateReady       = 0,
     COOperationStateExecuting   = 1,
     COOperationStateFinished    = 2,
@@ -17,10 +15,6 @@ typedef NS_ENUM(NSInteger, COOperationState) {
 
 static inline NSString * COKeyPathFromOperationState(COOperationState state) {
     switch (state) {
-        case COOperationStateCancelled:
-            return @"isCancelled";
-        case COOperationStateSuspended:
-            return @"isSuspended";
         case COOperationStateReady:
             return @"isReady";
         case COOperationStateExecuting:
@@ -39,12 +33,5 @@ static inline NSString * COKeyPathFromOperationState(COOperationState state) {
 @property (strong, nonatomic) id data;
 
 @property (strong, nonatomic) NSError *error;
-
-// Context operation
-@property (strong) COOperation *contextOperation;
-
-- (void)initPropertiesForRun;
-
-@property NSUInteger numberOfRuns;
 
 @end

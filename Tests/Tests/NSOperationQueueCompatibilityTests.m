@@ -22,7 +22,7 @@
 
     COOperation *operation = [COOperation new];
 
-    operation.operation = ^(COOperation *ao) {
+    operation.operationBlock = ^(COOperation *ao) {
         asynchronousJob(^{
             oOver = YES;
             [ao finish];
@@ -31,7 +31,7 @@
 
     [opQueue addOperation:operation];
     
-    while (!oOver) {}
+    while (oOver == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, YES);
 
     STAssertTrue(oOver, @"Expected aoOver to be YES");
 }
@@ -45,7 +45,7 @@
 
     COCompositeOperation *cOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
 
-    cOperation.operation = ^(COCompositeOperation *co) {
+    cOperation.operationBlock = ^(COCompositeOperation *co) {
         [co operationWithBlock:^(COOperation *cao) {
             asynchronousJob(^{
                 count = count + 1;
@@ -95,7 +95,7 @@
 
     [opQueue addOperation:cOperation];
     
-    while (!isFinished);
+    while (isFinished == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, YES);
     
     STAssertEquals(count, 3, @"Expected count to be equal 3");
 }
@@ -155,7 +155,7 @@
         }];
     }, nil, nil);
 
-    while (!isFinished);
+    while (isFinished == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, YES);
     
     STAssertEquals(count, 3, @"Expected count to be equal 3");
 }
@@ -168,7 +168,7 @@
 
     COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent];
 
-    compositeOperation.operation = ^(COCompositeOperation *compositeOperation) {
+    compositeOperation.operationBlock = ^(COCompositeOperation *compositeOperation) {
         [compositeOperation operationInQueue:concurrentQueue() withBlock:^(COOperation *tao) {
             @synchronized(countArr) {
                 [countArr addObject:@1];
@@ -195,7 +195,7 @@
 
     [opQueue addOperation:compositeOperation];
     
-    while (!isFinished);
+    while (isFinished == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, YES);
 
     STAssertEquals((int)countArr.count, 3, @"Expected count to be equal 3");
 }
@@ -229,7 +229,7 @@
         isFinished = YES;
     }, nil);
 
-    while (!isFinished);
+    while (isFinished == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, YES);
 
     STAssertEquals((int)countArr.count, 3, @"Expected count to be equal 3");
 }

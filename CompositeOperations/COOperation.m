@@ -10,55 +10,22 @@
 
 #import "COQueues.h"
 
-static inline int COStateTransitionIsValid(COOperationState fromState, COOperationState toState, BOOL inContext) {
+static inline int COStateTransitionIsValid(COOperationState fromState, COOperationState toState) {
     switch (fromState) {
         case COOperationStateReady:
             return YES;
+
         case COOperationStateExecuting:
             switch (toState) {
                 case COOperationStateReady:
-                    return YES;
-                case COOperationStateCancelled:
-                    return YES;
-                case COOperationStateFinished:
-                    return YES;
-                case COOperationStateSuspended:
-                    return YES;
-                case COOperationStateExecuting:
-                    return NO; // Should it be -1
+                    return -1;
                 default:
-                    return -1;
-            }
-
-        case COOperationStateSuspended:
-            switch (toState) {
-                case COOperationStateReady:
                     return YES;
-                case COOperationStateExecuting:
-                    return YES;
-                case COOperationStateFinished:
-                    return YES;
-                case COOperationStateCancelled:
-                    return NO;
-                default:
-                    return -1;
-            }
-
-        case COOperationStateCancelled:
-            switch (toState) {
-                case COOperationStateReady:
-                    return inContext ?: -1;
-                case COOperationStateExecuting:
-                    return -1;
-                case COOperationStateFinished:
-                    return YES;
-                default:
-                    return -1;
             }
 
         case COOperationStateFinished:
             return -1;
-            
+
         default:
             return -1;
     }
@@ -67,21 +34,17 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
 @implementation COOperation
 
 - (id)init {
-    if (self = [super init]) {
-        self.numberOfRuns = 0;
+    self = [super init];
 
-        [self initPropertiesForRun];
-    }
+    if (self == nil) return nil;
+
+    _state = COOperationStateReady;
 
     return self;
 }
 
-- (void)initPropertiesForRun {
-    self.state = COOperationStateReady;
-}
-
 - (void)dealloc {
-    _operation = nil;
+    _operationBlock = nil;
 }
 
 #pragma mark
@@ -92,16 +55,16 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
 }
 
 - (void)setState:(COOperationState)state {
-    if (COStateTransitionIsValid(self.state, state, !!self.contextOperation) == NO) {
+    if (COStateTransitionIsValid(self.state, state) == NO) {
         return;
     }
     
     @synchronized(self) {
-        if (COStateTransitionIsValid(self.state, state, !!self.contextOperation) == NO) {
+        if (COStateTransitionIsValid(self.state, state) == NO) {
             return;
         }
 
-        if (COStateTransitionIsValid(self.state, state, !!self.contextOperation) == -1) {
+        if (COStateTransitionIsValid(self.state, state) == -1) {
             NSString *errMessage = [NSString stringWithFormat:@"%@: transition from %@ to %@ is invalid", self, COKeyPathFromOperationState(self.state), COKeyPathFromOperationState(state)];
 
             @throw [NSException exceptionWithName:NSGenericException reason:errMessage userInfo:nil];
@@ -119,15 +82,27 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
 }
 
 - (BOOL)isReady {
-    return self.state == COOperationStateReady && super.isReady;
+    if (self.state != COOperationStateReady) return NO;
+
+    NSUInteger isThereAnyUnfinishedOperation = [self.dependencies indexOfObjectPassingTest:^BOOL(COOperation *operation, NSUInteger idx, BOOL *stop) {
+        if (operation.isFinished == NO) {
+            *stop = YES;
+            return YES;
+        } else {
+            return NO;
+        }
+    }];
+
+    // TODO: Strange NSOperation's behavior!
+    //if ((isThereAnyUnfinishedOperation == NSNotFound) && (super.isReady == NO)) {
+    //    abort();
+    //}
+
+    return isThereAnyUnfinishedOperation == NSNotFound;
 }
 
 - (BOOL)isExecuting {
     return self.state == COOperationStateExecuting;
-}
-
-- (BOOL)isCancelled {
-    return self.state == COOperationStateCancelled;
 }
 
 - (BOOL)isFinished {
@@ -138,16 +113,14 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
 #pragma mark Main / Start / Run / Finish / Cancel
 
 - (void)main {
-    if (self.operation) self.operation(self);
+    if (self.operationBlock) self.operationBlock(self);
 }
 
 - (void)start {
     if (self.isReady) {
-        self.numberOfRuns++;
-
         self.state = COOperationStateExecuting;
 
-        if (self.isCancelled || self.contextOperation.isCancelled) {
+        if (self.isCancelled) {
             [self finish];
         } else {
             [self main];
@@ -156,54 +129,41 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
 }
 
 - (void)run:(COOperationBlock)operationBlock {
-    self.operation = operationBlock;
+    self.operationBlock = operationBlock;
 
     CORunOperation(self);
 }
 
 - (void)runInQueue:(dispatch_queue_t)queue operation:(COOperationBlock)operationBlock {
+    COOperationBlock operationBlockInQueue = ^(COOperation *op) {
+
 #if !OS_OBJECT_USE_OBJC
-    dispatch_retain(queue);
+        dispatch_retain(queue);
 #endif
 
-    COOperationBlock operationBlockInQueue = ^(COOperation *op) {
         dispatch_async(queue, ^{
             if (op.isExecuting == YES) {
                 operationBlock(op);
             }
+#if !OS_OBJECT_USE_OBJC
+            dispatch_release(queue);
+#endif
         });
     };
 
-    self.operation = operationBlockInQueue;
+    self.operationBlock = operationBlockInQueue;
 
-#if !OS_OBJECT_USE_OBJC
-    void (^originalCompletionBlock)(void) = self.completionBlock;
-
-    COOperation *weakSelf = self;
-    self.completionBlock = ^{
-        __strong COOperation *strongSelf = weakSelf;
-
-        if (strongSelf.isFinished || strongSelf.isCancelled) {
-            [originalCompletionBlock invoke];
-
-            dispatch_release(queue);
-
-            strongSelf.completionBlock = nil;
-        }
-    };
-#endif
-    
     [self start];
 }
 
-- (void)run:(COOperationBlock)operationBlock completionHandler:(COCompletionBlock)completionHandler cancellationHandler:(COCancellationBlockForOperation)cancellationHandler {
-    self.operation = operationBlock;
+- (void)run:(COOperationBlock)operationBlock completionHandler:(COOperationCompletionBlock)completionHandler cancellationHandler:(COOperationCancellationBlock)cancellationHandler {
+    self.operationBlock = operationBlock;
 
     __weak COOperation *weakSelf = self;
     self.completionBlock = ^{
         __strong COOperation *strongSelf = weakSelf;
 
-        if (strongSelf.isFinished) {
+        if (strongSelf.isCancelled == NO) {
             if (completionHandler) completionHandler(strongSelf.data);
 
             strongSelf.completionBlock = nil;
@@ -222,66 +182,21 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
 }
 
 - (void)finishWithResult:(id)result {
-    @synchronized(self) {
-        self.data = result;
-    }
+    self.data = result;
 
     [self finish];
 }
 
 - (void)cancel {
-    self.state = COOperationStateCancelled;
+    [super cancel];
 
-    // Context (composite operation) executes completionBlocks of its operation,
-    // He only standalone COOperation's completionBlocks are executed.
-    if (self.contextOperation == nil && self.isCancelled) {
-        if (self.completionBlock) self.completionBlock();
-    }
+    [self finish];
 }
 
 - (void)cancelWithError:(NSError *)error {
-    @synchronized(self) {
-        self.error = error;
-    }
+    self.error = error;
 
     [self cancel];
-}
-
-#pragma mark
-#pragma mark reRun / awake
-
-- (void)reRun {
-    [self initPropertiesForRun];
-
-    [self start];
-}
-
-- (void)awake {
-    [self reRun];
-}
-
-#pragma mark
-#pragma mark Suspend / Resume
-
-- (BOOL)isSuspended {
-    return self.state == COOperationStateSuspended;
-}
-
-- (void)suspend {
-    if (self.isFinished == NO && self.isCancelled == NO && self.isSuspended == NO) {
-        self.state = COOperationStateSuspended;
-    }
-}
-
-- (void)resume {
-    if (self.isSuspended == NO || self.isFinished || self.isCancelled) return;
-
-    // -resume reruns operation if it has no context. Context does a rerun otherwise
-    if (self.numberOfRuns > 0 && self.contextOperation == nil) {
-        [self reRun];
-    } else {
-        self.state = COOperationStateReady;
-    }
 }
 
 #pragma mark
@@ -323,7 +238,7 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
 - (id)copyWithZone:(NSZone *)zone {
     COOperation *operation = [[[self class] alloc] init];
 
-    operation.operation = self.operation;
+    operation.operationBlock = self.operationBlock;
 
     return operation;
 }
@@ -332,7 +247,7 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
 #pragma mark <NSObject>
 
 - (NSString *)description {
-    NSString *description = [NSString stringWithFormat:@"%@ (debugLabel = %@; state = %@; numberOfRuns = %lu)", super.description, self.debugLabel, COKeyPathFromOperationState(self.state), (unsigned long)self.numberOfRuns];
+    NSString *description = [NSString stringWithFormat:@"%@ (debugLabel = %@; state = %@; dependencies = %@)", super.description, self.debugLabel, COKeyPathFromOperationState(self.state), self.dependencies];
 
     return description;
 }

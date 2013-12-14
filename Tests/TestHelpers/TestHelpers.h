@@ -18,3 +18,13 @@ void asynchronousJob(asyncronousBlock block);
 @interface SenTestCase (Helpers)
 - (void) setUp;
 @end
+
+static inline void dispatch_once_and_next_time(dispatch_once_t *oncePredicate, dispatch_block_t onceBlock, dispatch_block_t nextTimeBlock) {
+    if (*oncePredicate) {
+        [nextTimeBlock invoke];
+    }
+
+    dispatch_once(oncePredicate, ^{
+        [onceBlock invoke];
+    });
+}

@@ -1,31 +1,25 @@
-// CompositeOperations
 //
-// CompositeOperations/COCompositeOperation_Private.h
+//  COCompositeOperation_Private.h
+//  TestsApp
 //
-// Copyright (c) 2013 Stanislaw Pankevich
-// Released under the MIT license
+//  Created by Stanislaw Pankevich on 14/12/13.
+//  Copyright (c) 2013 Stanislaw Pankevich. All rights reserved.
+//
 
 #import "COCompositeOperation.h"
-#import "COTypedefs.h"
 
 @interface COCompositeOperation ()
 
-@property (strong, nonatomic) NSMutableArray *operations;
-@property (nonatomic) NSUInteger finishedOperationsCount;
-
 @property (nonatomic) COCompositeOperationConcurrencyType concurrencyType;
 
-@property BOOL allSuboperationsRegistered;
+@property (nonatomic, getter = isRegistrationStarted) BOOL registrationStarted;
+@property (nonatomic, getter = isRegistrationCompleted) BOOL registrationCompleted;
 
-- (void)_teardown;
+@property (nonatomic, readonly, getter = isInternalReady) BOOL internalReady;
+@property (nonatomic) NSMutableArray *internalDependencies;
 
-- (void)_registerSuboperation:(COOperation *)subOperation;
-- (void)_runSuboperation:(COOperation *)subOperation;
-- (void)_runSuboperationAtIndex:(NSUInteger)indexOfSuboperationToRun;
+@property (nonatomic, getter = isInternalCancelled) BOOL internalCancelled;
 
-- (void)_cancelOperations:(BOOL)runCompletionBlocks;
-
-- (void)_operationWasCancelled:(COOperation *)subOperation;
-- (void)_operationWasFinished:(COOperation *)subOperation;
+@property (nonatomic, strong) NSMutableArray *result;
 
 @end

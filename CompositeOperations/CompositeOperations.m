@@ -27,7 +27,7 @@ void  __attribute__((overloadable)) operation(COOperationQueue *queue, COOperati
     [operation run:block];
 }
 
-void  __attribute__((overloadable)) operation(COOperationQueue *queue, COOperationBlock block, COCompletionBlock completionHandler, COCancellationBlockForOperation cancellationHandler) {
+void  __attribute__((overloadable)) operation(COOperationQueue *queue, COOperationBlock block, COOperationCompletionBlock completionHandler, COOperationCancellationBlock cancellationHandler) {
     COOperation *operation = [COOperation new];
 
     operation.operationQueue = queue;
@@ -35,7 +35,7 @@ void  __attribute__((overloadable)) operation(COOperationQueue *queue, COOperati
     [operation run:block completionHandler:completionHandler cancellationHandler:cancellationHandler];
 }
 
-void  __attribute__((overloadable)) operation(COOperation *otherOperation, COCompletionBlock completionHandler, COCancellationBlockForOperation cancellationHandler) {
+void  __attribute__((overloadable)) operation(COOperation *otherOperation, COOperationCompletionBlock completionHandler, COOperationCancellationBlock cancellationHandler) {
     COOperation *operation = [COOperation new];
 
     [operation run:^(COOperation *operation) {
@@ -47,13 +47,13 @@ void  __attribute__((overloadable)) operation(COOperation *otherOperation, COCom
     }];
 }
 
-void __attribute__((overloadable)) compositeOperation(COCompositeOperationConcurrencyType concurrencyType, COCompositeOperationBlock block, COCompletionBlock completionHandler, COCancellationBlockForCompositeOperation cancellationHandler) {
+void __attribute__((overloadable)) compositeOperation(COCompositeOperationConcurrencyType concurrencyType, COCompositeOperationBlock block, COCompositeOperationCompletionBlock completionHandler, COCompositeOperationCancellationBlock cancellationHandler) {
     COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:concurrencyType];
 
     [compositeOperation run:block completionHandler:completionHandler cancellationHandler:cancellationHandler];
 }
 
-void __attribute__((overloadable)) compositeOperation(COCompositeOperationConcurrencyType concurrencyType, id queue, COCompositeOperationBlock block, COCompletionBlock completionHandler, COCancellationBlockForCompositeOperation cancellationHandler) {
+void __attribute__((overloadable)) compositeOperation(COCompositeOperationConcurrencyType concurrencyType, id queue, COCompositeOperationBlock block, COCompositeOperationCompletionBlock completionHandler, COCompositeOperationCancellationBlock cancellationHandler) {
     COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:concurrencyType];
     compositeOperation.operationQueue = queue;
     

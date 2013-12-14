@@ -6,25 +6,15 @@
 // Released under the MIT license
 
 #import "COCompositeOperation.h"
-#import "COCompositeOperation_Private.h"
 
 #import "COQueues.h"
 
 #import "COOperation_Private.h"
 #import "COCompositeOperation_Private.h"
 
-#import "COCompositeSerialOperationInternal.h"
-#import "COCompositeConcurrentOperationInternal.h"
-
-@interface COCompositeOperation ()
-@property (strong, nonatomic) id <COCompositeOperationInternal> internal;
-@end
-
-
 @implementation COCompositeOperation
 
-@synthesize operation = _operation,
-            operations = _operations,
+@synthesize operationBlock = _operationBlock,
             operationQueue = _operationQueue,
             data = _data,
             error = _error;
@@ -39,117 +29,138 @@
 
     if (self == nil) return nil;
 
-    if (concurrencyType == COCompositeOperationSerial) {
-        self.internal = [[COCompositeSerialOperationInternal alloc] initWithCompositeOperation:self];
-    } else if (concurrencyType == COCompositeOperationConcurrent) {
-        self.internal = [[COCompositeConcurrentOperationInternal alloc] initWithCompositeOperation:self];
-    } else {
-        NSParameterAssert(NO);
-    }
-
     self.concurrencyType = concurrencyType;
 
-    [self addObserver:self
-           forKeyPath:@"isFinished"
-              options:NSKeyValueObservingOptionNew
-              context:NULL];
+    self.internalCancelled = NO;
 
-    [self addObserver:self
-           forKeyPath:@"isCancelled"
-              options:NSKeyValueObservingOptionNew
-              context:NULL];
+    self.registrationStarted = NO;
+    self.registrationCompleted = NO;
 
-    self.finishedOperationsCount = 0;
+    self.internalDependencies = [NSMutableArray array];
+    
+    self.data = nil;
+    self.error = nil;
+
+    self.result = [NSMutableArray array];
     
     return self;
 }
 
-- (void)initPropertiesForRun {
-    [super initPropertiesForRun];
-
-    self.operations = [NSMutableArray array];
-    self.allSuboperationsRegistered = NO;
-
-    self.data = nil;
-    self.error = nil;
-}
-
 - (void)dealloc {
-    [self removeObserver:self forKeyPath:@"isFinished"];
-    [self removeObserver:self forKeyPath:@"isCancelled"];
-
     _data = nil;
-    _operation = nil;
+    _operationBlock = nil;
     _operationQueue = nil;
-    _internal = nil;
     _error = nil;
 }
 
 #pragma mark
 #pragma mark Public API: Inner operations
 
-- (void)run:(COCompositeOperationBlock)operationBlock completionHandler:(COCompletionBlock)completionHandler cancellationHandler:(COCancellationBlockForCompositeOperation)cancellationHandler {
-    self.operation = operationBlock;
-
+- (void)run:(COCompositeOperationBlock)operationBlock completionHandler:(COCompositeOperationCompletionBlock)completionHandler cancellationHandler:(COCompositeOperationCancellationBlock)cancellationHandler {
     __weak COCompositeOperation *weakSelf = self;
     self.completionBlock = ^{
         __strong COCompositeOperation *strongSelf = weakSelf;
 
-        if (strongSelf.isFinished) {
-            if (completionHandler) completionHandler(strongSelf.data);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (strongSelf.isCancelled == NO) {
+                if (completionHandler) {
+                    completionHandler(strongSelf.result);
+                }
+            } else if (cancellationHandler) {
+                cancellationHandler(strongSelf, strongSelf.error);
+            }
+        });
 
-            strongSelf.completionBlock = nil;
-        } else if (cancellationHandler) {
-            [strongSelf _cancelOperations:NO];
-
-            cancellationHandler(strongSelf, strongSelf.error);
-        } else {
-            [strongSelf cancel];
-
-            strongSelf.completionBlock = nil;
-        }
+        strongSelf.completionBlock = nil;
     };
-    
-    CORunOperation(self);
+
+    self.operationBlock = operationBlock;
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self start];
+    });
 }
 
 #pragma mark
 #pragma mark Public API: Inner operations
 
-- (void)operation:(COOperation *)operation {
-    NSParameterAssert(operation && operation.operation);
+- (void)operationInQueue:(dispatch_queue_t)queue operation:(COOperation *)operation {
+    NSParameterAssert(operation && operation.operationBlock);
 
-    COOperationBlock originalOperationBlock = operation.operation;
+    if (queue) {
+        COOperationBlock originalOperationBlock = operation.operationBlock;
 
-#if !OS_OBJECT_USE_OBJC
-    dispatch_retain(CODefaultQueue());
-#endif
+    #if !OS_OBJECT_USE_OBJC
+        dispatch_retain(queue);
+    #endif
 
-    COOperationBlock operationBlockInQueue = ^(COOperation *op) {
-        dispatch_async(CODefaultQueue(), ^{
-            // Ensuring isExecuting == YES to not run operations which have been already cancelled on contextOperation level
-            if (op.isExecuting == YES && op.contextOperation.isExecuting == YES) {
-                originalOperationBlock(op);
-            }
-        });
-    };
+        COOperationBlock operationBlockInQueue = ^(COOperation *_operation) {
+            dispatch_async(queue, ^{
+                if (self.isCancelled) {
+                    [_operation cancel];
+                } else {
+                    originalOperationBlock(_operation);
+                }
 
-    operation.operation = operationBlockInQueue;
+    #if !OS_OBJECT_USE_OBJC
+                dispatch_release(queue);
+    #endif  
+            });
+        };
 
-#if !OS_OBJECT_USE_OBJC
+        operation.operationBlock = operationBlockInQueue;
+    }
+
     COOperation *weakOperation = operation;
     operation.completionBlock = ^{
         __strong COOperation *strongOperation = weakOperation;
 
-        if (strongOperation.isFinished || strongOperation.isCancelled) {
-            dispatch_release(CODefaultQueue());
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (self.concurrencyType == COCompositeOperationConcurrent) {
+                [self internalStart];
+            } else {
+                if (strongOperation.isCancelled) {
+                    self.internalCancelled = YES;
 
-            strongOperation.completionBlock = nil;
-        }
+                    if (strongOperation.error) {
+                        self.error = strongOperation.error;
+                    }
+                } else {
+                    if (strongOperation.data) {
+                        [self.result addObject:strongOperation.data];
+                    }
+                }
+
+                NSUInteger indexOfFinishedOperation = [self.internalDependencies indexOfObject:strongOperation];
+
+                if (indexOfFinishedOperation == self.internalDependencies.count - 1) {
+                    [self internalStart];
+                } else if (self.registrationCompleted) {
+                    COOperation *nextOperation = [self.internalDependencies objectAtIndex:indexOfFinishedOperation + 1];
+                    NSAssert([nextOperation.dependencies containsObject:strongOperation], nil);
+
+                    if (nextOperation.isReady) {
+                        [nextOperation start];
+                    }
+                } else {
+                    abort();
+                }
+            }
+        });
+
+        strongOperation.completionBlock = nil;
     };
-#endif
 
-    [self.internal _enqueueSuboperation:operation];
+
+    [self _registerDependency:operation];
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [operation start];
+    });
+}
+
+- (void)operation:(COOperation *)operation {
+    [self operationInQueue:CODefaultQueue() operation:operation];
 }
 
 - (void)operationWithBlock:(COOperationBlock)operationBlock {
@@ -157,76 +168,27 @@
 }
 
 - (void)operationInQueue:(dispatch_queue_t)queue withBlock:(COOperationBlock)operationBlock {
-        COOperation *operation = [COOperation new];
+    COOperation *operation = [COOperation new];
 
-#if !OS_OBJECT_USE_OBJC
-        dispatch_retain(queue);
-#endif
+    operation.operationBlock = operationBlock;
 
-        COOperationBlock operationBlockInQueue = ^(COOperation *op) {
-            dispatch_async(queue, ^{
-                // Ensuring isExecuting == YES to not run operations which have been already cancelled on contextOperation level
-                if (op.isExecuting == YES && op.contextOperation.isExecuting == YES) {
-                    operationBlock(op);
-                }
-            });
-        };
-
-        operation.operation = operationBlockInQueue;
-
-#if !OS_OBJECT_USE_OBJC
-        COOperation *weakOperation = operation;
-        operation.completionBlock = ^{
-            __strong COOperation *strongOperation = weakOperation;
-
-            if (strongOperation.isFinished || strongOperation.isCancelled) {
-                dispatch_release(queue);
-
-                strongOperation.completionBlock = nil;
-            }
-        };
-#endif
-
-    [self.internal _enqueueSuboperation:operation];
+    [self operationInQueue:queue operation:operation];
 }
+
 
 #pragma mark
 #pragma mark Public API: Inner composite operations
 
 - (void)compositeOperation:(COCompositeOperation *)compositeOperation {
-    __weak COCompositeOperation *weakCompositeOperation = compositeOperation;
-
-    compositeOperation.completionBlock = ^{
-        __strong COCompositeOperation *strongCompositeOperation = weakCompositeOperation;
-
-        if (strongCompositeOperation.isFinished) {
-            strongCompositeOperation.completionBlock = nil;
-        } else {
-            [strongCompositeOperation cancel];
-        }
-    };
-
-    [self.internal _enqueueSuboperation:compositeOperation];
+    [self operationInQueue:nil operation:compositeOperation];
 }
 
 - (void)compositeOperation:(COCompositeOperationConcurrencyType)concurrencyType withBlock: (COCompositeOperationBlock)operationBlock {
     COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:concurrencyType];
 
-    compositeOperation.operation = operationBlock;
+    compositeOperation.operationBlock = operationBlock;
 
-    __weak COCompositeOperation *weakCompositeOperation = compositeOperation;
-    
-    compositeOperation.completionBlock = ^{
-        __strong COCompositeOperation *strongCompositeOperation = weakCompositeOperation;
-
-        if (strongCompositeOperation.isFinished) {
-            strongCompositeOperation.completionBlock = nil;
-        } else {
-            [strongCompositeOperation cancel];
-        }
-    };
-
-    [self.internal _enqueueSuboperation:compositeOperation];
+    [self operationInQueue:nil operation:compositeOperation];
 }
 
 #pragma mark
@@ -241,86 +203,73 @@
 #pragma mark
 #pragma mark COOperation
 
-- (void)main {
-    self.operation(self);
-
-    @synchronized(self) {
-        self.allSuboperationsRegistered = YES;
-        [self.internal _performCheckpointRoutineIncrementingNumberOfFinishedOperations:NO];
-    }
+- (BOOL)isReady {
+    return (self.registrationStarted == NO) && super.isReady;
 }
 
-- (void)cancel {
-    @synchronized(self) {
-        if (self.isFinished == NO && self.isCancelled == NO && self.isSuspended == NO) {
-            [self _cancelOperations:YES];
+- (BOOL)isInternalReady {
+    if (self.isFinished) return NO;
+    if (self.registrationStarted == NO) return NO;
+    if (self.registrationCompleted == NO) return NO;
 
-            self.state = COOperationStateCancelled;
-        }
-    }
-}
-
-#pragma mark
-#pragma mark COOperation: Rerun / Awake
-
-- (void)awake {
-    if (self.isCancelled == NO && self.isFinished == NO) {
-        if (self.numberOfRuns == 0) {
-            [self reRun];
+    NSUInteger isThereAnyUnfinishedOperation = [self.internalDependencies indexOfObjectPassingTest:^BOOL(COOperation *operation, NSUInteger idx, BOOL *stop) {
+        if (operation.isFinished == NO) {
+            *stop = YES;
+            return YES;
         } else {
-            self.state = COOperationStateExecuting;
-
-            [self.internal _performAwakeRoutine];
+            return NO;
         }
+    }];
+
+    if (isThereAnyUnfinishedOperation != NSNotFound) return NO;
+
+    isThereAnyUnfinishedOperation = [self.dependencies indexOfObjectPassingTest:^BOOL(COOperation *operation, NSUInteger idx, BOOL *stop) {
+        if (operation.isFinished == NO) {
+            *stop = YES;
+            return YES;
+        } else {
+            return NO;
+        }
+    }];
+
+    return isThereAnyUnfinishedOperation == NSNotFound;
+}
+
+- (BOOL)isCancelled {
+    return super.isCancelled || self.internalCancelled;
+}
+
+- (void)start {
+    if (self.isReady) {
+        self.registrationStarted = YES;
+
+        self.operationBlock(self);
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.registrationCompleted = YES;
+
+            [self internalStart];
+        });
     }
 }
 
-#pragma mark
-#pragma mark COOperation: Suspend / Resume
-
-- (void)suspend {
-    if (self.isFinished == NO && self.isCancelled == NO && self.isSuspended == NO) {
-        @synchronized(self) {
-            [self.operations makeObjectsPerformSelector:@selector(suspend)];
-
-            [super suspend];
-        }
-    }
-}
-
-- (void)resume {
-    if (self.isSuspended == NO) return;
-
-    if (self.numberOfRuns > 0) {
+- (void)internalStart {
+    if (self.internalReady) {
         self.state = COOperationStateExecuting;
 
-        [self.operations makeObjectsPerformSelector:@selector(resume)];
-
-        [self.internal _performResumeRoutine];
-    } else {
-        self.state = COOperationStateReady;
+        [self main];
     }
 }
 
-#pragma mark
-#pragma mark KVO
+- (void)main {
+    [self.dependencies enumerateObjectsUsingBlock:^(COOperation *operation, NSUInteger idx, BOOL *stop) {
+        NSAssert(operation.isFinished, @"Expected %@ to have dependency finished: %@", self, operation);
+    }];
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([object isEqual:self]) {
-        [self _teardown];
-    } else {        
-        @synchronized(self) {
-            [object removeObserver:self forKeyPath:@"isFinished"];
-            [object removeObserver:self forKeyPath:@"isCancelled"];
-        }
-
-        COOperation *operation = (COOperation *)object;
-
-        if ([keyPath isEqual:@"isFinished"]) {
-            [self _operationWasFinished:operation];
-        } else if ([keyPath isEqual:@"isCancelled"]) {
-            [self _operationWasCancelled:operation];
-        }
+    if (self.isInternalCancelled && super.isCancelled == NO) {
+        [self cancel];
+    } else {
+        [self finish];
     }
 }
 
@@ -328,89 +277,34 @@
 #pragma mark <NSCopying>
 
 - (id)copyWithZone:(NSZone *)zone {
-    return nil;
+    COCompositeOperation *compositeOperation = [[[self class] alloc] initWithConcurrencyType:self.concurrencyType];;
+
+    compositeOperation.operationBlock = self.operationBlock;
+
+    return compositeOperation;
 }
 
 #pragma mark
 #pragma mark Private (level 0)
 
-- (void)_cancelOperations:(BOOL)runCompletionBlocks {
-    @synchronized(self) {
-        [self.operations enumerateObjectsUsingBlock:^(COOperation *operation, NSUInteger idx, BOOL *stop) {
-            if (operation.isCancelled == NO && operation.isFinished == NO) {
-                if (operation.isReady == NO) {
-                    [operation removeObserver:self forKeyPath:@"isFinished"];
-                    [operation removeObserver:self forKeyPath:@"isCancelled"];
-                }
+- (void)_registerDependency:(COOperation *)operation {
+    operation.operationQueue = self.operationQueue;
 
-                [operation cancel];
+    if (self.concurrencyType == COCompositeOperationSerial) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (self.internalDependencies.count > 0) {
+                COOperation *lastOperation = self.internalDependencies.lastObject;
 
-                if (runCompletionBlocks && operation.completionBlock) {
-                    operation.completionBlock();
-                }
+                [operation addDependency:lastOperation];
             }
-        }];
 
+            [self.internalDependencies addObject:operation];
+        });
+    } else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self addDependency:operation];
+        });
     }
-}
-
-#pragma mark
-#pragma mark Private (level 1)
-
-- (void)_teardown {
-    for (COOperation *operation in self.operations) {
-        operation.contextOperation = nil;
-    }
-
-    // TODO: this fixes the issue when -main calls -_performCheckpointRoutineIncrementingNumberOfFinishedOperations at the moment after some of operations cancelled the whole composite operation (self), when instead -isCancelled state it also re-triggers -finish
-    self.completionBlock = nil;
-
-    self.operations = nil;
-}
-
-- (void)_registerSuboperation:(COOperation *)subOperation {
-    subOperation.contextOperation = self;
-    subOperation.operationQueue = self.operationQueue;
-
-    @synchronized(self) {
-        [self.operations addObject:subOperation];
-    }
-}
-
-- (void)_runSuboperation:(COOperation *)subOperation {
-    [subOperation addObserver:self
-                   forKeyPath:@"isFinished"
-                      options:NSKeyValueObservingOptionNew
-                      context:NULL];
-
-    [subOperation addObserver:self
-                   forKeyPath:@"isCancelled"
-                      options:NSKeyValueObservingOptionNew
-                      context:NULL];
-
-    CORunOperation(subOperation);
-}
-
-- (void)_runSuboperationAtIndex:(NSUInteger)indexOfSuboperationToRun {
-    COOperation *operation;
-
-    @synchronized(self) {
-        operation = [self.operations objectAtIndex:indexOfSuboperationToRun];
-    }
-
-    [self _runSuboperation:operation];
-}
-
-- (void)_operationWasCancelled:(COOperation *)subOperation {
-    // TODO: cancelled when operation is suspended
-    @synchronized(self) {
-        self.error = subOperation.error;
-        [self.completionBlock invoke];
-    }
-}
-
-- (void)_operationWasFinished:(COOperation *)subOperation {
-    [self.internal _performCheckpointRoutineIncrementingNumberOfFinishedOperations:YES];
 }
 
 #pragma mark
@@ -419,7 +313,7 @@
 - (NSString *)description {
     NSString *concurrencyString = self.concurrencyType == COCompositeOperationConcurrent ? @"Concurrent" : @"Serial";
 
-    NSString *description = [NSString stringWithFormat:@"<%@[%@]: %p> (state = %@; numberOfRuns = %lu; operations = %@)", NSStringFromClass([self class]), concurrencyString, self, COKeyPathFromOperationState(self.state), (unsigned long)self.numberOfRuns, self.operations.count > 0 ? self.operations : nil];
+    NSString *description = [NSString stringWithFormat:@"<%@[%@]: %p> ((debugLabel = %@; registrationCompleted = %@; state = %@; isCancelled = %@; dependencies = %@; internalDependencies = %@)", NSStringFromClass([self class]), concurrencyString, self, self.debugLabel, self.registrationCompleted ? @"YES" : @"NO", COKeyPathFromOperationState(self.state), self.isCancelled ? @"YES" : @"NO", self.dependencies, self.internalDependencies];
 
     return description;
 }

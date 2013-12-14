@@ -76,7 +76,7 @@ static inline NSString * COKeyPathFromOperationQueueState(COOperationQueueState 
 - (void)addOperationWithBlock:(COBlock)operationBlock {
     COOperation *operation = [COOperation new];
 
-    operation.operation = ^(COOperation *op){
+    operation.operationBlock = ^(COOperation *op){
         operationBlock();
 
         [op finish];
@@ -150,11 +150,6 @@ static inline NSString * COKeyPathFromOperationQueueState(COOperationQueueState 
                                options:NSKeyValueObservingOptionNew
                                context:NULL];
 
-                [operation addObserver:self
-                            forKeyPath:@"isCancelled"
-                               options:NSKeyValueObservingOptionNew
-                               context:NULL];
-
                 [self.pendingOperations removeObjectAtIndex:firstReadyOperationIndex];
                 [self.runningOperations addObject:operation];
 
@@ -172,9 +167,8 @@ static inline NSString * COKeyPathFromOperationQueueState(COOperationQueueState 
                        context:(void *)context {
 
     @synchronized(self) {
-        if ([keyPath isEqualToString:@"isFinished"] || [keyPath isEqualToString:@"isCancelled"]) {
+        if ([keyPath isEqualToString:@"isFinished"]) {
             [object removeObserver:self forKeyPath:@"isFinished"];
-            [object removeObserver:self forKeyPath:@"isCancelled"];
 
             [self.runningOperations removeObject:object];
         }
