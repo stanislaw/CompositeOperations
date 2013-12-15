@@ -33,6 +33,6 @@
 // Resolution
 - (void)resolveWithOperation:(COOperation *)operation;
 
-@property (copy) NSString *debugLabel;
+@property (copy) NSString *name;
 
 @end

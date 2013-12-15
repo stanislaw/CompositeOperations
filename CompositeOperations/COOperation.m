@@ -228,7 +228,7 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
             strongOperation.completionBlock = nil;
         }
     };
-
+    
     CORunOperation(operation);
 }
 
@@ -239,7 +239,9 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
     COOperation *operation = [[[self class] alloc] init];
 
     operation.operationBlock = self.operationBlock;
-
+    operation.operationQueue = self.operationQueue;
+    operation.name = self.name;
+    
     return operation;
 }
 
@@ -247,9 +249,23 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
 #pragma mark <NSObject>
 
 - (NSString *)description {
-    NSString *description = [NSString stringWithFormat:@"%@ (debugLabel = %@; state = %@; dependencies = %@)", super.description, self.debugLabel, COKeyPathFromOperationState(self.state), self.dependencies];
+    NSMutableArray *descriptionComponents = [NSMutableArray array];
+
+    [descriptionComponents addObject:[NSString stringWithFormat:@"state = %@; isCancelled = %@", COKeyPathFromOperationState(self.state), self.isCancelled ? @"YES" : @"NO" ]];
+
+    if (self.name) {
+        [descriptionComponents addObject:[NSString stringWithFormat:@"name = '%@'", self.name]];
+    }
+
+    NSString *description = [NSString stringWithFormat:@"%@ (%@)", super.description, [descriptionComponents componentsJoinedByString:@"; "]];
 
     return description;
+}
+
+- (NSString *)debugDescription {
+
+    // TODO
+    return self.description;
 }
 
 @end

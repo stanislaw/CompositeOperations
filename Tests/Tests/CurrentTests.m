@@ -11,12 +11,15 @@ describe(@"Current specs", ^{
     });
 
     it(@"", ^{
+        COOperation *operation = [COOperation new];
+        operation.name = @"Nice op";
+        
+        NSLog(@"%@", operation);
 
-        /*
         COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent];
+        compositeOperation.name = @"Nice op";
 
-        NSLog(@"%@",compositeOperation);
-         */
+        NSLog(@"%@", compositeOperation);
     });
 });
 SPEC_END

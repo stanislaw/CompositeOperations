@@ -92,9 +92,9 @@
 
     compositeOperation(COCompositeOperationSerial, ^(COCompositeOperation *compositeOperation) {
         __compositeOperation = compositeOperation;
-        compositeOperation.debugLabel = [@(i) stringValue];
+        compositeOperation.name = [@(i) stringValue];
         [compositeOperation operationWithBlock:^(COOperation *operation) {
-            operation.debugLabel = [NSString stringWithFormat:@"%@.%@", @(i), @(1)];
+            operation.name = [NSString stringWithFormat:@"%@.%@", @(i), @(1)];
             asynchronousJob(^{
                 count = count + 1;
 
@@ -112,7 +112,7 @@
         }];
 
         [compositeOperation operationWithBlock:^(COOperation *operation) {
-            operation.debugLabel = [NSString stringWithFormat:@"%@.%@", @(i), @(2)];
+            operation.name = [NSString stringWithFormat:@"%@.%@", @(i), @(2)];
             NSAssert(operation.dependencies.count == 1, nil);
             NSAssert(((COOperation *)operation.dependencies.lastObject).isFinished, nil);
 
@@ -132,7 +132,7 @@
         }];
 
         [compositeOperation operationWithBlock:^(COOperation *operation) {
-            operation.debugLabel = [NSString stringWithFormat:@"%@.%@", @(i), @(3)];
+            operation.name = [NSString stringWithFormat:@"%@.%@", @(i), @(3)];
             NSAssert(operation.dependencies.count == 1, nil);
             NSAssert(((COOperation *)operation.dependencies.lastObject).isFinished, nil);
 
@@ -377,11 +377,11 @@
     dispatch_sync(createQueue(), ^{
         __block COCompositeOperation *__compositeOperation;
         compositeOperation(COCompositeOperationSerial, ^(COCompositeOperation *compositeOperation) {
-            compositeOperation.debugLabel = [NSString stringWithFormat:@"Composite operation #%@", @(i)];
+            compositeOperation.name = [NSString stringWithFormat:@"Composite operation #%@", @(i)];
 
             __compositeOperation = compositeOperation;
             [compositeOperation operationWithBlock:^(COOperation *o) {
-                o.debugLabel = [@(1) stringValue];
+                o.name = [@(1) stringValue];
 
                 NSAssert(countArr.count == 0, nil);
 
@@ -393,7 +393,7 @@
             [compositeOperation operationWithBlock:^(COOperation *o) {
                 NSAssert(countArr.count == 1, nil);
 
-                o.debugLabel = [@(2) stringValue];
+                o.name = [@(2) stringValue];
                 asynchronousJob(^{
                     NSAssert(countArr.count == 1, nil);
 
@@ -404,7 +404,7 @@
             }];
 
             [compositeOperation compositeOperation:COCompositeOperationSerial withBlock:^(COCompositeOperation *innerCompositeOperation) {
-                innerCompositeOperation.debugLabel = [@(3) stringValue];
+                innerCompositeOperation.name = [@(3) stringValue];
 
                 dispatch_once_and_next_time(&onceToken, ^{
                     //
@@ -417,7 +417,7 @@
                 NSAssert(countArr.count == 2, reason);
 
                 [innerCompositeOperation operationWithBlock:^(COOperation *operation) {
-                    operation.debugLabel = [@(3.1) stringValue];
+                    operation.name = [@(3.1) stringValue];
 
                     [countArr addObject:@3];
 
@@ -425,7 +425,7 @@
                 }];
 
                 [innerCompositeOperation operationWithBlock:^(COOperation *operation) {
-                    operation.debugLabel = [@(3.2) stringValue];
+                    operation.name = [@(3.2) stringValue];
 
                     [countArr addObject:@4];
 

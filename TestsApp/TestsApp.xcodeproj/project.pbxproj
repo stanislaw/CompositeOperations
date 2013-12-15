@@ -17,16 +17,8 @@
 		860EDBA318008822001BEEEE /* CompositeOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB9318008822001BEEEE /* CompositeOperations.m */; };
 		860EDBA418008822001BEEEE /* COOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB9518008822001BEEEE /* COOperation.m */; };
 		860EDBA718008822001BEEEE /* COQueues.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB9B18008822001BEEEE /* COQueues.m */; };
-		8657BDC2185D3CFD00A97FA1 /* NSOperationQueueControllerIntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8657BDC1185D3CFD00A97FA1 /* NSOperationQueueControllerIntegrationTests.m */; };
-		86BE2F91185CA05C00D985B4 /* COCompositeOperationConcurrentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB7618008535001BEEEE /* COCompositeOperationConcurrentTests.m */; };
 		86BE2F92185CA07000D985B4 /* CurrentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB6918008535001BEEEE /* CurrentTests.m */; };
-		86BE2F93185CA07000D985B4 /* HighLoadIntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB6A18008535001BEEEE /* HighLoadIntegrationTests.m */; };
-		86BE2F94185CA07000D985B4 /* NSOperationQueueCompatibilityTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB6C18008535001BEEEE /* NSOperationQueueCompatibilityTests.m */; };
-		86BE2F95185CA07000D985B4 /* COCompositeSerialOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB6D18008535001BEEEE /* COCompositeSerialOperationTests.m */; };
-		86BE2F96185CA07000D985B4 /* CompositeOperationsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB6E18008535001BEEEE /* CompositeOperationsTests.m */; };
-		86BE2F97185CA07000D985B4 /* COOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB7218008535001BEEEE /* COOperationTests.m */; };
-		86BE2F98185CA07000D985B4 /* COQueuesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB7318008535001BEEEE /* COQueuesTests.m */; };
-		86BE2F99185CA07000D985B4 /* TODO.m in Sources */ = {isa = PBXBuildFile; fileRef = 860EDB7718008535001BEEEE /* TODO.m */; };
+		86D98800185D7CF50078A6EF /* COOperationResolver.m in Sources */ = {isa = PBXBuildFile; fileRef = 86D987FF185D7CF50078A6EF /* COOperationResolver.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -56,7 +48,6 @@
 		860EDB6D18008535001BEEEE /* COCompositeSerialOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COCompositeSerialOperationTests.m; sourceTree = "<group>"; };
 		860EDB6E18008535001BEEEE /* CompositeOperationsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompositeOperationsTests.m; sourceTree = "<group>"; };
 		860EDB7218008535001BEEEE /* COOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COOperationTests.m; sourceTree = "<group>"; };
-		860EDB7318008535001BEEEE /* COQueuesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COQueuesTests.m; sourceTree = "<group>"; };
 		860EDB7618008535001BEEEE /* COCompositeOperationConcurrentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COCompositeOperationConcurrentTests.m; sourceTree = "<group>"; };
 		860EDB7718008535001BEEEE /* TODO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TODO.m; sourceTree = "<group>"; };
 		860EDB8B180087B9001BEEEE /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -72,6 +63,9 @@
 		8657BDC1185D3CFD00A97FA1 /* NSOperationQueueControllerIntegrationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSOperationQueueControllerIntegrationTests.m; path = ../../../../../../stanislaw/Work/Pods/CompositeOperations/Tests/Tests/NSOperationQueueControllerIntegrationTests.m; sourceTree = "<group>"; };
 		8684D68B184A424D00B2902B /* COOperation_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COOperation_Private.h; sourceTree = "<group>"; };
 		86BE2F9A185CADBA00D985B4 /* COCompositeOperation_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = COCompositeOperation_Private.h; sourceTree = "<group>"; };
+		86D987FE185D7CF50078A6EF /* COOperationResolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COOperationResolver.h; sourceTree = "<group>"; };
+		86D987FF185D7CF50078A6EF /* COOperationResolver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COOperationResolver.m; sourceTree = "<group>"; };
+		86D98801185D7D160078A6EF /* COOperationResolverTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = COOperationResolverTests.m; path = ../../../../../../stanislaw/Work/Pods/CompositeOperations/Tests/Tests/COOperationResolverTests.m; sourceTree = "<group>"; };
 		F4ADEE41A0E7474AB857DDBB /* libPods-TestsApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TestsApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FEB14E77372742B39B17759B /* Pods-TestsApp.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestsApp.xcconfig"; path = "Pods/Pods-TestsApp.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -95,6 +89,7 @@
 			children = (
 				860EDB8D18008822001BEEEE /* CompositeOperations */,
 				860EDB5E18008535001BEEEE /* Tests */,
+				86D987FD185D7CF50078A6EF /* Examples */,
 				860EDB52180084C7001BEEEE /* TestsApp */,
 				860EDB4F180084C6001BEEEE /* Frameworks */,
 				860EDB4E180084C6001BEEEE /* Products */,
@@ -166,10 +161,10 @@
 				860EDB6D18008535001BEEEE /* COCompositeSerialOperationTests.m */,
 				860EDB6E18008535001BEEEE /* CompositeOperationsTests.m */,
 				860EDB7218008535001BEEEE /* COOperationTests.m */,
-				860EDB7318008535001BEEEE /* COQueuesTests.m */,
 				860EDB7618008535001BEEEE /* COCompositeOperationConcurrentTests.m */,
 				860EDB7718008535001BEEEE /* TODO.m */,
 				8657BDC1185D3CFD00A97FA1 /* NSOperationQueueControllerIntegrationTests.m */,
+				86D98801185D7D160078A6EF /* COOperationResolverTests.m */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -199,6 +194,16 @@
 				86BE2F9A185CADBA00D985B4 /* COCompositeOperation_Private.h */,
 			);
 			path = Private;
+			sourceTree = "<group>";
+		};
+		86D987FD185D7CF50078A6EF /* Examples */ = {
+			isa = PBXGroup;
+			children = (
+				86D987FE185D7CF50078A6EF /* COOperationResolver.h */,
+				86D987FF185D7CF50078A6EF /* COOperationResolver.m */,
+			);
+			name = Examples;
+			path = ../../../../../stanislaw/Work/Pods/CompositeOperations/Examples;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -291,17 +296,9 @@
 				860EDBA318008822001BEEEE /* CompositeOperations.m in Sources */,
 				860EDBA718008822001BEEEE /* COQueues.m in Sources */,
 				860EDBA418008822001BEEEE /* COOperation.m in Sources */,
-				86BE2F96185CA07000D985B4 /* CompositeOperationsTests.m in Sources */,
-				86BE2F91185CA05C00D985B4 /* COCompositeOperationConcurrentTests.m in Sources */,
-				86BE2F98185CA07000D985B4 /* COQueuesTests.m in Sources */,
-				86BE2F94185CA07000D985B4 /* NSOperationQueueCompatibilityTests.m in Sources */,
 				860EDB54180084C7001BEEEE /* main.m in Sources */,
-				8657BDC2185D3CFD00A97FA1 /* NSOperationQueueControllerIntegrationTests.m in Sources */,
-				86BE2F93185CA07000D985B4 /* HighLoadIntegrationTests.m in Sources */,
+				86D98800185D7CF50078A6EF /* COOperationResolver.m in Sources */,
 				860EDB7A18008535001BEEEE /* TestHelpers.m in Sources */,
-				86BE2F97185CA07000D985B4 /* COOperationTests.m in Sources */,
-				86BE2F99185CA07000D985B4 /* TODO.m in Sources */,
-				86BE2F95185CA07000D985B4 /* COCompositeSerialOperationTests.m in Sources */,
 				86BE2F92185CA07000D985B4 /* CurrentTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

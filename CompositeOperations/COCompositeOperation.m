@@ -280,6 +280,8 @@
     COCompositeOperation *compositeOperation = [[[self class] alloc] initWithConcurrencyType:self.concurrencyType];;
 
     compositeOperation.operationBlock = self.operationBlock;
+    compositeOperation.operationQueue = self.operationQueue;
+    compositeOperation.name = self.name;
 
     return compositeOperation;
 }
@@ -313,7 +315,25 @@
 - (NSString *)description {
     NSString *concurrencyString = self.concurrencyType == COCompositeOperationConcurrent ? @"Concurrent" : @"Serial";
 
-    NSString *description = [NSString stringWithFormat:@"<%@[%@]: %p> ((debugLabel = %@; registrationCompleted = %@; state = %@; isCancelled = %@; dependencies = %@; internalDependencies = %@)", NSStringFromClass([self class]), concurrencyString, self, self.debugLabel, self.registrationCompleted ? @"YES" : @"NO", COKeyPathFromOperationState(self.state), self.isCancelled ? @"YES" : @"NO", self.dependencies, self.internalDependencies];
+    NSMutableArray *descriptionComponents = [NSMutableArray array];
+
+    [descriptionComponents addObject:[NSString stringWithFormat:@"state = %@; isCancelled = %@", COKeyPathFromOperationState(self.state), self.isCancelled ? @"YES" : @"NO" ]];
+
+    if (self.name) {
+        [descriptionComponents addObject:[NSString stringWithFormat:@"name = '%@'", self.name]];
+    }
+
+    NSString *description = [NSString stringWithFormat:@"<%@[%@]: %p> (%@)", NSStringFromClass([self class]), concurrencyString, self, [descriptionComponents componentsJoinedByString:@"; "]];
+
+    return description;
+}
+
+- (NSString *)debugDescription {
+    // TODO
+    
+    NSString *concurrencyString = self.concurrencyType == COCompositeOperationConcurrent ? @"Concurrent" : @"Serial";
+
+    NSString *description = [NSString stringWithFormat:@"<%@[%@]: %p> ((name = %@; registrationCompleted = %@; state = %@; isCancelled = %@; dependencies = %@; internalDependencies = %@)", NSStringFromClass([self class]), concurrencyString, self, self.name, self.registrationCompleted ? @"YES" : @"NO", COKeyPathFromOperationState(self.state), self.isCancelled ? @"YES" : @"NO", self.dependencies, self.internalDependencies];
 
     return description;
 }

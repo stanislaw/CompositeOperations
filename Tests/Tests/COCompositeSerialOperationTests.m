@@ -26,6 +26,8 @@ describe(@"COCompositeOperationSerial", ^{
             COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
 
             [compositeOperation run:^(COCompositeOperation *compositeOperation) {
+                [[theValue(currentQueue() == dispatch_get_main_queue()) should] beYes];
+
                 [compositeOperation operationWithBlock:^(COOperation *cao) {
                     asynchronousJob(^{
                         NSLog(@"RX 1");
