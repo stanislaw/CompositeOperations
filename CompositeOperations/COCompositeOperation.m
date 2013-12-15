@@ -143,7 +143,7 @@
                         [nextOperation start];
                     }
                 } else {
-                    abort();
+                    //
                 }
             }
         });

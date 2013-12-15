@@ -295,7 +295,7 @@ describe(@"COCompositeOperationSerial", ^{
         });
     });
 
-    pending(@"Nested composite operations", ^{
+    describe(@"Nested composite operations", ^{
         describe(@"", ^{
             it(@"", ^{
                 NSMutableArray *countArr = [NSMutableArray array];
@@ -308,27 +308,28 @@ describe(@"COCompositeOperationSerial", ^{
                         [cuo finish];
                     }];
 
-                    [co compositeOperation:COCompositeOperationConcurrent withBlock:^(COCompositeOperation *to1) {
-                        [to1 operationWithBlock:^(COOperation *tao) {
+                    [co compositeOperation:COCompositeOperationConcurrent withBlock:^(COCompositeOperation *innerCompositeOperation) {
+                        [innerCompositeOperation operationWithBlock:^(COOperation *operation) {
                             @synchronized(countArr) {
                                 [countArr addObject:@1];
                             }
-                            [tao finish];
+                            [operation finish];
                         }];
 
-                        [to1 operationWithBlock:^(COOperation *tao) {
+                        [innerCompositeOperation operationWithBlock:^(COOperation *operation) {
                             @synchronized(countArr) {
                                 [countArr addObject:@1];
                             }
-                            [tao finish];
+                            [operation finish];
                         }];
                     }];
                     
-                    [co operationWithBlock:^(COOperation *cuo) {
-                        abort();
-                        isFinished = YES;
+                    [co operationWithBlock:^(COOperation *operation) {
+                        [operation finish];
                     }];
-                } completionHandler:nil cancellationHandler:nil];
+                } completionHandler:^(NSArray *result) {
+                    isFinished = YES;
+                } cancellationHandler:nil];
                 
                 while (isFinished == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, NO);
 
