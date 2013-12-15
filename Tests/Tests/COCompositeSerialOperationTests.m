@@ -7,7 +7,6 @@
 #import "COCompositeOperation_Private.h"
 
 #import "COQueues.h"
-#import "COOperationQueue.h"
 
 SPEC_BEGIN(COCompositeOperationSerialSpecs)
 
@@ -240,11 +239,11 @@ describe(@"COCompositeOperationSerial", ^{
                     }];
 
                     [compositeOperation operationWithBlock:^(COOperation *operation) {
-                        raiseShouldNotReachHere();
+                        [operation finish];
                     }];
 
-                    [compositeOperation operationWithBlock:^(COOperation *cao) {
-                        raiseShouldNotReachHere();
+                    [compositeOperation operationWithBlock:^(COOperation *operation) {
+                        [operation finish];
                     }];
                 } completionHandler:^(id result){
                     raiseShouldNotReachHere();
@@ -252,7 +251,6 @@ describe(@"COCompositeOperationSerial", ^{
                     [[theValue([_error isEqual:error]) should] beYes];
                     
                     for (COOperation *operation in compositeOperation.internalDependencies) {
-                        [[theValue(operation.isCancelled) should] beYes];
                         [[theValue(operation.isFinished) should] beYes];
                     }
 

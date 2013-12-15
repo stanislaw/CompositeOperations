@@ -19,7 +19,7 @@ void  __attribute__((overloadable)) operation(dispatch_queue_t queue, COOperatio
     [operation runInQueue:queue operation:block];
 }
 
-void  __attribute__((overloadable)) operation(COOperationQueue *queue, COOperationBlock block) {
+void  __attribute__((overloadable)) operation(NSOperationQueue *queue, COOperationBlock block) {
     COOperation *operation = [COOperation new];
 
     operation.operationQueue = queue;
@@ -27,7 +27,7 @@ void  __attribute__((overloadable)) operation(COOperationQueue *queue, COOperati
     [operation run:block];
 }
 
-void  __attribute__((overloadable)) operation(COOperationQueue *queue, COOperationBlock block, COOperationCompletionBlock completionHandler, COOperationCancellationBlock cancellationHandler) {
+void  __attribute__((overloadable)) operation(NSOperationQueue *queue, COOperationBlock block, COOperationCompletionBlock completionHandler, COOperationCancellationBlock cancellationHandler) {
     COOperation *operation = [COOperation new];
 
     operation.operationQueue = queue;

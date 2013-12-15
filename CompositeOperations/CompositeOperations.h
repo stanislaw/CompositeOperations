@@ -12,12 +12,10 @@
 #import "COOperation.h"
 #import "COCompositeOperation.h"
 
-#import "COOperationQueue.h"
-
 void  __attribute__((overloadable)) operation(COOperationBlock block);
 void  __attribute__((overloadable)) operation(dispatch_queue_t queue, COOperationBlock block);
-void  __attribute__((overloadable)) operation(COOperationQueue *queue, COOperationBlock block);
-void  __attribute__((overloadable)) operation(COOperationQueue *queue, COOperationBlock block, COOperationCompletionBlock completionHandler, COOperationCancellationBlock cancellationHandler);
+void  __attribute__((overloadable)) operation(NSOperationQueue *queue, COOperationBlock block);
+void  __attribute__((overloadable)) operation(NSOperationQueue *queue, COOperationBlock block, COOperationCompletionBlock completionHandler, COOperationCancellationBlock cancellationHandler);
 void  __attribute__((overloadable)) operation(COOperation *otherOperation, COOperationCompletionBlock completionHandler, COOperationCancellationBlock cancellationHandler);
 
 

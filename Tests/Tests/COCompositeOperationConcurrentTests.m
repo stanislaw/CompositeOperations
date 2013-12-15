@@ -6,8 +6,6 @@
 #import "COQueues.h"
 #import "COOperation_Private.h"
 
-#import "COOperationQueue.h"
-
 SPEC_BEGIN(COCompositeOperationConcurrentSpec)
 
 describe(@"COCompositeOperationConcurrentSpec", ^{

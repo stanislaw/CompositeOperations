@@ -41,6 +41,8 @@
     
     __block int count = 0;
     __block BOOL isFinished = NO;
+    __block BOOL completionBlockWasRun = NO;
+
     __block BOOL firstJobIsDone = NO, secondJobIsDone = NO, thirdJobIsDone = NO;
 
     COCompositeOperation *cOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
@@ -93,6 +95,10 @@
         }];
     };
 
+    cOperation.completionBlock = ^{
+        completionBlockWasRun = YES;
+    };
+
     [opQueue addOperation:cOperation];
     
     while (isFinished == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, YES);
@@ -105,6 +111,7 @@
 
     __block int count = 0;
     __block BOOL isFinished = NO;
+    __block BOOL completionHandlerWasRun = NO;
     __block BOOL firstJobIsDone = NO, secondJobIsDone = NO, thirdJobIsDone = NO;
 
     compositeOperation(COCompositeOperationSerial, opQueue, ^(COCompositeOperation *co) {
@@ -149,15 +156,18 @@
 
                 STAssertEquals((int)count, 3, @"Expected count to be equal 3 inside the third operation");
 
-                isFinished = YES;
                 [cao finish];
             });
         }];
-    }, nil, nil);
+    }, ^(NSArray *result){
+        completionHandlerWasRun = YES;
+        isFinished = YES;
+    }, nil);
 
     while (isFinished == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, YES);
     
     STAssertEquals(count, 3, @"Expected count to be equal 3");
+    STAssertTrue(completionHandlerWasRun, nil);
 }
 
 - (void) test_COCompositeOperationConcurrent_in_NSOperationQueue_basic_test {
