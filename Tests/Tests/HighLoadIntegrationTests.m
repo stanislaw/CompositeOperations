@@ -210,25 +210,19 @@ for (int i = 0; i < N; i++) {
 
     describe(@"CompositeOperation[COCompositeOperationSerial] integration test", ^{
         it(@"should work", ^{
-            NSMutableArray *countArr = [NSMutableArray array];
             __block BOOL isFinished = NO;
             __block BOOL firstJobIsDone = NO, secondJobIsDone = NO, thirdJobIsDone = NO;
 
-            __block NSMutableString *accResult = [NSMutableString string];
+            NSMutableString *registry = [NSMutableString string];
 
             compositeOperation(COCompositeOperationSerial, ^(COCompositeOperation *compositeOperation) {
                 [compositeOperation operationWithBlock:^(COOperation *rao) {
                     asynchronousJob(^{
-                        @synchronized(countArr) {
-                            [countArr addObject:@1];
-                        }
-                        [accResult appendString:@"c1"];
+                        [registry appendString:@"c1"];
 
                         [[theValue(firstJobIsDone) should] beNo];
                         [[theValue(secondJobIsDone) should] beNo];
                         [[theValue(thirdJobIsDone) should] beNo];
-
-                        [[theValue(countArr.count) should] equal:@(1)];
 
                         firstJobIsDone = YES;
                         [rao finish];
@@ -237,16 +231,11 @@ for (int i = 0; i < N; i++) {
 
                 [compositeOperation operationWithBlock:^(COOperation *rao) {
                     asynchronousJob(^{
-                        @synchronized(countArr) {
-                            [countArr addObject:@1];
-                        }
-                        [accResult appendString:@"c2"];
+                        [registry appendString:@"c2"];
 
                         [[theValue(firstJobIsDone) should] beYes];
                         [[theValue(secondJobIsDone) should] beNo];
                         [[theValue(thirdJobIsDone) should] beNo];
-
-                        [[theValue(countArr.count) should] equal:@(2)];
 
                         secondJobIsDone = YES;
 
@@ -256,17 +245,11 @@ for (int i = 0; i < N; i++) {
 
                 [compositeOperation operationWithBlock:^(COOperation *rao) {
                     asynchronousJob(^{
-                        @synchronized(countArr) {
-                            [countArr addObject:@1];
-                        }
-
-                        [accResult appendString:@"c3"];
+                        [registry appendString:@"c3"];
 
                         [[theValue(firstJobIsDone) should] beYes];
                         [[theValue(secondJobIsDone) should] beYes];
                         [[theValue(thirdJobIsDone) should] beNo];
-
-                        [[theValue(countArr.count) should] equal:@(3)];
 
                         [rao finish];
                     });
@@ -274,26 +257,17 @@ for (int i = 0; i < N; i++) {
 
                 [compositeOperation compositeOperation:COCompositeOperationSerial withBlock:^(COCompositeOperation *to) {
                     [to operationWithBlock:^(COOperation *tao) {
-                        @synchronized(countArr) {
-                            [countArr addObject:@1];
-                        }
-                        [accResult appendString:@"t1"];
+                        [registry appendString:@"t1"];
                         [tao finish];
                     }];
 
                     [to operationWithBlock:^(COOperation *tao) {
-                        @synchronized(countArr) {
-                            [countArr addObject:@1];
-                        }
-                        [accResult appendString:@"t2"];
+                        [registry appendString:@"t2"];
                         [tao finish];
                     }];
 
                     [to operationWithBlock:^(COOperation *tao) {
-                        @synchronized(countArr) {
-                            [countArr addObject:@1];
-                        }
-                        [accResult appendString:@"t3"];
+                        [registry appendString:@"t3"];
                         [tao finish];
                     }];
                 }];
@@ -304,10 +278,10 @@ for (int i = 0; i < N; i++) {
                 }];
             }, nil, nil);
             
-            while (!isFinished) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, YES);
-            
-            [[theValue(countArr.count) should] equal:@(6)];
-            NSLog(@"%s: accResult is: %@", __PRETTY_FUNCTION__, accResult);
+            while (isFinished == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, YES);
+
+            BOOL registryIsCorrect = [registry isEqualToString:@"c1c2c3t1t2t3"];
+            [[theValue(registryIsCorrect) should] beYes];
         });
     });
 }

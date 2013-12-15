@@ -1,104 +1,133 @@
-//COOperationQueue *opQueue = [COOperationQueue new];
-//opQueue.queue = concurrentQueue();
-//
-//__block int count = 0;
-//__block BOOL isFinished = NO;
-//
-//compositeOperation(COCompositeOperationSerial, opQueue, ^(COCompositeOperation *compositeOperation) {
-//    [compositeOperation operationWithBlock:^(COOperation *cao) {
-//        count = count + 1;
-//
-//        STAssertEquals((int)count, 1, @"Expected count to be equal 1 inside the first operation");
-//
-//        [cao finish];
-//    }];
-//
-//    [compositeOperation operationWithBlock:^(COOperation *cao) {
-//        count = count + 1;
-//
-//        STAssertEquals((int)count, 2, @"Expected count to be equal 2 inside the second operation");
-//
-//        [cao finish];
-//    }];
-//
-//    [compositeOperation operationWithBlock:^(COOperation *cao) {
-//        count = count + 1;
-//
-//        STAssertEquals((int)count, 3, @"Expected count to be equal 3 inside the third operation");
-//
-//        [cao finish];
-//        isFinished = YES;
-//    }];
-//}, nil, nil);
-//
-//while (!isFinished) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, YES);
-//
-//STAssertEquals(count, 3, @"Expected count to be equal 3");
-//
-//- (void)test_COCompositeOperationConcurrent_in_operation_queue {
-//    __block BOOL isFinished = NO;
-//    NSMutableArray *countArr = [NSMutableArray array];
-//
-//    COOperationQueue *opQueue = [COOperationQueue new];
-//    opQueue.queue = createQueue();
-//
-//    compositeOperation(COCompositeOperationConcurrent, opQueue, ^(COCompositeOperation *to) {
-//        [to operationWithBlock:^(COOperation *tao) {
-//
-//            @synchronized(countArr) {
-//                [countArr addObject:@1];
-//            }
-//
-//            [tao finish];
-//        }];
-//
-//        [to operationWithBlock:^(COOperation *tao) {
-//
-//            @synchronized(countArr) {
-//                [countArr addObject:@1];
-//            }
-//
-//            [tao finish];
-//        }];
-//
-//        [to operationWithBlock:^(COOperation *tao) {
-//
-//            @synchronized(countArr) {
-//                [countArr addObject:@1];
-//            }
-//
-//            [tao finish];
-//        }];
-//    }, ^(NSArray *result){
-//        isFinished = YES;
-//    }, ^(COCompositeOperation *to, NSError *error){
-//        raiseShouldNotReachHere();
-//    });
-//
-//    while (isFinished == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, YES);
-//        
-//        STAssertEquals((int)countArr.count, 3, @"Expected count to be equal 3");
-//        }
+#import "TestHelpers.h"
 
-//- (void)test_run_completionHandler_cancellationHandler {
-//    __block BOOL blockFlag = NO;
+#import "CompositeOperations.h"
+#import <NSOperationQueueController/NSOperationQueueController.h>
+
+SPEC_BEGIN(NSOperationQueueControllerIntegrationSpecs)
+
+describe(@"NSOperationQueueController, COCompositeOperationSerial", ^{
+    it(@"", ^{
+        NSOperationQueue *operationQueue = [NSOperationQueue new];
+        NSOperationQueueController *controller = [[NSOperationQueueController alloc] initWithOperationQueue:operationQueue];
+
+        __block BOOL isFinished = NO;
+        NSMutableArray *registy = [NSMutableArray array];
+
+        compositeOperation(COCompositeOperationSerial, controller, ^(COCompositeOperation *compositeOperation) {
+            [compositeOperation operationWithBlock:^(COOperation *cao) {
+                NSAssert(registy.count == 0, nil);
+
+                [registy addObject:@(1)];
+
+                [cao finish];
+            }];
+
+            [compositeOperation operationWithBlock:^(COOperation *cao) {
+                NSAssert(registy.count == 1, nil);
+                
+                [registy addObject:@(2)];
+
+                [cao finish];
+            }];
+
+            [compositeOperation operationWithBlock:^(COOperation *cao) {
+                NSAssert(registy.count == 2, nil);
+
+                [registy addObject:@(3)];
+
+                [cao finish];
+                isFinished = YES;
+            }];
+        }, nil, nil);
+
+        while (isFinished == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, YES);
+
+        BOOL registryIsCorrect = [registy isEqual:@[ @(1), @(2), @(3) ]];
+        [[theValue(registryIsCorrect) should] beYes];
+
+    });
+});
+
+describe(@"NSOperationQueueController, COCompositeOperationConcurrent", ^{
+    it(@"sss", ^{
+        __block BOOL isFinished = NO;
+
+        NSMutableArray *registy = [NSMutableArray array];
+
+        NSOperationQueue *operationQueue = [NSOperationQueue new];
+        NSOperationQueueController *controller = [[NSOperationQueueController alloc] initWithOperationQueue:operationQueue];
+
+        compositeOperation(COCompositeOperationConcurrent, controller, ^(COCompositeOperation *to) {
+            [to operationWithBlock:^(COOperation *operation) {
+
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [registy addObject:@(1)];
+                    [operation finish];
+                });
+            }];
+
+            [to operationWithBlock:^(COOperation *operation) {
+
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [registy addObject:@(2)];
+                    [operation finish];
+                });
+            }];
+
+            [to operationWithBlock:^(COOperation *operation) {
+
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [registy addObject:@(3)];
+                    [operation finish];
+                });
+
+            }];
+        }, ^(NSArray *result){
+            isFinished = YES;
+        }, ^(COCompositeOperation *to, NSError *error){
+            raiseShouldNotReachHere();
+        });
+
+        while (isFinished == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, YES);
+
+        BOOL registryIsCorrect = registy.count == 3;
+        [[theValue(registryIsCorrect) should] beYes];
+    });
+});
+
+describe(@"NSOperationQueueController, -[operation cancel]", ^{
+    it(@"", ^{
+        __block BOOL blockFlag = NO;
+
+        NSOperationQueue *operationQueue = [NSOperationQueue new];
+        NSOperationQueueController *controller = [[NSOperationQueueController alloc] initWithOperationQueue:operationQueue];
+
+        __block COOperation *op;
+        operation(controller, ^(COOperation *operation) {
+            op = operation;
+
+            [operation cancel];
+
+        }, ^(id result){
+            raiseShouldNotReachHere();
+        }, ^(COOperation *operation, NSError *error){
+            NSAssert(operation, nil);
+            NSAssert(operation.isCancelled, nil);
+
+            [[theValue(operation.isCancelled) should] beYes];
+
+            blockFlag = YES;
+        });
+
+        while(blockFlag == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, YES);
+
+        [[theValue(op.isCancelled) should] beYes];
+    });
+});
+
+
+SPEC_END
+
 //
-//    COOperationQueue *queue = [COOperationQueue new];
-//    queue.queue = serialQueue();
-//
-//    __block COOperation *op;
-//
-//    operation(queue, ^(COOperation *operation) {
-//        op = operation;
-//        [operation cancel];
-//    }, ^(id result){
-//        raiseShouldNotReachHere();
-//    }, ^(COOperation *operation, NSError *error){
-//        STAssertTrue(op.isCancelled, nil);
-//
-//        blockFlag = YES;
-//    });
-//
-//    while(blockFlag == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, YES);
-//        }
+
 

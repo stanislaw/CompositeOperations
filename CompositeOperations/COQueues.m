@@ -40,12 +40,11 @@ void CORunOperation(COOperation *operation) {
         
         [operation start];
         
-    } else if ([operation.operationQueue isKindOfClass:NSOperationQueue.class]) {
-        
-        NSOperationQueue *opQueue = (NSOperationQueue *)operation.operationQueue;
-        [opQueue addOperation:operation];
-        
-    } else {
-        @throw [NSException exceptionWithName:NSGenericException reason:[NSString stringWithFormat:@"%@, %s: operation queue should be of NSOperationQueue class", NSStringFromClass(operation.class), __PRETTY_FUNCTION__] userInfo:nil];
+    } else if (operation.operationQueue && [operation.operationQueue respondsToSelector:@selector(addOperation:)]) {
+        [operation.operationQueue performSelector:@selector(addOperation:) withObject:operation];
+    }
+
+    else {
+        @throw [NSException exceptionWithName:NSGenericException reason:[NSString stringWithFormat:@"%@, %s: operation queue should be of NSOperationQueue class or should be capable of adding operations via addOperation:", NSStringFromClass(operation.class), __PRETTY_FUNCTION__] userInfo:nil];
     }
 }
