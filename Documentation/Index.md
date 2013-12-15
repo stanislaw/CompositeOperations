@@ -40,7 +40,7 @@ Coming soon...
 
 ## Alternative tools
 
-Any library implementing __Futures and promises__ pattern (http://en.wikipedia.org/wiki/Futures_and_promises can be a good alternative to this project. Author thinks it is just a matter of style and personal preferences.
+Any library implementing __Futures and promises__ pattern (http://en.wikipedia.org/wiki/Futures_and_promises can be a good alternative to this project. Author thinks it is a matter of style and personal preferences.
 
 * [ReactiveCocoa](https://github.com/ReactiveCocoa/ReactiveCocoa)
 
