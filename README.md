@@ -15,9 +15,11 @@ You might be interested at this project if you use GCD and/or NSOperation, but w
 
 [![Build Status](https://travis-ci.org/stanislaw/CompositeOperations.png?branch=master)](https://travis-ci.org/stanislaw/CompositeOperations)
 
-## Status 2013.12.15
+## Status 2013.12.16
 
 The project has alpha status. 
+
+Since latest stable release 0.5.4, current master branch of CompositeOperations contains destabilized code. Since project is being rewritten with exclusive use of NSOperation & NSOperationQueue, many changes including changes in Public API are expected to come up. Do not expect stable code before 0.6 version will appear.
 
 The author will be very thankful for any feedback: regarding the overall code design or the flow of particular operations.
 

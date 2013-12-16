@@ -12,13 +12,10 @@
 
 @property (nonatomic) COCompositeOperationConcurrencyType concurrencyType;
 
+@property (nonatomic, strong) NSBlockOperation *zOperation;
+
 @property (nonatomic, getter = isRegistrationStarted) BOOL registrationStarted;
 @property (nonatomic, getter = isRegistrationCompleted) BOOL registrationCompleted;
-
-@property (nonatomic, readonly, getter = isInternalReady) BOOL internalReady;
-@property (nonatomic) NSMutableArray *internalDependencies;
-
-@property (nonatomic, getter = isInternalCancelled) BOOL internalCancelled;
 
 @property (nonatomic, strong) NSMutableArray *result;
 

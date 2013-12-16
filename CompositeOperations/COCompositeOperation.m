@@ -31,18 +31,18 @@
 
     self.concurrencyType = concurrencyType;
 
-    self.internalCancelled = NO;
-
     self.registrationStarted = NO;
     self.registrationCompleted = NO;
 
-    self.internalDependencies = [NSMutableArray array];
-    
     self.data = nil;
     self.error = nil;
 
     self.result = [NSMutableArray array];
-    
+
+    self.zOperation = [NSBlockOperation blockOperationWithBlock:^{
+        [self finish];
+    }];
+
     return self;
 }
 
@@ -245,33 +245,16 @@
 
         self.operationBlock(self);
 
+        self.registrationCompleted = YES;
+
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.registrationCompleted = YES;
 
             [self internalStart];
         });
     }
 }
 
-- (void)internalStart {
-    if (self.internalReady) {
-        self.state = COOperationStateExecuting;
 
-        [self main];
-    }
-}
-
-- (void)main {
-    [self.dependencies enumerateObjectsUsingBlock:^(COOperation *operation, NSUInteger idx, BOOL *stop) {
-        NSAssert(operation.isFinished, @"Expected %@ to have dependency finished: %@", self, operation);
-    }];
-
-    if (self.isInternalCancelled && super.isCancelled == NO) {
-        [self reject];
-    } else {
-        [self finish];
-    }
-}
 
 #pragma mark
 #pragma mark <NSCopying>
