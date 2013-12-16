@@ -95,7 +95,7 @@ describe(@"NSOperationQueueController, COCompositeOperationConcurrent", ^{
     });
 });
 
-describe(@"NSOperationQueueController, -[operation cancel]", ^{
+describe(@"NSOperationQueueController, -[operation reject]", ^{
     it(@"", ^{
         __block BOOL blockFlag = NO;
 
@@ -106,7 +106,7 @@ describe(@"NSOperationQueueController, -[operation cancel]", ^{
         operation(controller, ^(COOperation *operation) {
             op = operation;
 
-            [operation cancel];
+            [operation reject];
 
         }, ^(id result){
             raiseShouldNotReachHere();

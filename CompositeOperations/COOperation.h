@@ -24,11 +24,11 @@
 
 - (void)start;
 
-- (void)cancel;
-- (void)cancelWithError:(NSError *)error;
-
 - (void)finish;
 - (void)finishWithResult:(id)result;
+
+- (void)reject;
+- (void)rejectWithError:(NSError *)error;
 
 // Resolution
 - (void)resolveWithOperation:(COOperation *)operation;

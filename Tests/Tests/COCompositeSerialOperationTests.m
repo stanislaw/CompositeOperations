@@ -191,9 +191,9 @@ describe(@"COCompositeOperationSerial", ^{
         });
     });
 
-    describe(@"Cancellation", ^{
-        describe(@"First operation is cancelled (-cancel)", ^{
-            it(@"should propagate cancellation on all operations", ^{
+    describe(@"Rejection", ^{
+        describe(@"First operation is rejected (-reject)", ^{
+            it(@"should propagate rejection(cancellation) of all operations", ^{
                 for (int i = 0; i < 1; i++) {
                 __block BOOL isFinished = NO;
 
@@ -201,7 +201,7 @@ describe(@"COCompositeOperationSerial", ^{
 
                 [compositeOperation run:^(COCompositeOperation *compositeOperation) {
                     [compositeOperation operationWithBlock:^(COOperation *operation) {
-                        [operation cancel];
+                        [operation reject];
                     }];
 
                     [compositeOperation operationWithBlock:^(COOperation *operation) {
@@ -237,7 +237,7 @@ describe(@"COCompositeOperationSerial", ^{
 
                 [compositeOperation run:^(COCompositeOperation *compositeOperation) {
                     [compositeOperation operationWithBlock:^(COOperation *operation) {
-                        [operation cancelWithError:error];
+                        [operation rejectWithError:error];
                     }];
 
                     [compositeOperation operationWithBlock:^(COOperation *operation) {

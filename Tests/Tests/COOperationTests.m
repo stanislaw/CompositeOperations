@@ -61,7 +61,7 @@
     COOperation *operation = [COOperation new];
 
     [operation run:^(COOperation *operation) {
-        [operation cancel];
+        [operation reject];
     } completionHandler:^(id result){
         raiseShouldNotReachHere();
     } cancellationHandler:^(COOperation *operation, NSError *error) {

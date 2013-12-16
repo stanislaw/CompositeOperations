@@ -97,7 +97,7 @@
         COOperationBlock operationBlockInQueue = ^(COOperation *_operation) {
             dispatch_async(queue, ^{
                 if (self.isCancelled) {
-                    [_operation cancel];
+                    [_operation reject];
                 } else {
                     originalOperationBlock(_operation);
                 }
@@ -267,7 +267,7 @@
     }];
 
     if (self.isInternalCancelled && super.isCancelled == NO) {
-        [self cancel];
+        [self reject];
     } else {
         [self finish];
     }

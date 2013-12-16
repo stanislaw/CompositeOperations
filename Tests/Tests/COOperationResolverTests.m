@@ -23,7 +23,7 @@ describe(@"COOperationResolver", ^{
         operation.operationBlock = ^(COOperation *operation) {
             [registry appendString:@"1"];
 
-            [operation cancel];
+            [operation reject];
 
             [operationResolver resolveOperation:operation usingResolutionStrategy:nil fallbackHandler:^{
                 isFinished = YES;

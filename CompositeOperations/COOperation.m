@@ -187,16 +187,15 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
     [self finish];
 }
 
-- (void)cancel {
-    [super cancel];
-
+- (void)reject {
+    [self cancel];
     [self finish];
 }
 
-- (void)cancelWithError:(NSError *)error {
+- (void)rejectWithError:(NSError *)error {
     self.error = error;
 
-    [self cancel];
+    [self reject];
 }
 
 #pragma mark
@@ -223,7 +222,7 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
 
             self.error = strongOperation.error;
 
-            [self cancel];
+            [self reject];
 
             strongOperation.completionBlock = nil;
         }
