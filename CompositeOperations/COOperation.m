@@ -47,18 +47,11 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
     _operationBlock = nil;
 }
 
-#pragma mark
-#pragma mark Properties
-
-- (BOOL)isConcurrent {
-    return YES;
-}
-
 - (void)setState:(COOperationState)state {
     if (COStateTransitionIsValid(self.state, state) == NO) {
         return;
     }
-    
+
     @synchronized(self) {
         if (COStateTransitionIsValid(self.state, state) == NO) {
             return;
@@ -81,24 +74,15 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
     }
 }
 
+#pragma mark
+#pragma mark NSOperation
+
+- (BOOL)isConcurrent {
+    return YES;
+}
+
 - (BOOL)isReady {
-    if (self.state != COOperationStateReady) return NO;
-
-    NSUInteger isThereAnyUnfinishedOperation = [self.dependencies indexOfObjectPassingTest:^BOOL(COOperation *operation, NSUInteger idx, BOOL *stop) {
-        if (operation.isFinished == NO) {
-            *stop = YES;
-            return YES;
-        } else {
-            return NO;
-        }
-    }];
-
-    // TODO: Strange NSOperation's behavior!
-    //if ((isThereAnyUnfinishedOperation == NSNotFound) && (super.isReady == NO)) {
-    //    abort();
-    //}
-
-    return isThereAnyUnfinishedOperation == NSNotFound;
+    return self.state == COOperationStateReady && super.isReady;
 }
 
 - (BOOL)isExecuting {
@@ -108,9 +92,6 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
 - (BOOL)isFinished {
     return self.state == COOperationStateFinished;
 }
-
-#pragma mark
-#pragma mark Main / Start / Run / Finish / Cancel
 
 - (void)main {
     if (self.operationBlock) self.operationBlock(self);
@@ -127,6 +108,9 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
         }
     }
 }
+
+#pragma mark
+#pragma mark COOperation
 
 - (void)run:(COOperationBlock)operationBlock {
     self.operationBlock = operationBlock;

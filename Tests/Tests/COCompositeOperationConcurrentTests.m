@@ -20,6 +20,8 @@ describe(@"COCompositeOperationConcurrentSpec", ^{
         
         COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent];;
 
+        compositeOperation.operationQueue = [[NSOperationQueue alloc] init];
+
         [compositeOperation run:^(COCompositeOperation *compositeOperation) {
             for (int i = 1; i <= 10; i++) {
                 [compositeOperation operationInQueue:concurrentQueue() withBlock:^(COOperation *tao) {

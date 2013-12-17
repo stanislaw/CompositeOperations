@@ -18,50 +18,52 @@ beforeEach(^{
 for (int i = 0; i < N; i++) {
     describe(@"HighLoadSpecs", ^{
         it(@"operation", ^{
-            NSMutableArray *countArr = [NSMutableArray array];
+            waitSemaphore = dispatch_semaphore_create(0);
 
-            __block BOOL isFinished = NO;
+            NSMutableArray *registry = [NSMutableArray array];
 
             for (int j = 1; j <= N; j++) {
                 operation(concurrentQueue(), ^(COOperation *o) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [registry addObject:@1];
 
-                    @synchronized(countArr) {
-                        [countArr addObject:@1];
-                    }
+                        if (j == N) {
+                            dispatch_semaphore_signal(waitSemaphore);
+                        }
+                    });
 
                     [o finish];
-
-                    if (j == N) isFinished = YES;
                 });
             }
 
-            while (isFinished == NO || countArr.count != N) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, NO);
-            [[theValue(countArr.count) should] equal:@(N)];
+            while (dispatch_semaphore_wait(waitSemaphore, DISPATCH_TIME_NOW)) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
+            [[theValue(registry.count) should] equal:@(N)];
         });
 
         it(@"COCompositeOperation, COCompositeOperationConcurrent", ^{
-            NSMutableArray *countArr = [NSMutableArray array];
+            waitSemaphore = dispatch_semaphore_create(0);
 
-            __block BOOL isFinished = NO;
+            NSMutableArray *registry = [NSMutableArray array];
 
             COCompositeOperation *to = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent];
-
+            to.operationQueue = [[NSOperationQueue alloc] init];
+            
             [to run:^(COCompositeOperation *to) {
                 for (int j = 1; j <= N; j++) {
                     [to operationWithBlock:^(COOperation *o) {
-                        @synchronized(countArr) {
-                            [countArr addObject:@1];
-                        }
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [registry addObject:@1];
+                        });
 
                         [o finish];
                     }];
                 }
             } completionHandler:^(id result){
-                isFinished = YES;
+                dispatch_semaphore_signal(waitSemaphore);
             } cancellationHandler:nil];
             
-            while (isFinished == NO || countArr.count != N) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, NO);
-            [[theValue(countArr.count) should] equal:@(N)];
+            while (dispatch_semaphore_wait(waitSemaphore, DISPATCH_TIME_NOW)) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
+            [[theValue(registry.count) should] equal:@(N)];
         });
 
         it(@"COCompositeOperation, COCompositeOperationSerial", ^{
@@ -71,7 +73,8 @@ for (int i = 0; i < N; i++) {
                 __block BOOL firstJobIsDone = NO, secondJobIsDone = NO, thirdJobIsDone = NO;
 
                 COCompositeOperation *cOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
-
+                cOperation.operationQueue = [[NSOperationQueue alloc] init];
+                
                 [cOperation run:^(COCompositeOperation *co) {
                     [co operationWithBlock:^(COOperation *cao) {
                         asynchronousJob(^{
@@ -130,7 +133,7 @@ for (int i = 0; i < N; i++) {
                     isFinished = YES;
                 } cancellationHandler:nil];
                 
-                while (isFinished == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, NO);
+                while (isFinished == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
                 
                 [[theValue(count) should] equal:@(3)];
             }
@@ -145,7 +148,8 @@ for (int i = 0; i < N; i++) {
                 __block BOOL isFinished = NO;
 
                 COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
-
+                compositeOperation.operationQueue = [[NSOperationQueue alloc] init];
+                
                 [compositeOperation run:^(COCompositeOperation *compositeOperation) {
                     [compositeOperation operationWithBlock:^(COOperation *cao) {
                         [cao finish];
@@ -200,7 +204,7 @@ for (int i = 0; i < N; i++) {
                     isFinished = YES;
                 } cancellationHandler:nil];
                 
-                while (isFinished == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, NO);
+                while (isFinished == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
                 
                 [[theValue(regArray.count) should] equal:@(2 * N)];
             }
@@ -215,7 +219,7 @@ for (int i = 0; i < N; i++) {
 
             NSMutableString *registry = [NSMutableString string];
 
-            compositeOperation(COCompositeOperationSerial, ^(COCompositeOperation *compositeOperation) {
+            compositeOperation(COCompositeOperationSerial, nil, ^(COCompositeOperation *compositeOperation) {
                 [compositeOperation operationWithBlock:^(COOperation *rao) {
                     asynchronousJob(^{
                         [registry appendString:@"c1"];
@@ -278,7 +282,7 @@ for (int i = 0; i < N; i++) {
                 }];
             }, nil, nil);
             
-            while (isFinished == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, YES);
+            while (isFinished == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
 
             BOOL registryIsCorrect = [registry isEqualToString:@"c1c2c3t1t2t3"];
             [[theValue(registryIsCorrect) should] beYes];

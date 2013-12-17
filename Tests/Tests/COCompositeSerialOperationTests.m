@@ -17,136 +17,101 @@ describe(@"COCompositeOperationSerial", ^{
 
     describe(@"Basics", ^{
         it(@"should run composite operation", ^{
-            __block int count = 0;
             __block BOOL isFinished = NO;
             __block BOOL completionBlockWasRun = NO;
 
-            __block BOOL firstJobIsDone = NO, secondJobIsDone = NO, thirdJobIsDone = NO;
+            NSMutableArray *registry = [NSMutableArray array];
 
             COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
+            compositeOperation.operationQueue = [[NSOperationQueue alloc] init];
 
             [compositeOperation run:^(COCompositeOperation *compositeOperation) {
                 [[theValue(currentQueue() == dispatch_get_main_queue()) should] beYes];
 
-                [compositeOperation operationWithBlock:^(COOperation *cao) {
+                [compositeOperation operationWithBlock:^(COOperation *operation) {
                     asynchronousJob(^{
-                        NSLog(@"RX 1");
-                        count = count + 1;
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            NSLog(@"First operation");
+                        });
 
-                        [[theValue(firstJobIsDone) should] beNo];
-                        [[theValue(secondJobIsDone) should] beNo];
-                        [[theValue(thirdJobIsDone) should] beNo];
+                        [registry addObject:@(1)];
 
-                        [[theValue(count) should] equal:@(1)];
-
-                        firstJobIsDone = YES;
-
-                        [cao finish];
-
-                        for (COOperation *op in compositeOperation.dependencies) {
-                            NSLog(@"lala %@", op.dependencies);
-                        }
+                        [operation finish];
                     });
                 }];
 
-                [compositeOperation operationWithBlock:^(COOperation *cao) {
+                [compositeOperation operationWithBlock:^(COOperation *operation) {
                     asynchronousJob(^{
-                        NSLog(@"RX 2");
-                        count = count + 1;
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            NSLog(@"Second operation");
+                        });
 
-                        [[theValue(firstJobIsDone) should] beYes];
-                        [[theValue(secondJobIsDone) should] beNo];
-                        [[theValue(thirdJobIsDone) should] beNo];
+                        [registry addObject:@(2)];
 
-                        [[theValue(count) should] equal:@(2)];
-
-                        secondJobIsDone = YES;
-
-                        [cao finish];
+                        [operation finish];
                     });
                 }];
 
-                [compositeOperation operationWithBlock:^(COOperation *cao) {
+                [compositeOperation operationWithBlock:^(COOperation *operation) {
                     asynchronousJob(^{
-                        NSLog(@"RX 3");
-                        count = count + 1;
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            NSLog(@"Third operation");
+                        });
 
-                        [[theValue(firstJobIsDone) should] beYes];
-                        [[theValue(secondJobIsDone) should] beYes];
-                        [[theValue(thirdJobIsDone) should] beNo];
+                        [registry addObject:@(3)];
 
-                        [[theValue(count) should] equal:@(3)];
-
-                        isFinished = YES;
-                        [cao finish];
+                        [operation finish];
                     });
                 }];
-            } completionHandler:^(id result){
+            } completionHandler:^(id result) {
+                isFinished = YES;
                 completionBlockWasRun = YES;
             } cancellationHandler:nil];
             
             while (isFinished == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, NO);
             
-            [[theValue(count) should] equal:@(3)];
+            BOOL registryIsCorrect = [registry isEqual:@[ @(1), @(2), @(3) ]];
+            
+            [[theValue(registryIsCorrect) should] beYes];
             [[theValue(completionBlockWasRun) should] beYes];
+
         });
     });
 
     describe(@"-[COCompositeOperation operationInQueue:withBlock:]", ^{
         it(@"", ^{
-            __block int count = 0;
             __block BOOL isFinished = NO;
-            __block BOOL firstJobIsDone = NO, secondJobIsDone = NO, thirdJobIsDone = NO;
+            NSMutableArray *registry = [NSMutableArray array];
 
             COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
+            compositeOperation.operationQueue = [[NSOperationQueue alloc] init];
 
             [compositeOperation run:^(COCompositeOperation *compositeOperation) {
                 [compositeOperation operationInQueue:concurrentQueue() withBlock:^(COOperation *cao) {
-                    count = count + 1;
-
-                    [[theValue(firstJobIsDone) should] beNo];
-                    [[theValue(secondJobIsDone) should] beNo];
-                    [[theValue(thirdJobIsDone) should] beNo];
-
-                    [[theValue(count) should] equal:@(1)];
-
-                    firstJobIsDone = YES;
-                    [cao finish];
-                }];
-
-                [compositeOperation operationInQueue:concurrentQueue() withBlock:^(COOperation *cao) {
-                    count = count + 1;
-
-                    [[theValue(firstJobIsDone) should] beYes];
-                    [[theValue(secondJobIsDone) should] beNo];
-                    [[theValue(thirdJobIsDone) should] beNo];
-
-
-                    [[theValue(count) should] equal:@(2)];
-
-                    secondJobIsDone = YES;
+                    [registry addObject:@(1)];
 
                     [cao finish];
                 }];
 
                 [compositeOperation operationInQueue:concurrentQueue() withBlock:^(COOperation *cao) {
-                    count = count + 1;
+                    [registry addObject:@(2)];
 
-                    [[theValue(firstJobIsDone) should] beYes];
-                    [[theValue(secondJobIsDone) should] beYes];
-                    [[theValue(thirdJobIsDone) should] beNo];
-
-
-                    [[theValue(count) should] equal:@(3)];
-
-                    isFinished = YES;
                     [cao finish];
                 }];
-            } completionHandler:nil cancellationHandler:nil];
+
+                [compositeOperation operationInQueue:concurrentQueue() withBlock:^(COOperation *cao) {
+                    [registry addObject:@(3)];
+
+                    [cao finish];
+                }];
+            } completionHandler:^(NSArray *result){
+                isFinished = YES;
+            } cancellationHandler:nil];
             
             while (isFinished == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, NO);
 
-            [[theValue(count) should] equal:@(3)];
+            BOOL registryIsCorrect = [registry isEqual:@[ @(1), @(2), @(3) ]];
+            [[theValue(registryIsCorrect) should] beYes];
         });
     });
 
@@ -157,7 +122,8 @@ describe(@"COCompositeOperationSerial", ^{
                 COSetDefaultQueue(concurrentQueue());
 
                 COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
-
+                compositeOperation.operationQueue = [[NSOperationQueue alloc] init];
+                
                 [compositeOperation run:^(COCompositeOperation *compositeOperation) {
                     [compositeOperation operationWithBlock:^(COOperation *cao) {
                         [[theValue(currentQueue() == concurrentQueue()) should] beYes];
@@ -176,6 +142,7 @@ describe(@"COCompositeOperationSerial", ^{
                 COSetDefaultQueue(serialQueue());
 
                 COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
+                compositeOperation.operationQueue = [[NSOperationQueue alloc] init];
 
                 [compositeOperation run:^(COCompositeOperation *co) {
                     [compositeOperation operationWithBlock:^(COOperation *cao) {
@@ -198,7 +165,8 @@ describe(@"COCompositeOperationSerial", ^{
                 __block BOOL isFinished = NO;
 
                 COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
-
+                compositeOperation.operationQueue = [[NSOperationQueue alloc] init];
+                    
                 [compositeOperation run:^(COCompositeOperation *compositeOperation) {
                     [compositeOperation operationWithBlock:^(COOperation *operation) {
                         [operation reject];
@@ -216,7 +184,7 @@ describe(@"COCompositeOperationSerial", ^{
                 } cancellationHandler:^(COCompositeOperation *compositeOperation, NSError *error) {
                     [[theValue(compositeOperation.isCancelled) should] beYes];
 
-                    for (COOperation *operation in compositeOperation.internalDependencies) {
+                    for (COOperation *operation in compositeOperation.zOperation.dependencies) {
                         [[theValue(operation.isFinished) should] beYes];
                     }
 
@@ -234,7 +202,8 @@ describe(@"COCompositeOperationSerial", ^{
                 NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:1 userInfo:nil];
 
                 COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
-
+                compositeOperation.operationQueue = [[NSOperationQueue alloc] init];
+                
                 [compositeOperation run:^(COCompositeOperation *compositeOperation) {
                     [compositeOperation operationWithBlock:^(COOperation *operation) {
                         [operation rejectWithError:error];
@@ -248,11 +217,11 @@ describe(@"COCompositeOperationSerial", ^{
                         [operation finish];
                     }];
                 } completionHandler:^(id result){
-                    raiseShouldNotReachHere();
+                    NSAssert(NO, @"Expected operation to not reach here: %@", compositeOperation);
                 } cancellationHandler:^(COCompositeOperation *compositeOperation, NSError *_error) {
                     [[theValue([_error isEqual:error]) should] beYes];
                     
-                    for (COOperation *operation in compositeOperation.internalDependencies) {
+                    for (COOperation *operation in compositeOperation.zOperation.dependencies) {
                         [[theValue(operation.isFinished) should] beYes];
                     }
 
@@ -271,7 +240,8 @@ describe(@"COCompositeOperationSerial", ^{
             __block NSString *data = @"1";
 
             COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
-
+            compositeOperation.operationQueue = [[NSOperationQueue alloc] init];
+            
             [compositeOperation run:^(COCompositeOperation *co) {
                 [co operationWithBlock:^(COOperation *cao) {
                     [co safelyAccessData:^(id _data) {
@@ -304,6 +274,7 @@ describe(@"COCompositeOperationSerial", ^{
                 __block BOOL isFinished = NO;
 
                 COCompositeOperation *cOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
+                cOperation.operationQueue = [[NSOperationQueue alloc] init];
 
                 [cOperation run:^(COCompositeOperation *co) {
                     [co operationWithBlock:^(COOperation *cuo) {

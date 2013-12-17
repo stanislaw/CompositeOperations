@@ -14,9 +14,10 @@
 
 @property (nonatomic, strong) NSBlockOperation *zOperation;
 
-@property (nonatomic, getter = isRegistrationStarted) BOOL registrationStarted;
-@property (nonatomic, getter = isRegistrationCompleted) BOOL registrationCompleted;
-
 @property (nonatomic, strong) NSMutableArray *result;
+
+- (void)_registerDependency:(COOperation *)operation;
+
+- (void)_teardown;
 
 @end

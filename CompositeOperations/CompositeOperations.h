@@ -19,6 +19,5 @@ void  __attribute__((overloadable)) operation(id queue, COOperationBlock block, 
 void  __attribute__((overloadable)) operation(COOperation *otherOperation, COOperationCompletionBlock completionHandler, COOperationCancellationBlock cancellationHandler);
 
 
-void __attribute__((overloadable)) compositeOperation(COCompositeOperationConcurrencyType concurrencyType, COCompositeOperationBlock block, COCompositeOperationCompletionBlock completionHandler, COCompositeOperationCancellationBlock cancellationHandler);
 void __attribute__((overloadable)) compositeOperation(COCompositeOperationConcurrencyType concurrencyType, id queue, COCompositeOperationBlock block, COCompositeOperationCompletionBlock completionHandler, COCompositeOperationCancellationBlock cancellationHandler);
 

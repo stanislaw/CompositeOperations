@@ -3,23 +3,19 @@
 
 #import "COQueues.h"
 #import "CompositeOperations.h"
+#import "COCompositeOperation_Private.h"
+
+#import <NSOperationQueueController/NSOperationQueueController.h>
 
 SPEC_BEGIN(Current_Specs)
 describe(@"Current specs", ^{
     beforeEach(^{
-        //COSetDefaultQueue(concurrentQueue());
+        COSetDefaultQueue(concurrentQueue());
     });
 
-    it(@"", ^{
-        COOperation *operation = [COOperation new];
-        operation.name = @"Nice op";
-        
-        NSLog(@"%@", operation);
 
-        COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent];
-        compositeOperation.name = @"Nice op";
+    //it(@"should run composite operation", ^{
+    //});
 
-        NSLog(@"%@", compositeOperation);
-    });
 });
 SPEC_END

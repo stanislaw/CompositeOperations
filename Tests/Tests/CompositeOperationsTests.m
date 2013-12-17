@@ -90,7 +90,7 @@
 
     __block COCompositeOperation *__compositeOperation;
 
-    compositeOperation(COCompositeOperationSerial, ^(COCompositeOperation *compositeOperation) {
+    compositeOperation(COCompositeOperationSerial, nil, ^(COCompositeOperation *compositeOperation) {
         __compositeOperation = compositeOperation;
         compositeOperation.name = [@(i) stringValue];
         [compositeOperation operationWithBlock:^(COOperation *operation) {
@@ -113,8 +113,9 @@
 
         [compositeOperation operationWithBlock:^(COOperation *operation) {
             operation.name = [NSString stringWithFormat:@"%@.%@", @(i), @(2)];
-            NSAssert(operation.dependencies.count == 1, nil);
-            NSAssert(((COOperation *)operation.dependencies.lastObject).isFinished, nil);
+            NSAssert(operation.dependencies.count == 1, @"Expected operation to have 1 dependency but got", operation, operation.dependencies);
+            
+            NSAssert(((COOperation *)operation.dependencies.lastObject).isFinished, @"Expected operation's dependencies lastObject to be finished", operation, operation.dependencies);
 
             asynchronousJob(^{
                 count = count + 1;
@@ -133,8 +134,8 @@
 
         [compositeOperation operationWithBlock:^(COOperation *operation) {
             operation.name = [NSString stringWithFormat:@"%@.%@", @(i), @(3)];
-            NSAssert(operation.dependencies.count == 1, nil);
-            NSAssert(((COOperation *)operation.dependencies.lastObject).isFinished, nil);
+            NSAssert(operation.dependencies.count == 1, @"Expected operation to have 1 dependency but got", operation, operation.dependencies);
+            NSAssert(((COOperation *)operation.dependencies.lastObject).isFinished, @"Expected operation's dependencies lastObject to be finished", operation, operation.dependencies);
 
             asynchronousJob(^{
                 count = count + 1;
@@ -173,7 +174,7 @@
         });
     };
 
-    compositeOperation(COCompositeOperationSerial, ^(COCompositeOperation *compositeOperation) {
+    compositeOperation(COCompositeOperationSerial, nil, ^(COCompositeOperation *compositeOperation) {
         [compositeOperation operation:[operation copy]];
         [compositeOperation operation:[operation copy]];
         [compositeOperation operation:[operation copy]];
@@ -208,7 +209,7 @@
         [compositeOperation operation:[operation copy]];
     };
 
-    compositeOperation(COCompositeOperationSerial, ^(COCompositeOperation *mixedCompositeOperation) {
+    compositeOperation(COCompositeOperationSerial, nil, ^(COCompositeOperation *mixedCompositeOperation) {
         [mixedCompositeOperation compositeOperation:innerCompositeOperation];
     }, ^(NSArray *result){
         isFinished = YES;
@@ -243,7 +244,7 @@
         [compositeOperation operation:[operation copy]];
     };
 
-    compositeOperation(COCompositeOperationSerial, ^(COCompositeOperation *mixedCompositeOperation) {
+    compositeOperation(COCompositeOperationSerial, nil, ^(COCompositeOperation *mixedCompositeOperation) {
         [mixedCompositeOperation compositeOperation:innerCompositeOperation];
     }, ^(NSArray *result){
         completionHandlerWasRun = YES;
@@ -280,7 +281,7 @@
         [compositeOperation operation:[operation copy]];
     };
 
-    compositeOperation(COCompositeOperationConcurrent, ^(COCompositeOperation *mixedCompositeOperation) {
+    compositeOperation(COCompositeOperationConcurrent, nil, ^(COCompositeOperation *mixedCompositeOperation) {
         [mixedCompositeOperation compositeOperation:innerCompositeOperation];
     }, ^(NSArray *result){
         completionHandlerWasRun = YES;
@@ -303,7 +304,7 @@
 
     COSetDefaultQueue(concurrentQueue());
     
-    compositeOperation(COCompositeOperationConcurrent, ^(COCompositeOperation *compositeOperation) {
+    compositeOperation(COCompositeOperationConcurrent, nil, ^(COCompositeOperation *compositeOperation) {
         for (int i = 1; i <= 30; i++) {
             [compositeOperation operationWithBlock:^(COOperation *operation) {
 
@@ -334,7 +335,7 @@
     __block BOOL isFinished = NO;
     NSMutableArray *countArr = [NSMutableArray array];
 
-    compositeOperation(COCompositeOperationConcurrent, ^(COCompositeOperation *compositeOperation) {
+    compositeOperation(COCompositeOperationConcurrent, nil, ^(COCompositeOperation *compositeOperation) {
         [compositeOperation operationInQueue:concurrentQueue() withBlock:^(COOperation *operation) {
             @synchronized(countArr) {
                 [countArr addObject:@1];
@@ -376,7 +377,7 @@
 
     dispatch_sync(createQueue(), ^{
         __block COCompositeOperation *__compositeOperation;
-        compositeOperation(COCompositeOperationSerial, ^(COCompositeOperation *compositeOperation) {
+        compositeOperation(COCompositeOperationSerial, nil, ^(COCompositeOperation *compositeOperation) {
             compositeOperation.name = [NSString stringWithFormat:@"Composite operation #%@", @(i)];
 
             __compositeOperation = compositeOperation;
@@ -456,7 +457,7 @@
     
     __block COCompositeOperation *cascOp;
 
-    compositeOperation(COCompositeOperationConcurrent, ^(COCompositeOperation *compositeOperation) {
+    compositeOperation(COCompositeOperationConcurrent, nil, ^(COCompositeOperation *compositeOperation) {
         cascOp = compositeOperation;
         
         [compositeOperation compositeOperation:COCompositeOperationConcurrent withBlock:^(COCompositeOperation *compositeOperation) {

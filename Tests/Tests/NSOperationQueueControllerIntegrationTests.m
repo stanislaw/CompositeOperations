@@ -1,12 +1,14 @@
 #import "TestHelpers.h"
 
 #import "CompositeOperations.h"
+#import "COCompositeOperation_Private.h"
+
 #import <NSOperationQueueController/NSOperationQueueController.h>
 
 SPEC_BEGIN(NSOperationQueueControllerIntegrationSpecs)
 
 describe(@"NSOperationQueueController, COCompositeOperationSerial", ^{
-    it(@"", ^{
+    specify(^{
         NSOperationQueue *operationQueue = [NSOperationQueue new];
         NSOperationQueueController *controller = [[NSOperationQueueController alloc] initWithOperationQueue:operationQueue];
 
@@ -49,50 +51,73 @@ describe(@"NSOperationQueueController, COCompositeOperationSerial", ^{
 });
 
 describe(@"NSOperationQueueController, COCompositeOperationConcurrent", ^{
-    it(@"sss", ^{
-        __block BOOL isFinished = NO;
+    for (int i = 0; i < 1; i++) {
+        it(@"should run composite concurrent operation", ^{
+            __block BOOL isFinished = NO;
 
-        NSMutableArray *registy = [NSMutableArray array];
+            NSMutableArray *registy = [NSMutableArray array];
 
-        NSOperationQueue *operationQueue = [NSOperationQueue new];
-        NSOperationQueueController *controller = [[NSOperationQueueController alloc] initWithOperationQueue:operationQueue];
+            NSOperationQueue *operationQueue = [NSOperationQueue new];
+            NSOperationQueueController *controller = [[NSOperationQueueController alloc] initWithOperationQueue:operationQueue];
 
-        compositeOperation(COCompositeOperationConcurrent, controller, ^(COCompositeOperation *to) {
-            [to operationWithBlock:^(COOperation *operation) {
+            __block COCompositeOperation *__compositeOperation;
 
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [registy addObject:@(1)];
-                    [operation finish];
-                });
-            }];
+            compositeOperation(COCompositeOperationConcurrent, controller, ^(COCompositeOperation *compositeOperation) {
 
-            [to operationWithBlock:^(COOperation *operation) {
+                compositeOperation.name = [@(i) stringValue];
+                __compositeOperation = compositeOperation;
 
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [registy addObject:@(2)];
-                    [operation finish];
-                });
-            }];
-
-            [to operationWithBlock:^(COOperation *operation) {
-
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [registy addObject:@(3)];
-                    [operation finish];
+                    NSLog(@"CompositeOp %@, %@", compositeOperation, controller);
                 });
 
-            }];
-        }, ^(NSArray *result){
-            isFinished = YES;
-        }, ^(COCompositeOperation *to, NSError *error){
-            raiseShouldNotReachHere();
+                [compositeOperation operationWithBlock:^(COOperation *operation) {
+                    operation.name = [NSString stringWithFormat:@"%@.1", @(i)];
+
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [registy addObject:@(1)];
+                        [operation finish];
+                    });
+                }];
+
+                [compositeOperation operationWithBlock:^(COOperation *operation) {
+                    operation.name = [NSString stringWithFormat:@"%@.2", @(i)];
+
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [registy addObject:@(2)];
+                        [operation finish];
+                    });
+                }];
+
+                [compositeOperation operationWithBlock:^(COOperation *operation) {
+                    operation.name = [NSString stringWithFormat:@"%@.3", @(i)];
+
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        NSLog(@"op %@, %@", compositeOperation, controller);
+
+                        [registy addObject:@(3)];
+                        [operation finish];
+                    });
+
+                }];
+            }, ^(NSArray *result){
+                isFinished = YES;
+            }, ^(COCompositeOperation *compositeOperation, NSError *error){
+                raiseShouldNotReachHere();
+            });
+
+            int count = 0;
+            while (isFinished == NO) {
+                CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
+                if (++count % 10 == 0) {
+                    NSLog(@"%@, %d, %@, %@", __compositeOperation, __compositeOperation.zOperation.isFinished, __compositeOperation.zOperation.dependencies, controller);
+                }
+            }
+
+            BOOL registryIsCorrect = (registy.count == 3);
+            [[theValue(registryIsCorrect) should] beYes];
         });
-
-        while (isFinished == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, YES);
-
-        BOOL registryIsCorrect = registy.count == 3;
-        [[theValue(registryIsCorrect) should] beYes];
-    });
+    }
 });
 
 describe(@"NSOperationQueueController, -[operation reject]", ^{

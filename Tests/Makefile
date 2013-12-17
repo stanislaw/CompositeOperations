@@ -29,8 +29,7 @@ SOURCE_COMPOSITE_OPERATIONS = $(call find-recursive,$(PROJECT_DIR)/CompositeOper
 					
 SOURCE_TEST_SUITE = $(wildcard $(TESTS_DIR)/Tests/*.m)
 
-SOURCE_TESTS = $(TESTS_DIR)/TestHelpers/TestHelpers.m \
-							 $(call find-recursive,$(shell pwd)/Kiwi,*.m) \
+SOURCE_TESTS = $(call find-recursive,$(shell pwd)/Kiwi,*.m) \
 			         octest.m
 
 
