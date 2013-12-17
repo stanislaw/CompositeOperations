@@ -1,6 +1,13 @@
 # Xcode
 .DS_Store
 */build/*
+
+DerivedData
+# .idea/
+# *.hmapods/*
+Pods/
+Podfile.lock
+
 *.pbxuser
 !default.pbxuser
 *.mode1v3
@@ -12,9 +19,3 @@
 !*.xcscheme
 profile
 *.moved-aside
-DerivedData
-.idea/
-*.hmapods/*
-Pods/
-Podfile.lock
-
