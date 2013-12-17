@@ -1,2 +1,5 @@
 language: objective-c
+before_install:
+- cd DevelopmentApp
 script: make
+
