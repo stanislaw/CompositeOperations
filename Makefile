@@ -1,2 +1,3 @@
 test:
-	cd Tests; make
+	cd DevelopmentApp; xcodebuild -workspace DevelopmentApp.xcworkspace -scheme DevelopmentApp clean test
+

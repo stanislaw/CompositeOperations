@@ -1,3 +1,7 @@
+# Pods
+Podfile.lock
+DevelopmentApp/Pods/
+
 # Xcode
 .DS_Store
 build/
