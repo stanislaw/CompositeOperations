@@ -1,5 +1,12 @@
 
 platform :osx, '10.7'
 
-pod 'Kiwi'
-pod 'NSOperationQueueController', :git => 'https://github.com/stanislaw/NSOperationQueueController'
+target :DevelopmentApp, :exclusive => true do
+  pod 'Kiwi'
+  pod 'NSOperationQueueController', :git => 'https://github.com/stanislaw/NSOperationQueueController'
+end
+
+target :CompositeOperationsTests, :exclusive => true do
+  pod 'Kiwi'
+  pod 'NSOperationQueueController', :git => 'https://github.com/stanislaw/NSOperationQueueController'
+end

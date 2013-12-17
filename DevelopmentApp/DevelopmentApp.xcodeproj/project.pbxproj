@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		194BF119D75E4976832F129E /* libPods-CompositeOperationsTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 385949F5670F41CFAE2CFFAF /* libPods-CompositeOperationsTests.a */; };
 		862DADA0186017960067A193 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 862DAD9F186017960067A193 /* Foundation.framework */; };
 		862DADA3186017960067A193 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 862DADA2186017960067A193 /* main.m */; };
 		862DADA7186017960067A193 /* DevelopmentApp.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 862DADA6186017960067A193 /* DevelopmentApp.1 */; };
@@ -24,6 +25,10 @@
 		862DADFF186018710067A193 /* NSOperationQueueControllerIntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 862DADE0186018700067A193 /* NSOperationQueueControllerIntegrationTests.m */; };
 		862DAE01186018710067A193 /* TODO.m in Sources */ = {isa = PBXBuildFile; fileRef = 862DADE1186018700067A193 /* TODO.m */; };
 		862DAE06186018E60067A193 /* COOperationResolver.m in Sources */ = {isa = PBXBuildFile; fileRef = 862DAE05186018E60067A193 /* COOperationResolver.m */; };
+		862DAE3618602D420067A193 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 862DADB21860185B0067A193 /* SenTestingKit.framework */; };
+		862DAE3C18602D420067A193 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 862DAE3A18602D420067A193 /* InfoPlist.strings */; };
+		862DAE3E18602D420067A193 /* CompositeOperationsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 862DAE3D18602D420067A193 /* CompositeOperationsTests.m */; };
+		9855AB90D7C54A139194F0AF /* libPods-DevelopmentApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 720CB34C2AD6443496E7A1DD /* libPods-DevelopmentApp.a */; };
 		A20BD9EEF4C244F0BAB73338 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F11DDB1DF904FBA9380865B /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -41,6 +46,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		385949F5670F41CFAE2CFFAF /* libPods-CompositeOperationsTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CompositeOperationsTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		720CB34C2AD6443496E7A1DD /* libPods-DevelopmentApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DevelopmentApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		862DAD9C186017960067A193 /* DevelopmentApp */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DevelopmentApp; sourceTree = BUILT_PRODUCTS_DIR; };
 		862DAD9F186017960067A193 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		862DADA2186017960067A193 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -71,10 +78,17 @@
 		862DADE1186018700067A193 /* TODO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TODO.m; sourceTree = "<group>"; };
 		862DAE04186018E60067A193 /* COOperationResolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COOperationResolver.h; sourceTree = "<group>"; };
 		862DAE05186018E60067A193 /* COOperationResolver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COOperationResolver.m; sourceTree = "<group>"; };
-		862DAE07186019EA0067A193 /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = file; name = libPods.a; path = Pods/build/Debug/libPods.a; sourceTree = "<group>"; };
-		862DAE0918601A440067A193 /* libPods-Kiwi.a */ = {isa = PBXFileReference; lastKnownFileType = file; name = "libPods-Kiwi.a"; path = "Pods/build/Debug/libPods-Kiwi.a"; sourceTree = "<group>"; };
-		862DAE0A18601A440067A193 /* libPods-NSOperationQueueController.a */ = {isa = PBXFileReference; lastKnownFileType = file; name = "libPods-NSOperationQueueController.a"; path = "Pods/build/Debug/libPods-NSOperationQueueController.a"; sourceTree = "<group>"; };
+		862DAE07186019EA0067A193 /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = Pods/build/Debug/libPods.a; sourceTree = "<group>"; };
+		862DAE0918601A440067A193 /* libPods-Kiwi.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Kiwi.a"; path = "Pods/build/Debug/libPods-Kiwi.a"; sourceTree = "<group>"; };
+		862DAE0A18601A440067A193 /* libPods-NSOperationQueueController.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-NSOperationQueueController.a"; path = "Pods/build/Debug/libPods-NSOperationQueueController.a"; sourceTree = "<group>"; };
+		862DAE3518602D420067A193 /* CompositeOperationsTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CompositeOperationsTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		862DAE3918602D420067A193 /* CompositeOperationsTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CompositeOperationsTests-Info.plist"; sourceTree = "<group>"; };
+		862DAE3B18602D420067A193 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		862DAE3D18602D420067A193 /* CompositeOperationsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CompositeOperationsTests.m; sourceTree = "<group>"; };
+		862DAE3F18602D420067A193 /* CompositeOperationsTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CompositeOperationsTests-Prefix.pch"; sourceTree = "<group>"; };
 		8F11DDB1DF904FBA9380865B /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		915DEC69BF85451BBD49D9E8 /* Pods-CompositeOperationsTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CompositeOperationsTests.xcconfig"; path = "Pods/Pods-CompositeOperationsTests.xcconfig"; sourceTree = "<group>"; };
+		E64FC5F4212744339B017D36 /* Pods-DevelopmentApp.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DevelopmentApp.xcconfig"; path = "Pods/Pods-DevelopmentApp.xcconfig"; sourceTree = "<group>"; };
 		F5B3A38A1815412083A17178 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -85,6 +99,16 @@
 			files = (
 				862DADA0186017960067A193 /* Foundation.framework in Frameworks */,
 				A20BD9EEF4C244F0BAB73338 /* libPods.a in Frameworks */,
+				9855AB90D7C54A139194F0AF /* libPods-DevelopmentApp.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		862DAE3218602D420067A193 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				862DAE3618602D420067A193 /* SenTestingKit.framework in Frameworks */,
+				194BF119D75E4976832F129E /* libPods-CompositeOperationsTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,9 +122,12 @@
 				862DADC2186018700067A193 /* CompositeOperations */,
 				862DADCF186018700067A193 /* Tests */,
 				862DADA1186017960067A193 /* DevelopmentApp */,
+				862DAE3718602D420067A193 /* CompositeOperationsTests */,
 				862DAD9E186017960067A193 /* Frameworks */,
 				862DAD9D186017960067A193 /* Products */,
 				F5B3A38A1815412083A17178 /* Pods.xcconfig */,
+				915DEC69BF85451BBD49D9E8 /* Pods-CompositeOperationsTests.xcconfig */,
+				E64FC5F4212744339B017D36 /* Pods-DevelopmentApp.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -108,6 +135,7 @@
 			isa = PBXGroup;
 			children = (
 				862DAD9C186017960067A193 /* DevelopmentApp */,
+				862DAE3518602D420067A193 /* CompositeOperationsTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -121,6 +149,8 @@
 				862DAD9F186017960067A193 /* Foundation.framework */,
 				862DADB21860185B0067A193 /* SenTestingKit.framework */,
 				8F11DDB1DF904FBA9380865B /* libPods.a */,
+				385949F5670F41CFAE2CFFAF /* libPods-CompositeOperationsTests.a */,
+				720CB34C2AD6443496E7A1DD /* libPods-DevelopmentApp.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -215,6 +245,25 @@
 			path = ../Examples;
 			sourceTree = "<group>";
 		};
+		862DAE3718602D420067A193 /* CompositeOperationsTests */ = {
+			isa = PBXGroup;
+			children = (
+				862DAE3D18602D420067A193 /* CompositeOperationsTests.m */,
+				862DAE3818602D420067A193 /* Supporting Files */,
+			);
+			path = CompositeOperationsTests;
+			sourceTree = "<group>";
+		};
+		862DAE3818602D420067A193 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				862DAE3918602D420067A193 /* CompositeOperationsTests-Info.plist */,
+				862DAE3A18602D420067A193 /* InfoPlist.strings */,
+				862DAE3F18602D420067A193 /* CompositeOperationsTests-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -236,6 +285,25 @@
 			productName = DevelopmentApp;
 			productReference = 862DAD9C186017960067A193 /* DevelopmentApp */;
 			productType = "com.apple.product-type.tool";
+		};
+		862DAE3418602D420067A193 /* CompositeOperationsTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 862DAE4218602D420067A193 /* Build configuration list for PBXNativeTarget "CompositeOperationsTests" */;
+			buildPhases = (
+				876AC0C5B63E43398DC05D67 /* Check Pods Manifest.lock */,
+				862DAE3118602D420067A193 /* Sources */,
+				862DAE3218602D420067A193 /* Frameworks */,
+				862DAE3318602D420067A193 /* Resources */,
+				A3C228DDF9AB429E9E56F58C /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CompositeOperationsTests;
+			productName = CompositeOperationsTests;
+			productReference = 862DAE3518602D420067A193 /* CompositeOperationsTests.octest */;
+			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
 
@@ -259,11 +327,53 @@
 			projectRoot = "";
 			targets = (
 				862DAD9B186017960067A193 /* DevelopmentApp */,
+				862DAE3418602D420067A193 /* CompositeOperationsTests */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		862DAE3318602D420067A193 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				862DAE3C18602D420067A193 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXShellScriptBuildPhase section */
+		876AC0C5B63E43398DC05D67 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		A3C228DDF9AB429E9E56F58C /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-CompositeOperationsTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		DA07FFA70C2C4051AEB35E8C /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -291,7 +401,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Pods-DevelopmentApp-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -319,7 +429,26 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		862DAE3118602D420067A193 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				862DAE3E18602D420067A193 /* CompositeOperationsTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		862DAE3A18602D420067A193 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				862DAE3B18602D420067A193 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		862DADA8186017960067A193 /* Debug */ = {
@@ -392,7 +521,7 @@
 		};
 		862DADAB186017960067A193 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F5B3A38A1815412083A17178 /* Pods.xcconfig */;
+			baseConfigurationReference = E64FC5F4212744339B017D36 /* Pods-DevelopmentApp.xcconfig */;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DevelopmentApp/DevelopmentApp-Prefix.pch";
@@ -402,11 +531,47 @@
 		};
 		862DADAC186017960067A193 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F5B3A38A1815412083A17178 /* Pods.xcconfig */;
+			baseConfigurationReference = E64FC5F4212744339B017D36 /* Pods-DevelopmentApp.xcconfig */;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DevelopmentApp/DevelopmentApp-Prefix.pch";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		862DAE4018602D420067A193 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 915DEC69BF85451BBD49D9E8 /* Pods-CompositeOperationsTests.xcconfig */;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "CompositeOperationsTests/CompositeOperationsTests-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "CompositeOperationsTests/CompositeOperationsTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		862DAE4118602D420067A193 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 915DEC69BF85451BBD49D9E8 /* Pods-CompositeOperationsTests.xcconfig */;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "CompositeOperationsTests/CompositeOperationsTests-Prefix.pch";
+				INFOPLIST_FILE = "CompositeOperationsTests/CompositeOperationsTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;
 		};
@@ -427,6 +592,15 @@
 			buildConfigurations = (
 				862DADAB186017960067A193 /* Debug */,
 				862DADAC186017960067A193 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		862DAE4218602D420067A193 /* Build configuration list for PBXNativeTarget "CompositeOperationsTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				862DAE4018602D420067A193 /* Debug */,
+				862DAE4118602D420067A193 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
