@@ -17,7 +17,8 @@ describe(@"COCompositeOperationSerial", ^{
 
     describe(@"Basics", ^{
         it(@"should run composite operation", ^{
-            __block BOOL isFinished = NO;
+            waitSemaphore = dispatch_semaphore_create(0);
+
             __block BOOL completionBlockWasRun = NO;
 
             NSMutableArray *registry = [NSMutableArray array];
@@ -64,17 +65,19 @@ describe(@"COCompositeOperationSerial", ^{
                     });
                 }];
             } completionHandler:^(id result) {
-                isFinished = YES;
                 completionBlockWasRun = YES;
+
+                dispatch_semaphore_signal(waitSemaphore);
             } cancellationHandler:nil];
             
-            while (isFinished == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, NO);
+            while (dispatch_semaphore_wait(waitSemaphore, DISPATCH_TIME_NOW)) {
+                CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
+            }
             
             BOOL registryIsCorrect = [registry isEqual:@[ @(1), @(2), @(3) ]];
             
             [[theValue(registryIsCorrect) should] beYes];
             [[theValue(completionBlockWasRun) should] beYes];
-
         });
     });
 
@@ -310,6 +313,85 @@ describe(@"COCompositeOperationSerial", ^{
             });
         });
     });
+
+    describe(@"Lazy copying", ^{
+        it(@"should copy composite operation", ^{
+            static dispatch_once_t onceToken;
+
+            waitSemaphore = dispatch_semaphore_create(0);
+
+            __block BOOL completionBlockWasRun = NO;
+
+            NSMutableArray *registry = [NSMutableArray array];
+
+            COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
+            compositeOperation.operationQueue = [[NSOperationQueue alloc] init];
+
+            [compositeOperation run:^(COCompositeOperation *compositeOperation) {
+                [[theValue(currentQueue() == dispatch_get_main_queue()) should] beYes];
+
+                [compositeOperation operationWithBlock:^(COOperation *operation) {
+                    asynchronousJob(^{
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            NSLog(@"First operation");
+                        });
+
+                        [registry addObject:@(1)];
+
+                        [operation finish];
+                    });
+                }];
+
+                [compositeOperation operationWithBlock:^(COOperation *operation) {
+                    asynchronousJob(^{
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            NSLog(@"Second operation");
+                        });
+
+                        [registry addObject:@(2)];
+
+                        [operation finish];
+                    });
+                }];
+
+                [compositeOperation operationWithBlock:^(COOperation *operation) {
+                    asynchronousJob(^{
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            NSLog(@"Third operation");
+                        });
+
+                        [registry addObject:@(3)];
+
+
+                        dispatch_once_and_next_time(&onceToken, ^{
+                            [operation cancel];
+                        }, ^{
+                            [operation finish];
+                        });
+                    });
+                }];
+            } completionHandler:^(id result) {
+#warning TODO
+                completionBlockWasRun = YES;
+                abort();
+
+            } cancellationHandler:^(COCompositeOperation *compositeOperation, NSError *error) {
+                abort();
+
+                dispatch_semaphore_signal(waitSemaphore);
+            }];
+
+            while (dispatch_semaphore_wait(waitSemaphore, DISPATCH_TIME_NOW)) {
+                CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
+            }
+            
+            BOOL registryIsCorrect = [registry isEqual:@[ @(1), @(2), @(3) ]];
+            
+            [[theValue(registryIsCorrect) should] beYes];
+            [[theValue(completionBlockWasRun) should] beYes];
+        });
+    });
+
 });
 
 SPEC_END

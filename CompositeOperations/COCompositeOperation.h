@@ -14,7 +14,9 @@
 
 - (id)initWithConcurrencyType:(COCompositeOperationConcurrencyType)concurrencyType;
 
-@property (copy) COCompositeOperationBlock operationBlock;
+@property (copy, nonatomic) COCompositeOperationBlock operationBlock;
+
+@property (nonatomic, getter = isLazyCopy) BOOL lazyCopy;
 
 - (void)run:(COCompositeOperationBlock)operationBlock __attribute__((unavailable("must run composite operation with 'run:completionHandler:cancellationHandler:' instead.")));
 - (void)runInQueue:(dispatch_queue_t)queue operation:(COCompositeOperationBlock)operationBlock __attribute__((unavailable("must run composite operation with 'run:completionHandler:cancellationHandler:' instead.")));

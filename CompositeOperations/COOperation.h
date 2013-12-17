@@ -10,9 +10,9 @@
 
 @interface COOperation : NSOperation
 
-@property (copy) COOperationBlock operationBlock;
+@property (copy, nonatomic) COOperationBlock operationBlock;
 
-@property (strong) id operationQueue;
+@property (strong, nonatomic) id operationQueue;
 
 @property (readonly) BOOL isReady;
 @property (readonly) BOOL isExecuting;
@@ -33,6 +33,8 @@
 // Resolution
 - (void)resolveWithOperation:(COOperation *)operation;
 
-@property (copy) NSString *name;
+@property (copy, nonatomic) NSString *name;
+
+- (instancetype)lazyCopy;
 
 @end

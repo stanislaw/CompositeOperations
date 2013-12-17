@@ -224,7 +224,20 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
     operation.operationBlock = self.operationBlock;
     operation.operationQueue = self.operationQueue;
     operation.name = self.name;
-    
+    operation.completionBlock = self.completionBlock;
+
+    for (id operation in self.dependencies) {
+        [operation addDependency:operation];
+    }
+
+    return operation;
+}
+
+- (instancetype)lazyCopy {
+    id operation = [self copy];
+
+    if (self.isFinished) [operation finish];
+
     return operation;
 }
 

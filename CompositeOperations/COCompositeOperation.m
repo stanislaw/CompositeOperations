@@ -31,6 +31,8 @@
 
     self.concurrencyType = concurrencyType;
 
+    self.lazyCopy = NO;
+    
     self.result = [NSMutableArray array];
 
     __weak COCompositeOperation *weakSelf = self;
@@ -195,6 +197,12 @@
 #pragma mark COOperation
 
 - (void)main {
+    if (self.isLazyCopy) {
+        [self lazyMain];
+
+        return;
+    }
+
     if (self.operationBlock) {
         NSAssert(self.operationQueue, nil);
 
@@ -208,15 +216,86 @@
     }
 }
 
+- (void)lazyMain {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (self.concurrencyType == COCompositeOperationSerial) {
+            NSUInteger indexOfFirstOperationToRun = [self.zOperation.dependencies indexOfObjectPassingTest:^BOOL(NSOperation *operation, NSUInteger idx, BOOL *stop) {
+                if (operation.isReady) {
+                    *stop = YES;
+                    return YES;
+                } else {
+                    return NO;
+                }
+            }];
+
+            NSAssert(indexOfFirstOperationToRun != NSNotFound, nil);
+
+            id operation = [self.zOperation.dependencies objectAtIndex:indexOfFirstOperationToRun];
+
+            [self.operationQueue addOperation:operation];
+        } else {
+            NSIndexSet *indexesOfOperationsToRun = [self.zOperation.dependencies indexesOfObjectsPassingTest:^BOOL(NSOperation *operation, NSUInteger idx, BOOL *stop) {
+                if (operation.isReady) {
+                    return YES;
+                } else {
+                    return NO;
+                }
+            }];
+
+            NSAssert(indexesOfOperationsToRun.count > 0, nil);
+
+            [self.zOperation.dependencies enumerateObjectsAtIndexes:indexesOfOperationsToRun options:0 usingBlock:^(id operation, NSUInteger idx, BOOL *stop) {
+                [self.operationQueue addOperation:operation];
+            }];
+        }
+
+        [self.operationQueue addOperation:self.zOperation];
+    });
+}
+
 #pragma mark
 #pragma mark <NSCopying>
 
 - (id)copyWithZone:(NSZone *)zone {
+    NSAssert(self.operationBlock && self.operationQueue, nil);
+    NSAssert(self.isFinished == NO, nil);
+
     COCompositeOperation *compositeOperation = [[[self class] alloc] initWithConcurrencyType:self.concurrencyType];;
 
     compositeOperation.operationBlock = self.operationBlock;
     compositeOperation.operationQueue = self.operationQueue;
     compositeOperation.name = self.name;
+    compositeOperation.completionBlock = self.completionBlock;
+    
+    for (id operation in self.dependencies) {
+        [compositeOperation addDependency:operation];
+    }
+
+    return compositeOperation;
+}
+
+- (instancetype)lazyCopy {
+    COCompositeOperation *compositeOperation = [self copy];
+
+    NSAssert(self.zOperation, nil);
+
+    compositeOperation.lazyCopy = YES;
+
+    compositeOperation.zOperation = [NSBlockOperation blockOperationWithBlock:self.zOperation.executionBlocks.firstObject];
+
+    for (id operation in self.zOperation.dependencies) {
+        id copyOfOperation;
+
+        if ([operation respondsToSelector:@selector(lazyCopy)]) {
+            copyOfOperation = [operation lazyCopy];
+        } else if ([operation respondsToSelector:@selector(copyWithZone:)]) {
+            copyOfOperation = [operation copy];
+        } else {
+            @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"Expected composite operation to have copyable dependency operations" userInfo:@{ @"Failing operation": operation }];
+        }
+
+        [compositeOperation.zOperation addDependency:copyOfOperation];
+    }
 
     return compositeOperation;
 }
