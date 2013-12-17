@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>E4EE3113-376C-4933-B63F-CF6495C90630</string>
+	<key>IDESourceControlProjectName</key>
+	<string>DevelopmentApp</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>9FA49912-568E-4386-8595-6F1112ADB712</key>
+		<string>ssh://github.com/stanislaw/CompositeOperations.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>DevelopmentApp/DevelopmentApp.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>9FA49912-568E-4386-8595-6F1112ADB712</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/stanislaw/CompositeOperations.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>9FA49912-568E-4386-8595-6F1112ADB712</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>9FA49912-568E-4386-8595-6F1112ADB712</string>
+			<key>IDESourceControlWCCName</key>
+			<string>CompositeOperations</string>
+		</dict>
+	</array>
+</dict>
+</plist>
