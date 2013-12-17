@@ -28,7 +28,7 @@
 
 - (void)testExample
 {
-    STFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
+    //STFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
 }
 
 @end
