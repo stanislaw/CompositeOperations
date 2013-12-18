@@ -9,9 +9,10 @@ static inline void dispatch_once_and_next_time(dispatch_once_t *oncePredicate, d
     });
 }
 
-#define __dispatch_once_and_next_time_auto(token, onceBlock, nextTimesBlock) \
+#define __dispatch_once_and_next_time_auto(token, onceBlock, nextTimesBlock) do {\
     static dispatch_once_t token; \
-    dispatch_once_and_next_time(&token, onceBlock, nextTimesBlock);
+    dispatch_once_and_next_time(&token, onceBlock, nextTimesBlock); \
+    } while(0);
 
 #define dispatch_once_and_next_time_auto(onceBlock, nextTimeBlock) \
     __dispatch_once_and_next_time_auto(__NSX_PASTE__(__dispatch_once_and_next_time_auto, __COUNTER__), onceBlock, nextTimeBlock)

@@ -41,6 +41,7 @@
 		86A10E8B18618B710026EA01 /* CurrentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 862DAE9E186034CA0067A193 /* CurrentTests.m */; };
 		86A10E8C18618B710026EA01 /* HighLoadIntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 862DAE9F186034CA0067A193 /* HighLoadIntegrationTests.m */; };
 		86A10E8D18618B710026EA01 /* NSOperationQueueControllerIntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 862DAEA0186034CA0067A193 /* NSOperationQueueControllerIntegrationTests.m */; };
+		86A10E90186190200026EA01 /* NSArray+CompositeOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 86A10E8F186190200026EA01 /* NSArray+CompositeOperations.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -93,6 +94,8 @@
 		862DAE9F186034CA0067A193 /* HighLoadIntegrationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HighLoadIntegrationTests.m; sourceTree = "<group>"; };
 		862DAEA0186034CA0067A193 /* NSOperationQueueControllerIntegrationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSOperationQueueControllerIntegrationTests.m; sourceTree = "<group>"; };
 		86A10E7E1861895F0026EA01 /* Assertions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Assertions.h; sourceTree = "<group>"; };
+		86A10E8E186190200026EA01 /* NSArray+CompositeOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+CompositeOperations.h"; sourceTree = "<group>"; };
+		86A10E8F186190200026EA01 /* NSArray+CompositeOperations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+CompositeOperations.m"; sourceTree = "<group>"; };
 		C1D1F900982441A68B48C982 /* libPods-DevelopmentApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DevelopmentApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD0A9D2178924BE6A64A722A /* Pods-DevelopmentApp.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DevelopmentApp.xcconfig"; path = "Pods/Pods-DevelopmentApp.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -243,6 +246,8 @@
 			children = (
 				862DAE97186034CA0067A193 /* TestHelpers.h */,
 				86A10E7E1861895F0026EA01 /* Assertions.h */,
+				86A10E8E186190200026EA01 /* NSArray+CompositeOperations.h */,
+				86A10E8F186190200026EA01 /* NSArray+CompositeOperations.m */,
 			);
 			path = TestHelpers;
 			sourceTree = "<group>";
@@ -428,6 +433,7 @@
 				86A10E8118618B710026EA01 /* CompositeOperationsTests.m in Sources */,
 				862DAEA8186034CA0067A193 /* COQueues.m in Sources */,
 				862DAEA6186034CA0067A193 /* COOperation.m in Sources */,
+				86A10E90186190200026EA01 /* NSArray+CompositeOperations.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
