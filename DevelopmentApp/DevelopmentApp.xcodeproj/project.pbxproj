@@ -29,14 +29,14 @@
 		86A10E7F18618B710026EA01 /* COCompositeOperationConcurrentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 862DAE99186034CA0067A193 /* COCompositeOperationConcurrentTests.m */; };
 		86A10E8018618B710026EA01 /* COCompositeSerialOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 862DAE9A186034CA0067A193 /* COCompositeSerialOperationTests.m */; };
 		86A10E8118618B710026EA01 /* CompositeOperationsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 862DAE9B186034CA0067A193 /* CompositeOperationsTests.m */; };
-		86A10E8218618B710026EA01 /* COOperationResolverTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 862DAE9C186034CA0067A193 /* COOperationResolverTests.m */; };
+		86A10E8218618B710026EA01 /* Examples_COOperationResolverTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 862DAE9C186034CA0067A193 /* Examples_COOperationResolverTests.m */; };
 		86A10E8318618B710026EA01 /* COOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 862DAE9D186034CA0067A193 /* COOperationTests.m */; };
 		86A10E8418618B710026EA01 /* HighLoadIntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 862DAE9F186034CA0067A193 /* HighLoadIntegrationTests.m */; };
 		86A10E8518618B710026EA01 /* NSOperationQueueControllerIntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 862DAEA0186034CA0067A193 /* NSOperationQueueControllerIntegrationTests.m */; };
 		86A10E8618618B710026EA01 /* COCompositeOperationConcurrentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 862DAE99186034CA0067A193 /* COCompositeOperationConcurrentTests.m */; };
 		86A10E8718618B710026EA01 /* COCompositeSerialOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 862DAE9A186034CA0067A193 /* COCompositeSerialOperationTests.m */; };
 		86A10E8818618B710026EA01 /* CompositeOperationsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 862DAE9B186034CA0067A193 /* CompositeOperationsTests.m */; };
-		86A10E8918618B710026EA01 /* COOperationResolverTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 862DAE9C186034CA0067A193 /* COOperationResolverTests.m */; };
+		86A10E8918618B710026EA01 /* Examples_COOperationResolverTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 862DAE9C186034CA0067A193 /* Examples_COOperationResolverTests.m */; };
 		86A10E8A18618B710026EA01 /* COOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 862DAE9D186034CA0067A193 /* COOperationTests.m */; };
 		86A10E8B18618B710026EA01 /* CurrentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 862DAE9E186034CA0067A193 /* CurrentTests.m */; };
 		86A10E8C18618B710026EA01 /* HighLoadIntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 862DAE9F186034CA0067A193 /* HighLoadIntegrationTests.m */; };
@@ -88,7 +88,7 @@
 		862DAE99186034CA0067A193 /* COCompositeOperationConcurrentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COCompositeOperationConcurrentTests.m; sourceTree = "<group>"; };
 		862DAE9A186034CA0067A193 /* COCompositeSerialOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COCompositeSerialOperationTests.m; sourceTree = "<group>"; };
 		862DAE9B186034CA0067A193 /* CompositeOperationsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompositeOperationsTests.m; sourceTree = "<group>"; };
-		862DAE9C186034CA0067A193 /* COOperationResolverTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COOperationResolverTests.m; sourceTree = "<group>"; };
+		862DAE9C186034CA0067A193 /* Examples_COOperationResolverTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Examples_COOperationResolverTests.m; sourceTree = "<group>"; };
 		862DAE9D186034CA0067A193 /* COOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COOperationTests.m; sourceTree = "<group>"; };
 		862DAE9E186034CA0067A193 /* CurrentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentTests.m; sourceTree = "<group>"; };
 		862DAE9F186034CA0067A193 /* HighLoadIntegrationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HighLoadIntegrationTests.m; sourceTree = "<group>"; };
@@ -258,7 +258,7 @@
 				862DAE99186034CA0067A193 /* COCompositeOperationConcurrentTests.m */,
 				862DAE9A186034CA0067A193 /* COCompositeSerialOperationTests.m */,
 				862DAE9B186034CA0067A193 /* CompositeOperationsTests.m */,
-				862DAE9C186034CA0067A193 /* COOperationResolverTests.m */,
+				862DAE9C186034CA0067A193 /* Examples_COOperationResolverTests.m */,
 				862DAE9D186034CA0067A193 /* COOperationTests.m */,
 				862DAE9E186034CA0067A193 /* CurrentTests.m */,
 				862DAE9F186034CA0067A193 /* HighLoadIntegrationTests.m */,
@@ -427,7 +427,7 @@
 				862DAEA2186034CA0067A193 /* COCompositeOperation.m in Sources */,
 				86A10E8418618B710026EA01 /* HighLoadIntegrationTests.m in Sources */,
 				86A10E7F18618B710026EA01 /* COCompositeOperationConcurrentTests.m in Sources */,
-				86A10E8218618B710026EA01 /* COOperationResolverTests.m in Sources */,
+				86A10E8218618B710026EA01 /* Examples_COOperationResolverTests.m in Sources */,
 				86A10E8518618B710026EA01 /* NSOperationQueueControllerIntegrationTests.m in Sources */,
 				862DAEA4186034CA0067A193 /* CompositeOperations.m in Sources */,
 				86A10E8118618B710026EA01 /* CompositeOperationsTests.m in Sources */,
@@ -450,7 +450,7 @@
 				862DAEA5186034CA0067A193 /* CompositeOperations.m in Sources */,
 				86A10E8D18618B710026EA01 /* NSOperationQueueControllerIntegrationTests.m in Sources */,
 				86A10E8618618B710026EA01 /* COCompositeOperationConcurrentTests.m in Sources */,
-				86A10E8918618B710026EA01 /* COOperationResolverTests.m in Sources */,
+				86A10E8918618B710026EA01 /* Examples_COOperationResolverTests.m in Sources */,
 				862DAEA9186034CA0067A193 /* COQueues.m in Sources */,
 				86A10E8B18618B710026EA01 /* CurrentTests.m in Sources */,
 				86A10E8818618B710026EA01 /* CompositeOperationsTests.m in Sources */,
