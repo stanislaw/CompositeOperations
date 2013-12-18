@@ -11,11 +11,11 @@ SPEC_BEGIN(COCompositeOperationConcurrentSpec)
 describe(@"COCompositeOperationConcurrentSpec", ^{
 
     it(@"", ^{
-        __block BOOL isFinished = NO;
+        waitSemaphore = dispatch_semaphore_create(0);
+        int N = 10;
 
-        NSMutableArray *countArr = [NSMutableArray array];
+        NSMutableArray *checkpoints = [NSMutableArray array];
 
-        __block NSMutableString *accResult = [NSMutableString string];
         COSetDefaultQueue(concurrentQueue());
         
         COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationConcurrent];;
@@ -23,28 +23,31 @@ describe(@"COCompositeOperationConcurrentSpec", ^{
         compositeOperation.operationQueue = [[NSOperationQueue alloc] init];
 
         [compositeOperation run:^(COCompositeOperation *compositeOperation) {
-            for (int i = 1; i <= 10; i++) {
+            [checkpoints addObject:@"Run block begins"];
+
+            for (int i = 1; i <= N; i++) {
                 [compositeOperation operationInQueue:concurrentQueue() withBlock:^(COOperation *tao) {
-                    @synchronized(countArr) {
-                        [countArr addObject:@1];
-                    }
-                    NSString *ind = [NSString stringWithFormat:@"%d", i];
-                    @synchronized(accResult) {
-                        [accResult appendString:ind];
-                    }
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [checkpoints addObject:@"Operation"];
+                    });
 
                     [tao finish];
                 }];
             }
         } completionHandler:^(id result){
-            isFinished = YES;
+            [checkpoints addObject:@"Completion handler"];
+
+            dispatch_semaphore_signal(waitSemaphore);
         } cancellationHandler:nil];
 
-        while (isFinished == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, YES);
+        while (dispatch_semaphore_wait(waitSemaphore, DISPATCH_TIME_NOW)) {
+            CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
+        }
 
-        [[theValue(countArr.count) should] equal:@(10)];
+        [[theValue(checkpoints.count) should] equal:@(N + 2)];
 
-        NSLog(@"%s: accResult is: %@", __PRETTY_FUNCTION__, accResult);
+        [[checkpoints.firstObject should] equal:@"Run block begins"];
+        [[checkpoints.lastObject should] equal:@"Completion handler"];
     });
 });
 
