@@ -5,10 +5,7 @@
 
 #import "Assertions.h"
 
-#define raiseShouldNotReachHere() @throw [NSException exceptionWithName:NSGenericException reason:[NSString stringWithFormat:@"Should not reach here: %s:%d, %s", __FILE__, __LINE__, __PRETTY_FUNCTION__] userInfo:nil]
-
 typedef void (^asyncronousBlock)(void);
-
 
 static inline dispatch_queue_t currentQueue() {
 #pragma clang diagnostic push

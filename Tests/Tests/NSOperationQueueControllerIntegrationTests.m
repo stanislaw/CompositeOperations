@@ -103,7 +103,7 @@ describe(@"NSOperationQueueController, COCompositeOperationConcurrent", ^{
             }, ^(NSArray *result){
                 isFinished = YES;
             }, ^(COCompositeOperation *compositeOperation, NSError *error){
-                raiseShouldNotReachHere();
+                AssertShouldNotReachHere();
             });
 
             int count = 0;
@@ -134,7 +134,7 @@ describe(@"NSOperationQueueController, -[operation reject]", ^{
             [operation reject];
 
         }, ^(id result){
-            raiseShouldNotReachHere();
+            AssertShouldNotReachHere();
         }, ^(COOperation *operation, NSError *error){
             NSAssert(operation, nil);
             NSAssert(operation.isCancelled, nil);

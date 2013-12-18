@@ -27,3 +27,5 @@ static inline void dispatch_once_and_next_time(dispatch_once_t *oncePredicate, d
 
 #define AssertShouldNotReachHereTwice() \
     __AssertShouldNotReachHereTwice(__NSX_PASTE__(__shouldNotReachHereTwiceToken, __COUNTER__))
+
+#define AssertShouldNotReachHere() @throw [NSException exceptionWithName:NSGenericException reason:[NSString stringWithFormat:@"Should not reach here: %s:%d, %s", __FILE__, __LINE__, __PRETTY_FUNCTION__] userInfo:nil]

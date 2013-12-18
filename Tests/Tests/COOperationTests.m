@@ -63,7 +63,7 @@
     [operation run:^(COOperation *operation) {
         [operation reject];
     } completionHandler:^(id result){
-        raiseShouldNotReachHere();
+        AssertShouldNotReachHere();
     } cancellationHandler:^(COOperation *operation, NSError *error) {
         STAssertTrue(operation.isCancelled, nil);
 

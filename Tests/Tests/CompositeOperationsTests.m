@@ -114,7 +114,7 @@ describe(@"compositeOperation(COCompositeOperationSerial, ...)", ^{
             }, ^(NSArray *result){
                 dispatch_semaphore_signal(waitSemaphore);
             }, ^(COCompositeOperation *compositeOperation, NSError *error){
-                raiseShouldNotReachHere();
+                AssertShouldNotReachHere();
             });
 
             while (dispatch_semaphore_wait(waitSemaphore, DISPATCH_TIME_NOW)) {
@@ -200,7 +200,7 @@ describe(@"compositeOperation(COCompositeOperationConcurrent, ...)", ^{
                 dispatch_semaphore_signal(waitSemaphore);
 
             }, ^(COCompositeOperation *compositeOperation, NSError *error){
-                raiseShouldNotReachHere();
+                AssertShouldNotReachHere();
             });
             
             while (dispatch_semaphore_wait(waitSemaphore, DISPATCH_TIME_NOW)) {
@@ -240,7 +240,7 @@ describe(@"Mixing operations", ^{
             }, ^(NSArray *result){
                 dispatch_semaphore_signal(waitSemaphore);
             }, ^(COCompositeOperation *compositeOperation, NSError *error){
-                raiseShouldNotReachHere();
+                AssertShouldNotReachHere();
             });
 
             while (dispatch_semaphore_wait(waitSemaphore, DISPATCH_TIME_NOW)) {
@@ -281,7 +281,7 @@ describe(@"Mixing operations", ^{
 
                 dispatch_semaphore_signal(waitSemaphore);
             }, ^(COCompositeOperation *compositeOperation, NSError *error){
-                raiseShouldNotReachHere();
+                AssertShouldNotReachHere();
             });
             
             while (dispatch_semaphore_wait(waitSemaphore, DISPATCH_TIME_NOW)) {
@@ -426,7 +426,7 @@ describe(@"Mixing operations", ^{
 
                 dispatch_semaphore_signal(waitSemaphore);
             }, ^(COCompositeOperation *compositeOperation, NSError *error){
-                raiseShouldNotReachHere();
+                AssertShouldNotReachHere();
             });
             
             while (dispatch_semaphore_wait(waitSemaphore, DISPATCH_TIME_NOW)) {
@@ -494,7 +494,7 @@ SPEC_END
 //
 //        isFinished = YES;
 //    }, ^(COOperation *operation, NSError *error) {
-//        raiseShouldNotReachHere();
+//        AssertShouldNotReachHere();
 //    });
 //
 //    while (isFinished == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, YES);

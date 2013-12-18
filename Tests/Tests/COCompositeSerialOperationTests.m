@@ -183,7 +183,7 @@ describe(@"COCompositeOperationSerial", ^{
                         [operation finish];
                     }];
                 } completionHandler:^(NSArray *result){
-                    raiseShouldNotReachHere();
+                    AssertShouldNotReachHere();
                 } cancellationHandler:^(COCompositeOperation *compositeOperation, NSError *error) {
                     [[theValue(compositeOperation.isCancelled) should] beYes];
 
