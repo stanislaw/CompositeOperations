@@ -35,46 +35,7 @@
     
     self.result = [NSMutableArray array];
 
-    __weak COCompositeOperation *weakSelf = self;
-    self.zOperation = [NSBlockOperation blockOperationWithBlock:^{
-        __strong COCompositeOperation *strongSelf = weakSelf;
-
-        NSAssert(strongSelf.zOperation, nil);
-        NSAssert(strongSelf.zOperation.dependencies, nil);
-
-        NSUInteger isThereCancelledDependency = [strongSelf.zOperation.dependencies indexOfObjectPassingTest:^BOOL(COOperation *operation, NSUInteger idx, BOOL *stop) {
-            if (operation.isCancelled) {
-                strongSelf.error = operation.error;
-                
-                *stop = YES;
-                return YES;
-            } else {
-                return NO;
-            }
-        }];
-
-        if (isThereCancelledDependency == NSNotFound) {
-            [strongSelf finish];
-        } else {
-            [strongSelf reject];
-        }
-    }];
-
-    self.completionBlock = ^{
-        __strong COCompositeOperation *strongSelf = weakSelf;
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (strongSelf.isCancelled == NO) {
-                if (strongSelf.completionHandler) {
-                    strongSelf.completionHandler([strongSelf.result copy]);
-                }
-            } else if (strongSelf.cancellationHandler) {
-                strongSelf.cancellationHandler(strongSelf, strongSelf.error);
-            }
-
-            [strongSelf _teardown];
-        });
-    };
-
+    [self _initializeZOperationAndCompletionBlock];
 
     return self;
 }
@@ -353,6 +314,48 @@
             [self.zOperation addDependency:operation];
         });
     }
+}
+
+- (void)_initializeZOperationAndCompletionBlock {
+    __weak COCompositeOperation *weakSelf = self;
+    self.zOperation = [NSBlockOperation blockOperationWithBlock:^{
+        __strong COCompositeOperation *strongSelf = weakSelf;
+
+        NSAssert(strongSelf.zOperation, nil);
+        NSAssert(strongSelf.zOperation.dependencies, nil);
+
+        NSUInteger isThereCancelledDependency = [strongSelf.zOperation.dependencies indexOfObjectPassingTest:^BOOL(COOperation *operation, NSUInteger idx, BOOL *stop) {
+            if (operation.isCancelled) {
+                strongSelf.error = operation.error;
+
+                *stop = YES;
+                return YES;
+            } else {
+                return NO;
+            }
+        }];
+
+        if (isThereCancelledDependency == NSNotFound) {
+            [strongSelf finish];
+        } else {
+            [strongSelf reject];
+        }
+    }];
+
+    self.completionBlock = ^{
+        __strong COCompositeOperation *strongSelf = weakSelf;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (strongSelf.isCancelled == NO) {
+                if (strongSelf.completionHandler) {
+                    strongSelf.completionHandler([strongSelf.result copy]);
+                }
+            } else if (strongSelf.cancellationHandler) {
+                strongSelf.cancellationHandler(strongSelf, strongSelf.error);
+            }
+
+            [strongSelf _teardown];
+        });
+    };
 }
 
 - (void)_teardown {
