@@ -316,12 +316,15 @@ describe(@"COCompositeOperationSerial", ^{
 
     describe(@"Lazy copying", ^{
         it(@"should copy composite operation", ^{
-            static dispatch_once_t onceToken;
+            static dispatch_once_t thirdOperationToken;
+
+            __block COCompositeOperation *lazyCopiedOperation;
 
             waitSemaphore = dispatch_semaphore_create(0);
 
             __block BOOL completionBlockWasRun = NO;
 
+            NSMutableArray *checkpoints = [NSMutableArray array];
             NSMutableArray *registry = [NSMutableArray array];
 
             COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
@@ -360,32 +363,54 @@ describe(@"COCompositeOperationSerial", ^{
                             NSLog(@"Third operation");
                         });
 
-                        [registry addObject:@(3)];
-
-
-                        dispatch_once_and_next_time(&onceToken, ^{
-                            [operation cancel];
+                        dispatch_once_and_next_time(&thirdOperationToken, ^{
+                            [operation reject];
                         }, ^{
+                            NSLog(@"lalalala %@", lazyCopiedOperation);
+
+
+                            [registry addObject:@(3)];
+
                             [operation finish];
                         });
                     });
                 }];
             } completionHandler:^(id result) {
-#warning TODO
-                completionBlockWasRun = YES;
-                abort();
+                static dispatch_once_t completionToken;
+                dispatch_once_and_next_time(&completionToken, ^{
+                }, ^{
+                    abort();
+                });
 
-            } cancellationHandler:^(COCompositeOperation *compositeOperation, NSError *error) {
-                abort();
+                completionBlockWasRun = YES;
 
                 dispatch_semaphore_signal(waitSemaphore);
+
+            } cancellationHandler:^(COCompositeOperation *compositeOperation, NSError *error) {
+                static dispatch_once_t cancellationToken;
+                dispatch_once_and_next_time(&cancellationToken, ^{
+                }, ^{
+                    abort();
+                });
+
+                dispatch_semaphore_signal(waitSemaphore);
+
+                lazyCopiedOperation = [compositeOperation lazyCopy];
+                [lazyCopiedOperation.operationQueue addOperation:lazyCopiedOperation];
             }];
 
             while (dispatch_semaphore_wait(waitSemaphore, DISPATCH_TIME_NOW)) {
                 CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
             }
-            
-            BOOL registryIsCorrect = [registry isEqual:@[ @(1), @(2), @(3) ]];
+
+            BOOL registryIsCorrect = [registry isEqual:@[ @(1), @(2) ]];
+            [[theValue(registryIsCorrect) should] beYes];
+
+            while (dispatch_semaphore_wait(waitSemaphore, DISPATCH_TIME_NOW)) {
+                CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
+            }
+
+            registryIsCorrect = [registry isEqual:@[ @(1), @(2), @(3) ]];
             
             [[theValue(registryIsCorrect) should] beYes];
             [[theValue(completionBlockWasRun) should] beYes];

@@ -236,7 +236,7 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
 - (instancetype)lazyCopy {
     id operation = [self copy];
 
-    if (self.isFinished) [operation finish];
+    if (self.isFinished && self.isCancelled == NO) [operation finish];
 
     return operation;
 }

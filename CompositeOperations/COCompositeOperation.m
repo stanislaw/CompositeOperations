@@ -39,6 +39,9 @@
     self.zOperation = [NSBlockOperation blockOperationWithBlock:^{
         __strong COCompositeOperation *strongSelf = weakSelf;
 
+        NSAssert(strongSelf.zOperation, nil);
+        NSAssert(strongSelf.zOperation.dependencies, nil);
+
         NSUInteger isThereCancelledDependency = [strongSelf.zOperation.dependencies indexOfObjectPassingTest:^BOOL(COOperation *operation, NSUInteger idx, BOOL *stop) {
             if (operation.isCancelled) {
                 strongSelf.error = operation.error;
@@ -57,6 +60,22 @@
         }
     }];
 
+    self.completionBlock = ^{
+        __strong COCompositeOperation *strongSelf = weakSelf;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (strongSelf.isCancelled == NO) {
+                if (strongSelf.completionHandler) {
+                    strongSelf.completionHandler([strongSelf.result copy]);
+                }
+            } else if (strongSelf.cancellationHandler) {
+                strongSelf.cancellationHandler(strongSelf, strongSelf.error);
+            }
+
+            [strongSelf _teardown];
+        });
+    };
+
+
     return self;
 }
 
@@ -73,22 +92,8 @@
 
 - (void)run:(COCompositeOperationBlock)operationBlock completionHandler:(COCompositeOperationCompletionBlock)completionHandler cancellationHandler:(COCompositeOperationCancellationBlock)cancellationHandler {
 
-    __weak COCompositeOperation *weakSelf = self;
-
-    self.completionBlock = ^{
-        __strong COCompositeOperation *strongSelf = weakSelf;
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (strongSelf.isCancelled == NO) {
-                if (completionHandler) {
-                    completionHandler([strongSelf.result copy]);
-                }
-            } else if (cancellationHandler) {
-                cancellationHandler(strongSelf, strongSelf.error);
-            }
-        });
-
-        [strongSelf _teardown];
-    };
+    self.completionHandler = completionHandler;
+    self.cancellationHandler = cancellationHandler;
 
     self.operationBlock = operationBlock;
 
@@ -257,16 +262,18 @@
 #pragma mark <NSCopying>
 
 - (id)copyWithZone:(NSZone *)zone {
-    NSAssert(self.operationBlock && self.operationQueue, nil);
-    NSAssert(self.isFinished == NO, nil);
+    NSAssert(self.operationBlock, nil);
+    NSAssert(self.operationQueue, nil);
 
     COCompositeOperation *compositeOperation = [[[self class] alloc] initWithConcurrencyType:self.concurrencyType];;
 
     compositeOperation.operationBlock = self.operationBlock;
+    compositeOperation.completionHandler = self.completionHandler;
+    compositeOperation.cancellationHandler = self.cancellationHandler;
+
     compositeOperation.operationQueue = self.operationQueue;
     compositeOperation.name = self.name;
-    compositeOperation.completionBlock = self.completionBlock;
-    
+
     for (id operation in self.dependencies) {
         [compositeOperation addDependency:operation];
     }
@@ -281,8 +288,8 @@
 
     compositeOperation.lazyCopy = YES;
 
-    compositeOperation.zOperation = [NSBlockOperation blockOperationWithBlock:self.zOperation.executionBlocks.firstObject];
-
+    NSAssert(compositeOperation.zOperation, nil);
+    
     for (id operation in self.zOperation.dependencies) {
         id copyOfOperation;
 
