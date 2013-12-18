@@ -14,8 +14,8 @@ describe(@"Current specs", ^{
     });
 
 
-    //it(@"should run composite operation", ^{
-    //});
+    it(@"should run composite operation", ^{
+    });
 
 });
 SPEC_END

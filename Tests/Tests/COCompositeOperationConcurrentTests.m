@@ -1,5 +1,4 @@
 
-#import <SenTestingKit/SenTestingKit.h>
 #import "TestHelpers.h"
 
 #import "COCompositeOperation.h"
@@ -8,13 +7,16 @@
 
 SPEC_BEGIN(COCompositeOperationConcurrentSpec)
 
-describe(@"COCompositeOperationConcurrentSpec", ^{
-
-    it(@"", ^{
+describe(@"COCompositeOperationConcurrent, basic spec", ^{
+    it(@"should run composite operation", ^{
         waitSemaphore = dispatch_semaphore_create(0);
         int N = 10;
 
         NSMutableArray *checkpoints = [NSMutableArray array];
+
+        NSSTRING_CONSTANT(CheckpointRunBlockBegins);
+        NSSTRING_CONSTANT(CheckpointOperation);
+        NSSTRING_CONSTANT(CheckpointCompletionHandler);
 
         COSetDefaultQueue(concurrentQueue());
         
@@ -23,19 +25,19 @@ describe(@"COCompositeOperationConcurrentSpec", ^{
         compositeOperation.operationQueue = [[NSOperationQueue alloc] init];
 
         [compositeOperation run:^(COCompositeOperation *compositeOperation) {
-            [checkpoints addObject:@"Run block begins"];
+            [checkpoints addObject:CheckpointRunBlockBegins];
 
             for (int i = 1; i <= N; i++) {
                 [compositeOperation operationInQueue:concurrentQueue() withBlock:^(COOperation *tao) {
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [checkpoints addObject:@"Operation"];
+                        [checkpoints addObject:CheckpointOperation];
                     });
 
                     [tao finish];
                 }];
             }
         } completionHandler:^(id result){
-            [checkpoints addObject:@"Completion handler"];
+            [checkpoints addObject:CheckpointCompletionHandler];
 
             dispatch_semaphore_signal(waitSemaphore);
         } cancellationHandler:nil];
@@ -46,8 +48,8 @@ describe(@"COCompositeOperationConcurrentSpec", ^{
 
         [[theValue(checkpoints.count) should] equal:@(N + 2)];
 
-        [[checkpoints.firstObject should] equal:@"Run block begins"];
-        [[checkpoints.lastObject should] equal:@"Completion handler"];
+        [[checkpoints.firstObject should] equal:CheckpointRunBlockBegins];
+        [[checkpoints.lastObject should] equal:CheckpointCompletionHandler];
     });
 });
 

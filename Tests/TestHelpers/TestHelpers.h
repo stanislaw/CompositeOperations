@@ -3,6 +3,8 @@
 #import <SenTestingKit/SenTestingKit.h>
 #import <Kiwi/Kiwi.h>
 
+#import "Assertions.h"
+
 #define raiseShouldNotReachHere() @throw [NSException exceptionWithName:NSGenericException reason:[NSString stringWithFormat:@"Should not reach here: %s:%d, %s", __FILE__, __LINE__, __PRETTY_FUNCTION__] userInfo:nil]
 
 typedef void (^asyncronousBlock)(void);
@@ -49,14 +51,6 @@ static inline void asynchronousJob(asyncronousBlock block) {
     dispatch_async(queue, block);
 }
 
-static inline void dispatch_once_and_next_time(dispatch_once_t *oncePredicate, dispatch_block_t onceBlock, dispatch_block_t nextTimeBlock) {
-    if (*oncePredicate) {
-        [nextTimeBlock invoke];
-    }
-
-    dispatch_once(oncePredicate, ^{
-        [onceBlock invoke];
-    });
-}
+#define NSSTRING_CONSTANT(name) NSString * const name = @#name
 
 static __unused dispatch_semaphore_t waitSemaphore = NULL;

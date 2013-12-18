@@ -316,8 +316,6 @@ describe(@"COCompositeOperationSerial", ^{
 
     describe(@"Lazy copying", ^{
         it(@"should copy composite operation", ^{
-            static dispatch_once_t thirdOperationToken;
-
             __block COCompositeOperation *lazyCopiedOperation;
 
             waitSemaphore = dispatch_semaphore_create(0);
@@ -325,6 +323,15 @@ describe(@"COCompositeOperationSerial", ^{
             __block BOOL completionBlockWasRun = NO;
 
             NSMutableArray *checkpoints = [NSMutableArray array];
+
+            NSSTRING_CONSTANT(CheckpointRunBlockBegins);
+            NSSTRING_CONSTANT(CheckpointOperation1);
+            NSSTRING_CONSTANT(CheckpointOperation2);
+            NSSTRING_CONSTANT(CheckpointOperation3_1);
+            NSSTRING_CONSTANT(CheckpointOperation3_2);
+            NSSTRING_CONSTANT(CheckpointCancellationHandler);
+            NSSTRING_CONSTANT(CheckpointCompletionHandler);
+
             NSMutableArray *registry = [NSMutableArray array];
 
             COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
@@ -333,7 +340,11 @@ describe(@"COCompositeOperationSerial", ^{
             [compositeOperation run:^(COCompositeOperation *compositeOperation) {
                 [[theValue(currentQueue() == dispatch_get_main_queue()) should] beYes];
 
+                [checkpoints addObject:CheckpointRunBlockBegins];
+
                 [compositeOperation operationWithBlock:^(COOperation *operation) {
+                    [checkpoints addObject:CheckpointOperation1];
+
                     asynchronousJob(^{
                         dispatch_async(dispatch_get_main_queue(), ^{
                             NSLog(@"First operation");
@@ -346,6 +357,8 @@ describe(@"COCompositeOperationSerial", ^{
                 }];
 
                 [compositeOperation operationWithBlock:^(COOperation *operation) {
+                    [checkpoints addObject:CheckpointOperation2];
+
                     asynchronousJob(^{
                         dispatch_async(dispatch_get_main_queue(), ^{
                             NSLog(@"Second operation");
@@ -363,11 +376,12 @@ describe(@"COCompositeOperationSerial", ^{
                             NSLog(@"Third operation");
                         });
 
-                        dispatch_once_and_next_time(&thirdOperationToken, ^{
+                        dispatch_once_and_next_time_auto(^{
+                            [checkpoints addObject:CheckpointOperation3_1];
+
                             [operation reject];
                         }, ^{
-                            NSLog(@"lalalala %@", lazyCopiedOperation);
-
+                            [checkpoints addObject:CheckpointOperation3_2];
 
                             [registry addObject:@(3)];
 
@@ -376,8 +390,10 @@ describe(@"COCompositeOperationSerial", ^{
                     });
                 }];
             } completionHandler:^(id result) {
-                static dispatch_once_t completionToken;
-                dispatch_once_and_next_time(&completionToken, ^{
+                AssertShouldNotReachHereTwice();
+
+                dispatch_once_and_next_time_auto(^{
+                    [checkpoints addObject:CheckpointCompletionHandler];
                 }, ^{
                     abort();
                 });
@@ -387,11 +403,9 @@ describe(@"COCompositeOperationSerial", ^{
                 dispatch_semaphore_signal(waitSemaphore);
 
             } cancellationHandler:^(COCompositeOperation *compositeOperation, NSError *error) {
-                static dispatch_once_t cancellationToken;
-                dispatch_once_and_next_time(&cancellationToken, ^{
-                }, ^{
-                    abort();
-                });
+                [checkpoints addObject:CheckpointCancellationHandler];
+
+                AssertShouldNotReachHereTwice();
 
                 dispatch_semaphore_signal(waitSemaphore);
 
@@ -414,6 +428,18 @@ describe(@"COCompositeOperationSerial", ^{
             
             [[theValue(registryIsCorrect) should] beYes];
             [[theValue(completionBlockWasRun) should] beYes];
+
+            NSArray *expectedCheckpoints = @[
+                CheckpointRunBlockBegins,
+                CheckpointOperation1,
+                CheckpointOperation2,
+                CheckpointOperation3_1,
+                CheckpointCancellationHandler,
+                CheckpointOperation3_2,
+                CheckpointCompletionHandler
+            ];
+
+            [[expectedCheckpoints should] equal:checkpoints];
         });
     });
 
