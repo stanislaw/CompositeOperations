@@ -39,7 +39,7 @@ void * COOperationResolverKey = &COOperationResolverKey;
     }
 
     if (currentResolutionNumber <= self.numberOfResolutionsPerOperation) {
-        COOperation *newOperation = [operation copy];
+        COOperation *newOperation = [operation lazyCopy];
 
         objc_setAssociatedObject(newOperation, COOperationResolverKey, @(currentResolutionNumber), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 

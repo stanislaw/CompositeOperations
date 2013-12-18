@@ -27,7 +27,7 @@ for (int i = 0; i < N; i++) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [registry addObject:@1];
 
-                        if (j == N) {
+                        if (registry.count == N) {
                             dispatch_semaphore_signal(waitSemaphore);
                         }
                     });
@@ -69,7 +69,8 @@ for (int i = 0; i < N; i++) {
         it(@"COCompositeOperation, COCompositeOperationSerial", ^{
             for (int i = 0; i < 1; i++) {
                 __block int count = 0;
-                __block BOOL isFinished = NO;
+                waitSemaphore = dispatch_semaphore_create(0);
+
                 __block BOOL firstJobIsDone = NO, secondJobIsDone = NO, thirdJobIsDone = NO;
 
                 COCompositeOperation *cOperation = [[COCompositeOperation alloc] initWithConcurrencyType:COCompositeOperationSerial];
@@ -130,10 +131,10 @@ for (int i = 0; i < N; i++) {
                         });
                     }];
                 } completionHandler:^(id result){
-                    isFinished = YES;
+                    dispatch_semaphore_signal(waitSemaphore);
                 } cancellationHandler:nil];
                 
-                while (isFinished == NO) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
+                while (dispatch_semaphore_wait(waitSemaphore, DISPATCH_TIME_NOW)) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
                 
                 [[theValue(count) should] equal:@(3)];
             }
