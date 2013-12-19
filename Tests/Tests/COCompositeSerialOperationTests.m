@@ -27,7 +27,6 @@ describe(@"COCompositeOperationSerial", ^{
             compositeOperation.operationQueue = [[NSOperationQueue alloc] init];
 
             [compositeOperation run:^(COCompositeOperation *compositeOperation) {
-                [[theValue(currentQueue() == dispatch_get_main_queue()) should] beYes];
 
                 [compositeOperation operationWithBlock:^(COOperation *operation) {
                     asynchronousJob(^{
@@ -338,8 +337,6 @@ describe(@"COCompositeOperationSerial", ^{
             compositeOperation.operationQueue = [[NSOperationQueue alloc] init];
 
             [compositeOperation run:^(COCompositeOperation *compositeOperation) {
-                [[theValue(currentQueue() == dispatch_get_main_queue()) should] beYes];
-
                 [checkpoints addObject:CheckpointRunBlockBegins];
 
                 [compositeOperation operationWithBlock:^(COOperation *operation) {
