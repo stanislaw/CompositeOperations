@@ -13,6 +13,5 @@
 
 dispatch_queue_t CODefaultQueue();
 void COSetDefaultQueue(dispatch_queue_t queue);
-void CORunInDefaultQueue(COBlock block);
 
 void CORunOperation(COOperation *operation);

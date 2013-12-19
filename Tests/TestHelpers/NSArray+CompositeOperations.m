@@ -11,7 +11,7 @@
 @implementation NSArray (CompositeOperations)
 
 - (NSUInteger)countForObject:(id)anObject {
-    NSIndexSet *indexesOfObject = [self indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+    NSIndexSet *indexesOfObject = [self indexesOfObjectsWithOptions:NSEnumerationConcurrent passingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
         return [obj isEqual:anObject];
     }];
 
