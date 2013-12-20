@@ -194,24 +194,22 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
     operation.completionBlock = ^{
         __strong COOperation *strongOperation = weakOperation;
 
-        if (strongOperation.isFinished) {
+        if (strongOperation.isCancelled == NO) {
             
             [originalCompletionBlock invoke];
 
             [self finishWithResult:strongOperation.data];
-
-            strongOperation.completionBlock = nil;
-        } else if (strongOperation.isCancelled) {
+        } else {
             [originalCompletionBlock invoke];
 
             self.error = strongOperation.error;
 
             [self reject];
-
-            strongOperation.completionBlock = nil;
         }
+
+        strongOperation.completionBlock = nil;
     };
-    
+
     CORunOperation(operation);
 }
 
