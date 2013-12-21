@@ -14,9 +14,6 @@
 
 @property (nonatomic, strong) NSBlockOperation *zOperation;
 
-@property (copy, nonatomic) COCompositeOperationCompletionBlock completionHandler;
-@property (copy, nonatomic) COCompositeOperationCancellationBlock cancellationHandler;
-
 @property (nonatomic, strong) NSMutableArray *result;
 
 - (void)_registerDependency:(COOperation *)operation;

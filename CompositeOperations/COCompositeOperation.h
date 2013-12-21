@@ -16,6 +16,9 @@
 
 @property (copy, nonatomic) COCompositeOperationBlock operationBlock;
 
+@property (copy, nonatomic) COCompositeOperationCompletionBlock completionHandler;
+@property (copy, nonatomic) COCompositeOperationCancellationBlock cancellationHandler;
+
 @property (nonatomic, getter = isLazyCopy) BOOL lazyCopy;
 
 - (void)run:(COCompositeOperationBlock)operationBlock __attribute__((unavailable("must run composite operation with 'run:completionHandler:cancellationHandler:' instead.")));
