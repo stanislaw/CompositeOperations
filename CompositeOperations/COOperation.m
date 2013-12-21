@@ -40,6 +40,10 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
 
     _state = COOperationStateReady;
 
+    self.dependent = NO;
+    
+    [self _initializeCompletionBlock];
+
     return self;
 }
 
@@ -143,21 +147,24 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
 - (void)run:(COOperationBlock)operationBlock completionHandler:(COOperationCompletionBlock)completionHandler cancellationHandler:(COOperationCancellationBlock)cancellationHandler {
     self.operationBlock = operationBlock;
 
-    __weak COOperation *weakSelf = self;
-    self.completionBlock = ^{
-        __strong COOperation *strongSelf = weakSelf;
+    self.completionHandler = completionHandler;
+    self.cancellationHandler = cancellationHandler;
 
-        if (strongSelf.isCancelled == NO) {
-            if (completionHandler) completionHandler(strongSelf.data);
+//    __weak COOperation *weakSelf = self;
+//    self.completionBlock = ^{
+//        __strong COOperation *strongSelf = weakSelf;
+//
+//        if (strongSelf.isCancelled == NO) {
+//            if (completionHandler) completionHandler(strongSelf.data);
+//
+//            strongSelf.completionBlock = nil;
+//        } else if (cancellationHandler) {
+//            cancellationHandler(strongSelf, strongSelf.error);
+//
+//            strongSelf.completionBlock = nil;
+//        }
+//    };
 
-            strongSelf.completionBlock = nil;
-        } else if (cancellationHandler) {
-            cancellationHandler(strongSelf, strongSelf.error);
-
-            strongSelf.completionBlock = nil;
-        }
-    };
-    
     CORunOperation(self);
 }
 
@@ -260,6 +267,43 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
 
     // TODO
     return self.description;
+}
+
+#pragma mark
+#pragma mark Private 
+
+- (void)_initializeCompletionBlock {
+    __weak COOperation *weakSelf = self;
+
+    self.completionBlock = ^{
+        __strong COOperation *strongSelf = weakSelf;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (strongSelf.isCancelled == NO) {
+                if (strongSelf.completionHandler) {
+                    strongSelf.completionHandler(strongSelf.data);
+                }
+            } else if (strongSelf.cancellationHandler) {
+                strongSelf.cancellationHandler(strongSelf, strongSelf.error);
+            }
+
+            if (strongSelf.dependent == NO) {
+                [strongSelf _teardown];
+            }
+        });
+    };
+}
+
+- (void)_teardown {
+    self.operationBlock = nil;
+
+    self.completionHandler = nil;
+    self.cancellationHandler = nil;
+
+    self.operationQueue = nil;
+
+    self.data = nil;
+    self.error = nil;
 }
 
 @end

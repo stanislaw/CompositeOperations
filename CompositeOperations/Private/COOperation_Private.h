@@ -29,9 +29,12 @@ static inline NSString * COKeyPathFromOperationState(COOperationState state) {
 @interface COOperation ()
 
 @property (nonatomic) COOperationState state;
+@property (nonatomic) BOOL dependent;
 
 @property (strong, nonatomic) id data;
 
 @property (strong, nonatomic) NSError *error;
+
+- (void)_teardown;
 
 @end

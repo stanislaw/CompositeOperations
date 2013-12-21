@@ -56,7 +56,7 @@
 }
 
 - (void)test_run_completionHandler_cancellationHandler {
-    __block BOOL blockFlag = NO;
+    waitSemaphore = dispatch_semaphore_create(0);
     
     COOperation *operation = [COOperation new];
 
@@ -67,10 +67,12 @@
     } cancellationHandler:^(COOperation *operation, NSError *error) {
         STAssertTrue(operation.isCancelled, nil);
 
-        blockFlag = YES;
+        dispatch_semaphore_signal(waitSemaphore);
     }];
 
-    while(blockFlag == NO);
+    while (dispatch_semaphore_wait(waitSemaphore, DISPATCH_TIME_NOW)) {
+        CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
+    }
 
     STAssertTrue(operation.isCancelled, nil);
 }

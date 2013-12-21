@@ -110,6 +110,7 @@
     };
 
     operation.operationBlock = operationBlockAdaptedToCompositeOperation;
+    operation.dependent = YES;
 
     [self _registerDependency:operation];
 
@@ -353,15 +354,24 @@
                 strongSelf.cancellationHandler(strongSelf, strongSelf.error);
             }
 
-            [strongSelf _teardown];
+            if (strongSelf.dependent == NO) {
+                [strongSelf _teardown];
+            }
         });
     };
 }
 
 - (void)_teardown {
-    self.completionBlock = nil;
+    [self.zOperation.dependencies enumerateObjectsUsingBlock:^(COOperation *operation, NSUInteger idx, BOOL *stop) {
+        [operation _teardown];
+    }];
 
     self.operationQueue = nil;
+
+    self.completionHandler = nil;
+    self.cancellationHandler = nil;
+    self.completionBlock = nil;
+
     self.zOperation = nil;
 }
 

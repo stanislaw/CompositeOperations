@@ -12,6 +12,9 @@
 
 @property (copy, nonatomic) COOperationBlock operationBlock;
 
+@property (copy, nonatomic) COOperationCompletionBlock completionHandler;
+@property (copy, nonatomic) COOperationCancellationBlock cancellationHandler;
+
 @property (strong, nonatomic) id operationQueue;
 
 @property (readonly) BOOL isReady;

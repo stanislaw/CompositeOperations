@@ -18,6 +18,4 @@
 
 - (void)_registerDependency:(COOperation *)operation;
 
-- (void)_teardown;
-
 @end
