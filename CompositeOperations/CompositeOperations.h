@@ -8,6 +8,7 @@
 #import <Foundation/Foundation.h>
 
 #import "COTypedefs.h"
+#import "COQueues.h"
 
 #import "COOperation.h"
 #import "COCompositeOperation.h"
