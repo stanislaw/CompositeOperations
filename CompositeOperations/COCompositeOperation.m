@@ -185,36 +185,19 @@
 
 - (void)lazyMain {
     dispatch_async(dispatch_get_main_queue(), ^{
-        if (self.concurrencyType == COCompositeOperationSerial) {
-            NSUInteger indexOfFirstOperationToRun = [self.zOperation.dependencies indexOfObjectPassingTest:^BOOL(NSOperation *operation, NSUInteger idx, BOOL *stop) {
-                if (operation.isReady) {
-                    *stop = YES;
-                    return YES;
-                } else {
-                    return NO;
-                }
-            }];
+        NSIndexSet *indexesOfOperationsToRun = [self.zOperation.dependencies indexesOfObjectsPassingTest:^BOOL(NSOperation *operation, NSUInteger idx, BOOL *stop) {
+            if (operation.isReady) {
+                return YES;
+            } else {
+                return NO;
+            }
+        }];
 
-            NSAssert(indexOfFirstOperationToRun != NSNotFound, nil);
+        NSAssert(indexesOfOperationsToRun.count > 0, nil);
 
-            id operation = [self.zOperation.dependencies objectAtIndex:indexOfFirstOperationToRun];
-
+        [self.zOperation.dependencies enumerateObjectsAtIndexes:indexesOfOperationsToRun options:0 usingBlock:^(id operation, NSUInteger idx, BOOL *stop) {
             [self.operationQueue addOperation:operation];
-        } else {
-            NSIndexSet *indexesOfOperationsToRun = [self.zOperation.dependencies indexesOfObjectsPassingTest:^BOOL(NSOperation *operation, NSUInteger idx, BOOL *stop) {
-                if (operation.isReady) {
-                    return YES;
-                } else {
-                    return NO;
-                }
-            }];
-
-            NSAssert(indexesOfOperationsToRun.count > 0, nil);
-
-            [self.zOperation.dependencies enumerateObjectsAtIndexes:indexesOfOperationsToRun options:0 usingBlock:^(id operation, NSUInteger idx, BOOL *stop) {
-                [self.operationQueue addOperation:operation];
-            }];
-        }
+        }];
 
         [self.operationQueue addOperation:self.zOperation];
     });
@@ -263,7 +246,7 @@
             @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"Expected composite operation to have copyable dependency operations" userInfo:@{ @"Failing operation": operation }];
         }
 
-        [compositeOperation.zOperation addDependency:copyOfOperation];
+        [compositeOperation _registerDependency:copyOfOperation];
     }
 
     return compositeOperation;
