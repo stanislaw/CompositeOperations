@@ -186,7 +186,10 @@
 - (void)lazyMain {
     dispatch_async(dispatch_get_main_queue(), ^{
         NSIndexSet *indexesOfOperationsToRun = [self.zOperation.dependencies indexesOfObjectsPassingTest:^BOOL(NSOperation *operation, NSUInteger idx, BOOL *stop) {
-            if (operation.isReady) {
+
+            // Here we need unfinished operations, but -isReady check is useless here since it relies on NSOperation's checks of if all operation's dependencies are satisfied
+
+            if (operation.isFinished == NO) {
                 return YES;
             } else {
                 return NO;
@@ -236,6 +239,8 @@
     NSAssert(compositeOperation.zOperation, nil);
     
     for (id operation in self.zOperation.dependencies) {
+        NSAssert([operation isExecuting] == NO, nil);
+
         id copyOfOperation;
 
         if ([operation respondsToSelector:@selector(lazyCopy)]) {
