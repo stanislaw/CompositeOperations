@@ -47,12 +47,10 @@ void  __attribute__((overloadable)) operation(COOperation *otherOperation, COOpe
     }];
 }
 
-COCompositeOperation * __attribute__((overloadable)) compositeOperation(COCompositeOperationConcurrencyType concurrencyType, id queue, COCompositeOperationBlock block, COCompositeOperationCompletionBlock completionHandler, COCompositeOperationCancellationBlock cancellationHandler) {
+void __attribute__((overloadable)) compositeOperation(COCompositeOperationConcurrencyType concurrencyType, id queue, COCompositeOperationBlock block, COCompositeOperationCompletionBlock completionHandler, COCompositeOperationCancellationBlock cancellationHandler) {
     COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithConcurrencyType:concurrencyType];
 
     compositeOperation.operationQueue = queue ?: [[NSOperationQueue alloc] init];
 
     [compositeOperation run:block completionHandler:completionHandler cancellationHandler:cancellationHandler];
-
-    return compositeOperation;
 }
