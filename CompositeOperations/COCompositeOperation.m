@@ -222,6 +222,8 @@
     compositeOperation.operationQueue = self.operationQueue;
     compositeOperation.name = self.name;
 
+    compositeOperation.dependent = self.dependent;
+
     for (id operation in self.dependencies) {
         [compositeOperation addDependency:operation];
     }

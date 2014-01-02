@@ -231,7 +231,7 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
     operation.name = self.name;
     operation.completionBlock = self.completionBlock;
     operation.dependent = self.dependent;
-    
+
     for (id operation in self.dependencies) {
         [operation addDependency:operation];
     }
