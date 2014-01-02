@@ -210,8 +210,8 @@
 #pragma mark <NSCopying>
 
 - (id)copyWithZone:(NSZone *)zone {
-    NSAssert(self.operationBlock, nil);
-    NSAssert(self.operationQueue, nil);
+    NSAssert(self.operationBlock, @"Expected composite operation to have @operationBlock defined: %@", self);
+    NSAssert(self.operationQueue, @"Expected composite operation to have @operationQueue defined: %@", self);
 
     COCompositeOperation *compositeOperation = [[[self class] alloc] initWithConcurrencyType:self.concurrencyType];;
 
