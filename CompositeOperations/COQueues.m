@@ -7,6 +7,8 @@
 
 #import "COQueues.h"
 
+#import "COOperation.h"
+
 static dispatch_queue_t defaultQueue;
 
 dispatch_queue_t CODefaultQueue() {

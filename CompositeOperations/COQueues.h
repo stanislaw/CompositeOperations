@@ -9,8 +9,6 @@
 
 #import "COTypedefs.h"
 
-#import "COOperation.h"
-
 dispatch_queue_t CODefaultQueue();
 void COSetDefaultQueue(dispatch_queue_t queue);
 

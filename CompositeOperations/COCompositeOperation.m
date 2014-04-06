@@ -156,22 +156,20 @@
 #pragma mark COOperation
 
 - (void)main {
-    if (self.isLazyCopy) {
-        [self lazyMain];
+    if (self.isLazyCopy == NO) {
+        if (self.operationBlock) {
+            NSAssert(self.operationQueue, nil);
 
-        return;
-    }
+            self.operationBlock(self);
 
-    if (self.operationBlock) {
-        NSAssert(self.operationQueue, nil);
-
-        self.operationBlock(self);
-
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.operationQueue addOperation:self.zOperation];
-        });
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.operationQueue addOperation:self.zOperation];
+            });
+        } else {
+            [self finish];
+        }
     } else {
-        [self finish];
+        [self lazyMain];
     }
 }
 
