@@ -48,7 +48,7 @@ describe(@"COCompositeOperationConcurrent, basic spec", ^{
 
         [[theValue(checkpoints.count) should] equal:@(N + 2)];
 
-        [[checkpoints.firstObject should] equal:CheckpointRunBlockBegins];
+        [[[checkpoints objectAtIndex:0] should] equal:CheckpointRunBlockBegins];
         [[checkpoints.lastObject should] equal:CheckpointCompletionHandler];
     });
 });
@@ -206,7 +206,7 @@ describe(@"Lazy copying", ^{
         [[theValue(registryIsCorrect) should] beYes];
         [[theValue(completionBlockWasRun) should] beYes];
 
-        [[checkpoints.firstObject should] equal:CheckpointRunBlockBegins];
+        [[[checkpoints objectAtIndex:0] should] equal:CheckpointRunBlockBegins];
         [[checkpoints.lastObject should] equal:CheckpointCompletionHandler];
 
         [[theValue([checkpoints countForObject:CheckpointCancellationHandler]) should] equal:@(1)];

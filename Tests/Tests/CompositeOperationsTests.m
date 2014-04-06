@@ -247,7 +247,7 @@ describe(@"Mixing operations", ^{
                 CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
             }
             
-            [[theValue(registry.count) should] beYes];
+            [[theValue(registry.count == 3) should] beYes];
         });
     });
 
