@@ -18,14 +18,6 @@ dispatch_queue_t CODefaultQueue() {
 }
 
 void COSetDefaultQueue(dispatch_queue_t queue) {
-#if !OS_OBJECT_USE_OBJC
-    if (defaultQueue) dispatch_release(defaultQueue);
-
-    if (queue) {
-        dispatch_retain(queue);
-    }
-#endif
-
     defaultQueue = queue;
 }
 

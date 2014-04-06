@@ -72,18 +72,10 @@
     if (queue) {
         COOperationBlock originalOperationBlock = operation.operationBlock;
 
-        #if !OS_OBJECT_USE_OBJC
-        dispatch_retain(queue);
-        #endif
-
         COOperationBlock operationBlockInQueue = ^(COOperation *_operation) {
             dispatch_async(queue, ^{
                 originalOperationBlock(_operation);
             });
-
-            #if !OS_OBJECT_USE_OBJC
-            dispatch_release(queue);
-            #endif
         };
 
         operation.operationBlock = operationBlockInQueue;

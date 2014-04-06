@@ -125,17 +125,10 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
 - (void)runInQueue:(dispatch_queue_t)queue operation:(COOperationBlock)operationBlock {
     COOperationBlock operationBlockInQueue = ^(COOperation *op) {
 
-#if !OS_OBJECT_USE_OBJC
-        dispatch_retain(queue);
-#endif
-
         dispatch_async(queue, ^{
             if (op.isExecuting == YES) {
                 operationBlock(op);
             }
-#if !OS_OBJECT_USE_OBJC
-            dispatch_release(queue);
-#endif
         });
     };
 
