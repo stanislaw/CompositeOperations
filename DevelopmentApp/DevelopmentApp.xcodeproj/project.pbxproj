@@ -7,61 +7,105 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		864AA3DA1A17AB20008A1EA6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA3D91A17AB20008A1EA6 /* main.m */; };
+		58C6D2E02FB74CF9B4C1FA71 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DE8D248078583F2241E8C0DB /* libPods-Tests.a */; };
 		864AA3E91A17AB63008A1EA6 /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA3E81A17AB63008A1EA6 /* Tests.m */; };
+		864AA40C1A17ABE1008A1EA6 /* NSArray+CompositeOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA4011A17ABE1008A1EA6 /* NSArray+CompositeOperations.m */; };
+		864AA40D1A17ABE1008A1EA6 /* COCompositeOperationConcurrentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA4041A17ABE1008A1EA6 /* COCompositeOperationConcurrentTests.m */; };
+		864AA40E1A17ABE1008A1EA6 /* COCompositeSerialOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA4051A17ABE1008A1EA6 /* COCompositeSerialOperationTests.m */; };
+		864AA40F1A17ABE1008A1EA6 /* CompositeOperationsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA4061A17ABE1008A1EA6 /* CompositeOperationsTests.m */; };
+		864AA4111A17ABE1008A1EA6 /* CurrentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA4081A17ABE1008A1EA6 /* CurrentTests.m */; };
+		864AA4131A17ABE1008A1EA6 /* HighLoadIntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA40A1A17ABE1008A1EA6 /* HighLoadIntegrationTests.m */; };
+		864AA4141A17ABE1008A1EA6 /* NSOperationQueueControllerIntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA40B1A17ABE1008A1EA6 /* NSOperationQueueControllerIntegrationTests.m */; };
+		864AA4161A17AD3B008A1EA6 /* COCompositeOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA3EF1A17ABC9008A1EA6 /* COCompositeOperation.m */; };
+		864AA4171A17AD3B008A1EA6 /* CompositeOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA3F11A17ABC9008A1EA6 /* CompositeOperations.m */; };
+		864AA4181A17AD3B008A1EA6 /* COOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA3F31A17ABC9008A1EA6 /* COOperation.m */; };
+		864AA4191A17AD3B008A1EA6 /* COQueues.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA3F51A17ABC9008A1EA6 /* COQueues.m */; };
+		864AA41A1A17AF41008A1EA6 /* COOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA4071A17ABE1008A1EA6 /* COOperationTests.m */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		864AA3D41A17AB20008A1EA6 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
-		864AA3D61A17AB20008A1EA6 /* DevelopmentApp */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DevelopmentApp; sourceTree = BUILT_PRODUCTS_DIR; };
+		111909BAA6616385B5E3A3EF /* Pods-Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.release.xcconfig"; sourceTree = "<group>"; };
+		18B8E976DFF4F29B200FCFB4 /* Pods-DevelopmentApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DevelopmentApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DevelopmentApp/Pods-DevelopmentApp.debug.xcconfig"; sourceTree = "<group>"; };
 		864AA3D91A17AB20008A1EA6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		864AA3E41A17AB63008A1EA6 /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		864AA3E71A17AB63008A1EA6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		864AA3E81A17AB63008A1EA6 /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
+		864AA3EE1A17ABC9008A1EA6 /* COCompositeOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COCompositeOperation.h; sourceTree = "<group>"; };
+		864AA3EF1A17ABC9008A1EA6 /* COCompositeOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COCompositeOperation.m; sourceTree = "<group>"; };
+		864AA3F01A17ABC9008A1EA6 /* CompositeOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompositeOperations.h; sourceTree = "<group>"; };
+		864AA3F11A17ABC9008A1EA6 /* CompositeOperations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompositeOperations.m; sourceTree = "<group>"; };
+		864AA3F21A17ABC9008A1EA6 /* COOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COOperation.h; sourceTree = "<group>"; };
+		864AA3F31A17ABC9008A1EA6 /* COOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COOperation.m; sourceTree = "<group>"; };
+		864AA3F41A17ABC9008A1EA6 /* COQueues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COQueues.h; sourceTree = "<group>"; };
+		864AA3F51A17ABC9008A1EA6 /* COQueues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COQueues.m; sourceTree = "<group>"; };
+		864AA3F61A17ABC9008A1EA6 /* COTypedefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COTypedefs.h; sourceTree = "<group>"; };
+		864AA3F81A17ABC9008A1EA6 /* COCompositeOperation_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COCompositeOperation_Private.h; sourceTree = "<group>"; };
+		864AA3F91A17ABC9008A1EA6 /* COOperation_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COOperation_Private.h; sourceTree = "<group>"; };
+		864AA3FF1A17ABE1008A1EA6 /* Assertions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Assertions.h; sourceTree = "<group>"; };
+		864AA4001A17ABE1008A1EA6 /* NSArray+CompositeOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+CompositeOperations.h"; sourceTree = "<group>"; };
+		864AA4011A17ABE1008A1EA6 /* NSArray+CompositeOperations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+CompositeOperations.m"; sourceTree = "<group>"; };
+		864AA4021A17ABE1008A1EA6 /* TestHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestHelpers.h; sourceTree = "<group>"; };
+		864AA4041A17ABE1008A1EA6 /* COCompositeOperationConcurrentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COCompositeOperationConcurrentTests.m; sourceTree = "<group>"; };
+		864AA4051A17ABE1008A1EA6 /* COCompositeSerialOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COCompositeSerialOperationTests.m; sourceTree = "<group>"; };
+		864AA4061A17ABE1008A1EA6 /* CompositeOperationsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompositeOperationsTests.m; sourceTree = "<group>"; };
+		864AA4071A17ABE1008A1EA6 /* COOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COOperationTests.m; sourceTree = "<group>"; };
+		864AA4081A17ABE1008A1EA6 /* CurrentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentTests.m; sourceTree = "<group>"; };
+		864AA4091A17ABE1008A1EA6 /* Examples_COOperationResolverTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Examples_COOperationResolverTests.m; sourceTree = "<group>"; };
+		864AA40A1A17ABE1008A1EA6 /* HighLoadIntegrationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HighLoadIntegrationTests.m; sourceTree = "<group>"; };
+		864AA40B1A17ABE1008A1EA6 /* NSOperationQueueControllerIntegrationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSOperationQueueControllerIntegrationTests.m; sourceTree = "<group>"; };
+		AC594D22A25D0C1A15CD571B /* libPods-DevelopmentApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DevelopmentApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C1F046835BB10183CCD41832 /* Pods-DevelopmentApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DevelopmentApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-DevelopmentApp/Pods-DevelopmentApp.release.xcconfig"; sourceTree = "<group>"; };
+		DE8D248078583F2241E8C0DB /* libPods-Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FFC38A3A9110E38410377609 /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		864AA3D31A17AB20008A1EA6 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		864AA3E11A17AB63008A1EA6 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				58C6D2E02FB74CF9B4C1FA71 /* libPods-Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		29FEE549B4F1AD3E582F555E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AC594D22A25D0C1A15CD571B /* libPods-DevelopmentApp.a */,
+				DE8D248078583F2241E8C0DB /* libPods-Tests.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6964E474986507CD21C9B9D7 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				18B8E976DFF4F29B200FCFB4 /* Pods-DevelopmentApp.debug.xcconfig */,
+				C1F046835BB10183CCD41832 /* Pods-DevelopmentApp.release.xcconfig */,
+				FFC38A3A9110E38410377609 /* Pods-Tests.debug.xcconfig */,
+				111909BAA6616385B5E3A3EF /* Pods-Tests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		864AA3CD1A17AB20008A1EA6 = {
 			isa = PBXGroup;
 			children = (
+				864AA3ED1A17ABC9008A1EA6 /* CompositeOperations */,
 				864AA3D81A17AB20008A1EA6 /* DevelopmentApp */,
 				864AA3E51A17AB63008A1EA6 /* Tests */,
 				864AA3D71A17AB20008A1EA6 /* Products */,
+				6964E474986507CD21C9B9D7 /* Pods */,
+				29FEE549B4F1AD3E582F555E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
 		864AA3D71A17AB20008A1EA6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				864AA3D61A17AB20008A1EA6 /* DevelopmentApp */,
 				864AA3E41A17AB63008A1EA6 /* Tests.xctest */,
 			);
 			name = Products;
@@ -78,6 +122,8 @@
 		864AA3E51A17AB63008A1EA6 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				864AA3FE1A17ABE1008A1EA6 /* TestHelpers */,
+				864AA4031A17ABE1008A1EA6 /* Tests */,
 				864AA3E81A17AB63008A1EA6 /* Tests.m */,
 				864AA3E61A17AB63008A1EA6 /* Supporting Files */,
 			);
@@ -92,33 +138,73 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		864AA3ED1A17ABC9008A1EA6 /* CompositeOperations */ = {
+			isa = PBXGroup;
+			children = (
+				864AA3EE1A17ABC9008A1EA6 /* COCompositeOperation.h */,
+				864AA3EF1A17ABC9008A1EA6 /* COCompositeOperation.m */,
+				864AA3F01A17ABC9008A1EA6 /* CompositeOperations.h */,
+				864AA3F11A17ABC9008A1EA6 /* CompositeOperations.m */,
+				864AA3F21A17ABC9008A1EA6 /* COOperation.h */,
+				864AA3F31A17ABC9008A1EA6 /* COOperation.m */,
+				864AA3F41A17ABC9008A1EA6 /* COQueues.h */,
+				864AA3F51A17ABC9008A1EA6 /* COQueues.m */,
+				864AA3F61A17ABC9008A1EA6 /* COTypedefs.h */,
+				864AA3F71A17ABC9008A1EA6 /* Private */,
+			);
+			name = CompositeOperations;
+			path = ../CompositeOperations;
+			sourceTree = "<group>";
+		};
+		864AA3F71A17ABC9008A1EA6 /* Private */ = {
+			isa = PBXGroup;
+			children = (
+				864AA3F81A17ABC9008A1EA6 /* COCompositeOperation_Private.h */,
+				864AA3F91A17ABC9008A1EA6 /* COOperation_Private.h */,
+			);
+			path = Private;
+			sourceTree = "<group>";
+		};
+		864AA3FE1A17ABE1008A1EA6 /* TestHelpers */ = {
+			isa = PBXGroup;
+			children = (
+				864AA3FF1A17ABE1008A1EA6 /* Assertions.h */,
+				864AA4001A17ABE1008A1EA6 /* NSArray+CompositeOperations.h */,
+				864AA4011A17ABE1008A1EA6 /* NSArray+CompositeOperations.m */,
+				864AA4021A17ABE1008A1EA6 /* TestHelpers.h */,
+			);
+			name = TestHelpers;
+			path = ../../Tests/TestHelpers;
+			sourceTree = "<group>";
+		};
+		864AA4031A17ABE1008A1EA6 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				864AA4041A17ABE1008A1EA6 /* COCompositeOperationConcurrentTests.m */,
+				864AA4051A17ABE1008A1EA6 /* COCompositeSerialOperationTests.m */,
+				864AA4061A17ABE1008A1EA6 /* CompositeOperationsTests.m */,
+				864AA4071A17ABE1008A1EA6 /* COOperationTests.m */,
+				864AA4081A17ABE1008A1EA6 /* CurrentTests.m */,
+				864AA4091A17ABE1008A1EA6 /* Examples_COOperationResolverTests.m */,
+				864AA40A1A17ABE1008A1EA6 /* HighLoadIntegrationTests.m */,
+				864AA40B1A17ABE1008A1EA6 /* NSOperationQueueControllerIntegrationTests.m */,
+			);
+			name = Tests;
+			path = ../../Tests/Tests;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		864AA3D51A17AB20008A1EA6 /* DevelopmentApp */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 864AA3DD1A17AB20008A1EA6 /* Build configuration list for PBXNativeTarget "DevelopmentApp" */;
-			buildPhases = (
-				864AA3D21A17AB20008A1EA6 /* Sources */,
-				864AA3D31A17AB20008A1EA6 /* Frameworks */,
-				864AA3D41A17AB20008A1EA6 /* CopyFiles */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = DevelopmentApp;
-			productName = DevelopmentApp;
-			productReference = 864AA3D61A17AB20008A1EA6 /* DevelopmentApp */;
-			productType = "com.apple.product-type.tool";
-		};
 		864AA3E31A17AB63008A1EA6 /* Tests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 864AA3EA1A17AB63008A1EA6 /* Build configuration list for PBXNativeTarget "Tests" */;
 			buildPhases = (
+				93B466DBE5BA1379D0701938 /* Check Pods Manifest.lock */,
 				864AA3E01A17AB63008A1EA6 /* Sources */,
 				864AA3E11A17AB63008A1EA6 /* Frameworks */,
 				864AA3E21A17AB63008A1EA6 /* Resources */,
+				05E5538E8440040A11540E79 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -138,9 +224,6 @@
 				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "Stanislaw Pankevich";
 				TargetAttributes = {
-					864AA3D51A17AB20008A1EA6 = {
-						CreatedOnToolsVersion = 6.1;
-					};
 					864AA3E31A17AB63008A1EA6 = {
 						CreatedOnToolsVersion = 6.1;
 					};
@@ -158,7 +241,6 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				864AA3D51A17AB20008A1EA6 /* DevelopmentApp */,
 				864AA3E31A17AB63008A1EA6 /* Tests */,
 			);
 		};
@@ -174,20 +256,57 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXSourcesBuildPhase section */
-		864AA3D21A17AB20008A1EA6 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
+/* Begin PBXShellScriptBuildPhase section */
+		05E5538E8440040A11540E79 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				864AA3DA1A17AB20008A1EA6 /* main.m in Sources */,
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
+		93B466DBE5BA1379D0701938 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
 		864AA3E01A17AB63008A1EA6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				864AA41A1A17AF41008A1EA6 /* COOperationTests.m in Sources */,
+				864AA40C1A17ABE1008A1EA6 /* NSArray+CompositeOperations.m in Sources */,
+				864AA4131A17ABE1008A1EA6 /* HighLoadIntegrationTests.m in Sources */,
+				864AA4111A17ABE1008A1EA6 /* CurrentTests.m in Sources */,
+				864AA4171A17AD3B008A1EA6 /* CompositeOperations.m in Sources */,
+				864AA4191A17AD3B008A1EA6 /* COQueues.m in Sources */,
 				864AA3E91A17AB63008A1EA6 /* Tests.m in Sources */,
+				864AA40F1A17ABE1008A1EA6 /* CompositeOperationsTests.m in Sources */,
+				864AA4141A17ABE1008A1EA6 /* NSOperationQueueControllerIntegrationTests.m in Sources */,
+				864AA4161A17AD3B008A1EA6 /* COCompositeOperation.m in Sources */,
+				864AA40D1A17ABE1008A1EA6 /* COCompositeOperationConcurrentTests.m in Sources */,
+				864AA40E1A17ABE1008A1EA6 /* COCompositeSerialOperationTests.m in Sources */,
+				864AA4181A17AD3B008A1EA6 /* COOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -268,22 +387,9 @@
 			};
 			name = Release;
 		};
-		864AA3DE1A17AB20008A1EA6 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		864AA3DF1A17AB20008A1EA6 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
 		864AA3EB1A17AB63008A1EA6 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FFC38A3A9110E38410377609 /* Pods-Tests.debug.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -302,6 +408,7 @@
 		};
 		864AA3EC1A17AB63008A1EA6 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 111909BAA6616385B5E3A3EF /* Pods-Tests.release.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -326,14 +433,6 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		864AA3DD1A17AB20008A1EA6 /* Build configuration list for PBXNativeTarget "DevelopmentApp" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				864AA3DE1A17AB20008A1EA6 /* Debug */,
-				864AA3DF1A17AB20008A1EA6 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-		};
 		864AA3EA1A17AB63008A1EA6 /* Build configuration list for PBXNativeTarget "Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -341,6 +440,7 @@
 				864AA3EC1A17AB63008A1EA6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

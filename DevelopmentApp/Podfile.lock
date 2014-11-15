@@ -1,0 +1,17 @@
+PODS:
+  - Kiwi (2.3.1)
+  - NSOperationQueueController (0.0.3)
+
+DEPENDENCIES:
+  - Kiwi
+  - NSOperationQueueController (from `https://github.com/stanislaw/NSOperationQueueController`)
+
+EXTERNAL SOURCES:
+  NSOperationQueueController:
+    :git: https://github.com/stanislaw/NSOperationQueueController
+
+SPEC CHECKSUMS:
+  Kiwi: 73e1400209055ee9c8ba78c6012b6b642d0fb9f7
+  NSOperationQueueController: 6494f10916a37c7da15e7d4c26f6f4d4f392f833
+
+COCOAPODS: 0.34.4

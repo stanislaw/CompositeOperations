@@ -6,7 +6,7 @@ target :DevelopmentApp, :exclusive => true do
   pod 'NSOperationQueueController', :git => 'https://github.com/stanislaw/NSOperationQueueController'
 end
 
-target :CompositeOperationsTests, :exclusive => true do
+target :Tests, :exclusive => true do
   pod 'Kiwi'
   pod 'NSOperationQueueController', :git => 'https://github.com/stanislaw/NSOperationQueueController'
 end
