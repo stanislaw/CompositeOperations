@@ -7,6 +7,9 @@
 // Released under the MIT license
 //
 
-#import "COOperation.h"
-#import "COSequentialCompositeOperation.h"
 #import "COParallelCompositeOperation.h"
+#import "COOperation_Private.h"
+
+@implementation COParallelCompositeOperation
+
+@end

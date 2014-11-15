@@ -1,13 +1,5 @@
-/Users/stanislaw/Work/Pods/CompositeOperations/DevelopmentApp/Build/Intermediates/DevelopmentApp.build/Debug/Tests.build/Objects-normal/x86_64/COOperationTests.o
 /Users/stanislaw/Work/Pods/CompositeOperations/DevelopmentApp/Build/Intermediates/DevelopmentApp.build/Debug/Tests.build/Objects-normal/x86_64/NSArray+CompositeOperations.o
-/Users/stanislaw/Work/Pods/CompositeOperations/DevelopmentApp/Build/Intermediates/DevelopmentApp.build/Debug/Tests.build/Objects-normal/x86_64/HighLoadIntegrationTests.o
-/Users/stanislaw/Work/Pods/CompositeOperations/DevelopmentApp/Build/Intermediates/DevelopmentApp.build/Debug/Tests.build/Objects-normal/x86_64/CurrentTests.o
-/Users/stanislaw/Work/Pods/CompositeOperations/DevelopmentApp/Build/Intermediates/DevelopmentApp.build/Debug/Tests.build/Objects-normal/x86_64/CompositeOperations.o
-/Users/stanislaw/Work/Pods/CompositeOperations/DevelopmentApp/Build/Intermediates/DevelopmentApp.build/Debug/Tests.build/Objects-normal/x86_64/COQueues.o
 /Users/stanislaw/Work/Pods/CompositeOperations/DevelopmentApp/Build/Intermediates/DevelopmentApp.build/Debug/Tests.build/Objects-normal/x86_64/Tests.o
-/Users/stanislaw/Work/Pods/CompositeOperations/DevelopmentApp/Build/Intermediates/DevelopmentApp.build/Debug/Tests.build/Objects-normal/x86_64/CompositeOperationsTests.o
-/Users/stanislaw/Work/Pods/CompositeOperations/DevelopmentApp/Build/Intermediates/DevelopmentApp.build/Debug/Tests.build/Objects-normal/x86_64/NSOperationQueueControllerIntegrationTests.o
-/Users/stanislaw/Work/Pods/CompositeOperations/DevelopmentApp/Build/Intermediates/DevelopmentApp.build/Debug/Tests.build/Objects-normal/x86_64/COCompositeOperation.o
-/Users/stanislaw/Work/Pods/CompositeOperations/DevelopmentApp/Build/Intermediates/DevelopmentApp.build/Debug/Tests.build/Objects-normal/x86_64/COCompositeOperationConcurrentTests.o
-/Users/stanislaw/Work/Pods/CompositeOperations/DevelopmentApp/Build/Intermediates/DevelopmentApp.build/Debug/Tests.build/Objects-normal/x86_64/COCompositeSerialOperationTests.o
+/Users/stanislaw/Work/Pods/CompositeOperations/DevelopmentApp/Build/Intermediates/DevelopmentApp.build/Debug/Tests.build/Objects-normal/x86_64/COParallelCompositeOperation.o
+/Users/stanislaw/Work/Pods/CompositeOperations/DevelopmentApp/Build/Intermediates/DevelopmentApp.build/Debug/Tests.build/Objects-normal/x86_64/COSequentialCompositeOperation.o
 /Users/stanislaw/Work/Pods/CompositeOperations/DevelopmentApp/Build/Intermediates/DevelopmentApp.build/Debug/Tests.build/Objects-normal/x86_64/COOperation.o

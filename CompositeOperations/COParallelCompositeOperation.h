@@ -8,5 +8,7 @@
 //
 
 #import "COOperation.h"
-#import "COSequentialCompositeOperation.h"
-#import "COParallelCompositeOperation.h"
+
+@interface COParallelCompositeOperation : COOperation
+
+@end

@@ -1,54 +1,28 @@
+//
 // CompositeOperations
 //
-// CompositeOperations/COOperation.m
+// CompositeOperations/COCompositeOperations.h
 //
-// Copyright (c) 2013 Stanislaw Pankevich
+// Copyright (c) 2014 Stanislaw Pankevich
 // Released under the MIT license
+//
 
 #import "COOperation.h"
 #import "COOperation_Private.h"
 
-#import "COQueues.h"
-
-static inline int COStateTransitionIsValid(COOperationState fromState, COOperationState toState) {
-    switch (fromState) {
-        case COOperationStateReady:
-            return YES;
-
-        case COOperationStateExecuting:
-            switch (toState) {
-                case COOperationStateReady:
-                    return -1;
-                default:
-                    return YES;
-            }
-
-        case COOperationStateFinished:
-            return -1;
-
-        default:
-            return -1;
-    }
-}
-
 @implementation COOperation
+
+@synthesize cancelled = _cancelled;
 
 - (id)init {
     self = [super init];
 
     if (self == nil) return nil;
 
-    _state = COOperationStateReady;
-
-    self.dependent = NO;
-    
-    [self _initializeCompletionBlock];
+    _state     = COOperationStateReady;
+    _cancelled = NO;
 
     return self;
-}
-
-- (void)dealloc {
-    _operationBlock = nil;
 }
 
 - (void)setState:(COOperationState)state {
@@ -58,10 +32,6 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
 
     @synchronized(self) {
         if (COStateTransitionIsValid(self.state, state) == NO) {
-            return;
-        }
-
-        if (COStateTransitionIsValid(self.state, state) == -1) {
             NSString *errMessage = [NSString stringWithFormat:@"%@: transition from %@ to %@ is invalid", self, COKeyPathFromOperationState(self.state), COKeyPathFromOperationState(state)];
 
             @throw [NSException exceptionWithName:NSGenericException reason:errMessage userInfo:nil];
@@ -78,12 +48,7 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
     }
 }
 
-#pragma mark
-#pragma mark NSOperation
-
-- (BOOL)isConcurrent {
-    return YES;
-}
+#pragma mark - NSOperation interface (partial mirroring)
 
 - (BOOL)isReady {
     return self.state == COOperationStateReady && super.isReady;
@@ -98,7 +63,7 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
 }
 
 - (void)main {
-    if (self.operationBlock) self.operationBlock(self);
+    [self finish];
 }
 
 - (void)start {
@@ -113,52 +78,12 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
     }
 }
 
-#pragma mark
-#pragma mark COOperation
+- (void)cancel {
+    self.cancelled = YES;
 
-- (void)run:(COOperationBlock)operationBlock {
-    self.operationBlock = operationBlock;
-
-    CORunOperation(self);
-}
-
-- (void)runInQueue:(dispatch_queue_t)queue operation:(COOperationBlock)operationBlock {
-    COOperationBlock operationBlockInQueue = ^(COOperation *op) {
-
-        dispatch_async(queue, ^{
-            if (op.isExecuting == YES) {
-                operationBlock(op);
-            }
-        });
-    };
-
-    self.operationBlock = operationBlockInQueue;
-
-    [self start];
-}
-
-- (void)run:(COOperationBlock)operationBlock completionHandler:(COOperationCompletionBlock)completionHandler cancellationHandler:(COOperationCancellationBlock)cancellationHandler {
-    self.operationBlock = operationBlock;
-
-    self.completionHandler = completionHandler;
-    self.cancellationHandler = cancellationHandler;
-
-//    __weak COOperation *weakSelf = self;
-//    self.completionBlock = ^{
-//        __strong COOperation *strongSelf = weakSelf;
-//
-//        if (strongSelf.isCancelled == NO) {
-//            if (completionHandler) completionHandler(strongSelf.data);
-//
-//            strongSelf.completionBlock = nil;
-//        } else if (cancellationHandler) {
-//            cancellationHandler(strongSelf, strongSelf.error);
-//
-//            strongSelf.completionBlock = nil;
-//        }
-//    };
-
-    CORunOperation(self);
+    if (self.isReady) {
+        [self finish];
+    }
 }
 
 - (void)finish {
@@ -166,78 +91,17 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
 }
 
 - (void)finishWithResult:(id)result {
-    self.data = result;
+    self.result = result;
 
     [self finish];
 }
 
-- (void)reject {
-    [self cancel];
-    [self finish];
-}
+- (void)finishWithError:(NSError *)error {
+    NSParameterAssert(error);
 
-- (void)rejectWithError:(NSError *)error {
     self.error = error;
 
-    [self reject];
-}
-
-#pragma mark
-#pragma mark Resolution
-
-- (void)resolveWithOperation:(COOperation *)operation {
-
-    void (^originalCompletionBlock)(void) = operation.completionBlock;
-
-    __weak COOperation *weakOperation = operation;
-
-    operation.completionBlock = ^{
-        __strong COOperation *strongOperation = weakOperation;
-
-        if (strongOperation.isCancelled == NO) {
-            
-            [originalCompletionBlock invoke];
-
-            [self finishWithResult:strongOperation.data];
-        } else {
-            [originalCompletionBlock invoke];
-
-            self.error = strongOperation.error;
-
-            [self reject];
-        }
-
-        strongOperation.completionBlock = nil;
-    };
-
-    CORunOperation(operation);
-}
-
-#pragma mark
-#pragma mark <NSCopying>
-
-- (id)copyWithZone:(NSZone *)zone {
-    COOperation *operation = [[[self class] alloc] init];
-
-    operation.operationBlock = self.operationBlock;
-    operation.operationQueue = self.operationQueue;
-    operation.name = self.name;
-    operation.completionBlock = self.completionBlock;
-    operation.dependent = self.dependent;
-
-    for (id operation in self.dependencies) {
-        [operation addDependency:operation];
-    }
-
-    return operation;
-}
-
-- (instancetype)lazyCopy {
-    id operation = [self copy];
-
-    if (self.isFinished && self.isCancelled == NO) [operation finish];
-
-    return operation;
+    [self finish];
 }
 
 #pragma mark
@@ -248,56 +112,13 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
 
     [descriptionComponents addObject:[NSString stringWithFormat:@"state = %@; isCancelled = %@", COKeyPathFromOperationState(self.state), self.isCancelled ? @"YES" : @"NO" ]];
 
-    if (self.name) {
-        [descriptionComponents addObject:[NSString stringWithFormat:@"name = '%@'", self.name]];
-    }
-
     NSString *description = [NSString stringWithFormat:@"%@ (%@)", super.description, [descriptionComponents componentsJoinedByString:@"; "]];
 
     return description;
 }
 
 - (NSString *)debugDescription {
-
-    // TODO
     return self.description;
-}
-
-#pragma mark
-#pragma mark Private 
-
-- (void)_initializeCompletionBlock {
-    __weak COOperation *weakSelf = self;
-
-    self.completionBlock = ^{
-        __strong COOperation *strongSelf = weakSelf;
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (strongSelf.isCancelled == NO) {
-                if (strongSelf.completionHandler) {
-                    strongSelf.completionHandler(strongSelf.data);
-                }
-            } else if (strongSelf.cancellationHandler) {
-                strongSelf.cancellationHandler(strongSelf, strongSelf.error);
-            }
-
-            if (strongSelf.dependent == NO) {
-                [strongSelf _teardown];
-            }
-        });
-    };
-}
-
-- (void)_teardown {
-    self.operationBlock = nil;
-
-    self.completionHandler = nil;
-    self.cancellationHandler = nil;
-
-    self.operationQueue = nil;
-
-    self.data = nil;
-    self.error = nil;
 }
 
 @end
