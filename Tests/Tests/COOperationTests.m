@@ -1,11 +1,9 @@
 
-#import <SenTestingKit/SenTestingKit.h>
 #import "TestHelpers.h"
 
 #import "COOperation.h"
 #import "CompositeOperations.h"
 #import "COOperation_Private.h"
-#import "COQueues.h"
 
 SPEC_BEGIN(COOperationTests)
 

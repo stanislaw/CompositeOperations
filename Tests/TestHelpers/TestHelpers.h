@@ -1,6 +1,6 @@
 
 #import <Foundation/Foundation.h>
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 #import <Kiwi/Kiwi.h>
 
 #import "NSArray+CompositeOperations.h"

@@ -87,13 +87,13 @@
 }
 
 - (void)finish {
-    self.state = COOperationStateFinished;
+    [self finishWithResult:nil];
 }
 
 - (void)finishWithResult:(id)result {
     self.result = result;
 
-    [self finish];
+    self.state = COOperationStateFinished;
 }
 
 - (void)finishWithError:(NSError *)error {
@@ -101,7 +101,7 @@
 
     self.error = error;
 
-    [self finish];
+    [self finishWithResult:nil];
 }
 
 #pragma mark

@@ -13,6 +13,8 @@
 		864AA4161A17AD3B008A1EA6 /* COParallelCompositeOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA3EF1A17ABC9008A1EA6 /* COParallelCompositeOperation.m */; };
 		864AA4181A17AD3B008A1EA6 /* COOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA3F31A17ABC9008A1EA6 /* COOperation.m */; };
 		864AA41E1A17B2E7008A1EA6 /* COSequentialCompositeOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA41D1A17B2E7008A1EA6 /* COSequentialCompositeOperation.m */; };
+		864AA4221A17DC1A008A1EA6 /* COOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA4071A17ABE1008A1EA6 /* COOperationTests.m */; };
+		864AA4241A17DE27008A1EA6 /* COSequentialCompositeOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA4231A17DE27008A1EA6 /* COSequentialCompositeOperation.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,8 +29,6 @@
 		864AA3F01A17ABC9008A1EA6 /* CompositeOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompositeOperations.h; sourceTree = "<group>"; };
 		864AA3F21A17ABC9008A1EA6 /* COOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COOperation.h; sourceTree = "<group>"; };
 		864AA3F31A17ABC9008A1EA6 /* COOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COOperation.m; sourceTree = "<group>"; };
-		864AA3F81A17ABC9008A1EA6 /* COCompositeOperation_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COCompositeOperation_Private.h; sourceTree = "<group>"; };
-		864AA3F91A17ABC9008A1EA6 /* COOperation_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COOperation_Private.h; sourceTree = "<group>"; };
 		864AA3FF1A17ABE1008A1EA6 /* Assertions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Assertions.h; sourceTree = "<group>"; };
 		864AA4001A17ABE1008A1EA6 /* NSArray+CompositeOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+CompositeOperations.h"; sourceTree = "<group>"; };
 		864AA4011A17ABE1008A1EA6 /* NSArray+CompositeOperations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+CompositeOperations.m"; sourceTree = "<group>"; };
@@ -37,13 +37,13 @@
 		864AA4051A17ABE1008A1EA6 /* COCompositeSerialOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COCompositeSerialOperationTests.m; sourceTree = "<group>"; };
 		864AA4061A17ABE1008A1EA6 /* CompositeOperationsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompositeOperationsTests.m; sourceTree = "<group>"; };
 		864AA4071A17ABE1008A1EA6 /* COOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COOperationTests.m; sourceTree = "<group>"; };
-		864AA4081A17ABE1008A1EA6 /* CurrentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentTests.m; sourceTree = "<group>"; };
 		864AA4091A17ABE1008A1EA6 /* Examples_COOperationResolverTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Examples_COOperationResolverTests.m; sourceTree = "<group>"; };
 		864AA40A1A17ABE1008A1EA6 /* HighLoadIntegrationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HighLoadIntegrationTests.m; sourceTree = "<group>"; };
 		864AA40B1A17ABE1008A1EA6 /* NSOperationQueueControllerIntegrationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSOperationQueueControllerIntegrationTests.m; sourceTree = "<group>"; };
-		864AA41B1A17B2E7008A1EA6 /* COOperation_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COOperation_Private.h; sourceTree = "<group>"; };
 		864AA41C1A17B2E7008A1EA6 /* COSequentialCompositeOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COSequentialCompositeOperation.h; sourceTree = "<group>"; };
 		864AA41D1A17B2E7008A1EA6 /* COSequentialCompositeOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COSequentialCompositeOperation.m; sourceTree = "<group>"; };
+		864AA4211A17DA7F008A1EA6 /* COOperation_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COOperation_Private.h; sourceTree = "<group>"; };
+		864AA4231A17DE27008A1EA6 /* COSequentialCompositeOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COSequentialCompositeOperation.m; sourceTree = "<group>"; };
 		AC594D22A25D0C1A15CD571B /* libPods-DevelopmentApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DevelopmentApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1F046835BB10183CCD41832 /* Pods-DevelopmentApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DevelopmentApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-DevelopmentApp/Pods-DevelopmentApp.release.xcconfig"; sourceTree = "<group>"; };
 		DE8D248078583F2241E8C0DB /* libPods-Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -132,7 +132,7 @@
 		864AA3ED1A17ABC9008A1EA6 /* CompositeOperations */ = {
 			isa = PBXGroup;
 			children = (
-				864AA41B1A17B2E7008A1EA6 /* COOperation_Private.h */,
+				864AA4201A17DA7F008A1EA6 /* Private */,
 				864AA3F21A17ABC9008A1EA6 /* COOperation.h */,
 				864AA3F31A17ABC9008A1EA6 /* COOperation.m */,
 				864AA41C1A17B2E7008A1EA6 /* COSequentialCompositeOperation.h */,
@@ -140,19 +140,9 @@
 				864AA3EE1A17ABC9008A1EA6 /* COParallelCompositeOperation.h */,
 				864AA3EF1A17ABC9008A1EA6 /* COParallelCompositeOperation.m */,
 				864AA3F01A17ABC9008A1EA6 /* CompositeOperations.h */,
-				864AA3F71A17ABC9008A1EA6 /* Private */,
 			);
 			name = CompositeOperations;
 			path = ../CompositeOperations;
-			sourceTree = "<group>";
-		};
-		864AA3F71A17ABC9008A1EA6 /* Private */ = {
-			isa = PBXGroup;
-			children = (
-				864AA3F81A17ABC9008A1EA6 /* COCompositeOperation_Private.h */,
-				864AA3F91A17ABC9008A1EA6 /* COOperation_Private.h */,
-			);
-			path = Private;
 			sourceTree = "<group>";
 		};
 		864AA3FE1A17ABE1008A1EA6 /* TestHelpers */ = {
@@ -170,17 +160,25 @@
 		864AA4031A17ABE1008A1EA6 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				864AA4231A17DE27008A1EA6 /* COSequentialCompositeOperation.m */,
 				864AA4041A17ABE1008A1EA6 /* COCompositeOperationConcurrentTests.m */,
 				864AA4051A17ABE1008A1EA6 /* COCompositeSerialOperationTests.m */,
 				864AA4061A17ABE1008A1EA6 /* CompositeOperationsTests.m */,
 				864AA4071A17ABE1008A1EA6 /* COOperationTests.m */,
-				864AA4081A17ABE1008A1EA6 /* CurrentTests.m */,
 				864AA4091A17ABE1008A1EA6 /* Examples_COOperationResolverTests.m */,
 				864AA40A1A17ABE1008A1EA6 /* HighLoadIntegrationTests.m */,
 				864AA40B1A17ABE1008A1EA6 /* NSOperationQueueControllerIntegrationTests.m */,
 			);
 			name = Tests;
 			path = ../../Tests/Tests;
+			sourceTree = "<group>";
+		};
+		864AA4201A17DA7F008A1EA6 /* Private */ = {
+			isa = PBXGroup;
+			children = (
+				864AA4211A17DA7F008A1EA6 /* COOperation_Private.h */,
+			);
+			path = Private;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -287,6 +285,8 @@
 				864AA40C1A17ABE1008A1EA6 /* NSArray+CompositeOperations.m in Sources */,
 				864AA3E91A17AB63008A1EA6 /* Tests.m in Sources */,
 				864AA4161A17AD3B008A1EA6 /* COParallelCompositeOperation.m in Sources */,
+				864AA4241A17DE27008A1EA6 /* COSequentialCompositeOperation.m in Sources */,
+				864AA4221A17DC1A008A1EA6 /* COOperationTests.m in Sources */,
 				864AA41E1A17B2E7008A1EA6 /* COSequentialCompositeOperation.m in Sources */,
 				864AA4181A17AD3B008A1EA6 /* COOperation.m in Sources */,
 			);

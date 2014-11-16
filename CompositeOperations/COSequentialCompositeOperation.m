@@ -32,7 +32,7 @@
     [self runNextOperation:nil];
 }
 
-- (void)runNextOperation:(id)lastFinishedOperationOrNil {
+- (void)runNextOperation:(COOperation *)lastFinishedOperationOrNil {
     id nextOperation = [self nextOperationAfterOperation:lastFinishedOperationOrNil];
 
     if (nextOperation) {
@@ -42,17 +42,38 @@
 
         [(COOperation *)nextOperation start];
     } else {
-        [self finish];
+        [self finishWithResult:lastFinishedOperationOrNil.result];
     }
 }
 
-- (id)nextOperationAfterOperation:(id)lastFinishedOperationOrNil {
+- (COOperation *)nextOperationAfterOperation:(COOperation *)lastFinishedOperationOrNil {
     @throw [NSException exceptionWithName:NSGenericException reason:@"Must override in subclass" userInfo:nil];
     
     return nil;
 }
 
-- (void)operationDidFinish:(id)operation {
+- (void)operationDidFinish:(COOperation *)operation {
+
+    BOOL shouldFinishOperation = NO;
+
+    if (operation.isCancelled) {
+        shouldFinishOperation = YES;
+
+        [self cancel];
+    }
+
+    if (operation.error) {
+        shouldFinishOperation = YES;
+
+        self.error = operation.error;
+    }
+
+    if (shouldFinishOperation) {
+        [self finish];
+        
+        return;
+    }
+
     [self runNextOperation:operation];
 }
 
@@ -65,6 +86,8 @@
 
     if (finished) {
         [self operationDidFinish:object];
+
+        [object removeObserver:self forKeyPath:keyPath];
     }
 }
 
