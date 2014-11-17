@@ -12,6 +12,10 @@
 
 @interface COSequentialCompositeOperation ()
 @property (strong, nonatomic) NSMutableArray *operations;
+
+- (void)runNextOperation:(NSOperation <COOperation> *)lastFinishedOperationOrNil;
+- (void)operationDidFinish:(NSOperation <COOperation> *)operation;
+
 @end
 
 @implementation COSequentialCompositeOperation
@@ -32,7 +36,7 @@
     [self runNextOperation:nil];
 }
 
-- (void)runNextOperation:(COOperation *)lastFinishedOperationOrNil {
+- (void)runNextOperation:(NSOperation <COOperation> *)lastFinishedOperationOrNil {
     id nextOperation = [self nextOperationAfterOperation:lastFinishedOperationOrNil];
 
     if (nextOperation) {
@@ -46,13 +50,13 @@
     }
 }
 
-- (COOperation *)nextOperationAfterOperation:(COOperation *)lastFinishedOperationOrNil {
+- (NSOperation <COOperation> *)nextOperationAfterOperation:(NSOperation <COOperation> *)lastFinishedOperationOrNil {
     @throw [NSException exceptionWithName:NSGenericException reason:@"Must override in subclass" userInfo:nil];
     
     return nil;
 }
 
-- (void)operationDidFinish:(COOperation *)operation {
+- (void)operationDidFinish:(NSOperation <COOperation> *)operation {
 
     BOOL shouldFinishOperation = NO;
 

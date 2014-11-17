@@ -12,6 +12,9 @@
 
 @interface COParallelCompositeOperation ()
 @property (readonly, nonatomic) NSArray *operations;
+
+- (void)operationDidFinish:(NSOperation <COOperation> *)operation;
+
 @end
 
 @implementation COParallelCompositeOperation
@@ -31,7 +34,7 @@
 }
 
 - (void)main {
-    for (COOperation *operation in self.operations) {
+    for (NSOperation <COOperation> *operation in self.operations) {
         [operation addObserver:self forKeyPath:@"isFinished" options:NSKeyValueObservingOptionNew context:NULL];
 
         [operation start];
@@ -44,13 +47,13 @@
     [super cancel];
 }
 
-- (void)operationDidFinish:(NSOperation *)operation {
+- (void)operationDidFinish:(NSOperation <COOperation> *)operation {
     if (operation.isCancelled) {
         [self cancel];
 
     }
 
-    NSIndexSet *areThereUnfinishedOperations = [self.operations indexesOfObjectsPassingTest:^BOOL(NSOperation *operation, NSUInteger idx, BOOL *stop) {
+    NSIndexSet *areThereUnfinishedOperations = [self.operations indexesOfObjectsPassingTest:^BOOL(NSOperation <COOperation> *operation, NSUInteger idx, BOOL *stop) {
         return operation.isFinished == NO;
     }];
 
@@ -59,7 +62,7 @@
         NSMutableArray *errors  = [NSMutableArray new];
 
         __block BOOL atLeastOneErrorExists = NO;
-        [self.operations enumerateObjectsUsingBlock:^(COOperation *operation, NSUInteger idx, BOOL *stop) {
+        [self.operations enumerateObjectsUsingBlock:^(NSOperation <COOperation> *operation, NSUInteger idx, BOOL *stop) {
             if (atLeastOneErrorExists == NO && operation.result) {
                 results[idx] = operation.result;
             }

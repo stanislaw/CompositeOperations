@@ -10,5 +10,5 @@
 #import "COOperation.h"
 
 @interface COSequentialCompositeOperation : COOperation
-- (COOperation *)nextOperationAfterOperation:(COOperation *)lastFinishedOperationOrNil;
+- (NSOperation <COOperation> *)nextOperationAfterOperation:(NSOperation <COOperation> *)lastFinishedOperationOrNil;
 @end

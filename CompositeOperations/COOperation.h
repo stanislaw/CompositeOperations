@@ -9,11 +9,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface COOperation : NSOperation
-
-- (void)main;
-- (void)start;
-- (void)cancel;
+@protocol COOperation <NSObject>
 
 - (void)finish;
 - (void)finishWithResult:(id)result;
@@ -23,4 +19,7 @@
 @property (readonly) id result;
 @property (readonly) NSError *error;
 
+@end
+
+@interface COOperation : NSOperation <COOperation>
 @end
