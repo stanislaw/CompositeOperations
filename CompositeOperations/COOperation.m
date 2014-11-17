@@ -87,16 +87,22 @@
 }
 
 - (void)finish {
-    [self finishWithResult:nil];
+    [self finishWithResult:[NSNull null]];
 }
 
 - (void)finishWithResult:(id)result {
+    NSParameterAssert(result);
+
     self.result = result;
 
     self.state = COOperationStateFinished;
 }
 
-- (void)finishWithError:(NSError *)error {
+- (void)reject {
+    [self finishWithResult:nil];
+}
+
+- (void)rejectWithError:(NSError *)error {
     NSParameterAssert(error);
 
     self.error = error;

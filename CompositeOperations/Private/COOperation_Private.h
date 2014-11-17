@@ -51,6 +51,9 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
 }
 
 @interface COOperation ()
+@end
+
+@interface COOperation ()
 
 @property (assign, nonatomic) COOperationState state;
 
@@ -58,10 +61,5 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
 
 @property (strong, nonatomic) id result;
 @property (strong, nonatomic) NSError *error;
-
-
-- (void)finish;
-- (void)finishWithResult:(id)result;
-- (void)finishWithError:(NSError *)error;
 
 @end

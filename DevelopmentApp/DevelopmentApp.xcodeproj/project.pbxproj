@@ -16,6 +16,7 @@
 		864AA4221A17DC1A008A1EA6 /* COOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA4071A17ABE1008A1EA6 /* COOperationTests.m */; };
 		864AA4241A17DE27008A1EA6 /* COSequentialCompositeOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA4231A17DE27008A1EA6 /* COSequentialCompositeOperationTests.m */; };
 		864AA42A1A18FDF3008A1EA6 /* COParallelCompositeOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA4291A18FDF3008A1EA6 /* COParallelCompositeOperationTests.m */; };
+		864AA42D1A1AA49C008A1EA6 /* TestOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA42C1A1AA49C008A1EA6 /* TestOperations.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,8 @@
 		864AA4211A17DA7F008A1EA6 /* COOperation_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COOperation_Private.h; sourceTree = "<group>"; };
 		864AA4231A17DE27008A1EA6 /* COSequentialCompositeOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COSequentialCompositeOperationTests.m; sourceTree = "<group>"; };
 		864AA4291A18FDF3008A1EA6 /* COParallelCompositeOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = COParallelCompositeOperationTests.m; path = ../../../../../../stanislaw/Work/Pods/CompositeOperations/Tests/Tests/COParallelCompositeOperationTests.m; sourceTree = "<group>"; };
+		864AA42B1A1AA49C008A1EA6 /* TestOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestOperations.h; path = ../../../../../../stanislaw/Work/Pods/CompositeOperations/Tests/TestHelpers/TestOperations.h; sourceTree = "<group>"; };
+		864AA42C1A1AA49C008A1EA6 /* TestOperations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TestOperations.m; path = ../../../../../../stanislaw/Work/Pods/CompositeOperations/Tests/TestHelpers/TestOperations.m; sourceTree = "<group>"; };
 		AC594D22A25D0C1A15CD571B /* libPods-DevelopmentApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DevelopmentApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1F046835BB10183CCD41832 /* Pods-DevelopmentApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DevelopmentApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-DevelopmentApp/Pods-DevelopmentApp.release.xcconfig"; sourceTree = "<group>"; };
 		DE8D248078583F2241E8C0DB /* libPods-Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -154,6 +157,8 @@
 				864AA4001A17ABE1008A1EA6 /* NSArray+CompositeOperations.h */,
 				864AA4011A17ABE1008A1EA6 /* NSArray+CompositeOperations.m */,
 				864AA4021A17ABE1008A1EA6 /* TestHelpers.h */,
+				864AA42B1A1AA49C008A1EA6 /* TestOperations.h */,
+				864AA42C1A1AA49C008A1EA6 /* TestOperations.m */,
 			);
 			name = TestHelpers;
 			path = ../../Tests/TestHelpers;
@@ -287,6 +292,7 @@
 			files = (
 				864AA40C1A17ABE1008A1EA6 /* NSArray+CompositeOperations.m in Sources */,
 				864AA3E91A17AB63008A1EA6 /* Tests.m in Sources */,
+				864AA42D1A1AA49C008A1EA6 /* TestOperations.m in Sources */,
 				864AA4161A17AD3B008A1EA6 /* COParallelCompositeOperation.m in Sources */,
 				864AA4241A17DE27008A1EA6 /* COSequentialCompositeOperationTests.m in Sources */,
 				864AA42A1A18FDF3008A1EA6 /* COParallelCompositeOperationTests.m in Sources */,

@@ -55,19 +55,19 @@
     }];
 
     if (areThereUnfinishedOperations.count == 0) {
-        NSMutableDictionary *results = [NSMutableDictionary new];
-        NSMutableDictionary *errors  = [NSMutableDictionary new];
+        NSMutableArray *results = [NSMutableArray new];
+        NSMutableArray *errors  = [NSMutableArray new];
 
         __block BOOL atLeastOneErrorExists = NO;
         [self.operations enumerateObjectsUsingBlock:^(COOperation *operation, NSUInteger idx, BOOL *stop) {
             if (atLeastOneErrorExists == NO && operation.result) {
-                results[@(idx)] = operation.result;
+                results[idx] = operation.result;
             }
 
             else if (operation.error) {
                 atLeastOneErrorExists = YES;
 
-                errors[@(idx)] = operation.error;
+                [errors addObject:operation.error];
             }
         }];
 
@@ -78,7 +78,7 @@
                                                  code:0
                                              userInfo:@{ @"errors": errors }];
 
-            [self finishWithError:error];
+            [self rejectWithError:error];
         }
     }
 }

@@ -1,34 +1,9 @@
 
 #import "TestHelpers.h"
+#import "TestOperations.h"
 
 #import "COSequentialCompositeOperation.h"
 #import "COOperation_Private.h"
-
-@interface Operation1 : COOperation
-
-@end
-
-@implementation Operation1 {
-    NSArray *_array;
-}
-
-- (id)initWithArray:(NSArray *)array {
-    NSParameterAssert(array);
-
-    self = [super init];
-
-    _array = array;
-
-    return self;
-}
-
-- (void)main {
-    id result = [_array arrayByAddingObject:@(1)];
-
-    [self finishWithResult:result];
-}
-
-@end
 
 @interface SequentialCompositeOperation1 : COSequentialCompositeOperation
 @property (assign, nonatomic) NSUInteger numberOfOperations;
@@ -42,7 +17,7 @@
 
         NSArray *array = lastFinishedOperationOrNil ? lastFinishedOperationOrNil.result : @[];
 
-        return [[Operation1 alloc] initWithArray:array];
+        return [[OperationTakingArrayAndAdding1ToIt alloc] initWithArray:array];
     } else {
         return nil;
     }
