@@ -76,6 +76,7 @@
 }
 
 - (void)reject {
+    [self cancel];
     [self finishWithResult:nil];
 }
 
@@ -84,6 +85,7 @@
 
     self.error = error;
 
+    [self cancel];
     [self finishWithResult:nil];
 }
 
