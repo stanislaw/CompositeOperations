@@ -12,7 +12,8 @@
 
 @implementation COOperation
 
-@synthesize cancelled = _cancelled;
+@synthesize state = _state,
+            cancelled = _cancelled;
 
 - (id)init {
     self = [super init];
@@ -51,6 +52,14 @@
 }
 
 #pragma mark - NSOperation interface (partial mirroring)
+
+- (COOperationState)state {
+    COOperationState state;
+    @synchronized(self) {
+        state = _state;
+    }
+    return state;
+}
 
 - (BOOL)isReady {
     return self.state == COOperationStateReady && super.isReady;

@@ -51,9 +51,6 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
 }
 
 @interface COOperation ()
-@end
-
-@interface COOperation ()
 
 @property (assign, nonatomic) COOperationState state;
 
