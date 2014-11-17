@@ -54,7 +54,7 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
 
 @property (assign, nonatomic) COOperationState state;
 
-@property (assign, nonatomic, getter = isCancelled) BOOL cancelled;
+@property (assign, atomic, getter = isCancelled) BOOL cancelled;
 
 @property (strong, nonatomic) id result;
 @property (strong, nonatomic) NSError *error;
