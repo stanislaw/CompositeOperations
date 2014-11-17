@@ -37,7 +37,9 @@
     for (NSOperation <COOperation> *operation in self.operations) {
         [operation addObserver:self forKeyPath:@"isFinished" options:NSKeyValueObservingOptionNew context:NULL];
 
-        [operation start];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [operation start];
+        });
     }
 }
 

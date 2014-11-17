@@ -33,10 +33,10 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
         }
 
         case COOperationStateExecuting: {
-            if (toState == COOperationStateReady) {
-                return NO;
-            } else {
+            if (toState == COOperationStateFinished) {
                 return YES;
+            } else {
+                return NO;
             }
         }
 

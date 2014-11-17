@@ -27,7 +27,9 @@
 
 - (void)setState:(COOperationState)state {
     if (COStateTransitionIsValid(self.state, state) == NO) {
-        return;
+        NSString *errMessage = [NSString stringWithFormat:@"%@: transition from %@ to %@ is invalid", self, COKeyPathFromOperationState(self.state), COKeyPathFromOperationState(state)];
+
+        @throw [NSException exceptionWithName:NSGenericException reason:errMessage userInfo:nil];
     }
 
     @synchronized(self) {
@@ -82,7 +84,7 @@
     self.cancelled = YES;
 
     if (self.isReady) {
-        [self finish];
+        [self finishWithResult:nil];
     }
 }
 

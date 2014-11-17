@@ -37,14 +37,16 @@
 }
 
 - (void)runNextOperation:(NSOperation <COOperation> *)lastFinishedOperationOrNil {
-    id nextOperation = [self nextOperationAfterOperation:lastFinishedOperationOrNil];
+    NSOperation <COOperation> *nextOperation = [self nextOperationAfterOperation:lastFinishedOperationOrNil];
 
     if (nextOperation) {
         [self.operations addObject:nextOperation];
 
         [nextOperation addObserver:self forKeyPath:@"isFinished" options:NSKeyValueObservingOptionNew context:NULL];
 
-        [(COOperation *)nextOperation start];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [nextOperation start];
+        });
     } else {
         [self finishWithResult:lastFinishedOperationOrNil.result];
     }
