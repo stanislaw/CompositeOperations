@@ -27,7 +27,7 @@ describe(@"COOperationTests", ^{
 
     describe(@"NSOperation roots", ^{
         describe(@"-cancel", ^{
-            it(@"should immediatedly finish ready operation", ^{
+            it(@"...", ^{
                 COOperation *operation = [COOperation new];
 
                 [operation cancel];
