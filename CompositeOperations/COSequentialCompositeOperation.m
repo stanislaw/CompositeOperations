@@ -59,24 +59,13 @@
 }
 
 - (void)operationDidFinish:(NSOperation <COOperation> *)operation {
-
-    BOOL shouldFinishOperation = NO;
-
-    if (operation.isCancelled) {
-        shouldFinishOperation = YES;
-
-        [self cancel];
-    }
-
     if (operation.error) {
-        shouldFinishOperation = YES;
-
-        self.error = operation.error;
+        [self rejectWithError:operation.error];
+        return;
     }
 
-    if (shouldFinishOperation) {
-        [self finish];
-        
+    else if (operation.isCancelled) {
+        [self reject];
         return;
     }
 
@@ -91,9 +80,9 @@
     BOOL finished = [[change valueForKey:NSKeyValueChangeNewKey] boolValue];
 
     if (finished) {
-        [self operationDidFinish:object];
-
         [object removeObserver:self forKeyPath:keyPath];
+
+        [self operationDidFinish:object];
     }
 }
 
