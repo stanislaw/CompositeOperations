@@ -43,15 +43,9 @@
     }
 }
 
-- (void)cancel {
-    [self.operations makeObjectsPerformSelector:@selector(cancel)];
-
-    [super cancel];
-}
-
 - (void)operationDidFinish:(NSOperation <COOperation> *)operation {
-    if (operation.isCancelled && self.isCancelled == NO) {
-        [self cancel];
+    if (operation.isCancelled) {
+        [self.operations makeObjectsPerformSelector:@selector(cancel)];
     }
 
     NSIndexSet *areThereUnfinishedOperations = [self.operations indexesOfObjectsPassingTest:^BOOL(NSOperation <COOperation> *operation, NSUInteger idx, BOOL *stop) {
