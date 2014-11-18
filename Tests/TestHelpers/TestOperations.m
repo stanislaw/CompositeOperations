@@ -35,3 +35,9 @@
 }
 
 @end
+
+@implementation OperationRejectingItself
+- (void)main {
+    [self reject];
+}
+@end

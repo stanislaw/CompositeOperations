@@ -77,7 +77,7 @@
 
 - (void)reject {
     [self cancel];
-    [self finishWithResult:nil];
+    self.state = COOperationStateFinished;
 }
 
 - (void)rejectWithError:(NSError *)error {
@@ -86,7 +86,7 @@
     self.error = error;
 
     [self cancel];
-    [self finishWithResult:nil];
+    self.state = COOperationStateFinished;
 }
 
 #pragma mark - NSOperation interface (partial mirroring)
@@ -123,7 +123,7 @@
     self.cancelled = YES;
 
     if (self.isReady) {
-        [self finishWithResult:nil];
+        self.state = COOperationStateFinished;
     }
 }
 
@@ -135,7 +135,7 @@
 
     [descriptionComponents addObject:[NSString stringWithFormat:@"state = %@; isCancelled = %@", COKeyPathFromOperationState(self.state), self.isCancelled ? @"YES" : @"NO" ]];
 
-    NSString *description = [NSString stringWithFormat:@"%@ (%@)", super.description, [descriptionComponents componentsJoinedByString:@"; "]];
+    NSString *description = [NSString stringWithFormat:@"<%@: %p (%@)>", NSStringFromClass([self class]), self, [descriptionComponents componentsJoinedByString:@"; "]];
 
     return description;
 }

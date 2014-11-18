@@ -50,40 +50,48 @@
 }
 
 - (void)operationDidFinish:(NSOperation <COOperation> *)operation {
-    if (operation.isCancelled) {
+    if (operation.isCancelled && self.isCancelled == NO) {
         [self cancel];
-
     }
 
     NSIndexSet *areThereUnfinishedOperations = [self.operations indexesOfObjectsPassingTest:^BOOL(NSOperation <COOperation> *operation, NSUInteger idx, BOOL *stop) {
         return operation.isFinished == NO;
     }];
 
-    if (areThereUnfinishedOperations.count == 0) {
+    // TODO: work out reentrace after all operations are cancelled but still continue being finished
+    if (areThereUnfinishedOperations.count == 0 && self.isFinished == NO) {
         NSMutableArray *results = [NSMutableArray new];
         NSMutableArray *errors  = [NSMutableArray new];
 
-        __block BOOL atLeastOneErrorExists = NO;
+        __block BOOL atLeastOneNotSuccessfulOperationExists = NO;
         [self.operations enumerateObjectsUsingBlock:^(NSOperation <COOperation> *operation, NSUInteger idx, BOOL *stop) {
-            if (atLeastOneErrorExists == NO && operation.result) {
+            if (atLeastOneNotSuccessfulOperationExists == NO && operation.result) {
                 results[idx] = operation.result;
             }
 
             else if (operation.error) {
-                atLeastOneErrorExists = YES;
+                atLeastOneNotSuccessfulOperationExists = YES;
 
                 [errors addObject:operation.error];
             }
+
+            else if (operation.isCancelled) {
+                atLeastOneNotSuccessfulOperationExists = YES;
+            }
         }];
 
-        if (atLeastOneErrorExists == NO) {
+        if (atLeastOneNotSuccessfulOperationExists == NO) {
             [self finishWithResult:results];
         } else {
-            NSError *error = [NSError errorWithDomain:@"com.compositeoperations.parallelcompositeoperation"
-                                                 code:0
-                                             userInfo:@{ @"errors": errors }];
+            if (errors.count > 0) {
+                NSError *error = [NSError errorWithDomain:@"com.compositeoperations.parallelcompositeoperation"
+                                                     code:0
+                                                 userInfo:@{ @"errors": errors }];
 
-            [self rejectWithError:error];
+                [self rejectWithError:error];
+            } else {
+                [self reject];
+            }
         }
     }
 }

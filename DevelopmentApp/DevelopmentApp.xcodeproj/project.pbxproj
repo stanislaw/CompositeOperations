@@ -21,7 +21,6 @@
 /* Begin PBXFileReference section */
 		111909BAA6616385B5E3A3EF /* Pods-Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.release.xcconfig"; sourceTree = "<group>"; };
 		18B8E976DFF4F29B200FCFB4 /* Pods-DevelopmentApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DevelopmentApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DevelopmentApp/Pods-DevelopmentApp.debug.xcconfig"; sourceTree = "<group>"; };
-		864AA3D91A17AB20008A1EA6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		864AA3E41A17AB63008A1EA6 /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		864AA3E71A17AB63008A1EA6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		864AA3EE1A17ABC9008A1EA6 /* COParallelCompositeOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COParallelCompositeOperation.h; sourceTree = "<group>"; };
@@ -89,7 +88,6 @@
 			isa = PBXGroup;
 			children = (
 				864AA3ED1A17ABC9008A1EA6 /* CompositeOperations */,
-				864AA3D81A17AB20008A1EA6 /* DevelopmentApp */,
 				864AA3E51A17AB63008A1EA6 /* Tests */,
 				864AA3D71A17AB20008A1EA6 /* Products */,
 				6964E474986507CD21C9B9D7 /* Pods */,
@@ -103,14 +101,6 @@
 				864AA3E41A17AB63008A1EA6 /* Tests.xctest */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		864AA3D81A17AB20008A1EA6 /* DevelopmentApp */ = {
-			isa = PBXGroup;
-			children = (
-				864AA3D91A17AB20008A1EA6 /* main.m */,
-			);
-			path = DevelopmentApp;
 			sourceTree = "<group>";
 		};
 		864AA3E51A17AB63008A1EA6 /* Tests */ = {

@@ -14,3 +14,6 @@
 @interface OperationTakingArrayAndAdding1ToIt : COOperation
 - (id)initWithArray:(NSArray *)array;
 @end
+
+@interface OperationRejectingItself : COOperation
+@end
