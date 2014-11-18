@@ -12,6 +12,7 @@
 
 @interface COParallelCompositeOperation ()
 @property (readonly, nonatomic) NSArray *operations;
+@property (assign, nonatomic) NSUInteger finishedOperations;
 
 - (void)operationDidFinish:(NSOperation <COOperation> *)operation;
 
@@ -28,7 +29,8 @@
         return nil;
     }
 
-    _operations = operations;
+    _operations         = operations;
+    _finishedOperations = 0;
 
     return self;
 }
@@ -44,48 +46,43 @@
 }
 
 - (void)operationDidFinish:(NSOperation <COOperation> *)operation {
+    _finishedOperations++;
+
     if (operation.isCancelled) {
         [self.operations makeObjectsPerformSelector:@selector(cancel)];
+
+        [self cancel];
     }
 
-    NSIndexSet *areThereUnfinishedOperations = [self.operations indexesOfObjectsPassingTest:^BOOL(NSOperation <COOperation> *operation, NSUInteger idx, BOOL *stop) {
-        return operation.isFinished == NO;
-    }];
+    if (_finishedOperations < self.operations.count) {
+        return;
+    }
 
-    // TODO: work out reentrace after all operations are cancelled but still continue being finished
-    if (areThereUnfinishedOperations.count == 0 && self.isFinished == NO) {
+    if (self.isCancelled == NO) {
         NSMutableArray *results = [NSMutableArray new];
+
+        [self.operations enumerateObjectsUsingBlock:^(NSOperation <COOperation> *operation, NSUInteger idx, BOOL *stop) {
+            results[idx] = operation.result;
+        }];
+
+        [self finishWithResult:results];
+    } else {
         NSMutableArray *errors  = [NSMutableArray new];
 
-        __block BOOL atLeastOneNotSuccessfulOperationExists = NO;
         [self.operations enumerateObjectsUsingBlock:^(NSOperation <COOperation> *operation, NSUInteger idx, BOOL *stop) {
-            if (atLeastOneNotSuccessfulOperationExists == NO && operation.result) {
-                results[idx] = operation.result;
-            }
-
-            else if (operation.error) {
-                atLeastOneNotSuccessfulOperationExists = YES;
-
+            if (operation.error) {
                 [errors addObject:operation.error];
-            }
-
-            else if (operation.isCancelled) {
-                atLeastOneNotSuccessfulOperationExists = YES;
             }
         }];
 
-        if (atLeastOneNotSuccessfulOperationExists == NO) {
-            [self finishWithResult:results];
-        } else {
-            if (errors.count > 0) {
-                NSError *error = [NSError errorWithDomain:@"com.compositeoperations.parallelcompositeoperation"
-                                                     code:0
-                                                 userInfo:@{ @"errors": errors }];
+        if (errors.count > 0) {
+            NSError *error = [NSError errorWithDomain:@"com.CompositeOperations.COParallelCompositeOperation"
+                                                 code:0
+                                             userInfo:@{ @"errors": errors }];
 
-                [self rejectWithError:error];
-            } else {
-                [self reject];
-            }
+            [self rejectWithError:error];
+        } else {
+            [self reject];
         }
     }
 }
@@ -98,9 +95,11 @@
     BOOL finished = [[change valueForKey:NSKeyValueChangeNewKey] boolValue];
 
     if (finished) {
-        [self operationDidFinish:object];
-
         [object removeObserver:self forKeyPath:keyPath];
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self operationDidFinish:object];
+        });
     }
 }
 
