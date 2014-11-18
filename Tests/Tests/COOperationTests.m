@@ -24,6 +24,24 @@ describe(@"COOperationTests", ^{
 
         [[theValue(isFinished) should] beYes];
     });
+
+    describe(@"NSOperation roots", ^{
+        describe(@"-cancel", ^{
+            it(@"should immediatedly finish ready operation", ^{
+                COOperation *operation = [COOperation new];
+
+                [operation cancel];
+
+                [[theValue(operation.isCancelled) should] beYes];
+                [[theValue(operation.isFinished)  should] beNo];
+
+                [operation start];
+
+                [[theValue(operation.isCancelled) should] beYes];
+                [[theValue(operation.isFinished)  should] beYes];
+            });
+        });
+    });
 });
 
 SPEC_END

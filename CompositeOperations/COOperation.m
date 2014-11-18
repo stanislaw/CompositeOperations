@@ -13,7 +13,7 @@
 @implementation COOperation
 
 @synthesize state     = _state,
-            cancelled = _cancelled,
+
             result    = _result,
             error     = _error;
 
@@ -23,7 +23,6 @@
     if (self == nil) return nil;
 
     _state     = COOperationStateReady;
-    _cancelled = NO;
 
     return self;
 }
@@ -116,14 +115,6 @@
         } else {
             [self main];
         }
-    }
-}
-
-- (void)cancel {
-    self.cancelled = YES;
-
-    if (self.isReady) {
-        self.state = COOperationStateFinished;
     }
 }
 
