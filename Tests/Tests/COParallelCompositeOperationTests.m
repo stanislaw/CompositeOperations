@@ -77,10 +77,12 @@ describe(@"COParallelCompositeOperationSpec - Rejection", ^{
     it(@"", ^{
         dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
 
+        NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:0 userInfo:nil];
+
         NSArray *operations = @[
             [OperationTriviallyReturningNull new],
-            [OperationTriviallyReturningNull new],
-            [OperationRejectingItself new]
+            [[OperationRejectingItselfWithError alloc] initWithError:error],
+            [[OperationRejectingItselfWithError alloc] initWithError:error]
         ];
 
         ParallelCompositeOperation1 *parallelOperation = [[ParallelCompositeOperation1 alloc] initWithOperations:operations];
@@ -99,7 +101,15 @@ describe(@"COParallelCompositeOperationSpec - Rejection", ^{
         [[theValue(parallelOperation.isCancelled) should] beYes];
 
         [[parallelOperation.result should] beNil];
-        [[parallelOperation.error should] beNil];
+
+        NSError *parallelOperationError = parallelOperation.error;
+
+        NSDictionary *expectedParallelOperationErrorUserInfo = @{
+            @"errors": @[ error, error ]
+        };
+
+        [[parallelOperationError shouldNot] beNil];
+        [[parallelOperationError.userInfo should] equal:expectedParallelOperationErrorUserInfo];
     });
 
 });

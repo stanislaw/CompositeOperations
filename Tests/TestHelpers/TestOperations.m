@@ -41,3 +41,23 @@
     [self reject];
 }
 @end
+
+@implementation OperationRejectingItselfWithError {
+    NSError *_error;
+}
+- (id)initWithError:(NSError *)error {
+    self = [super init];
+
+    if (self == nil) {
+        return nil;
+    }
+
+    _error = error;
+
+    return self;
+}
+
+- (void)main {
+    [self rejectWithError:_error];
+}
+@end

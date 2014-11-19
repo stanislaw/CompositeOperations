@@ -17,3 +17,7 @@
 
 @interface OperationRejectingItself : COOperation
 @end
+
+@interface OperationRejectingItselfWithError : COOperation
+- (id)initWithError:(NSError *)error;
+@end
