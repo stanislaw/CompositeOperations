@@ -9,4 +9,4 @@
 
 #import "COOperation.h"
 #import "COSequentialCompositeOperation.h"
-#import "COParallelCompositeOperation.h"
+#import "COParallelOperation.h"

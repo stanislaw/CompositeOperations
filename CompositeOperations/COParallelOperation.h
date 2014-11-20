@@ -9,6 +9,6 @@
 
 #import "COOperation.h"
 
-@interface COParallelCompositeOperation : COOperation
+@interface COParallelOperation : COOperation
 - (id)initWithOperations:(NSArray *)operations;
 @end

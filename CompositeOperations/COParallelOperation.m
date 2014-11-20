@@ -7,16 +7,16 @@
 // Released under the MIT license
 //
 
-#import "COParallelCompositeOperation.h"
+#import "COParallelOperation.h"
 #import "COOperation_Private.h"
 
-@interface COParallelCompositeOperation ()
+@interface COParallelOperation ()
 
 @property (readonly, nonatomic) NSArray *operations;
 
 @end
 
-@implementation COParallelCompositeOperation
+@implementation COParallelOperation
 
 - (id)initWithOperations:(NSArray *)operations {
     NSParameterAssert(operations);
@@ -35,10 +35,11 @@
 - (void)main {
     dispatch_group_t group = dispatch_group_create();
 
-    COParallelCompositeOperation *weakSelf = self;
+    COParallelOperation *weakSelf = self;
 
     for (NSOperation <COOperation> *operation in self.operations) {
         NSOperation <COOperation> *weakOperation = operation;
+
         operation.completionBlock = ^{
             if (weakOperation.isCancelled) {
                 [weakSelf.operations makeObjectsPerformSelector:@selector(cancel)];
@@ -75,7 +76,7 @@
             }];
 
             if (errors.count > 0) {
-                NSError *error = [NSError errorWithDomain:@"com.CompositeOperations.COParallelCompositeOperation"
+                NSError *error = [NSError errorWithDomain:@"com.CompositeOperations.COParallelOperation"
                                                      code:0
                                                  userInfo:@{ @"errors": errors }];
                 

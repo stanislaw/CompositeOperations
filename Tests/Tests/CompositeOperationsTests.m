@@ -18,7 +18,7 @@ describe(@"Composite Operations tests", ^{
             [SequentialCompositeOperationTrivialGreen new]
         ];
 
-        COParallelCompositeOperation *parallelOperation = [[COParallelCompositeOperation alloc] initWithOperations:operations];
+        COParallelOperation *parallelOperation = [[COParallelOperation alloc] initWithOperations:operations];
 
         parallelOperation.completionBlock = ^{
             dispatch_semaphore_signal(waitSemaphore);
