@@ -38,6 +38,8 @@
     COParallelOperation *weakSelf = self;
 
     for (NSOperation <COOperation> *operation in self.operations) {
+        dispatch_group_enter(group);
+
         NSOperation <COOperation> *weakOperation = operation;
 
         operation.completionBlock = ^{
@@ -49,13 +51,13 @@
 
             dispatch_group_leave(group);
         };
+    }
 
-        dispatch_group_enter(group);
-
+    for (NSOperation <COOperation> *operation in self.operations) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [operation start];
         });
-    }
+    };
 
     dispatch_group_notify(group, dispatch_get_main_queue(), ^{
         if (self.isCancelled == NO) {

@@ -51,5 +51,3 @@ static inline void asynchronousJob(asyncronousBlock block) {
 }
 
 #define NSSTRING_CONSTANT(name) NSString * const name = @#name
-
-static __unused dispatch_semaphore_t waitSemaphore = NULL;

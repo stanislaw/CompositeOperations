@@ -85,6 +85,7 @@
     self.error = error;
 
     [self cancel];
+    
     self.state = COOperationStateFinished;
 }
 
@@ -111,7 +112,7 @@
         self.state = COOperationStateExecuting;
 
         if (self.isCancelled) {
-            [self finish];
+            [self reject];
         } else {
             [self main];
         }

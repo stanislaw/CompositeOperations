@@ -13,8 +13,8 @@
 		864AA4181A17AD3B008A1EA6 /* COOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA3F31A17ABC9008A1EA6 /* COOperation.m */; };
 		864AA41E1A17B2E7008A1EA6 /* COSequentialOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA41D1A17B2E7008A1EA6 /* COSequentialOperation.m */; };
 		864AA4221A17DC1A008A1EA6 /* COOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA4071A17ABE1008A1EA6 /* COOperationTests.m */; };
-		864AA4241A17DE27008A1EA6 /* COSequentialCompositeOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA4231A17DE27008A1EA6 /* COSequentialCompositeOperationTests.m */; };
-		864AA42A1A18FDF3008A1EA6 /* COParallelCompositeOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA4291A18FDF3008A1EA6 /* COParallelCompositeOperationTests.m */; };
+		864AA4241A17DE27008A1EA6 /* COSequentialOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA4231A17DE27008A1EA6 /* COSequentialOperationTests.m */; };
+		864AA42A1A18FDF3008A1EA6 /* COParallelOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA4291A18FDF3008A1EA6 /* COParallelOperationTests.m */; };
 		864AA42D1A1AA49C008A1EA6 /* TestOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA42C1A1AA49C008A1EA6 /* TestOperations.m */; };
 		864AA43D1A1AE639008A1EA6 /* TestCompositeOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA43C1A1AE639008A1EA6 /* TestCompositeOperations.m */; };
 		864AA43F1A1AEE8B008A1EA6 /* CompositeOperationsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA43E1A1AEE8B008A1EA6 /* CompositeOperationsTests.m */; };
@@ -38,8 +38,8 @@
 		864AA41C1A17B2E7008A1EA6 /* COSequentialOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COSequentialOperation.h; sourceTree = "<group>"; };
 		864AA41D1A17B2E7008A1EA6 /* COSequentialOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COSequentialOperation.m; sourceTree = "<group>"; };
 		864AA4211A17DA7F008A1EA6 /* COOperation_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COOperation_Private.h; sourceTree = "<group>"; };
-		864AA4231A17DE27008A1EA6 /* COSequentialCompositeOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COSequentialCompositeOperationTests.m; sourceTree = "<group>"; };
-		864AA4291A18FDF3008A1EA6 /* COParallelCompositeOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = COParallelCompositeOperationTests.m; path = ../../Tests/Tests/COParallelCompositeOperationTests.m; sourceTree = "<group>"; };
+		864AA4231A17DE27008A1EA6 /* COSequentialOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COSequentialOperationTests.m; sourceTree = "<group>"; };
+		864AA4291A18FDF3008A1EA6 /* COParallelOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = COParallelOperationTests.m; path = ../../Tests/Tests/COParallelOperationTests.m; sourceTree = "<group>"; };
 		864AA42B1A1AA49C008A1EA6 /* TestOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestOperations.h; path = ../../Tests/TestHelpers/TestOperations.h; sourceTree = "<group>"; };
 		864AA42C1A1AA49C008A1EA6 /* TestOperations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TestOperations.m; path = ../../Tests/TestHelpers/TestOperations.m; sourceTree = "<group>"; };
 		864AA42F1A1ABDD9008A1EA6 /* COCompositeOperationConcurrentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COCompositeOperationConcurrentTests.m; sourceTree = "<group>"; };
@@ -162,8 +162,8 @@
 		864AA4031A17ABE1008A1EA6 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				864AA4291A18FDF3008A1EA6 /* COParallelCompositeOperationTests.m */,
-				864AA4231A17DE27008A1EA6 /* COSequentialCompositeOperationTests.m */,
+				864AA4291A18FDF3008A1EA6 /* COParallelOperationTests.m */,
+				864AA4231A17DE27008A1EA6 /* COSequentialOperationTests.m */,
 				864AA4071A17ABE1008A1EA6 /* COOperationTests.m */,
 				864AA43E1A1AEE8B008A1EA6 /* CompositeOperationsTests.m */,
 			);
@@ -297,8 +297,8 @@
 				864AA40C1A17ABE1008A1EA6 /* NSArray+CompositeOperations.m in Sources */,
 				864AA42D1A1AA49C008A1EA6 /* TestOperations.m in Sources */,
 				864AA4161A17AD3B008A1EA6 /* COParallelOperation.m in Sources */,
-				864AA4241A17DE27008A1EA6 /* COSequentialCompositeOperationTests.m in Sources */,
-				864AA42A1A18FDF3008A1EA6 /* COParallelCompositeOperationTests.m in Sources */,
+				864AA4241A17DE27008A1EA6 /* COSequentialOperationTests.m in Sources */,
+				864AA42A1A18FDF3008A1EA6 /* COParallelOperationTests.m in Sources */,
 				864AA43D1A1AE639008A1EA6 /* TestCompositeOperations.m in Sources */,
 				864AA4221A17DC1A008A1EA6 /* COOperationTests.m in Sources */,
 				864AA43F1A1AEE8B008A1EA6 /* CompositeOperationsTests.m in Sources */,

@@ -82,7 +82,6 @@ describe(@"COParallelOperationSpec - Rejection", ^{
         NSArray *operations = @[
             [OperationTriviallyReturningNull new],
             [[OperationRejectingItselfWithError alloc] initWithError:error],
-            [[OperationRejectingItselfWithError alloc] initWithError:error]
         ];
 
         ParallelCompositeOperation1 *parallelOperation = [[ParallelCompositeOperation1 alloc] initWithOperations:operations];
@@ -97,21 +96,20 @@ describe(@"COParallelOperationSpec - Rejection", ^{
             CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
         }
 
+        NSError *parallelOperationError = parallelOperation.error;
+
+        NSDictionary *expectedParallelOperationErrorUserInfo = @{
+            @"errors": @[ error ]
+        };
+
         [[theValue(parallelOperation.isFinished) should] beYes];
         [[theValue(parallelOperation.isCancelled) should] beYes];
 
         [[parallelOperation.result should] beNil];
 
-        NSError *parallelOperationError = parallelOperation.error;
-
-        NSDictionary *expectedParallelOperationErrorUserInfo = @{
-            @"errors": @[ error, error ]
-        };
-
         [[parallelOperationError shouldNot] beNil];
         [[parallelOperationError.userInfo should] equal:expectedParallelOperationErrorUserInfo];
     });
-
 });
 
 SPEC_END
