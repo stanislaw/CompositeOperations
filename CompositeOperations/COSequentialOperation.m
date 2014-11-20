@@ -7,10 +7,10 @@
 // Released under the MIT license
 //
 
-#import "COSequentialCompositeOperation.h"
+#import "COSequentialOperation.h"
 #import "COOperation_Private.h"
 
-@interface COSequentialCompositeOperation ()
+@interface COSequentialOperation ()
 @property (strong, nonatomic) NSMutableArray *operations;
 
 - (void)runNextOperation:(NSOperation <COOperation> *)lastFinishedOperationOrNil;
@@ -18,7 +18,7 @@
 
 @end
 
-@implementation COSequentialCompositeOperation
+@implementation COSequentialOperation
 
 - (id)init {
     self = [super init];

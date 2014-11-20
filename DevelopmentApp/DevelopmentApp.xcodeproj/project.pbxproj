@@ -11,7 +11,7 @@
 		864AA40C1A17ABE1008A1EA6 /* NSArray+CompositeOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA4011A17ABE1008A1EA6 /* NSArray+CompositeOperations.m */; };
 		864AA4161A17AD3B008A1EA6 /* COParallelOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA3EF1A17ABC9008A1EA6 /* COParallelOperation.m */; };
 		864AA4181A17AD3B008A1EA6 /* COOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA3F31A17ABC9008A1EA6 /* COOperation.m */; };
-		864AA41E1A17B2E7008A1EA6 /* COSequentialCompositeOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA41D1A17B2E7008A1EA6 /* COSequentialCompositeOperation.m */; };
+		864AA41E1A17B2E7008A1EA6 /* COSequentialOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA41D1A17B2E7008A1EA6 /* COSequentialOperation.m */; };
 		864AA4221A17DC1A008A1EA6 /* COOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA4071A17ABE1008A1EA6 /* COOperationTests.m */; };
 		864AA4241A17DE27008A1EA6 /* COSequentialCompositeOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA4231A17DE27008A1EA6 /* COSequentialCompositeOperationTests.m */; };
 		864AA42A1A18FDF3008A1EA6 /* COParallelCompositeOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864AA4291A18FDF3008A1EA6 /* COParallelCompositeOperationTests.m */; };
@@ -35,8 +35,8 @@
 		864AA4011A17ABE1008A1EA6 /* NSArray+CompositeOperations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+CompositeOperations.m"; sourceTree = "<group>"; };
 		864AA4021A17ABE1008A1EA6 /* TestHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestHelpers.h; sourceTree = "<group>"; };
 		864AA4071A17ABE1008A1EA6 /* COOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COOperationTests.m; sourceTree = "<group>"; };
-		864AA41C1A17B2E7008A1EA6 /* COSequentialCompositeOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COSequentialCompositeOperation.h; sourceTree = "<group>"; };
-		864AA41D1A17B2E7008A1EA6 /* COSequentialCompositeOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COSequentialCompositeOperation.m; sourceTree = "<group>"; };
+		864AA41C1A17B2E7008A1EA6 /* COSequentialOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COSequentialOperation.h; sourceTree = "<group>"; };
+		864AA41D1A17B2E7008A1EA6 /* COSequentialOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COSequentialOperation.m; sourceTree = "<group>"; };
 		864AA4211A17DA7F008A1EA6 /* COOperation_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COOperation_Private.h; sourceTree = "<group>"; };
 		864AA4231A17DE27008A1EA6 /* COSequentialCompositeOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COSequentialCompositeOperationTests.m; sourceTree = "<group>"; };
 		864AA4291A18FDF3008A1EA6 /* COParallelCompositeOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = COParallelCompositeOperationTests.m; path = ../../Tests/Tests/COParallelCompositeOperationTests.m; sourceTree = "<group>"; };
@@ -133,8 +133,8 @@
 				864AA4201A17DA7F008A1EA6 /* Private */,
 				864AA3F21A17ABC9008A1EA6 /* COOperation.h */,
 				864AA3F31A17ABC9008A1EA6 /* COOperation.m */,
-				864AA41C1A17B2E7008A1EA6 /* COSequentialCompositeOperation.h */,
-				864AA41D1A17B2E7008A1EA6 /* COSequentialCompositeOperation.m */,
+				864AA41C1A17B2E7008A1EA6 /* COSequentialOperation.h */,
+				864AA41D1A17B2E7008A1EA6 /* COSequentialOperation.m */,
 				864AA3EE1A17ABC9008A1EA6 /* COParallelOperation.h */,
 				864AA3EF1A17ABC9008A1EA6 /* COParallelOperation.m */,
 				864AA3F01A17ABC9008A1EA6 /* CompositeOperations.h */,
@@ -302,7 +302,7 @@
 				864AA43D1A1AE639008A1EA6 /* TestCompositeOperations.m in Sources */,
 				864AA4221A17DC1A008A1EA6 /* COOperationTests.m in Sources */,
 				864AA43F1A1AEE8B008A1EA6 /* CompositeOperationsTests.m in Sources */,
-				864AA41E1A17B2E7008A1EA6 /* COSequentialCompositeOperation.m in Sources */,
+				864AA41E1A17B2E7008A1EA6 /* COSequentialOperation.m in Sources */,
 				864AA4181A17AD3B008A1EA6 /* COOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -9,6 +9,6 @@
 
 #import "COOperation.h"
 
-@interface COSequentialCompositeOperation : COOperation
+@interface COSequentialOperation : COOperation
 - (NSOperation <COOperation> *)nextOperationAfterOperation:(NSOperation <COOperation> *)lastFinishedOperationOrNil;
 @end

@@ -3,12 +3,12 @@
 #import "TestOperations.h"
 #import "TestCompositeOperations.h"
 
-#import "COSequentialCompositeOperation.h"
+#import "COSequentialOperation.h"
 #import "COOperation_Private.h"
 
-SPEC_BEGIN(COSequentialCompositeOperationSpec)
+SPEC_BEGIN(COSequentialOperationSpec)
 
-describe(@"COSequentialCompositeOperationSpec", ^{
+describe(@"COSequentialOperationSpec", ^{
 
     it(@"should run composite operation", ^{
         dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
@@ -31,7 +31,7 @@ describe(@"COSequentialCompositeOperationSpec", ^{
     });
 });
 
-describe(@"COSequentialCompositeOperationSpec - Rejection", ^{
+describe(@"COSequentialOperationSpec - Rejection", ^{
 
     it(@"should run composite operation", ^{
         dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
