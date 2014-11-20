@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'CompositeOperations'
-  s.version = '0.6.0-alpha.3'
+  s.version = '0.7.0-alpha.1'
 
   s.license = 'MIT'
 
