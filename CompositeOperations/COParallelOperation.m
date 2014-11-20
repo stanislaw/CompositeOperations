@@ -27,7 +27,7 @@
         return nil;
     }
 
-    _operations         = operations;
+    _operations = operations;
 
     return self;
 }

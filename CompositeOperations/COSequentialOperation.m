@@ -11,10 +11,10 @@
 #import "COOperation_Private.h"
 
 @interface COSequentialOperation ()
+
 @property (strong, nonatomic) NSMutableArray *operations;
 
 - (void)runNextOperation:(NSOperation <COOperation> *)lastFinishedOperationOrNil;
-- (void)operationDidFinish:(NSOperation <COOperation> *)operation;
 
 @end
 
@@ -28,6 +28,7 @@
     }
 
     _operations = [NSMutableArray new];
+    _delegate   = self;
 
     return self;
 }
@@ -37,12 +38,30 @@
 }
 
 - (void)runNextOperation:(NSOperation <COOperation> *)lastFinishedOperationOrNil {
-    NSOperation <COOperation> *nextOperation = [self nextOperationAfterOperation:lastFinishedOperationOrNil];
+    NSOperation <COOperation> *nextOperation = [self.delegate sequentialOperation:self
+                                                      nextOperationAfterOperation:lastFinishedOperationOrNil];
 
     if (nextOperation) {
         [self.operations addObject:nextOperation];
 
-        [nextOperation addObserver:self forKeyPath:@"isFinished" options:NSKeyValueObservingOptionNew context:NULL];
+        __weak COSequentialOperation *weakSelf = self;
+        __weak NSOperation <COOperation> *weakNextOperation = nextOperation;
+
+        nextOperation.completionBlock = ^{
+            if (weakNextOperation.error) {
+                [weakSelf rejectWithError:weakNextOperation.error];
+                return;
+            }
+
+            else if (weakNextOperation.isCancelled) {
+                [weakSelf reject];
+                return;
+            }
+
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf runNextOperation:weakNextOperation];
+            });
+        };
 
         dispatch_async(dispatch_get_main_queue(), ^{
             [nextOperation start];
@@ -52,38 +71,11 @@
     }
 }
 
-- (NSOperation <COOperation> *)nextOperationAfterOperation:(NSOperation <COOperation> *)lastFinishedOperationOrNil {
-    @throw [NSException exceptionWithName:NSGenericException reason:@"Must override in subclass" userInfo:nil];
+- (NSOperation <COOperation> *)sequentialOperation:(COSequentialOperation *)sequentialOperation
+                       nextOperationAfterOperation:(NSOperation<COOperation> *)lastFinishedOperationOrNil {
+    @throw [NSException exceptionWithName:NSGenericException reason:@"Must override in subclass or implement in external delegate" userInfo:nil];
     
     return nil;
-}
-
-- (void)operationDidFinish:(NSOperation <COOperation> *)operation {
-    if (operation.error) {
-        [self rejectWithError:operation.error];
-        return;
-    }
-
-    else if (operation.isCancelled) {
-        [self reject];
-        return;
-    }
-
-    [self runNextOperation:operation];
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath
-                      ofObject:(id)object
-                        change:(NSDictionary *)change
-                       context:(void *)context {
-
-    BOOL finished = [[change valueForKey:NSKeyValueChangeNewKey] boolValue];
-
-    if (finished) {
-        [object removeObserver:self forKeyPath:keyPath];
-
-        [self operationDidFinish:object];
-    }
 }
 
 @end

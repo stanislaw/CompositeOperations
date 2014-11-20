@@ -9,6 +9,13 @@
 
 #import "COOperation.h"
 
-@interface COSequentialOperation : COOperation
-- (NSOperation <COOperation> *)nextOperationAfterOperation:(NSOperation <COOperation> *)lastFinishedOperationOrNil;
+@class COSequentialOperation;
+
+@protocol COSequentialOperationDelegate <NSObject>
+- (NSOperation <COOperation> *)sequentialOperation:(COSequentialOperation *)sequentialOperation
+                       nextOperationAfterOperation:(NSOperation <COOperation> *)lastFinishedOperationOrNil;
+@end
+
+@interface COSequentialOperation : COOperation <COSequentialOperationDelegate>
+@property (weak, nonatomic) id <COSequentialOperationDelegate> delegate;
 @end

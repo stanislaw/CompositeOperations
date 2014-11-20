@@ -11,7 +11,8 @@
 
 @implementation SequentialCompositeOperationTrivialGreen
 
-- (id)nextOperationAfterOperation:(COOperation *)lastFinishedOperationOrNil {
+- (NSOperation <COOperation> *)sequentialOperation:(COSequentialOperation *)sequentialOperation
+                       nextOperationAfterOperation:(NSOperation<COOperation> *)lastFinishedOperationOrNil {
 
     if (self.numberOfOperations < 3) {
         self.numberOfOperations++;
@@ -28,7 +29,8 @@
 
 @implementation SequentialCompositeOperationWithFirstOperationRejectingItself
 
-- (id)nextOperationAfterOperation:(COOperation *)lastFinishedOperationOrNil {
+- (NSOperation <COOperation> *)sequentialOperation:(COSequentialOperation *)sequentialOperation
+                       nextOperationAfterOperation:(NSOperation<COOperation> *)lastFinishedOperationOrNil {
 
     if (self.numberOfOperations == 0) {
         return [OperationRejectingItself new];
