@@ -1,16 +1,16 @@
 # CompositeOperations 
 
-**CompositeOperations = NSOperation + NSOperationQueue + block-based API**
+CompositeOperations is implementation of Futures/Promises pattern on top of NSOperation/NSOperationQueue infrastructure.
+
+Key features:
  
-`CompositeOperations` is an attempt to build a higher-level composite operations framework on top of NSOperation/NSOperationQueue. Its main features are:
-
-* Composite operations - two types of composition: sequential composition - `COSequentialOperation`, parallel composition - `COParallelOperation`. 
-* Multistep asynchronous operations: chaining, synchronizing.
-* Mixing (or combining) composite operations into each other (See 'Combining Operations').
+* Composition of operations, two types: sequential composition - `COSequentialOperation`, parallel composition - `COParallelOperation`. 
+* Multistep asynchronous operations: chaining, parallelizing, synchronizing.
+* Mixing (or combining) composite operations into each other.
 * CompositeOperations is non-blocking: none of its operations blocks the thread it is executing on.
-* NSOperation/NSOperationQueue compatibility: all operations are NSOperation subclasses and can be be run inside NSOperationQueue queues.
+* Full NSOperation/NSOperationQueue compatibility: all operations are NSOperation subclasses and can be be run inside NSOperationQueue queues.
 
-You might be interested at this project if you use GCD and/or NSOperation and want them to be on a higher level of abstraction: you need to implement the complex flows of operations and for some reasons you are not satisfied with what NSOperationQueue/NSOperation can do out of a box.
+You might be interested at this project if you use GCD and/or NSOperation and want them to be on a bit higher level of abstraction: you need to implement the complex flows of operations and for some reasons you are not satisfied with what NSOperationQueue/NSOperation can do out of a box.
 
 [![Build Status](https://travis-ci.org/stanislaw/CompositeOperations.png?branch=master)](https://travis-ci.org/stanislaw/CompositeOperations)
 
