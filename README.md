@@ -4,7 +4,7 @@
  
 `CompositeOperations` is an attempt to build a higher-level composite operations framework on top of NSOperation/NSOperationQueue. Its main features are:
 
-* Composite operations - two types of composition: sequential composition - `COSequentialCompositeOperationl`, parallel composition - `COParallelCompositeOperation`. 
+* Composite operations - two types of composition: sequential composition - `COSequentialOperation`, parallel composition - `COParallelOperation`. 
 * Multistep asynchronous operations: chaining, synchronizing.
 * Mixing (or combining) composite operations into each other (See 'Combining Operations').
 * CompositeOperations is non-blocking: none of its operations blocks the thread it is executing on.
