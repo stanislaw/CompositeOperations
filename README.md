@@ -10,7 +10,7 @@ Key features:
 * CompositeOperations is non-blocking: none of its operations blocks the thread it is executing on.
 * Full NSOperation/NSOperationQueue compatibility: all operations are NSOperation subclasses and can be be run inside NSOperationQueue queues.
 
-You might be interested at this project if you use GCD and/or NSOperation and want them to be on a bit higher level of abstraction: you need to implement the complex flows of operations and for some reasons you are not satisfied with what NSOperationQueue/NSOperation can do out of a box.
+You might be interested at this project if you use GCD and/or NSOperation and want them to be on a bit higher level of abstraction: you need to implement the complex flows of operations and for some reasons you are not satisfied with what NSOperation/NSOperationQueue can do out of a box.
 
 [![Build Status](https://travis-ci.org/stanislaw/CompositeOperations.png?branch=master)](https://travis-ci.org/stanislaw/CompositeOperations)
 
