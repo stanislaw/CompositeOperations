@@ -15,14 +15,21 @@ typedef NS_ENUM(NSInteger, COOperationState) {
 
 static inline NSString * COKeyPathFromOperationState(COOperationState state) {
     switch (state) {
-        case COOperationStateReady:
+        case COOperationStateReady: {
             return @"isReady";
-        case COOperationStateExecuting:
+        }
+
+        case COOperationStateExecuting: {
             return @"isExecuting";
-        case COOperationStateFinished:
+        }
+
+        case COOperationStateFinished: {
             return @"isFinished";
-        default:
+        }
+
+        default: {
             return @"state";
+        }
     }
 }
 
