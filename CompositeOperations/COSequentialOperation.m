@@ -38,6 +38,20 @@
 }
 
 - (void)runNextOperation:(NSOperation <COOperation> *)lastFinishedOperationOrNil {
+    if (self.isCancelled ||
+        (lastFinishedOperationOrNil && lastFinishedOperationOrNil.isCancelled)) {
+
+        NSError *error = lastFinishedOperationOrNil.error;
+
+        if (error) {
+            [self rejectWithError:error];
+        } else {
+            [self reject];
+        }
+
+        return;
+    }
+
     NSOperation <COOperation> *nextOperation = [self.delegate sequentialOperation:self
                                                       nextOperationAfterOperation:lastFinishedOperationOrNil];
 

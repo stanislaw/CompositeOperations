@@ -90,4 +90,10 @@
     });
 }
 
+- (void)cancel {
+    [super cancel];
+
+    [self.operations makeObjectsPerformSelector:@selector(cancel)];
+}
+
 @end
