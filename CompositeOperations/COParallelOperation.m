@@ -44,8 +44,6 @@
 
         operation.completionBlock = ^{
             if (weakOperation.isCancelled) {
-                [weakSelf.operations makeObjectsPerformSelector:@selector(cancel)];
-
                 [weakSelf cancel];
             }
 
