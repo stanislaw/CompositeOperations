@@ -13,7 +13,6 @@
 @implementation COOperation
 
 @synthesize state     = _state,
-
             result    = _result,
             error     = _error;
 
@@ -22,7 +21,7 @@
 
     if (self == nil) return nil;
 
-    _state     = COOperationStateReady;
+    _state = COOperationStateReady;
 
     return self;
 }
@@ -75,8 +74,7 @@
 }
 
 - (void)reject {
-    [self cancel];
-    self.state = COOperationStateFinished;
+    [self rejectWithError:COOperationDefaultError];
 }
 
 - (void)rejectWithError:(NSError *)error {
@@ -125,7 +123,7 @@
 - (NSString *)description {
     NSMutableArray *descriptionComponents = [NSMutableArray array];
 
-    [descriptionComponents addObject:[NSString stringWithFormat:@"state = %@; isCancelled = %@", COKeyPathFromOperationState(self.state), self.isCancelled ? @"YES" : @"NO" ]];
+    [descriptionComponents addObject:[NSString stringWithFormat:@"state = %@; isCancelled = %@; result = %@; error = \"%@\"", COKeyPathFromOperationState(self.state), self.isCancelled ? @"YES" : @"NO", self.result, self.error.localizedDescription ]];
 
     NSString *description = [NSString stringWithFormat:@"<%@: %p (%@)>", NSStringFromClass([self class]), self, [descriptionComponents componentsJoinedByString:@"; "]];
 
@@ -133,7 +131,13 @@
 }
 
 - (NSString *)debugDescription {
-    return self.description;
+    NSMutableArray *descriptionComponents = [NSMutableArray array];
+
+    [descriptionComponents addObject:[NSString stringWithFormat:@"state = %@; isCancelled = %@; result = %@; error = \"%@\"", COKeyPathFromOperationState(self.state), self.isCancelled ? @"YES" : @"NO", self.result, self.error ]];
+
+    NSString *description = [NSString stringWithFormat:@"<%@: %p (%@)>", NSStringFromClass([self class]), self, [descriptionComponents componentsJoinedByString:@"; "]];
+
+    return description;
 }
 
 @end

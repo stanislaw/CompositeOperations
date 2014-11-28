@@ -51,8 +51,8 @@ describe(@"COParallelOperationSpec - Rejection", ^{
 
         NSArray *operations = @[
             [OperationRejectingItself new],
-            [OperationTriviallyReturningNull new],
-            [OperationTriviallyReturningNull new]
+            [OperationRejectingItself new],
+            [OperationRejectingItself new]
         ];
 
         ParallelCompositeOperation1 *parallelOperation = [[ParallelCompositeOperation1 alloc] initWithOperations:operations];
@@ -71,7 +71,21 @@ describe(@"COParallelOperationSpec - Rejection", ^{
         [[theValue(parallelOperation.isCancelled) should] beYes];
 
         [[parallelOperation.result should] beNil];
-        [[parallelOperation.error should] beNil];
+        [[parallelOperation.error shouldNot] beNil];
+
+        NSError *parallelOperationError = parallelOperation.error;
+
+        NSDictionary *expectedParallelOperationErrorUserInfo = @{
+            COParallelOperationErrorsKey: @[ COOperationDefaultError, COOperationDefaultError, COOperationDefaultError ]
+        };
+
+        [[theValue(parallelOperation.isFinished) should] beYes];
+        [[theValue(parallelOperation.isCancelled) should] beYes];
+
+        [[parallelOperation.result should] beNil];
+
+        [[parallelOperationError shouldNot] beNil];
+        [[parallelOperationError.userInfo should] equal:expectedParallelOperationErrorUserInfo];
     });
 
     it(@"", ^{
@@ -80,7 +94,6 @@ describe(@"COParallelOperationSpec - Rejection", ^{
         NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:0 userInfo:nil];
 
         NSArray *operations = @[
-            [OperationTriviallyReturningNull new],
             [[OperationRejectingItselfWithError alloc] initWithError:error],
         ];
 
@@ -99,7 +112,7 @@ describe(@"COParallelOperationSpec - Rejection", ^{
         NSError *parallelOperationError = parallelOperation.error;
 
         NSDictionary *expectedParallelOperationErrorUserInfo = @{
-            @"errors": @[ error ]
+            COParallelOperationErrorsKey: @[ error ]
         };
 
         [[theValue(parallelOperation.isFinished) should] beYes];

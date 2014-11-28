@@ -9,6 +9,8 @@
 
 #import "COOperation.h"
 
+FOUNDATION_EXPORT NSString *const COParallelOperationErrorsKey;
+
 @interface COParallelOperation : COOperation
 - (id)initWithOperations:(NSArray *)operations;
 @end

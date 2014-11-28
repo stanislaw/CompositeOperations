@@ -10,6 +10,8 @@
 #import "COParallelOperation.h"
 #import "COOperation_Private.h"
 
+NSString *const COParallelOperationErrorsKey = @"COParallelOperationErrorsKey";
+
 @interface COParallelOperation ()
 
 @property (readonly, nonatomic) NSArray *operations;
@@ -78,7 +80,7 @@
             if (errors.count > 0) {
                 NSError *error = [NSError errorWithDomain:@"com.CompositeOperations.COParallelOperation"
                                                      code:0
-                                                 userInfo:@{ @"errors": errors }];
+                                                 userInfo:@{ COParallelOperationErrorsKey : errors }];
                 
                 [self rejectWithError:error];
             } else {
