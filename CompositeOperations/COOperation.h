@@ -9,7 +9,8 @@
 
 #import <Foundation/Foundation.h>
 
-#define COOperationDefaultError [NSError errorWithDomain:@"com.CompositeOperations" code:0 userInfo:@{}]
+#define COOperationErrorDefault   [NSError errorWithDomain:@"com.CompositeOperations" code:0 userInfo:@{}]
+#define COOperationErrorCancelled [NSError errorWithDomain:@"com.CompositeOperations" code:1 userInfo:@{}]
 
 @protocol COOperation <NSObject>
 

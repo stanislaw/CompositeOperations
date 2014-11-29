@@ -39,13 +39,13 @@ NSString *const COParallelOperationErrorsKey = @"COParallelOperationErrorsKey";
 
     COParallelOperation *weakSelf = self;
 
-    for (NSOperation <COOperation> *operation in self.operations) {
+    for (COOperation *operation in self.operations) {
         dispatch_group_enter(group);
 
-        NSOperation <COOperation> *weakOperation = operation;
+        COOperation *weakOperation = operation;
 
         operation.completionBlock = ^{
-            if (weakOperation.isCancelled) {
+            if (weakOperation.result == nil) {
                 [weakSelf cancel];
             }
 
@@ -53,7 +53,7 @@ NSString *const COParallelOperationErrorsKey = @"COParallelOperationErrorsKey";
         };
     }
 
-    for (NSOperation <COOperation> *operation in self.operations) {
+    for (COOperation *operation in self.operations) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [operation start];
         });
@@ -61,21 +61,11 @@ NSString *const COParallelOperationErrorsKey = @"COParallelOperationErrorsKey";
 
     dispatch_group_notify(group, dispatch_get_main_queue(), ^{
         if (self.isCancelled == NO) {
-            NSMutableArray *results = [NSMutableArray new];
-
-            [self.operations enumerateObjectsUsingBlock:^(NSOperation <COOperation> *operation, NSUInteger idx, BOOL *stop) {
-                results[idx] = operation.result;
-            }];
+            NSArray *results = [self.operations valueForKey:@"result"];
 
             [self finishWithResult:results];
         } else {
-            NSMutableArray *errors  = [NSMutableArray new];
-
-            [self.operations enumerateObjectsUsingBlock:^(NSOperation <COOperation> *operation, NSUInteger idx, BOOL *stop) {
-                if (operation.error) {
-                    [errors addObject:operation.error];
-                }
-            }];
+            NSArray *errors = [self.operations valueForKey:@"error"];
 
             if (errors.count > 0) {
                 NSError *error = [NSError errorWithDomain:@"com.CompositeOperations.COParallelOperation"
@@ -84,7 +74,7 @@ NSString *const COParallelOperationErrorsKey = @"COParallelOperationErrorsKey";
                 
                 [self rejectWithError:error];
             } else {
-                [self reject];
+                [self rejectWithError:COOperationErrorCancelled];
             }
         }
     });

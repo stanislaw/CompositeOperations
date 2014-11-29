@@ -14,7 +14,7 @@
 
 @property (strong, nonatomic) NSMutableArray *operations;
 
-- (void)runNextOperation:(NSOperation <COOperation> *)lastFinishedOperationOrNil;
+- (void)runNextOperation:(COOperation *)lastFinishedOperationOrNil;
 
 @end
 
@@ -37,43 +37,35 @@
     [self runNextOperation:nil];
 }
 
-- (void)runNextOperation:(NSOperation <COOperation> *)lastFinishedOperationOrNil {
-    if (self.isCancelled ||
-        (lastFinishedOperationOrNil && lastFinishedOperationOrNil.isCancelled)) {
-
+- (void)runNextOperation:(COOperation *)lastFinishedOperationOrNil {
+    if (lastFinishedOperationOrNil && lastFinishedOperationOrNil.result == nil) {
         NSError *error = lastFinishedOperationOrNil.error;
 
-        if (error) {
-            [self rejectWithError:error];
-        } else {
-            [self reject];
-        }
+        [self rejectWithError:error];
 
         return;
     }
 
-    NSOperation <COOperation> *nextOperation = [self.delegate sequentialOperation:self
-                                                      nextOperationAfterOperation:lastFinishedOperationOrNil];
+    else if (self.isCancelled) {
+        [self reject];
+
+        return;
+    }
+
+    COOperation *nextOperation = [self.delegate sequentialOperation:self
+                                        nextOperationAfterOperation:lastFinishedOperationOrNil];
 
     if (nextOperation) {
         [self.operations addObject:nextOperation];
 
         __weak COSequentialOperation *weakSelf = self;
-        __weak NSOperation <COOperation> *weakNextOperation = nextOperation;
+        __weak COOperation *weakNextOperation = nextOperation;
 
         nextOperation.completionBlock = ^{
-            if (weakNextOperation.error) {
-                [weakSelf rejectWithError:weakNextOperation.error];
-                return;
-            }
-
-            else if (weakNextOperation.isCancelled) {
-                [weakSelf reject];
-                return;
-            }
+            __strong COOperation *strongNextOperation = weakNextOperation;
 
             dispatch_async(dispatch_get_main_queue(), ^{
-                [weakSelf runNextOperation:weakNextOperation];
+                [weakSelf runNextOperation:strongNextOperation];
             });
         };
 
@@ -85,8 +77,8 @@
     }
 }
 
-- (NSOperation <COOperation> *)sequentialOperation:(COSequentialOperation *)sequentialOperation
-                       nextOperationAfterOperation:(NSOperation<COOperation> *)lastFinishedOperationOrNil {
+- (COOperation *)sequentialOperation:(COSequentialOperation *)sequentialOperation
+         nextOperationAfterOperation:(NSOperation<COOperation> *)lastFinishedOperationOrNil {
     @throw [NSException exceptionWithName:NSGenericException reason:@"Must override in subclass or implement in external delegate" userInfo:nil];
     
     return nil;

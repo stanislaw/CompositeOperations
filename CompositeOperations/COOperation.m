@@ -12,9 +12,9 @@
 
 @implementation COOperation
 
-@synthesize state     = _state,
-            result    = _result,
-            error     = _error;
+@synthesize state  = _state,
+            result = _result,
+            error  = _error;
 
 - (id)init {
     self = [super init];
@@ -59,35 +59,7 @@
     }
 }
 
-#pragma mark - <COOperation>
-
-- (void)finish {
-    [self finishWithResult:[NSNull null]];
-}
-
-- (void)finishWithResult:(id)result {
-    NSParameterAssert(result);
-
-    self.result = result;
-
-    self.state = COOperationStateFinished;
-}
-
-- (void)reject {
-    [self rejectWithError:COOperationDefaultError];
-}
-
-- (void)rejectWithError:(NSError *)error {
-    NSParameterAssert(error);
-
-    self.error = error;
-
-    [self cancel];
-    
-    self.state = COOperationStateFinished;
-}
-
-#pragma mark - NSOperation interface (partial mirroring)
+#pragma mark - NSOperation
 
 - (BOOL)isReady {
     return self.state == COOperationStateReady && super.isReady;
@@ -110,11 +82,41 @@
         self.state = COOperationStateExecuting;
 
         if (self.isCancelled) {
-            [self reject];
+            [self rejectWithError:COOperationErrorCancelled];
         } else {
             [self main];
         }
     }
+}
+
+#pragma mark - <COOperation>
+
+- (void)finish {
+    [self finishWithResult:[NSNull null]];
+}
+
+- (void)finishWithResult:(id)result {
+    NSParameterAssert(result);
+
+    if (self.isCancelled == NO) {
+        self.result = result;
+    } else {
+        self.error = COOperationErrorCancelled;
+    }
+
+    self.state = COOperationStateFinished;
+}
+
+- (void)reject {
+    [self rejectWithError:COOperationErrorDefault];
+}
+
+- (void)rejectWithError:(NSError *)error {
+    NSParameterAssert(error);
+
+    self.error = error;
+
+    self.state = COOperationStateFinished;
 }
 
 #pragma mark

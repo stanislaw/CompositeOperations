@@ -25,23 +25,24 @@ describe(@"COOperationTests", ^{
         [[theValue(isFinished) should] beYes];
     });
 
-    describe(@"NSOperation roots", ^{
-        describe(@"-cancel", ^{
-            it(@"...", ^{
-                COOperation *operation = [COOperation new];
+    describe(@"-cancel", ^{
+        it(@"...", ^{
+            COOperation *operation = [COOperation new];
 
-                [operation cancel];
+            [operation cancel];
 
-                [[theValue(operation.isCancelled) should] beYes];
-                [[theValue(operation.isFinished)  should] beNo];
+            [[theValue(operation.isCancelled) should] beYes];
+            [[theValue(operation.isFinished)  should] beNo];
 
-                [operation start];
+            [operation start];
 
-                [[theValue(operation.isCancelled) should] beYes];
-                [[theValue(operation.isFinished)  should] beYes];
-            });
+            [[theValue(operation.isCancelled) should] beYes];
+            [[theValue(operation.isFinished)  should] beYes];
+            [[operation.result should] beNil];
+            [[operation.error should] equal:COOperationErrorCancelled];
         });
     });
+
 });
 
 SPEC_END

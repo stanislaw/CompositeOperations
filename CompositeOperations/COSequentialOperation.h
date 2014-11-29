@@ -12,8 +12,8 @@
 @class COSequentialOperation;
 
 @protocol COSequentialOperationDelegate <NSObject>
-- (NSOperation <COOperation> *)sequentialOperation:(COSequentialOperation *)sequentialOperation
-                       nextOperationAfterOperation:(NSOperation <COOperation> *)lastFinishedOperationOrNil;
+- (COOperation *)sequentialOperation:(COSequentialOperation *)sequentialOperation
+                       nextOperationAfterOperation:(COOperation *)lastFinishedOperationOrNil;
 @end
 
 @interface COSequentialOperation : COOperation <COSequentialOperationDelegate>

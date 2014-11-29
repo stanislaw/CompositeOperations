@@ -51,8 +51,6 @@ describe(@"COParallelOperationSpec - Rejection", ^{
 
         NSArray *operations = @[
             [OperationRejectingItself new],
-            [OperationRejectingItself new],
-            [OperationRejectingItself new]
         ];
 
         ParallelCompositeOperation1 *parallelOperation = [[ParallelCompositeOperation1 alloc] initWithOperations:operations];
@@ -76,7 +74,7 @@ describe(@"COParallelOperationSpec - Rejection", ^{
         NSError *parallelOperationError = parallelOperation.error;
 
         NSDictionary *expectedParallelOperationErrorUserInfo = @{
-            COParallelOperationErrorsKey: @[ COOperationDefaultError, COOperationDefaultError, COOperationDefaultError ]
+            COParallelOperationErrorsKey: @[ COOperationErrorDefault ]
         };
 
         [[theValue(parallelOperation.isFinished) should] beYes];
