@@ -7,39 +7,46 @@
 
 SPEC_BEGIN(COOperationTests)
 
-describe(@"COOperationTests", ^{
-    // Suprisingly ensures that new COOperation instance when called with -finish, triggers its completionBlock, even when its main body is undefined.
-    it(@"", ^{
-        __block BOOL isFinished = NO;
+describe(@"COOperation", ^{
+    describe(@"NSOperation-inherited behavior", ^{
+        describe(@"-finish without -start", ^{
+            it(@"triggers completion block", ^{
+                __block BOOL isFinished = NO;
 
-        COOperation *operation = [COOperation new];
+                COOperation *operation = [COOperation new];
 
-        operation.completionBlock = ^{
-            isFinished = YES;
-        };
+                operation.completionBlock = ^{
+                    isFinished = YES;
+                };
 
-        [operation finish];
+                [operation finish];
 
-        while (isFinished == NO);
+                while (isFinished == NO);
 
-        [[theValue(isFinished) should] beYes];
+                [[theValue(isFinished) should] beYes];
+                [[theValue(operation.isFinished) should] beYes];
+            });
+        });
     });
 
     describe(@"-cancel", ^{
-        it(@"...", ^{
-            COOperation *operation = [COOperation new];
+        describe(@"-cancel before start", ^{
+            it(@"finish operation with default cancellation error", ^{
+                COOperation *operation = [COOperation new];
 
-            [operation cancel];
+                [operation cancel];
 
-            [[theValue(operation.isCancelled) should] beYes];
-            [[theValue(operation.isFinished)  should] beNo];
+                [[theValue(operation.isCancelled) should] beYes];
+                [[theValue(operation.isFinished)  should] beNo];
 
-            [operation start];
+                [operation start];
 
-            [[theValue(operation.isCancelled) should] beYes];
-            [[theValue(operation.isFinished)  should] beYes];
-            [[operation.result should] beNil];
-            [[operation.error should] equal:COOperationErrorCancelled];
+                [[theValue(operation.isCancelled) should] beYes];
+                [[theValue(operation.isFinished)  should] beYes];
+
+                [[operation.result should] beNil];
+                [[operation.error should] equal:COOperationErrorCancelled];
+            });
         });
     });
 
