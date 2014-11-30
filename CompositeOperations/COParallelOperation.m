@@ -25,9 +25,7 @@ NSString *const COParallelOperationErrorsKey = @"COParallelOperationErrorsKey";
 
     self = [super init];
 
-    if (self == nil) {
-        return nil;
-    }
+    if (self == nil) return nil;
 
     _operations = operations;
 
@@ -37,18 +35,10 @@ NSString *const COParallelOperationErrorsKey = @"COParallelOperationErrorsKey";
 - (void)main {
     dispatch_group_t group = dispatch_group_create();
 
-    COParallelOperation *weakSelf = self;
-
     for (COOperation *operation in self.operations) {
         dispatch_group_enter(group);
 
-        COOperation *weakOperation = operation;
-
         operation.completionBlock = ^{
-            if (weakOperation.result == nil) {
-                [weakSelf cancel];
-            }
-
             dispatch_group_leave(group);
         };
     }
@@ -60,21 +50,37 @@ NSString *const COParallelOperationErrorsKey = @"COParallelOperationErrorsKey";
     };
 
     dispatch_group_notify(group, dispatch_get_main_queue(), ^{
-        if (self.isCancelled == NO) {
-            NSArray *results = [self.operations valueForKey:@"result"];
-
-            [self finishWithResult:results];
+        if (self.isCancelled) {
+            [self rejectWithError:COOperationErrorCancelled];
         } else {
-            NSArray *errors = [self.operations valueForKey:@"error"];
+            NSMutableArray *results = [NSMutableArray new];
 
-            if (errors.count > 0) {
-                NSError *error = [NSError errorWithDomain:@"com.CompositeOperations.COParallelOperation"
+            __block BOOL allOperationsFinishedSuccessfully = YES;
+
+            [self.operations enumerateObjectsUsingBlock:^(COOperation *operation, NSUInteger idx, BOOL *stop) {
+                id result = operation.result;
+
+                if (result) {
+                    [results addObject:result];
+                } else {
+                    allOperationsFinishedSuccessfully = NO;
+
+                    *stop = YES;
+                }
+            }];
+
+            if (allOperationsFinishedSuccessfully) {
+                [self finishWithResult:[results copy]];
+            }
+
+            else {
+                NSArray *errors = [self.operations valueForKey:@"error"];
+
+                NSError *error = [NSError errorWithDomain:@"com.CompositeOperations"
                                                      code:0
                                                  userInfo:@{ COParallelOperationErrorsKey : errors }];
-                
+
                 [self rejectWithError:error];
-            } else {
-                [self rejectWithError:COOperationErrorCancelled];
             }
         }
     });

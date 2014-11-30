@@ -66,7 +66,7 @@ describe(@"COParallelOperationSpec - Rejection", ^{
         }
 
         [[theValue(parallelOperation.isFinished) should] beYes];
-        [[theValue(parallelOperation.isCancelled) should] beYes];
+        [[theValue(parallelOperation.isCancelled) should] beNo];
 
         [[parallelOperation.result should] beNil];
         [[parallelOperation.error shouldNot] beNil];
@@ -78,7 +78,7 @@ describe(@"COParallelOperationSpec - Rejection", ^{
         };
 
         [[theValue(parallelOperation.isFinished) should] beYes];
-        [[theValue(parallelOperation.isCancelled) should] beYes];
+        [[theValue(parallelOperation.isCancelled) should] beNo];
 
         [[parallelOperation.result should] beNil];
 
@@ -114,7 +114,7 @@ describe(@"COParallelOperationSpec - Rejection", ^{
         };
 
         [[theValue(parallelOperation.isFinished) should] beYes];
-        [[theValue(parallelOperation.isCancelled) should] beYes];
+        [[theValue(parallelOperation.isCancelled) should] beNo];
 
         [[parallelOperation.result should] beNil];
 

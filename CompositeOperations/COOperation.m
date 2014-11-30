@@ -114,7 +114,11 @@
 - (void)rejectWithError:(NSError *)error {
     NSParameterAssert(error);
 
-    self.error = error;
+    if (self.isCancelled == NO) {
+        self.error = error;
+    } else {
+        self.error = COOperationErrorCancelled;
+    }
 
     self.state = COOperationStateFinished;
 }

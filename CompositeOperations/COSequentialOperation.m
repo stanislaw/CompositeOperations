@@ -23,9 +23,7 @@
 - (id)init {
     self = [super init];
 
-    if (self == nil) {
-        return nil;
-    }
+    if (self == nil) return nil;
 
     _operations = [NSMutableArray new];
     _delegate   = self;
