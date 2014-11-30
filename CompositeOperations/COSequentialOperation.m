@@ -73,7 +73,11 @@
             [nextOperation start];
         });
     } else {
-        [self finishWithResult:lastFinishedOperationOrNil.result];
+        if (lastFinishedOperationOrNil) {
+            [self finishWithResult:lastFinishedOperationOrNil.result];
+        } else {
+            [self finish];
+        }
     }
 }
 
