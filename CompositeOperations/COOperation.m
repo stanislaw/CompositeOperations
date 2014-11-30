@@ -124,16 +124,18 @@ NSString *const COOperationErrorKey = @"COOperationErrorKey";
     NSParameterAssert(error);
 
     if (self.isCancelled == NO) {
-        self.error = [self resultErrorForError:nil code:COOperationErrorRejected userInfo:@{ COOperationErrorKey: error }];
+        self.error = [self resultErrorForError:error code:COOperationErrorRejected userInfo:nil];
     } else {
-        self.error = [self resultErrorForError:nil code:COOperationErrorCancelled userInfo:@{ COOperationErrorKey: error }];
+        self.error = [self resultErrorForError:error code:COOperationErrorCancelled userInfo:nil];
     }
 
     self.state = COOperationStateFinished;
 }
 
 - (NSError *)resultErrorForError:(NSError *)error code:(NSUInteger)code userInfo:(NSDictionary *)userInfo {
-    NSError *resultError = [NSError errorWithDomain:COErrorDomain code:code userInfo:userInfo];
+    NSDictionary *resultErrorUserInfo = error ? @{ COOperationErrorKey: error } : nil;
+
+    NSError *resultError = [NSError errorWithDomain:COErrorDomain code:code userInfo:resultErrorUserInfo];
 
     return resultError;
 }
