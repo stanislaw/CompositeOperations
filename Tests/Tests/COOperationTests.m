@@ -45,7 +45,10 @@ describe(@"COOperation", ^{
                 [[theValue(operation.isFinished)  should] beYes];
 
                 [[operation.result should] beNil];
-                [[operation.error should] equal:COOperationErrorCancelled];
+
+                NSError *expectedError = [NSError errorWithDomain:COErrorDomain code:COOperationErrorCancelled userInfo:nil];
+
+                [[operation.error should] equal:expectedError];
             });
         });
     });

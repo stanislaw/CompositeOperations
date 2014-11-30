@@ -64,4 +64,6 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
 @property (strong, nonatomic) id result;
 @property (strong, nonatomic) NSError *error;
 
+- (NSError *)resultErrorForError:(NSError *)error code:(NSUInteger)code userInfo:(NSDictionary *)userInfo;
+
 @end

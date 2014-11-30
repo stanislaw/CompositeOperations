@@ -16,6 +16,8 @@ NSString *const COParallelOperationErrorsKey = @"COParallelOperationErrorsKey";
 
 @property (readonly, nonatomic) NSArray *operations;
 
+- (void)cancelAllOperations;
+
 @end
 
 @implementation COParallelOperation
@@ -38,7 +40,14 @@ NSString *const COParallelOperationErrorsKey = @"COParallelOperationErrorsKey";
     for (COOperation *operation in self.operations) {
         dispatch_group_enter(group);
 
+        __weak COParallelOperation *weakSelf = self;
+        __weak COOperation *weakOperation = operation;
+
         operation.completionBlock = ^{
+            if (weakOperation.result == nil) {
+                [weakSelf cancelAllOperations];
+            }
+
             dispatch_group_leave(group);
         };
     }
@@ -51,7 +60,7 @@ NSString *const COParallelOperationErrorsKey = @"COParallelOperationErrorsKey";
 
     dispatch_group_notify(group, dispatch_get_main_queue(), ^{
         if (self.isCancelled) {
-            [self rejectWithError:COOperationErrorCancelled];
+            [self reject];
         } else {
             NSMutableArray *results = [NSMutableArray new];
 
@@ -74,21 +83,24 @@ NSString *const COParallelOperationErrorsKey = @"COParallelOperationErrorsKey";
             }
 
             else {
-                NSArray *errors = [self.operations valueForKey:@"error"];
-
-                NSError *error = [NSError errorWithDomain:@"com.CompositeOperations"
-                                                     code:0
-                                                 userInfo:@{ COParallelOperationErrorsKey : errors }];
-
-                [self rejectWithError:error];
+                [self reject];
             }
         }
     });
 }
 
-- (void)cancel {
-    [super cancel];
+- (NSError *)resultErrorForError:(NSError *)error code:(NSUInteger)code userInfo:(NSDictionary *)userInfo {
+    NSArray *errors = [self.operations valueForKey:@"error"];
 
+    NSError *resultError = [NSError errorWithDomain:COErrorDomain
+                                               code:code
+                                           userInfo:@{ COParallelOperationErrorsKey : errors }];
+
+
+    return resultError;
+}
+
+- (void)cancelAllOperations {
     [self.operations makeObjectsPerformSelector:@selector(cancel)];
 }
 

@@ -11,6 +11,8 @@
 
 @class COSequentialOperation;
 
+FOUNDATION_EXPORT NSString *const COSequentialOperationErrorKey;
+
 @protocol COSequentialOperationDelegate <NSObject>
 - (COOperation *)sequentialOperation:(COSequentialOperation *)sequentialOperation
                        nextOperationAfterOperation:(COOperation *)lastFinishedOperationOrNil;

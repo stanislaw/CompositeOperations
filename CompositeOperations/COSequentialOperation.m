@@ -10,6 +10,8 @@
 #import "COSequentialOperation.h"
 #import "COOperation_Private.h"
 
+NSString *const COSequentialOperationErrorKey = @"COSequentialOperationErrorKey";
+
 @interface COSequentialOperation ()
 
 @property (strong, nonatomic) NSMutableArray *operations;
@@ -84,6 +86,18 @@
     @throw [NSException exceptionWithName:NSGenericException reason:@"Must override in subclass or implement in external delegate" userInfo:nil];
     
     return nil;
+}
+
+- (NSError *)resultErrorForError:(NSError *)error code:(NSUInteger)code userInfo:(NSDictionary *)userInfo {
+    NSError *resultError;
+
+    if (error) {
+        resultError = [NSError errorWithDomain:COErrorDomain code:code userInfo:@{ COSequentialOperationErrorKey: error }];
+    } else {
+        resultError = [NSError errorWithDomain:COErrorDomain code:code userInfo:nil];
+    }
+
+    return resultError;
 }
 
 @end

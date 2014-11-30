@@ -9,8 +9,13 @@
 
 #import <Foundation/Foundation.h>
 
-#define COOperationErrorDefault   [NSError errorWithDomain:@"com.CompositeOperations" code:0 userInfo:@{}]
-#define COOperationErrorCancelled [NSError errorWithDomain:@"com.CompositeOperations" code:1 userInfo:@{}]
+typedef NS_ENUM(NSUInteger, COOperationErrorCode) {
+    COOperationErrorRejected = 0,
+    COOperationErrorCancelled
+};
+
+FOUNDATION_EXPORT NSString *const COErrorDomain;
+FOUNDATION_EXPORT NSString *const COOperationErrorKey;
 
 @protocol COOperation <NSObject>
 

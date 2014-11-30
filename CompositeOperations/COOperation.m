@@ -10,6 +10,9 @@
 #import "COOperation.h"
 #import "COOperation_Private.h"
 
+NSString *const COErrorDomain = @"com.CompositeOperations";
+NSString *const COOperationErrorKey = @"COOperationErrorKey";
+
 @implementation COOperation
 
 @synthesize state  = _state,
@@ -82,7 +85,7 @@
         self.state = COOperationStateExecuting;
 
         if (self.isCancelled) {
-            [self rejectWithError:COOperationErrorCancelled];
+            [self reject];
         } else {
             [self main];
         }
@@ -101,26 +104,38 @@
     if (self.isCancelled == NO) {
         self.result = result;
     } else {
-        self.error = COOperationErrorCancelled;
+        self.error = [self resultErrorForError:nil code:COOperationErrorCancelled userInfo:nil];
     }
 
     self.state = COOperationStateFinished;
 }
 
 - (void)reject {
-    [self rejectWithError:COOperationErrorDefault];
+    if (self.isCancelled == NO) {
+        self.error = [self resultErrorForError:nil code:COOperationErrorRejected userInfo:nil];
+    } else {
+        self.error = [self resultErrorForError:nil code:COOperationErrorCancelled userInfo:nil];
+    }
+
+    self.state = COOperationStateFinished;
 }
 
 - (void)rejectWithError:(NSError *)error {
     NSParameterAssert(error);
 
     if (self.isCancelled == NO) {
-        self.error = error;
+        self.error = [self resultErrorForError:nil code:COOperationErrorRejected userInfo:@{ COOperationErrorKey: error }];
     } else {
-        self.error = COOperationErrorCancelled;
+        self.error = [self resultErrorForError:nil code:COOperationErrorCancelled userInfo:@{ COOperationErrorKey: error }];
     }
 
     self.state = COOperationStateFinished;
+}
+
+- (NSError *)resultErrorForError:(NSError *)error code:(NSUInteger)code userInfo:(NSDictionary *)userInfo {
+    NSError *resultError = [NSError errorWithDomain:COErrorDomain code:code userInfo:userInfo];
+
+    return resultError;
 }
 
 #pragma mark

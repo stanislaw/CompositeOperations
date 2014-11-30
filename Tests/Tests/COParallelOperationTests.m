@@ -73,8 +73,10 @@ describe(@"COParallelOperationSpec - Rejection", ^{
 
         NSError *parallelOperationError = parallelOperation.error;
 
+        NSError *expectedOperationError = [NSError errorWithDomain:COErrorDomain code:COOperationErrorRejected userInfo:nil];
+
         NSDictionary *expectedParallelOperationErrorUserInfo = @{
-            COParallelOperationErrorsKey: @[ COOperationErrorDefault ]
+            COParallelOperationErrorsKey: @[ expectedOperationError ]
         };
 
         [[theValue(parallelOperation.isFinished) should] beYes];
@@ -84,6 +86,7 @@ describe(@"COParallelOperationSpec - Rejection", ^{
 
         [[parallelOperationError shouldNot] beNil];
         [[parallelOperationError.userInfo should] equal:expectedParallelOperationErrorUserInfo];
+        [[theValue(parallelOperationError.code) should] equal:@(COOperationErrorRejected)];
     });
 
     it(@"", ^{
@@ -109,8 +112,10 @@ describe(@"COParallelOperationSpec - Rejection", ^{
 
         NSError *parallelOperationError = parallelOperation.error;
 
+        NSError *expectedOperationError = [NSError errorWithDomain:COErrorDomain code:COOperationErrorRejected userInfo:@{ COOperationErrorKey: error }];
+
         NSDictionary *expectedParallelOperationErrorUserInfo = @{
-            COParallelOperationErrorsKey: @[ error ]
+            COParallelOperationErrorsKey: @[ expectedOperationError ]
         };
 
         [[theValue(parallelOperation.isFinished) should] beYes];
@@ -120,6 +125,7 @@ describe(@"COParallelOperationSpec - Rejection", ^{
 
         [[parallelOperationError shouldNot] beNil];
         [[parallelOperationError.userInfo should] equal:expectedParallelOperationErrorUserInfo];
+        [[theValue(parallelOperationError.code) should] equal:@(COOperationErrorRejected)];
     });
 });
 
