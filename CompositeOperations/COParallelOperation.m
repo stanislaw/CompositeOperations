@@ -8,7 +8,6 @@
 //
 
 #import "COParallelOperation.h"
-#import "COOperation_Private.h"
 
 NSString *const COParallelOperationErrorsKey = @"COParallelOperationErrorsKey";
 

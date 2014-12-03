@@ -8,7 +8,6 @@
 //
 
 #import "COSequentialOperation.h"
-#import "COOperation_Private.h"
 
 NSString *const COSequentialOperationErrorKey = @"COSequentialOperationErrorKey";
 
