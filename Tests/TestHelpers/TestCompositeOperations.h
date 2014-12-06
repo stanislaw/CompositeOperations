@@ -8,10 +8,10 @@
 
 #import "CompositeOperations.h"
 
-@interface SequentialCompositeOperationTrivialGreen : COSequentialOperation
+@interface SequenceOfThreeTrivialGreenOperations : NSObject <COSequence>
 @property (assign, nonatomic) NSUInteger numberOfOperations;
 @end
 
-@interface SequentialCompositeOperationWithFirstOperationRejectingItself : COSequentialOperation
+@interface SequenceWithFirstOperationRejectingItself : NSObject <COSequence>
 @property (assign, nonatomic) NSUInteger numberOfOperations;
 @end

@@ -13,6 +13,7 @@ NSString *const COSequentialOperationErrorKey = @"COSequentialOperationErrorKey"
 
 @interface COSequentialOperation ()
 
+@property (strong, nonatomic) id <COSequence> sequence;
 @property (strong, nonatomic) NSMutableArray *operations;
 
 - (void)runNextOperation:(COOperation *)lastFinishedOperationOrNil;
@@ -22,12 +23,20 @@ NSString *const COSequentialOperationErrorKey = @"COSequentialOperationErrorKey"
 @implementation COSequentialOperation
 
 - (id)init {
+    @throw [NSException exceptionWithName:COErrorDomain reason:@"Must use designated initializer initWithSequence:" userInfo:nil];
+
+    return nil;
+}
+
+- (id)initWithSequence:(id <COSequence>)sequence {
+    NSParameterAssert([sequence conformsToProtocol:@protocol(COSequence)]);
+    
     self = [super init];
 
     if (self == nil) return nil;
 
     _operations = [NSMutableArray new];
-    _delegate   = self;
+    _sequence   = sequence;
 
     return self;
 }
@@ -51,8 +60,7 @@ NSString *const COSequentialOperationErrorKey = @"COSequentialOperationErrorKey"
         return;
     }
 
-    COOperation *nextOperation = [self.delegate sequentialOperation:self
-                                        nextOperationAfterOperation:lastFinishedOperationOrNil];
+    COOperation *nextOperation = [self.sequence nextOperationAfterOperation:lastFinishedOperationOrNil];
 
     if (nextOperation) {
         [self.operations addObject:nextOperation];
@@ -78,13 +86,6 @@ NSString *const COSequentialOperationErrorKey = @"COSequentialOperationErrorKey"
             [self finish];
         }
     }
-}
-
-- (COOperation *)sequentialOperation:(COSequentialOperation *)sequentialOperation
-         nextOperationAfterOperation:(NSOperation<COOperation> *)lastFinishedOperationOrNil {
-    @throw [NSException exceptionWithName:NSGenericException reason:@"Must override in subclass or implement in external delegate" userInfo:nil];
-    
-    return nil;
 }
 
 - (NSError *)resultErrorForError:(NSError *)error code:(NSUInteger)code userInfo:(NSDictionary *)userInfo {

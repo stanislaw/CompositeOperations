@@ -9,15 +9,12 @@
 
 #import "COOperation.h"
 
-@class COSequentialOperation;
-
 FOUNDATION_EXPORT NSString *const COSequentialOperationErrorKey;
 
-@protocol COSequentialOperationDelegate <NSObject>
-- (COOperation *)sequentialOperation:(COSequentialOperation *)sequentialOperation
-                       nextOperationAfterOperation:(COOperation *)lastFinishedOperationOrNil;
+@protocol COSequence <NSObject>
+- (COOperation *)nextOperationAfterOperation:(COOperation *)previousOperationOrNil;
 @end
 
-@interface COSequentialOperation : COOperation <COSequentialOperationDelegate>
-@property (weak, nonatomic) id <COSequentialOperationDelegate> delegate;
+@interface COSequentialOperation : COOperation
+- (id)initWithSequence:(id <COSequence>)sequence;
 @end

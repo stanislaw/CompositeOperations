@@ -9,15 +9,14 @@
 #import "TestCompositeOperations.h"
 #import "TestOperations.h"
 
-@implementation SequentialCompositeOperationTrivialGreen
+@implementation SequenceOfThreeTrivialGreenOperations
 
-- (COOperation *)sequentialOperation:(COSequentialOperation *)sequentialOperation
-                       nextOperationAfterOperation:(NSOperation<COOperation> *)lastFinishedOperationOrNil {
+- (COOperation *)nextOperationAfterOperation:(COOperation *)previousOperationOrNil {
 
     if (self.numberOfOperations < 3) {
         self.numberOfOperations++;
 
-        NSArray *array = lastFinishedOperationOrNil ? lastFinishedOperationOrNil.result : @[];
+        NSArray *array = previousOperationOrNil ? previousOperationOrNil.result : @[];
 
         return [[OperationTakingArrayAndAdding1ToIt alloc] initWithArray:array];
     } else {
@@ -27,11 +26,9 @@
 
 @end
 
-@implementation SequentialCompositeOperationWithFirstOperationRejectingItself
+@implementation SequenceWithFirstOperationRejectingItself
 
-- (COOperation *)sequentialOperation:(COSequentialOperation *)sequentialOperation
-                       nextOperationAfterOperation:(NSOperation<COOperation> *)lastFinishedOperationOrNil {
-
+- (COOperation *)nextOperationAfterOperation:(COOperation *)previousOperationOrNil {
     if (self.numberOfOperations == 0) {
         return [OperationRejectingItself new];
     }
@@ -39,7 +36,7 @@
     else if (self.numberOfOperations < 3) {
         self.numberOfOperations++;
 
-        NSArray *array = lastFinishedOperationOrNil ? lastFinishedOperationOrNil.result : @[];
+        NSArray *array = previousOperationOrNil ? previousOperationOrNil.result : @[];
 
         return [[OperationTakingArrayAndAdding1ToIt alloc] initWithArray:array];
     }

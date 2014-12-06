@@ -12,10 +12,14 @@ describe(@"Composite Operations tests", ^{
     it(@"should run composite operation", ^{
         dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
 
+        COSequentialOperation *sequentialOperation1 = [[COSequentialOperation alloc] initWithSequence:[SequenceOfThreeTrivialGreenOperations new]];
+        COSequentialOperation *sequentialOperation2 = [[COSequentialOperation alloc] initWithSequence:[SequenceOfThreeTrivialGreenOperations new]];
+        COSequentialOperation *sequentialOperation3 = [[COSequentialOperation alloc] initWithSequence:[SequenceOfThreeTrivialGreenOperations new]];
+
         NSArray *operations = @[
-            [SequentialCompositeOperationTrivialGreen new],
-            [SequentialCompositeOperationTrivialGreen new],
-            [SequentialCompositeOperationTrivialGreen new]
+            sequentialOperation1,
+            sequentialOperation2,
+            sequentialOperation3
         ];
 
         COParallelOperation *parallelOperation = [[COParallelOperation alloc] initWithOperations:operations];
