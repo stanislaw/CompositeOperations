@@ -23,7 +23,7 @@ NSString *const COSequentialOperationErrorKey = @"COSequentialOperationErrorKey"
 @implementation COSequentialOperation
 
 - (id)init {
-    @throw [NSException exceptionWithName:COErrorDomain reason:@"Must use designated initializer initWithSequence:" userInfo:nil];
+    @throw [NSException exceptionWithName:COErrorDomain reason:@"Must use designated initializer initWithSequence:!" userInfo:nil];
 
     return nil;
 }

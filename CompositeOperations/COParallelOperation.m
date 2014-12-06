@@ -21,14 +21,20 @@ NSString *const COParallelOperationErrorsKey = @"COParallelOperationErrorsKey";
 
 @implementation COParallelOperation
 
-- (id)initWithOperations:(NSArray *)operations {
-    NSParameterAssert(operations);
+- (id)init {
+    @throw [NSException exceptionWithName:COErrorDomain reason:@"Must use designated initializer initWithTransaction:!" userInfo:nil];
+
+    return nil;
+}
+
+- (id)initWithTransaction:(id<COTransaction>)transaction {
+    NSParameterAssert(transaction);
 
     self = [super init];
 
     if (self == nil) return nil;
 
-    _operations = operations;
+    _operations = [transaction operations];
 
     return self;
 }

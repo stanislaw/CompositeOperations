@@ -5,6 +5,8 @@
 #import "COParallelOperation.h"
 #import "COOperation_Private.h"
 
+#import "TestCompositeOperations.h"
+
 @interface ParallelCompositeOperation1 : COParallelOperation
 @property (assign, nonatomic) NSUInteger numberOfOperations;
 @end
@@ -19,13 +21,7 @@ describe(@"COParallelOperationSpec", ^{
     it(@"", ^{
         dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
 
-        NSArray *operations = @[
-            [OperationTriviallyReturningNull new],
-            [OperationTriviallyReturningNull new],
-            [OperationTriviallyReturningNull new]
-        ];
-
-        ParallelCompositeOperation1 *parallelOperation = [[ParallelCompositeOperation1 alloc] initWithOperations:operations];
+        ParallelCompositeOperation1 *parallelOperation = [[ParallelCompositeOperation1 alloc] initWithTransaction:[TransactionOfThreeOperationsTriviallyReturningNull new]];
 
         parallelOperation.completionBlock = ^{
             dispatch_semaphore_signal(waitSemaphore);
@@ -49,11 +45,7 @@ describe(@"COParallelOperationSpec - Rejection", ^{
     it(@"", ^{
         dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
 
-        NSArray *operations = @[
-            [OperationRejectingItself new],
-        ];
-
-        ParallelCompositeOperation1 *parallelOperation = [[ParallelCompositeOperation1 alloc] initWithOperations:operations];
+        ParallelCompositeOperation1 *parallelOperation = [[ParallelCompositeOperation1 alloc] initWithTransaction:[TransactionWithOneOperationRejectingItself new]];
 
         parallelOperation.completionBlock = ^{
             dispatch_semaphore_signal(waitSemaphore);
@@ -94,11 +86,9 @@ describe(@"COParallelOperationSpec - Rejection", ^{
 
         NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:0 userInfo:nil];
 
-        NSArray *operations = @[
-            [[OperationRejectingItselfWithError alloc] initWithError:error],
-        ];
+        id <COTransaction> transaction = [[TransactionWithOneOperationRejectingItselfWithGivenError alloc] initWithError:error];
 
-        ParallelCompositeOperation1 *parallelOperation = [[ParallelCompositeOperation1 alloc] initWithOperations:operations];
+        ParallelCompositeOperation1 *parallelOperation = [[ParallelCompositeOperation1 alloc] initWithTransaction:transaction];
 
         parallelOperation.completionBlock = ^{
             dispatch_semaphore_signal(waitSemaphore);
