@@ -37,7 +37,6 @@
 		864AA4071A17ABE1008A1EA6 /* COOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COOperationTests.m; sourceTree = "<group>"; };
 		864AA41C1A17B2E7008A1EA6 /* COSequentialOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COSequentialOperation.h; sourceTree = "<group>"; };
 		864AA41D1A17B2E7008A1EA6 /* COSequentialOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COSequentialOperation.m; sourceTree = "<group>"; };
-		864AA4211A17DA7F008A1EA6 /* COOperation_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COOperation_Private.h; sourceTree = "<group>"; };
 		864AA4231A17DE27008A1EA6 /* COSequentialOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COSequentialOperationTests.m; sourceTree = "<group>"; };
 		864AA4291A18FDF3008A1EA6 /* COParallelOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = COParallelOperationTests.m; path = ../../Tests/Tests/COParallelOperationTests.m; sourceTree = "<group>"; };
 		864AA42B1A1AA49C008A1EA6 /* TestOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestOperations.h; path = ../../Tests/TestHelpers/TestOperations.h; sourceTree = "<group>"; };
@@ -130,7 +129,6 @@
 		864AA3ED1A17ABC9008A1EA6 /* CompositeOperations */ = {
 			isa = PBXGroup;
 			children = (
-				864AA4201A17DA7F008A1EA6 /* Private */,
 				864AA3F21A17ABC9008A1EA6 /* COOperation.h */,
 				864AA3F31A17ABC9008A1EA6 /* COOperation.m */,
 				864AA41C1A17B2E7008A1EA6 /* COSequentialOperation.h */,
@@ -169,14 +167,6 @@
 			);
 			name = Tests;
 			path = ../../Tests/Tests;
-			sourceTree = "<group>";
-		};
-		864AA4201A17DA7F008A1EA6 /* Private */ = {
-			isa = PBXGroup;
-			children = (
-				864AA4211A17DA7F008A1EA6 /* COOperation_Private.h */,
-			);
-			path = Private;
 			sourceTree = "<group>";
 		};
 		864AA42E1A1ABDD9008A1EA6 /* OldTests */ = {

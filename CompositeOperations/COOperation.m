@@ -8,10 +8,70 @@
 //
 
 #import "COOperation.h"
-#import "COOperation_Private.h"
+
+typedef NS_ENUM(NSInteger, COOperationState) {
+    COOperationStateReady = 0,
+    COOperationStateExecuting = 1,
+    COOperationStateFinished = 2
+};
 
 NSString *const COErrorDomain = @"com.CompositeOperations";
 NSString *const COOperationErrorKey = @"COOperationErrorKey";
+
+static inline NSString * COKeyPathFromOperationState(COOperationState state) {
+    switch (state) {
+        case COOperationStateReady: {
+            return @"isReady";
+        }
+
+        case COOperationStateExecuting: {
+            return @"isExecuting";
+        }
+
+        case COOperationStateFinished: {
+            return @"isFinished";
+        }
+
+        default: {
+            return @"state";
+        }
+    }
+}
+
+static inline int COStateTransitionIsValid(COOperationState fromState, COOperationState toState) {
+    switch (fromState) {
+        case COOperationStateReady: {
+            return YES;
+        }
+
+        case COOperationStateExecuting: {
+            if (toState == COOperationStateFinished) {
+                return YES;
+            } else {
+                return NO;
+            }
+        }
+
+        case COOperationStateFinished: {
+            return NO;
+        }
+
+        default: {
+            return NO;
+        }
+    }
+}
+
+@interface COOperation ()
+
+@property (assign, nonatomic) COOperationState state;
+
+@property (strong, nonatomic) id result;
+@property (strong, nonatomic) NSError *error;
+
+- (NSError *)resultErrorForError:(NSError *)error code:(NSUInteger)code userInfo:(NSDictionary *)userInfo;
+
+@end
 
 @implementation COOperation
 
