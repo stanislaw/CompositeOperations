@@ -3,7 +3,6 @@
 
 #import "COOperation.h"
 #import "CompositeOperations.h"
-#import "COOperation_Private.h"
 
 SPEC_BEGIN(COOperationTests)
 

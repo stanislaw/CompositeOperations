@@ -41,12 +41,6 @@
 		864AA4291A18FDF3008A1EA6 /* COParallelOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = COParallelOperationTests.m; path = ../../Tests/Tests/COParallelOperationTests.m; sourceTree = "<group>"; };
 		864AA42B1A1AA49C008A1EA6 /* TestOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestOperations.h; path = ../../Tests/TestHelpers/TestOperations.h; sourceTree = "<group>"; };
 		864AA42C1A1AA49C008A1EA6 /* TestOperations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TestOperations.m; path = ../../Tests/TestHelpers/TestOperations.m; sourceTree = "<group>"; };
-		864AA42F1A1ABDD9008A1EA6 /* COCompositeOperationConcurrentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COCompositeOperationConcurrentTests.m; sourceTree = "<group>"; };
-		864AA4301A1ABDD9008A1EA6 /* COCompositeSerialOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COCompositeSerialOperationTests.m; sourceTree = "<group>"; };
-		864AA4311A1ABDD9008A1EA6 /* CompositeOperationsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompositeOperationsTests.m; sourceTree = "<group>"; };
-		864AA4321A1ABDD9008A1EA6 /* Examples_COOperationResolverTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Examples_COOperationResolverTests.m; sourceTree = "<group>"; };
-		864AA4331A1ABDD9008A1EA6 /* HighLoadIntegrationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HighLoadIntegrationTests.m; sourceTree = "<group>"; };
-		864AA4341A1ABDD9008A1EA6 /* NSOperationQueueControllerIntegrationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSOperationQueueControllerIntegrationTests.m; sourceTree = "<group>"; };
 		864AA43B1A1AE639008A1EA6 /* TestCompositeOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestCompositeOperations.h; path = ../../Tests/TestHelpers/TestCompositeOperations.h; sourceTree = "<group>"; };
 		864AA43C1A1AE639008A1EA6 /* TestCompositeOperations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TestCompositeOperations.m; path = ../../Tests/TestHelpers/TestCompositeOperations.m; sourceTree = "<group>"; };
 		864AA43E1A1AEE8B008A1EA6 /* CompositeOperationsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CompositeOperationsTests.m; path = ../../Tests/Tests/CompositeOperationsTests.m; sourceTree = "<group>"; };
@@ -110,7 +104,6 @@
 		864AA3E51A17AB63008A1EA6 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				864AA42E1A1ABDD9008A1EA6 /* OldTests */,
 				864AA3FE1A17ABE1008A1EA6 /* TestHelpers */,
 				864AA4031A17ABE1008A1EA6 /* Tests */,
 				864AA3E61A17AB63008A1EA6 /* Supporting Files */,
@@ -167,20 +160,6 @@
 			);
 			name = Tests;
 			path = ../../Tests/Tests;
-			sourceTree = "<group>";
-		};
-		864AA42E1A1ABDD9008A1EA6 /* OldTests */ = {
-			isa = PBXGroup;
-			children = (
-				864AA42F1A1ABDD9008A1EA6 /* COCompositeOperationConcurrentTests.m */,
-				864AA4301A1ABDD9008A1EA6 /* COCompositeSerialOperationTests.m */,
-				864AA4311A1ABDD9008A1EA6 /* CompositeOperationsTests.m */,
-				864AA4321A1ABDD9008A1EA6 /* Examples_COOperationResolverTests.m */,
-				864AA4331A1ABDD9008A1EA6 /* HighLoadIntegrationTests.m */,
-				864AA4341A1ABDD9008A1EA6 /* NSOperationQueueControllerIntegrationTests.m */,
-			);
-			name = OldTests;
-			path = ../../Tests/OldTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

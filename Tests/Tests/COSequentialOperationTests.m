@@ -4,7 +4,6 @@
 #import "TestCompositeOperations.h"
 
 #import "COSequentialOperation.h"
-#import "COOperation_Private.h"
 
 SPEC_BEGIN(COSequentialOperationSpec)
 

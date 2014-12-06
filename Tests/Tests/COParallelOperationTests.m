@@ -3,7 +3,6 @@
 #import "TestOperations.h"
 
 #import "COParallelOperation.h"
-#import "COOperation_Private.h"
 
 #import "TestCompositeOperations.h"
 
