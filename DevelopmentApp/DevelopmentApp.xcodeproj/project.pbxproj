@@ -12,7 +12,6 @@
 		864EE1191AC4B4DC007D1B13 /* COOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1111AC4B4DC007D1B13 /* COOperation.h */; };
 		864EE11A1AC4B4DC007D1B13 /* COOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1121AC4B4DC007D1B13 /* COOperation.m */; };
 		864EE11B1AC4B4DC007D1B13 /* COParallelOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1131AC4B4DC007D1B13 /* COParallelOperation.h */; };
-		864EE11C1AC4B4DC007D1B13 /* COParallelOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1141AC4B4DC007D1B13 /* COParallelOperation.m */; };
 		864EE11D1AC4B4DC007D1B13 /* COSequentialOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1151AC4B4DC007D1B13 /* COSequentialOperation.h */; };
 		864EE11E1AC4B4DC007D1B13 /* COSequentialOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1161AC4B4DC007D1B13 /* COSequentialOperation.m */; };
 		864EE11F1AC4B4DC007D1B13 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 864EE1171AC4B4DC007D1B13 /* Info.plist */; };
@@ -24,6 +23,8 @@
 		864EE13F1AC4B576007D1B13 /* COOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1331AC4B576007D1B13 /* COOperationTests.m */; };
 		864EE1401AC4B576007D1B13 /* COParallelOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1341AC4B576007D1B13 /* COParallelOperationTests.m */; };
 		864EE1411AC4B576007D1B13 /* COSequentialOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1351AC4B576007D1B13 /* COSequentialOperationTests.m */; };
+		864EE1541AC4BC0E007D1B13 /* Kiwi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 864EE1521AC4BC0A007D1B13 /* Kiwi.framework */; };
+		864EE1551AC4BC1F007D1B13 /* COParallelOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1141AC4B4DC007D1B13 /* COParallelOperation.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,9 +53,8 @@
 		864EE1331AC4B576007D1B13 /* COOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COOperationTests.m; sourceTree = "<group>"; };
 		864EE1341AC4B576007D1B13 /* COParallelOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COParallelOperationTests.m; sourceTree = "<group>"; };
 		864EE1351AC4B576007D1B13 /* COSequentialOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COSequentialOperationTests.m; sourceTree = "<group>"; };
-		AC594D22A25D0C1A15CD571B /* libPods-DevelopmentApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DevelopmentApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		864EE1521AC4BC0A007D1B13 /* Kiwi.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Kiwi.framework; sourceTree = "<group>"; };
 		C1F046835BB10183CCD41832 /* Pods-DevelopmentApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DevelopmentApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-DevelopmentApp/Pods-DevelopmentApp.release.xcconfig"; sourceTree = "<group>"; };
-		DE8D248078583F2241E8C0DB /* libPods-Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFC38A3A9110E38410377609 /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -70,6 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				864EE1541AC4BC0E007D1B13 /* Kiwi.framework in Frameworks */,
 				864EE1011AC4B362007D1B13 /* CompositeOperations.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -80,8 +81,7 @@
 		29FEE549B4F1AD3E582F555E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				AC594D22A25D0C1A15CD571B /* libPods-DevelopmentApp.a */,
-				DE8D248078583F2241E8C0DB /* libPods-Tests.a */,
+				864EE1521AC4BC0A007D1B13 /* Kiwi.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -213,9 +213,9 @@
 			productReference = 864EE0F61AC4B362007D1B13 /* CompositeOperations.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		864EE0FF1AC4B362007D1B13 /* CompositeOperationsTests */ = {
+		864EE0FF1AC4B362007D1B13 /* Tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 864EE10C1AC4B362007D1B13 /* Build configuration list for PBXNativeTarget "CompositeOperationsTests" */;
+			buildConfigurationList = 864EE10C1AC4B362007D1B13 /* Build configuration list for PBXNativeTarget "Tests" */;
 			buildPhases = (
 				864EE0FC1AC4B362007D1B13 /* Sources */,
 				864EE0FD1AC4B362007D1B13 /* Frameworks */,
@@ -225,7 +225,7 @@
 			);
 			dependencies = (
 			);
-			name = CompositeOperationsTests;
+			name = Tests;
 			productName = CompositeOperationsTests;
 			productReference = 864EE1001AC4B362007D1B13 /* CompositeOperationsTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -260,7 +260,7 @@
 			projectRoot = "";
 			targets = (
 				864EE0F51AC4B362007D1B13 /* CompositeOperations */,
-				864EE0FF1AC4B362007D1B13 /* CompositeOperationsTests */,
+				864EE0FF1AC4B362007D1B13 /* Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -289,7 +289,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				864EE11C1AC4B4DC007D1B13 /* COParallelOperation.m in Sources */,
 				864EE11A1AC4B4DC007D1B13 /* COOperation.m in Sources */,
 				864EE11E1AC4B4DC007D1B13 /* COSequentialOperation.m in Sources */,
 			);
@@ -299,6 +298,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				864EE1551AC4BC1F007D1B13 /* COParallelOperation.m in Sources */,
 				864EE1411AC4B576007D1B13 /* COSequentialOperationTests.m in Sources */,
 				864EE1401AC4B576007D1B13 /* COParallelOperationTests.m in Sources */,
 				864EE13F1AC4B576007D1B13 /* COOperationTests.m in Sources */,
@@ -389,12 +389,17 @@
 		864EE10A1AC4B362007D1B13 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/../",
+				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -407,6 +412,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -415,6 +421,7 @@
 		864EE10B1AC4B362007D1B13 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
@@ -422,6 +429,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/../",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/../CompositeOperations/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
@@ -430,6 +441,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -442,6 +454,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -462,6 +475,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/../Tests/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
@@ -491,14 +505,16 @@
 				864EE10B1AC4B362007D1B13 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
-		864EE10C1AC4B362007D1B13 /* Build configuration list for PBXNativeTarget "CompositeOperationsTests" */ = {
+		864EE10C1AC4B362007D1B13 /* Build configuration list for PBXNativeTarget "Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				864EE10D1AC4B362007D1B13 /* Debug */,
 				864EE10E1AC4B362007D1B13 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
