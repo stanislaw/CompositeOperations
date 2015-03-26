@@ -9,10 +9,10 @@
 /* Begin PBXBuildFile section */
 		864EE1011AC4B362007D1B13 /* CompositeOperations.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 864EE0F61AC4B362007D1B13 /* CompositeOperations.framework */; };
 		864EE1181AC4B4DC007D1B13 /* CompositeOperations.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1101AC4B4DC007D1B13 /* CompositeOperations.h */; };
-		864EE1191AC4B4DC007D1B13 /* COOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1111AC4B4DC007D1B13 /* COOperation.h */; };
+		864EE1191AC4B4DC007D1B13 /* COOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1111AC4B4DC007D1B13 /* COOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		864EE11A1AC4B4DC007D1B13 /* COOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1121AC4B4DC007D1B13 /* COOperation.m */; };
-		864EE11B1AC4B4DC007D1B13 /* COParallelOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1131AC4B4DC007D1B13 /* COParallelOperation.h */; };
-		864EE11D1AC4B4DC007D1B13 /* COSequentialOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1151AC4B4DC007D1B13 /* COSequentialOperation.h */; };
+		864EE11B1AC4B4DC007D1B13 /* COParallelOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1131AC4B4DC007D1B13 /* COParallelOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		864EE11D1AC4B4DC007D1B13 /* COSequentialOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1151AC4B4DC007D1B13 /* COSequentialOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		864EE11E1AC4B4DC007D1B13 /* COSequentialOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1161AC4B4DC007D1B13 /* COSequentialOperation.m */; };
 		864EE11F1AC4B4DC007D1B13 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 864EE1171AC4B4DC007D1B13 /* Info.plist */; };
 		864EE13A1AC4B576007D1B13 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 864EE1271AC4B576007D1B13 /* Info.plist */; };
@@ -23,15 +23,13 @@
 		864EE13F1AC4B576007D1B13 /* COOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1331AC4B576007D1B13 /* COOperationTests.m */; };
 		864EE1401AC4B576007D1B13 /* COParallelOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1341AC4B576007D1B13 /* COParallelOperationTests.m */; };
 		864EE1411AC4B576007D1B13 /* COSequentialOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1351AC4B576007D1B13 /* COSequentialOperationTests.m */; };
-		864EE1541AC4BC0E007D1B13 /* Kiwi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 864EE1521AC4BC0A007D1B13 /* Kiwi.framework */; };
 		864EE1551AC4BC1F007D1B13 /* COParallelOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1141AC4B4DC007D1B13 /* COParallelOperation.m */; };
+		864EE1791AC4C488007D1B13 /* Kiwi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 864EE1771AC4C44A007D1B13 /* Kiwi.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		111909BAA6616385B5E3A3EF /* Pods-Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.release.xcconfig"; sourceTree = "<group>"; };
-		18B8E976DFF4F29B200FCFB4 /* Pods-DevelopmentApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DevelopmentApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DevelopmentApp/Pods-DevelopmentApp.debug.xcconfig"; sourceTree = "<group>"; };
 		864EE0F61AC4B362007D1B13 /* CompositeOperations.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CompositeOperations.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		864EE1001AC4B362007D1B13 /* CompositeOperationsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CompositeOperationsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		864EE1001AC4B362007D1B13 /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		864EE1101AC4B4DC007D1B13 /* CompositeOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompositeOperations.h; sourceTree = "<group>"; };
 		864EE1111AC4B4DC007D1B13 /* COOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COOperation.h; sourceTree = "<group>"; };
 		864EE1121AC4B4DC007D1B13 /* COOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COOperation.m; sourceTree = "<group>"; };
@@ -53,9 +51,7 @@
 		864EE1331AC4B576007D1B13 /* COOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COOperationTests.m; sourceTree = "<group>"; };
 		864EE1341AC4B576007D1B13 /* COParallelOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COParallelOperationTests.m; sourceTree = "<group>"; };
 		864EE1351AC4B576007D1B13 /* COSequentialOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COSequentialOperationTests.m; sourceTree = "<group>"; };
-		864EE1521AC4BC0A007D1B13 /* Kiwi.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Kiwi.framework; sourceTree = "<group>"; };
-		C1F046835BB10183CCD41832 /* Pods-DevelopmentApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DevelopmentApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-DevelopmentApp/Pods-DevelopmentApp.release.xcconfig"; sourceTree = "<group>"; };
-		FFC38A3A9110E38410377609 /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		864EE1771AC4C44A007D1B13 /* Kiwi.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Kiwi.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,7 +66,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				864EE1541AC4BC0E007D1B13 /* Kiwi.framework in Frameworks */,
+				864EE1791AC4C488007D1B13 /* Kiwi.framework in Frameworks */,
 				864EE1011AC4B362007D1B13 /* CompositeOperations.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -78,33 +74,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		29FEE549B4F1AD3E582F555E /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				864EE1521AC4BC0A007D1B13 /* Kiwi.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		6964E474986507CD21C9B9D7 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				18B8E976DFF4F29B200FCFB4 /* Pods-DevelopmentApp.debug.xcconfig */,
-				C1F046835BB10183CCD41832 /* Pods-DevelopmentApp.release.xcconfig */,
-				FFC38A3A9110E38410377609 /* Pods-Tests.debug.xcconfig */,
-				111909BAA6616385B5E3A3EF /* Pods-Tests.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		864AA3CD1A17AB20008A1EA6 = {
 			isa = PBXGroup;
 			children = (
 				864EE10F1AC4B4DC007D1B13 /* CompositeOperations */,
 				864EE1201AC4B576007D1B13 /* Tests */,
 				864AA3D71A17AB20008A1EA6 /* Products */,
-				6964E474986507CD21C9B9D7 /* Pods */,
-				29FEE549B4F1AD3E582F555E /* Frameworks */,
+				864EE1761AC4C44A007D1B13 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -112,7 +88,7 @@
 			isa = PBXGroup;
 			children = (
 				864EE0F61AC4B362007D1B13 /* CompositeOperations.framework */,
-				864EE1001AC4B362007D1B13 /* CompositeOperationsTests.xctest */,
+				864EE1001AC4B362007D1B13 /* Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -178,6 +154,15 @@
 			path = Tests;
 			sourceTree = "<group>";
 		};
+		864EE1761AC4C44A007D1B13 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				864EE1771AC4C44A007D1B13 /* Kiwi.framework */,
+			);
+			name = Frameworks;
+			path = ../../../../../stanislaw/Programming/Pods/CompositeOperations/DevelopmentApp/Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -227,7 +212,7 @@
 			);
 			name = Tests;
 			productName = CompositeOperationsTests;
-			productReference = 864EE1001AC4B362007D1B13 /* CompositeOperationsTests.xctest */;
+			productReference = 864EE1001AC4B362007D1B13 /* Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -399,6 +384,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/../",
+					/Users/stanislaw/Programming/Pods/CompositeOperations/DevelopmentApp/Frameworks,
 				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -406,7 +392,7 @@
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/../CompositeOperations/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -432,10 +418,11 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/../",
+					/Users/stanislaw/Programming/Pods/CompositeOperations/DevelopmentApp/Frameworks,
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/../CompositeOperations/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -455,6 +442,7 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					/Users/stanislaw/Programming/Pods/CompositeOperations/DevelopmentApp/Frameworks,
 				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -463,6 +451,12 @@
 				INFOPLIST_FILE = "$(SRCROOT)/../Tests/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					XCTest,
+					"-ObjC",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 			};
@@ -476,10 +470,17 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					/Users/stanislaw/Programming/Pods/CompositeOperations/DevelopmentApp/Frameworks,
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/../Tests/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					XCTest,
+					"-ObjC",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;

@@ -1,5 +1,8 @@
 xcodebuild:
-	xcodebuild -verbose -workspace DevelopmentApp.xcworkspace -scheme Tests clean test
+	xcodebuild -verbose -project DevelopmentApp.xcodeproj -scheme CompositeOperations clean test
 
 xctool:
-	xctool -workspace DevelopmentApp.xcworkspace -scheme Tests clean test
+	xctool -project DevelopmentApp.xcodeproj \
+	       -scheme CompositeOperations \
+				 -sdk iphonesimulator \
+				 clean test

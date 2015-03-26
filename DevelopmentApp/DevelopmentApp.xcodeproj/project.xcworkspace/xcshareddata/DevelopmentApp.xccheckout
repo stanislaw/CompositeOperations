@@ -6,15 +6,19 @@
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>1C84D1EC-D3A8-4842-B1D4-A66904E524D2</string>
+	<key>IDESourceControlProjectName</key>
+	<string>DevelopmentApp</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>29C2338E6EAFF26E2D4A4B18C9BE852735F6CE44</key>
 		<string>github.com:stanislaw/CompositeOperations.git</string>
 	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>DevelopmentApp/DevelopmentApp.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>29C2338E6EAFF26E2D4A4B18C9BE852735F6CE44</key>
-		<string>CompositeOperations/</string>
+		<string>../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>github.com:stanislaw/CompositeOperations.git</string>
