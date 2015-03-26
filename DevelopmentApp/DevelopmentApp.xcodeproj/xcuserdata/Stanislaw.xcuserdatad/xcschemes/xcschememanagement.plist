@@ -4,10 +4,15 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Tests.xcscheme_^#shared#^_</key>
+		<key>CompositeOperations.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>1</integer>
+			<integer>6</integer>
+		</dict>
+		<key>CompositeOperationsTests.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>7</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
@@ -18,6 +23,26 @@
 			<true/>
 		</dict>
 		<key>864AA3E31A17AB63008A1EA6</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>864EE0D11AC4B055007D1B13</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>864EE0DB1AC4B055007D1B13</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>864EE0F51AC4B362007D1B13</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>864EE0FF1AC4B362007D1B13</key>
 		<dict>
 			<key>primary</key>
 			<true/>
