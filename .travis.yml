@@ -1,6 +1,4 @@
 language: objective-c
 before_install:
 - cd DevelopmentApp
-- gem install cocoapods --no-ri --no-rdoc
 script: make
-
