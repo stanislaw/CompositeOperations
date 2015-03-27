@@ -185,7 +185,7 @@
 				864EE1771AC4C44A007D1B13 /* Kiwi.framework */,
 			);
 			name = Frameworks;
-			path = ../../../../../stanislaw/Programming/Pods/CompositeOperations/DevelopmentApp/Frameworks;
+			path = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -419,7 +419,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/../",
-					/Users/stanislaw/Programming/Pods/CompositeOperations/DevelopmentApp/Frameworks,
+					"$(PROJECT_DIR)/Frameworks",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -453,7 +453,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/../",
-					/Users/stanislaw/Programming/Pods/CompositeOperations/DevelopmentApp/Frameworks,
+					"$(PROJECT_DIR)/Frameworks",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/../CompositeOperations/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
