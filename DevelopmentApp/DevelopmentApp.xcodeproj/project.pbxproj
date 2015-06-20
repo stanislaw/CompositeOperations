@@ -6,57 +6,27 @@
 	objectVersion = 46;
 	objects = {
 
-/* Begin PBXAggregateTarget section */
-		86E064A91AC5C48E008910C4 /* CompositeOperations-Universal */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = 86E064AC1AC5C48E008910C4 /* Build configuration list for PBXAggregateTarget "CompositeOperations-Universal" */;
-			buildPhases = (
-				86E064AD1AC5C493008910C4 /* ShellScript */,
-			);
-			dependencies = (
-			);
-			name = "CompositeOperations-Universal";
-			productName = "CompositeOperations-Universal";
-		};
-/* End PBXAggregateTarget section */
-
 /* Begin PBXBuildFile section */
-		864EE1181AC4B4DC007D1B13 /* CompositeOperations.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1101AC4B4DC007D1B13 /* CompositeOperations.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		864EE1191AC4B4DC007D1B13 /* COOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1111AC4B4DC007D1B13 /* COOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		864EE11B1AC4B4DC007D1B13 /* COParallelOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1131AC4B4DC007D1B13 /* COParallelOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		864EE11D1AC4B4DC007D1B13 /* COSequentialOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1151AC4B4DC007D1B13 /* COSequentialOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		864EE13B1AC4B576007D1B13 /* NSArray+CompositeOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE12B1AC4B576007D1B13 /* NSArray+CompositeOperations.m */; };
-		864EE13C1AC4B576007D1B13 /* TestCompositeOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE12D1AC4B576007D1B13 /* TestCompositeOperations.m */; };
-		864EE13D1AC4B576007D1B13 /* TestOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1301AC4B576007D1B13 /* TestOperations.m */; };
-		864EE13E1AC4B576007D1B13 /* CompositeOperationsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1321AC4B576007D1B13 /* CompositeOperationsTests.m */; };
-		864EE13F1AC4B576007D1B13 /* COOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1331AC4B576007D1B13 /* COOperationTests.m */; };
-		864EE1401AC4B576007D1B13 /* COParallelOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1341AC4B576007D1B13 /* COParallelOperationTests.m */; };
-		864EE1411AC4B576007D1B13 /* COSequentialOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1351AC4B576007D1B13 /* COSequentialOperationTests.m */; };
-		864EE1791AC4C488007D1B13 /* Kiwi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 864EE1771AC4C44A007D1B13 /* Kiwi.framework */; };
-		864EE17D1AC4CE6A007D1B13 /* COOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1121AC4B4DC007D1B13 /* COOperation.m */; };
-		864EE17E1AC4CE6A007D1B13 /* COParallelOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1141AC4B4DC007D1B13 /* COParallelOperation.m */; };
-		864EE17F1AC4CE6A007D1B13 /* COSequentialOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1161AC4B4DC007D1B13 /* COSequentialOperation.m */; };
-		864EE1841AC4CFC5007D1B13 /* CompositeOperations.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 864EE0F61AC4B362007D1B13 /* CompositeOperations.framework */; };
-		864EE1861AC4D07B007D1B13 /* CompositeOperations.framework in Copy Framework */ = {isa = PBXBuildFile; fileRef = 864EE0F61AC4B362007D1B13 /* CompositeOperations.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		86BB7DA81B361FC400E65FFF /* CompositeOperations-iOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 86BB7DA71B361FC400E65FFF /* CompositeOperations-iOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		86BB7DAE1B361FC400E65FFF /* CompositeOperations.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86BB7DA31B361FC300E65FFF /* CompositeOperations.framework */; };
+		86BB7DBC1B36202F00E65FFF /* CompositeOperations.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1101AC4B4DC007D1B13 /* CompositeOperations.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		86BB7DBD1B36202F00E65FFF /* COOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1111AC4B4DC007D1B13 /* COOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		86BB7DBE1B36202F00E65FFF /* COParallelOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1131AC4B4DC007D1B13 /* COParallelOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		86BB7DBF1B36202F00E65FFF /* COSequentialOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1151AC4B4DC007D1B13 /* COSequentialOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		86BB7DC01B36205400E65FFF /* CompositeOperationsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1321AC4B576007D1B13 /* CompositeOperationsTests.m */; };
+		86BB7DC11B36205400E65FFF /* COOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1331AC4B576007D1B13 /* COOperationTests.m */; };
+		86BB7DC21B36205400E65FFF /* COParallelOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1341AC4B576007D1B13 /* COParallelOperationTests.m */; };
+		86BB7DC31B36205400E65FFF /* COSequentialOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1351AC4B576007D1B13 /* COSequentialOperationTests.m */; };
+		86BB7DC41B36205E00E65FFF /* NSArray+CompositeOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE12B1AC4B576007D1B13 /* NSArray+CompositeOperations.m */; };
+		86BB7DC51B36205E00E65FFF /* TestCompositeOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE12D1AC4B576007D1B13 /* TestCompositeOperations.m */; };
+		86BB7DC61B36205E00E65FFF /* TestOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1301AC4B576007D1B13 /* TestOperations.m */; };
+		86BB7DC71B36207900E65FFF /* Kiwi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 864EE1771AC4C44A007D1B13 /* Kiwi.framework */; };
+		86BB7DC81B36208400E65FFF /* COOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1121AC4B4DC007D1B13 /* COOperation.m */; };
+		86BB7DC91B36208400E65FFF /* COParallelOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1141AC4B4DC007D1B13 /* COParallelOperation.m */; };
+		86BB7DCA1B36208400E65FFF /* COSequentialOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1161AC4B4DC007D1B13 /* COSequentialOperation.m */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		864EE1851AC4D064007D1B13 /* Copy Framework */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				864EE1861AC4D07B007D1B13 /* CompositeOperations.framework in Copy Framework */,
-			);
-			name = "Copy Framework";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
-		864EE0F61AC4B362007D1B13 /* CompositeOperations.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CompositeOperations.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		864EE1001AC4B362007D1B13 /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		864EE1101AC4B4DC007D1B13 /* CompositeOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompositeOperations.h; sourceTree = "<group>"; };
 		864EE1111AC4B4DC007D1B13 /* COOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COOperation.h; sourceTree = "<group>"; };
 		864EE1121AC4B4DC007D1B13 /* COOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COOperation.m; sourceTree = "<group>"; };
@@ -79,22 +49,27 @@
 		864EE1341AC4B576007D1B13 /* COParallelOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COParallelOperationTests.m; sourceTree = "<group>"; };
 		864EE1351AC4B576007D1B13 /* COSequentialOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COSequentialOperationTests.m; sourceTree = "<group>"; };
 		864EE1771AC4C44A007D1B13 /* Kiwi.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Kiwi.framework; sourceTree = "<group>"; };
+		86BB7DA31B361FC300E65FFF /* CompositeOperations.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CompositeOperations.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		86BB7DA61B361FC400E65FFF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		86BB7DA71B361FC400E65FFF /* CompositeOperations-iOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CompositeOperations-iOS.h"; sourceTree = "<group>"; };
+		86BB7DAD1B361FC400E65FFF /* CompositeOperations-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CompositeOperations-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		86BB7DB31B361FC400E65FFF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		864EE0F21AC4B362007D1B13 /* Frameworks */ = {
+		86BB7D9F1B361FC300E65FFF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		864EE0FD1AC4B362007D1B13 /* Frameworks */ = {
+		86BB7DAA1B361FC400E65FFF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				864EE1841AC4CFC5007D1B13 /* CompositeOperations.framework in Frameworks */,
-				864EE1791AC4C488007D1B13 /* Kiwi.framework in Frameworks */,
+				86BB7DC71B36207900E65FFF /* Kiwi.framework in Frameworks */,
+				86BB7DAE1B361FC400E65FFF /* CompositeOperations.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,6 +81,8 @@
 			children = (
 				864EE10F1AC4B4DC007D1B13 /* CompositeOperations */,
 				864EE1201AC4B576007D1B13 /* Tests */,
+				86BB7DA41B361FC400E65FFF /* CompositeOperations-iOS */,
+				86BB7DB11B361FC400E65FFF /* CompositeOperations-iOSTests */,
 				864AA3D71A17AB20008A1EA6 /* Products */,
 				864EE1761AC4C44A007D1B13 /* Frameworks */,
 			);
@@ -114,8 +91,8 @@
 		864AA3D71A17AB20008A1EA6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				864EE0F61AC4B362007D1B13 /* CompositeOperations.framework */,
-				864EE1001AC4B362007D1B13 /* Tests.xctest */,
+				86BB7DA31B361FC300E65FFF /* CompositeOperations.framework */,
+				86BB7DAD1B361FC400E65FFF /* CompositeOperations-iOSTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -189,57 +166,90 @@
 			path = Frameworks;
 			sourceTree = "<group>";
 		};
+		86BB7DA41B361FC400E65FFF /* CompositeOperations-iOS */ = {
+			isa = PBXGroup;
+			children = (
+				86BB7DA71B361FC400E65FFF /* CompositeOperations-iOS.h */,
+				86BB7DA51B361FC400E65FFF /* Supporting Files */,
+			);
+			path = "CompositeOperations-iOS";
+			sourceTree = "<group>";
+		};
+		86BB7DA51B361FC400E65FFF /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				86BB7DA61B361FC400E65FFF /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		86BB7DB11B361FC400E65FFF /* CompositeOperations-iOSTests */ = {
+			isa = PBXGroup;
+			children = (
+				86BB7DB21B361FC400E65FFF /* Supporting Files */,
+			);
+			path = "CompositeOperations-iOSTests";
+			sourceTree = "<group>";
+		};
+		86BB7DB21B361FC400E65FFF /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				86BB7DB31B361FC400E65FFF /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		864EE0F31AC4B362007D1B13 /* Headers */ = {
+		86BB7DA01B361FC300E65FFF /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				864EE1191AC4B4DC007D1B13 /* COOperation.h in Headers */,
-				864EE11B1AC4B4DC007D1B13 /* COParallelOperation.h in Headers */,
-				864EE1181AC4B4DC007D1B13 /* CompositeOperations.h in Headers */,
-				864EE11D1AC4B4DC007D1B13 /* COSequentialOperation.h in Headers */,
+				86BB7DBC1B36202F00E65FFF /* CompositeOperations.h in Headers */,
+				86BB7DA81B361FC400E65FFF /* CompositeOperations-iOS.h in Headers */,
+				86BB7DBF1B36202F00E65FFF /* COSequentialOperation.h in Headers */,
+				86BB7DBD1B36202F00E65FFF /* COOperation.h in Headers */,
+				86BB7DBE1B36202F00E65FFF /* COParallelOperation.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		864EE0F51AC4B362007D1B13 /* CompositeOperations */ = {
+		86BB7DA21B361FC300E65FFF /* CompositeOperations-iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 864EE1091AC4B362007D1B13 /* Build configuration list for PBXNativeTarget "CompositeOperations" */;
+			buildConfigurationList = 86BB7DB61B361FC400E65FFF /* Build configuration list for PBXNativeTarget "CompositeOperations-iOS" */;
 			buildPhases = (
-				864EE0F11AC4B362007D1B13 /* Sources */,
-				864EE0F21AC4B362007D1B13 /* Frameworks */,
-				864EE0F31AC4B362007D1B13 /* Headers */,
-				864EE0F41AC4B362007D1B13 /* Resources */,
+				86BB7D9E1B361FC300E65FFF /* Sources */,
+				86BB7D9F1B361FC300E65FFF /* Frameworks */,
+				86BB7DA01B361FC300E65FFF /* Headers */,
+				86BB7DA11B361FC300E65FFF /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = CompositeOperations;
-			productName = CompositeOperations;
-			productReference = 864EE0F61AC4B362007D1B13 /* CompositeOperations.framework */;
+			name = "CompositeOperations-iOS";
+			productName = "CompositeOperations-iOS";
+			productReference = 86BB7DA31B361FC300E65FFF /* CompositeOperations.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		864EE0FF1AC4B362007D1B13 /* Tests */ = {
+		86BB7DAC1B361FC400E65FFF /* CompositeOperations-iOSTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 864EE10C1AC4B362007D1B13 /* Build configuration list for PBXNativeTarget "Tests" */;
+			buildConfigurationList = 86BB7DB91B361FC400E65FFF /* Build configuration list for PBXNativeTarget "CompositeOperations-iOSTests" */;
 			buildPhases = (
-				864EE1851AC4D064007D1B13 /* Copy Framework */,
-				864EE0FC1AC4B362007D1B13 /* Sources */,
-				864EE0FD1AC4B362007D1B13 /* Frameworks */,
-				864EE0FE1AC4B362007D1B13 /* Resources */,
+				86BB7DA91B361FC400E65FFF /* Sources */,
+				86BB7DAA1B361FC400E65FFF /* Frameworks */,
+				86BB7DAB1B361FC400E65FFF /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = Tests;
-			productName = CompositeOperationsTests;
-			productReference = 864EE1001AC4B362007D1B13 /* Tests.xctest */;
+			name = "CompositeOperations-iOSTests";
+			productName = "CompositeOperations-iOSTests";
+			productReference = 86BB7DAD1B361FC400E65FFF /* CompositeOperations-iOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -251,14 +261,11 @@
 				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = "Stanislaw Pankevich";
 				TargetAttributes = {
-					864EE0F51AC4B362007D1B13 = {
-						CreatedOnToolsVersion = 6.2;
+					86BB7DA21B361FC300E65FFF = {
+						CreatedOnToolsVersion = 6.3.2;
 					};
-					864EE0FF1AC4B362007D1B13 = {
-						CreatedOnToolsVersion = 6.2;
-					};
-					86E064A91AC5C48E008910C4 = {
-						CreatedOnToolsVersion = 6.2;
+					86BB7DAC1B361FC400E65FFF = {
+						CreatedOnToolsVersion = 6.3.2;
 					};
 				};
 			};
@@ -274,22 +281,21 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				864EE0F51AC4B362007D1B13 /* CompositeOperations */,
-				864EE0FF1AC4B362007D1B13 /* Tests */,
-				86E064A91AC5C48E008910C4 /* CompositeOperations-Universal */,
+				86BB7DA21B361FC300E65FFF /* CompositeOperations-iOS */,
+				86BB7DAC1B361FC400E65FFF /* CompositeOperations-iOSTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		864EE0F41AC4B362007D1B13 /* Resources */ = {
+		86BB7DA11B361FC300E65FFF /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		864EE0FE1AC4B362007D1B13 /* Resources */ = {
+		86BB7DAB1B361FC400E65FFF /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -298,44 +304,28 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		86E064AD1AC5C493008910C4 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Taken from https://medium.com/@syshen/create-an-ios-universal-framework-148eb130a46c\n\nREVEAL_ARCHIVE_IN_FINDER=true\n\nFRAMEWORK_NAME=\"CompositeOperations\"\n\nSIMULATOR_LIBRARY_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${FRAMEWORK_NAME}.framework\"\n\nDEVICE_LIBRARY_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${FRAMEWORK_NAME}.framework\"\n\nUNIVERSAL_LIBRARY_DIR=\"${BUILD_DIR}/${CONFIGURATION}-iphoneuniversal\"\n\nFRAMEWORK=\"${UNIVERSAL_LIBRARY_DIR}/${FRAMEWORK_NAME}.framework\"\n\necho \"PROJECT_NAME: ${PROJECT_NAME}\"\necho \"PRODUCT_NAME: ${PRODUCT_NAME}\"\necho \"SIMULATOR_LIBRARY_PATH: ${SIMULATOR_LIBRARY_PATH}\"\necho \"DEVICE_LIBRARY_PATH: ${DEVICE_LIBRARY_PATH}\"\necho \"UNIVERSAL_LIBRARY_DIR: ${UNIVERSAL_LIBRARY_DIR}\"\necho \"FRAMEWORK: ${FRAMEWORK}\"\n\n######################\n# Build Frameworks\n######################\n\nxcodebuild -project DevelopmentApp.xcodeproj -scheme ${FRAMEWORK_NAME} -sdk iphonesimulator clean build CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphonesimulator 2>&1\n\nxcodebuild -project DevelopmentApp.xcodeproj -scheme ${FRAMEWORK_NAME} -sdk iphoneos clean archive CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphoneos 2>&1\n\n######################\n# Create directory for universal\n######################\n\nrm -rf \"${UNIVERSAL_LIBRARY_DIR}\"\n\nmkdir \"${UNIVERSAL_LIBRARY_DIR}\"\n\nmkdir -p \"${FRAMEWORK}\"\n\n######################\n# Copy files Framework\n######################\n\ncp -r \"${DEVICE_LIBRARY_PATH}/.\" \"${FRAMEWORK}\"\n\n######################\n# Make an universal binary\n######################\n\nlipo \"${SIMULATOR_LIBRARY_PATH}/${FRAMEWORK_NAME}\" \"${DEVICE_LIBRARY_PATH}/${FRAMEWORK_NAME}\" -create -output \"${FRAMEWORK}/${FRAMEWORK_NAME}\" | echo\n\n######################\n# On Release, copy the result to release directory\n######################\n\nOUTPUT_DIR=\"${PROJECT_DIR}/Output/${FRAMEWORK_NAME}-${CONFIGURATION}-iphoneuniversal/\"\n\nrm -rf \"$OUTPUT_DIR\"\nmkdir -p \"$OUTPUT_DIR\"\n\ncp -r \"${FRAMEWORK}\" \"$OUTPUT_DIR\"\n\nif [ ${REVEAL_ARCHIVE_IN_FINDER} = true ]; then\n  open \"${OUTPUT_DIR}/\"\nfi\n";
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
-		864EE0F11AC4B362007D1B13 /* Sources */ = {
+		86BB7D9E1B361FC300E65FFF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				864EE17E1AC4CE6A007D1B13 /* COParallelOperation.m in Sources */,
-				864EE17D1AC4CE6A007D1B13 /* COOperation.m in Sources */,
-				864EE17F1AC4CE6A007D1B13 /* COSequentialOperation.m in Sources */,
+				86BB7DC91B36208400E65FFF /* COParallelOperation.m in Sources */,
+				86BB7DC81B36208400E65FFF /* COOperation.m in Sources */,
+				86BB7DCA1B36208400E65FFF /* COSequentialOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		864EE0FC1AC4B362007D1B13 /* Sources */ = {
+		86BB7DA91B361FC400E65FFF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				864EE1411AC4B576007D1B13 /* COSequentialOperationTests.m in Sources */,
-				864EE1401AC4B576007D1B13 /* COParallelOperationTests.m in Sources */,
-				864EE13F1AC4B576007D1B13 /* COOperationTests.m in Sources */,
-				864EE13E1AC4B576007D1B13 /* CompositeOperationsTests.m in Sources */,
-				864EE13B1AC4B576007D1B13 /* NSArray+CompositeOperations.m in Sources */,
-				864EE13D1AC4B576007D1B13 /* TestOperations.m in Sources */,
-				864EE13C1AC4B576007D1B13 /* TestCompositeOperations.m in Sources */,
+				86BB7DC61B36205E00E65FFF /* TestOperations.m in Sources */,
+				86BB7DC31B36205400E65FFF /* COSequentialOperationTests.m in Sources */,
+				86BB7DC01B36205400E65FFF /* CompositeOperationsTests.m in Sources */,
+				86BB7DC11B36205400E65FFF /* COOperationTests.m in Sources */,
+				86BB7DC21B36205400E65FFF /* COParallelOperationTests.m in Sources */,
+				86BB7DC41B36205E00E65FFF /* NSArray+CompositeOperations.m in Sources */,
+				86BB7DC51B36205E00E65FFF /* TestCompositeOperations.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -416,136 +406,111 @@
 			};
 			name = Release;
 		};
-		864EE10A1AC4B362007D1B13 /* Debug */ = {
+		86BB7DB71B361FC400E65FFF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/../",
-					"$(PROJECT_DIR)/Frameworks",
-				);
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/../CompositeOperations/Info.plist";
+				INFOPLIST_FILE = "CompositeOperations-iOS/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = CompositeOperations;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
 			name = Debug;
 		};
-		864EE10B1AC4B362007D1B13 /* Release */ = {
+		86BB7DB81B361FC400E65FFF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/../",
-					"$(PROJECT_DIR)/Frameworks",
-				);
-				INFOPLIST_FILE = "$(SRCROOT)/../CompositeOperations/Info.plist";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "CompositeOperations-iOS/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = CompositeOperations;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
 		};
-		864EE10D1AC4B362007D1B13 /* Debug */ = {
+		86BB7DBA1B361FC400E65FFF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
-					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Frameworks",
 				);
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/../Tests/Supporting Files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				INFOPLIST_FILE = "CompositeOperations-iOSTests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-framework",
 					XCTest,
-					"-ObjC",
+					"-all_load",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
-		864EE10E1AC4B362007D1B13 /* Release */ = {
+		86BB7DBB1B361FC400E65FFF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
-					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Frameworks",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/../Tests/Supporting Files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "CompositeOperations-iOSTests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-framework",
 					XCTest,
-					"-ObjC",
+					"-all_load",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		86E064AA1AC5C48E008910C4 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		86E064AB1AC5C48E008910C4 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
@@ -561,32 +526,21 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		864EE1091AC4B362007D1B13 /* Build configuration list for PBXNativeTarget "CompositeOperations" */ = {
+		86BB7DB61B361FC400E65FFF /* Build configuration list for PBXNativeTarget "CompositeOperations-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				864EE10A1AC4B362007D1B13 /* Debug */,
-				864EE10B1AC4B362007D1B13 /* Release */,
+				86BB7DB71B361FC400E65FFF /* Debug */,
+				86BB7DB81B361FC400E65FFF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
 		};
-		864EE10C1AC4B362007D1B13 /* Build configuration list for PBXNativeTarget "Tests" */ = {
+		86BB7DB91B361FC400E65FFF /* Build configuration list for PBXNativeTarget "CompositeOperations-iOSTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				864EE10D1AC4B362007D1B13 /* Debug */,
-				864EE10E1AC4B362007D1B13 /* Release */,
+				86BB7DBA1B361FC400E65FFF /* Debug */,
+				86BB7DBB1B361FC400E65FFF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		86E064AC1AC5C48E008910C4 /* Build configuration list for PBXAggregateTarget "CompositeOperations-Universal" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				86E064AA1AC5C48E008910C4 /* Debug */,
-				86E064AB1AC5C48E008910C4 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
