@@ -1,3 +1,4 @@
 **/Build/**
 **/xcuserdata/**
 .DS_Store
+Output/
