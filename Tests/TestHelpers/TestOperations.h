@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Stanislaw Pankevich. All rights reserved.
 //
 
-#import "COOperation.h"
+#import <CompositeOperations/CompositeOperations.h>
 
 @interface OperationTriviallyReturningNull : COOperation
 @end

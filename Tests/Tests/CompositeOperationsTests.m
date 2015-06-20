@@ -2,7 +2,7 @@
 #import "TestOperations.h"
 #import "TestCompositeOperations.h"
 
-#import "CompositeOperations.h"
+#import <CompositeOperations/CompositeOperations.h>
 
 SPEC_BEGIN(COCompositeOperationsSpec)
 

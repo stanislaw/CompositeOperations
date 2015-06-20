@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		86BB7DA81B361FC400E65FFF /* CompositeOperations-iOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 86BB7DA71B361FC400E65FFF /* CompositeOperations-iOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		86BB7DAE1B361FC400E65FFF /* CompositeOperations.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86BB7DA31B361FC300E65FFF /* CompositeOperations.framework */; };
 		86BB7DBC1B36202F00E65FFF /* CompositeOperations.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1101AC4B4DC007D1B13 /* CompositeOperations.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		86BB7DBD1B36202F00E65FFF /* COOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1111AC4B4DC007D1B13 /* COOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -24,7 +23,6 @@
 		86BB7DC81B36208400E65FFF /* COOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1121AC4B4DC007D1B13 /* COOperation.m */; };
 		86BB7DC91B36208400E65FFF /* COParallelOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1141AC4B4DC007D1B13 /* COParallelOperation.m */; };
 		86BB7DCA1B36208400E65FFF /* COSequentialOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1161AC4B4DC007D1B13 /* COSequentialOperation.m */; };
-		86BB7DD51B3621E000E65FFF /* CompositeOperations-OSX.h in Headers */ = {isa = PBXBuildFile; fileRef = 86BB7DD41B3621E000E65FFF /* CompositeOperations-OSX.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		86BB7DDB1B3621E000E65FFF /* CompositeOperations.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86BB7DD01B3621E000E65FFF /* CompositeOperations.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		86BB7DE91B3621FB00E65FFF /* CompositeOperations.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1101AC4B4DC007D1B13 /* CompositeOperations.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		86BB7DEA1B3621FB00E65FFF /* COOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1111AC4B4DC007D1B13 /* COOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -42,16 +40,6 @@
 		86BB7DF81B36227200E65FFF /* COSequentialOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1351AC4B576007D1B13 /* COSequentialOperationTests.m */; };
 		86BB7DF91B36227B00E65FFF /* Kiwi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 864EE1771AC4C44A007D1B13 /* Kiwi.framework */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		86BB7DF01B36225500E65FFF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 864AA3CE1A17AB20008A1EA6 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 86BB7DCF1B3621E000E65FFF;
-			remoteInfo = "CompositeOperations-OSX";
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		864EE1101AC4B4DC007D1B13 /* CompositeOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompositeOperations.h; sourceTree = "<group>"; };
@@ -78,12 +66,10 @@
 		864EE1771AC4C44A007D1B13 /* Kiwi.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Kiwi.framework; sourceTree = "<group>"; };
 		86BB7DA31B361FC300E65FFF /* CompositeOperations.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CompositeOperations.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		86BB7DA61B361FC400E65FFF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		86BB7DA71B361FC400E65FFF /* CompositeOperations-iOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CompositeOperations-iOS.h"; sourceTree = "<group>"; };
 		86BB7DAD1B361FC400E65FFF /* CompositeOperations-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CompositeOperations-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		86BB7DB31B361FC400E65FFF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		86BB7DD01B3621E000E65FFF /* CompositeOperations.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CompositeOperations.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		86BB7DD31B3621E000E65FFF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		86BB7DD41B3621E000E65FFF /* CompositeOperations-OSX.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CompositeOperations-OSX.h"; sourceTree = "<group>"; };
 		86BB7DDA1B3621E000E65FFF /* CompositeOperations-OSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CompositeOperations-OSXTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		86BB7DE01B3621E000E65FFF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -221,7 +207,6 @@
 		86BB7DA41B361FC400E65FFF /* CompositeOperations-iOS */ = {
 			isa = PBXGroup;
 			children = (
-				86BB7DA71B361FC400E65FFF /* CompositeOperations-iOS.h */,
 				86BB7DA51B361FC400E65FFF /* Supporting Files */,
 			);
 			path = "CompositeOperations-iOS";
@@ -254,7 +239,6 @@
 		86BB7DD11B3621E000E65FFF /* CompositeOperations-OSX */ = {
 			isa = PBXGroup;
 			children = (
-				86BB7DD41B3621E000E65FFF /* CompositeOperations-OSX.h */,
 				86BB7DD21B3621E000E65FFF /* Supporting Files */,
 			);
 			path = "CompositeOperations-OSX";
@@ -292,7 +276,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				86BB7DBC1B36202F00E65FFF /* CompositeOperations.h in Headers */,
-				86BB7DA81B361FC400E65FFF /* CompositeOperations-iOS.h in Headers */,
 				86BB7DBF1B36202F00E65FFF /* COSequentialOperation.h in Headers */,
 				86BB7DBD1B36202F00E65FFF /* COOperation.h in Headers */,
 				86BB7DBE1B36202F00E65FFF /* COParallelOperation.h in Headers */,
@@ -304,7 +287,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				86BB7DE91B3621FB00E65FFF /* CompositeOperations.h in Headers */,
-				86BB7DD51B3621E000E65FFF /* CompositeOperations-OSX.h in Headers */,
 				86BB7DEC1B3621FB00E65FFF /* COSequentialOperation.h in Headers */,
 				86BB7DEA1B3621FB00E65FFF /* COOperation.h in Headers */,
 				86BB7DEB1B3621FB00E65FFF /* COParallelOperation.h in Headers */,
@@ -378,7 +360,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				86BB7DF11B36225500E65FFF /* PBXTargetDependency */,
 			);
 			name = "CompositeOperations-OSXTests";
 			productName = "CompositeOperations-OSXTests";
@@ -510,14 +491,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		86BB7DF11B36225500E65FFF /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 86BB7DCF1B3621E000E65FFF /* CompositeOperations-OSX */;
-			targetProxy = 86BB7DF01B36225500E65FFF /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		864AA3DB1A17AB20008A1EA6 /* Debug */ = {

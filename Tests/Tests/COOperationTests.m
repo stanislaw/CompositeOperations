@@ -1,8 +1,7 @@
 
 #import "TestHelpers.h"
 
-#import "COOperation.h"
-#import "CompositeOperations.h"
+#import <CompositeOperations/CompositeOperations.h>
 
 SPEC_BEGIN(COOperationTests)
 

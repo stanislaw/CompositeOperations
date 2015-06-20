@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Stanislaw Pankevich. All rights reserved.
 //
 
-#import "CompositeOperations.h"
+#import <CompositeOperations/CompositeOperations.h>
 
 @interface SequenceOfThreeTrivialGreenOperations : NSObject <COSequence>
 @property (assign, nonatomic) NSUInteger numberOfOperations;
