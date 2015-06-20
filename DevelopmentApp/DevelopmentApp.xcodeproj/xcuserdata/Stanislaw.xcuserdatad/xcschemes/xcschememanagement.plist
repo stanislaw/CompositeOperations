@@ -14,6 +14,11 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>Distribution.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
@@ -63,6 +68,11 @@
 			<true/>
 		</dict>
 		<key>86BB7DD91B3621E000E65FFF</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>86BB7DFA1B36270C00E65FFF</key>
 		<dict>
 			<key>primary</key>
 			<true/>

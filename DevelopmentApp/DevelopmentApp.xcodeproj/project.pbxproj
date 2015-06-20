@@ -6,6 +6,20 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		86BB7DFA1B36270C00E65FFF /* Distribution */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 86BB7DFB1B36270C00E65FFF /* Build configuration list for PBXAggregateTarget "Distribution" */;
+			buildPhases = (
+				86BB7DFE1B36274100E65FFF /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = Distribution;
+			productName = Distribution;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		86BB7DAE1B361FC400E65FFF /* CompositeOperations.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86BB7DA31B361FC300E65FFF /* CompositeOperations.framework */; };
 		86BB7DBC1B36202F00E65FFF /* CompositeOperations.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1101AC4B4DC007D1B13 /* CompositeOperations.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -388,6 +402,9 @@
 					86BB7DD91B3621E000E65FFF = {
 						CreatedOnToolsVersion = 6.3.2;
 					};
+					86BB7DFA1B36270C00E65FFF = {
+						CreatedOnToolsVersion = 6.3.2;
+					};
 				};
 			};
 			buildConfigurationList = 864AA3D11A17AB20008A1EA6 /* Build configuration list for PBXProject "DevelopmentApp" */;
@@ -406,6 +423,7 @@
 				86BB7DAC1B361FC400E65FFF /* CompositeOperations-iOSTests */,
 				86BB7DCF1B3621E000E65FFF /* CompositeOperations-OSX */,
 				86BB7DD91B3621E000E65FFF /* CompositeOperations-OSXTests */,
+				86BB7DFA1B36270C00E65FFF /* Distribution */,
 			);
 		};
 /* End PBXProject section */
@@ -440,6 +458,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		86BB7DFE1B36274100E65FFF /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Taken from https://medium.com/@syshen/create-an-ios-universal-framework-148eb130a46c\n\nREVEAL_ARCHIVE_IN_FINDER=true\n\nFRAMEWORK_NAME=\"CompositeOperations\"\n\nSIMULATOR_LIBRARY_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${FRAMEWORK_NAME}.framework\"\nDEVICE_LIBRARY_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${FRAMEWORK_NAME}.framework\"\nUNIVERSAL_LIBRARY_DIR=\"${BUILD_DIR}/${CONFIGURATION}-iphoneuniversal\"\nOSX_LIBRARY_PATH=\"${BUILD_DIR}/${CONFIGURATION}-osx/${FRAMEWORK_NAME}.framework\"\n\nFRAMEWORK=\"${UNIVERSAL_LIBRARY_DIR}/${FRAMEWORK_NAME}.framework\"\n\nOUTPUT_DIR=\"${PROJECT_DIR}/../Frameworks\"\nOUTPUT_DIR_IOS=\"${PROJECT_DIR}/../Frameworks/iOS\"\nOUTPUT_DIR_OSX=\"${PROJECT_DIR}/../Frameworks/OSX\"\n\n# echo \"PROJECT_NAME: ${PROJECT_NAME}\"\n# echo \"PRODUCT_NAME: ${PRODUCT_NAME}\"\n# echo \"SIMULATOR_LIBRARY_PATH: ${SIMULATOR_LIBRARY_PATH}\"\n# echo \"DEVICE_LIBRARY_PATH: ${DEVICE_LIBRARY_PATH}\"\n# echo \"UNIVERSAL_LIBRARY_DIR: ${UNIVERSAL_LIBRARY_DIR}\"\n# echo \"FRAMEWORK: ${FRAMEWORK}\"\n\n# Clean Build folder\n\nrm -rf \"${BUILD_DIR}\"\nmkdir -p \"${BUILD_DIR}\"\n\n# Build iOS Frameworks: iphonesimulator and iphoneos\n\nxcodebuild -project DevelopmentApp.xcodeproj -scheme CompositeOperations-iOS -sdk iphonesimulator clean build CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphonesimulator 2>&1\n\nxcodebuild -project DevelopmentApp.xcodeproj -scheme CompositeOperations-iOS -sdk iphoneos clean archive CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphoneos 2>&1\n\n# Create directory for universal framework\n\nrm -rf \"${UNIVERSAL_LIBRARY_DIR}\"\n\nmkdir \"${UNIVERSAL_LIBRARY_DIR}\"\n\nmkdir -p \"${FRAMEWORK}\"\n\n# Copy files Framework\n\ncp -r \"${DEVICE_LIBRARY_PATH}/.\" \"${FRAMEWORK}\"\n\n# Make an universal binary\n\nlipo \"${SIMULATOR_LIBRARY_PATH}/${FRAMEWORK_NAME}\" \"${DEVICE_LIBRARY_PATH}/${FRAMEWORK_NAME}\" -create -output \"${FRAMEWORK}/${FRAMEWORK_NAME}\" | echo\n\n# Build OSX framework\n\nxcodebuild -project DevelopmentApp.xcodeproj -scheme CompositeOperations-OSX -sdk macosx CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-osx clean archive\n\n# Copy results to output Frameworks/{iOS,OSX} directories\n\nrm -rf \"$OUTPUT_DIR_IOS\"\nrm -rf \"$OUTPUT_DIR_OSX\"\nmkdir -p \"$OUTPUT_DIR_IOS\"\nmkdir -p \"$OUTPUT_DIR_OSX\"\n\ncp -r \"${FRAMEWORK}\" \"$OUTPUT_DIR_IOS\"\ncp -r \"${OSX_LIBRARY_PATH}\" \"${OUTPUT_DIR_OSX}\"\n\n# See results\n\nif [ ${REVEAL_ARCHIVE_IN_FINDER} = true ]; then\nopen \"${OUTPUT_DIR}/\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		86BB7D9E1B361FC300E65FFF /* Sources */ = {
@@ -570,6 +604,7 @@
 		86BB7DB71B361FC400E65FFF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -586,6 +621,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = CompositeOperations;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -598,6 +634,7 @@
 		86BB7DB81B361FC400E65FFF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
@@ -678,6 +715,7 @@
 		86BB7DE41B3621E000E65FFF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
@@ -707,6 +745,7 @@
 		86BB7DE51B3621E000E65FFF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "3rd Party Mac Developer Application";
 				COMBINE_HIDPI_IMAGES = YES;
@@ -769,6 +808,20 @@
 			};
 			name = Release;
 		};
+		86BB7DFC1B36270C00E65FFF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		86BB7DFD1B36270C00E65FFF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -810,6 +863,14 @@
 			buildConfigurations = (
 				86BB7DE71B3621E000E65FFF /* Debug */,
 				86BB7DE81B3621E000E65FFF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		86BB7DFB1B36270C00E65FFF /* Build configuration list for PBXAggregateTarget "Distribution" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				86BB7DFC1B36270C00E65FFF /* Debug */,
+				86BB7DFD1B36270C00E65FFF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};

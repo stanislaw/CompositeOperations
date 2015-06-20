@@ -15,14 +15,14 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "86BB7DCF1B3621E000E65FFF"
-               BuildableName = "CompositeOperations-OSX.framework"
+               BuildableName = "CompositeOperations.framework"
                BlueprintName = "CompositeOperations-OSX"
                ReferencedContainer = "container:DevelopmentApp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
             buildForTesting = "YES"
-            buildForRunning = "YES"
+            buildForRunning = "NO"
             buildForProfiling = "NO"
             buildForArchiving = "NO"
             buildForAnalyzing = "YES">
@@ -57,7 +57,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "86BB7DCF1B3621E000E65FFF"
-            BuildableName = "CompositeOperations-OSX.framework"
+            BuildableName = "CompositeOperations.framework"
             BlueprintName = "CompositeOperations-OSX"
             ReferencedContainer = "container:DevelopmentApp.xcodeproj">
          </BuildableReference>
@@ -76,7 +76,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "86BB7DCF1B3621E000E65FFF"
-            BuildableName = "CompositeOperations-OSX.framework"
+            BuildableName = "CompositeOperations.framework"
             BlueprintName = "CompositeOperations-OSX"
             ReferencedContainer = "container:DevelopmentApp.xcodeproj">
          </BuildableReference>
@@ -94,7 +94,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "86BB7DCF1B3621E000E65FFF"
-            BuildableName = "CompositeOperations-OSX.framework"
+            BuildableName = "CompositeOperations.framework"
             BlueprintName = "CompositeOperations-OSX"
             ReferencedContainer = "container:DevelopmentApp.xcodeproj">
          </BuildableReference>

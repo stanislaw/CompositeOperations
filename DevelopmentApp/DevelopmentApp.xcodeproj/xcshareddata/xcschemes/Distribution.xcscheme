@@ -14,23 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "86BB7DA21B361FC300E65FFF"
-               BuildableName = "CompositeOperations.framework"
-               BlueprintName = "CompositeOperations-iOS"
-               ReferencedContainer = "container:DevelopmentApp.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "86BB7DAC1B361FC400E65FFF"
-               BuildableName = "CompositeOperations-iOSTests.xctest"
-               BlueprintName = "CompositeOperations-iOSTests"
+               BlueprintIdentifier = "86BB7DFA1B36270C00E65FFF"
+               BuildableName = "Distribution"
+               BlueprintName = "Distribution"
                ReferencedContainer = "container:DevelopmentApp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -42,26 +28,7 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "86BB7DAC1B361FC400E65FFF"
-               BuildableName = "CompositeOperations-iOSTests.xctest"
-               BlueprintName = "CompositeOperations-iOSTests"
-               ReferencedContainer = "container:DevelopmentApp.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "86BB7DA21B361FC300E65FFF"
-            BuildableName = "CompositeOperations.framework"
-            BlueprintName = "CompositeOperations-iOS"
-            ReferencedContainer = "container:DevelopmentApp.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </TestAction>
    <LaunchAction
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
@@ -75,9 +42,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "86BB7DA21B361FC300E65FFF"
-            BuildableName = "CompositeOperations.framework"
-            BlueprintName = "CompositeOperations-iOS"
+            BlueprintIdentifier = "86BB7DFA1B36270C00E65FFF"
+            BuildableName = "Distribution"
+            BlueprintName = "Distribution"
             ReferencedContainer = "container:DevelopmentApp.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -93,9 +60,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "86BB7DA21B361FC300E65FFF"
-            BuildableName = "CompositeOperations.framework"
-            BlueprintName = "CompositeOperations-iOS"
+            BlueprintIdentifier = "86BB7DFA1B36270C00E65FFF"
+            BuildableName = "Distribution"
+            BlueprintName = "Distribution"
             ReferencedContainer = "container:DevelopmentApp.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

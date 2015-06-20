@@ -1,0 +1,6 @@
+framework module CompositeOperations {
+  umbrella header "CompositeOperations.h"
+
+  export *
+  module * { export * }
+}
