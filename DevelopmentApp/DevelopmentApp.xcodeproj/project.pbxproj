@@ -21,7 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		864EE1181AC4B4DC007D1B13 /* CompositeOperations.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1101AC4B4DC007D1B13 /* CompositeOperations.h */; };
+		864EE1181AC4B4DC007D1B13 /* CompositeOperations.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1101AC4B4DC007D1B13 /* CompositeOperations.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		864EE1191AC4B4DC007D1B13 /* COOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1111AC4B4DC007D1B13 /* COOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		864EE11B1AC4B4DC007D1B13 /* COParallelOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1131AC4B4DC007D1B13 /* COParallelOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		864EE11D1AC4B4DC007D1B13 /* COSequentialOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1151AC4B4DC007D1B13 /* COSequentialOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -440,6 +440,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
