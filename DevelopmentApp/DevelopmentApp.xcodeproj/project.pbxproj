@@ -21,7 +21,9 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		86BB7DAE1B361FC400E65FFF /* CompositeOperations.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86BB7DA31B361FC300E65FFF /* CompositeOperations.framework */; };
+		86AF37881B381BD4001FDD9D /* COOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1121AC4B4DC007D1B13 /* COOperation.m */; };
+		86AF37891B381BD4001FDD9D /* COParallelOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1141AC4B4DC007D1B13 /* COParallelOperation.m */; };
+		86AF378A1B381BD4001FDD9D /* COSequentialOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1161AC4B4DC007D1B13 /* COSequentialOperation.m */; };
 		86BB7DBC1B36202F00E65FFF /* CompositeOperations.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1101AC4B4DC007D1B13 /* CompositeOperations.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		86BB7DBD1B36202F00E65FFF /* COOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1111AC4B4DC007D1B13 /* COOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		86BB7DBE1B36202F00E65FFF /* COParallelOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1131AC4B4DC007D1B13 /* COParallelOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -54,6 +56,18 @@
 		86BB7DF81B36227200E65FFF /* COSequentialOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1351AC4B576007D1B13 /* COSequentialOperationTests.m */; };
 		86BB7DF91B36227B00E65FFF /* Kiwi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 864EE1771AC4C44A007D1B13 /* Kiwi.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		86AF37811B3819B4001FDD9D /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		864EE1101AC4B4DC007D1B13 /* CompositeOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompositeOperations.h; sourceTree = "<group>"; };
@@ -101,7 +115,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				86BB7DC71B36207900E65FFF /* Kiwi.framework in Frameworks */,
-				86BB7DAE1B361FC400E65FFF /* CompositeOperations.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -335,6 +348,7 @@
 				86BB7DA91B361FC400E65FFF /* Sources */,
 				86BB7DAA1B361FC400E65FFF /* Frameworks */,
 				86BB7DAB1B361FC400E65FFF /* Resources */,
+				86AF37811B3819B4001FDD9D /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -492,10 +506,13 @@
 			files = (
 				86BB7DC61B36205E00E65FFF /* TestOperations.m in Sources */,
 				86BB7DC31B36205400E65FFF /* COSequentialOperationTests.m in Sources */,
+				86AF378A1B381BD4001FDD9D /* COSequentialOperation.m in Sources */,
 				86BB7DC01B36205400E65FFF /* CompositeOperationsTests.m in Sources */,
+				86AF37881B381BD4001FDD9D /* COOperation.m in Sources */,
 				86BB7DC11B36205400E65FFF /* COOperationTests.m in Sources */,
 				86BB7DC21B36205400E65FFF /* COParallelOperationTests.m in Sources */,
 				86BB7DC41B36205E00E65FFF /* NSArray+CompositeOperations.m in Sources */,
+				86AF37891B381BD4001FDD9D /* COParallelOperation.m in Sources */,
 				86BB7DC51B36205E00E65FFF /* TestCompositeOperations.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
