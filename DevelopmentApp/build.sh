@@ -8,6 +8,7 @@ framework="${framework_name}.framework"
 ios_scheme="${framework_name}-iOS"
 ios_example_scheme=Example-iOS
 osx_scheme="${framework_name}-OSX"
+osx_example_scheme="Example-OSX"
 
 project_dir=${PROJECT_DIR:-.}
 build_dir=${BUILD_DIR:-Build}
@@ -24,6 +25,9 @@ ios_example_device_binary="${ios_example_device_path}/${ios_example_scheme}.app"
 
 ios_example_simulator_path="${build_dir}/${ios_example_scheme}/${configuration}-iphonesimulator"
 ios_example_simulator_binary="${ios_example_simulator_path}/${ios_example_scheme}.app"
+
+osx_example_path="${build_dir}/${osx_example_scheme}/${configuration}-macosx"
+osx_example_binary="${osx_example_path}/${osx_example_scheme}.app"
 
 ios_universal_path="${build_dir}/${ios_scheme}/${configuration}-iphoneuniversal"
 ios_universal_framework="${ios_universal_path}/${framework}"
@@ -56,7 +60,7 @@ echo "Output folder:     $distribution_path"
 echo "iOS output folder: $distribution_path_ios"
 echo "OSX output folder: $distribution_path_osx"
 
-cmd() {
+run() {
 	echo "Running command: $@"
     eval $@ || {
 		echo "Command failed: \"$@\""
@@ -71,14 +75,14 @@ mkdir -p "${build_dir}"
 
 # Build iOS Frameworks: iphonesimulator and iphoneos
 
-cmd xcodebuild -project ${project} \
+run xcodebuild -project ${project} \
                -scheme ${ios_scheme} \
                -sdk iphonesimulator \
                -configuration ${configuration} \
                CONFIGURATION_BUILD_DIR=${ios_simulator_path} \
                clean build 
 
-cmd xcodebuild -project ${project} \
+run xcodebuild -project ${project} \
                -scheme ${ios_scheme} \
                -sdk iphoneos \
                -configuration ${configuration} \
@@ -102,7 +106,7 @@ lipo "${ios_simulator_binary}" "${ios_device_binary}" -create -output "${ios_uni
 
 # Build OSX framework
 
-cmd xcodebuild -project ${project} \
+run xcodebuild -project ${project} \
                -scheme ${osx_scheme} \
                -sdk macosx \
                -configuration ${configuration} \
@@ -120,24 +124,38 @@ cp -av "${osx_framework}" "${distribution_path_osx}"
 # Validate iOS example application
 
 # Build Example iOS app against simulator
-cmd xcodebuild -project ${project} \
-               -scheme ${ios_example_scheme} \
+run xcodebuild -project ${project} \
+               -target ${ios_example_scheme} \
                -sdk iphonesimulator \
                -configuration ${configuration} \
                CONFIGURATION_BUILD_DIR=${ios_example_simulator_path} \
                clean build
 
 # Build Example iOS app against device
-cmd xcodebuild -project ${project} \
-               -scheme ${ios_example_scheme} \
+run xcodebuild -project ${project} \
+               -target ${ios_example_scheme} \
                -sdk iphoneos \
                -configuration ${configuration} \
                CONFIGURATION_BUILD_DIR=${ios_example_device_path} \
                clean build
 
+run codesign -vvvv --verify --deep ${ios_example_device_binary}
+
 # How To Perform iOS App Validation From the Command Line
 # http://stackoverflow.com/questions/7568420/how-to-perform-ios-app-validation-from-the-command-line
-cmd xcrun -v -sdk iphoneos Validation ${ios_example_device_binary}
+run xcrun -v -sdk iphoneos Validation ${ios_example_device_binary}
+
+# Build Example OSX app
+run xcodebuild -project ${project} \
+               -target ${osx_example_scheme} \
+               -sdk macosx \
+               -configuration ${configuration} \
+               CONFIGURATION_BUILD_DIR=${osx_example_path} \
+               clean build
+
+# How To Perform App Validation From the Command Line
+# http://stackoverflow.com/questions/7568420/how-to-perform-ios-app-validation-from-the-command-line
+run codesign -vvvv --verify --deep ${osx_example_binary}
 
 # See results
 
