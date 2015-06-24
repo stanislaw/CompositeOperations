@@ -21,6 +21,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		8657A3B61B3B21C600B667E9 /* CompositeOperations.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 86AF385E1B3B1375001FDD9D /* CompositeOperations.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8657A3B81B3B229300B667E9 /* Kiwi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 864EE1771AC4C44A007D1B13 /* Kiwi.framework */; };
 		86AF37881B381BD4001FDD9D /* COOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1121AC4B4DC007D1B13 /* COOperation.m */; };
 		86AF37891B381BD4001FDD9D /* COParallelOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1141AC4B4DC007D1B13 /* COParallelOperation.m */; };
 		86AF378A1B381BD4001FDD9D /* COSequentialOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1161AC4B4DC007D1B13 /* COSequentialOperation.m */; };
@@ -30,7 +32,7 @@
 		86AF38461B3B1352001FDD9D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 86AF38441B3B1352001FDD9D /* Main.storyboard */; };
 		86AF38481B3B1352001FDD9D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 86AF38471B3B1352001FDD9D /* Images.xcassets */; };
 		86AF384B1B3B1352001FDD9D /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 86AF38491B3B1352001FDD9D /* LaunchScreen.xib */; };
-		86AF385F1B3B1375001FDD9D /* CompositeOperations.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86AF385E1B3B1375001FDD9D /* CompositeOperations.framework */; };
+		86AF38611B3B1BB3001FDD9D /* CompositeOperations.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86AF385E1B3B1375001FDD9D /* CompositeOperations.framework */; };
 		86BB7DBC1B36202F00E65FFF /* CompositeOperations.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1101AC4B4DC007D1B13 /* CompositeOperations.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		86BB7DBD1B36202F00E65FFF /* COOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1111AC4B4DC007D1B13 /* COOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		86BB7DBE1B36202F00E65FFF /* COParallelOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1131AC4B4DC007D1B13 /* COParallelOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -42,7 +44,6 @@
 		86BB7DC41B36205E00E65FFF /* NSArray+CompositeOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE12B1AC4B576007D1B13 /* NSArray+CompositeOperations.m */; };
 		86BB7DC51B36205E00E65FFF /* TestCompositeOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE12D1AC4B576007D1B13 /* TestCompositeOperations.m */; };
 		86BB7DC61B36205E00E65FFF /* TestOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1301AC4B576007D1B13 /* TestOperations.m */; };
-		86BB7DC71B36207900E65FFF /* Kiwi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 864EE1771AC4C44A007D1B13 /* Kiwi.framework */; };
 		86BB7DC81B36208400E65FFF /* COOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1121AC4B4DC007D1B13 /* COOperation.m */; };
 		86BB7DC91B36208400E65FFF /* COParallelOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1141AC4B4DC007D1B13 /* COParallelOperation.m */; };
 		86BB7DCA1B36208400E65FFF /* COSequentialOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1161AC4B4DC007D1B13 /* COSequentialOperation.m */; };
@@ -65,13 +66,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		86AF37811B3819B4001FDD9D /* CopyFiles */ = {
+		86AF38631B3B1BB3001FDD9D /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 12;
+			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				8657A3B61B3B21C600B667E9 /* CompositeOperations.framework in Embed Frameworks */,
 			);
+			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -109,7 +112,7 @@
 		86AF38451B3B1352001FDD9D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		86AF38471B3B1352001FDD9D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		86AF384A1B3B1352001FDD9D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		86AF385E1B3B1375001FDD9D /* CompositeOperations.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CompositeOperations.framework; sourceTree = "<group>"; };
+		86AF385E1B3B1375001FDD9D /* CompositeOperations.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CompositeOperations.framework; path = ../../Frameworks/iOS/CompositeOperations.framework; sourceTree = "<group>"; };
 		86BB7DA31B361FC300E65FFF /* CompositeOperations.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CompositeOperations.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		86BB7DA61B361FC400E65FFF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		86BB7DAD1B361FC400E65FFF /* CompositeOperations-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CompositeOperations-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -125,7 +128,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				86AF385F1B3B1375001FDD9D /* CompositeOperations.framework in Frameworks */,
+				86AF38611B3B1BB3001FDD9D /* CompositeOperations.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,7 +143,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				86BB7DC71B36207900E65FFF /* Kiwi.framework in Frameworks */,
+				8657A3B81B3B229300B667E9 /* Kiwi.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -384,6 +387,7 @@
 				86AF38341B3B1352001FDD9D /* Sources */,
 				86AF38351B3B1352001FDD9D /* Frameworks */,
 				86AF38361B3B1352001FDD9D /* Resources */,
+				86AF38631B3B1BB3001FDD9D /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -419,7 +423,6 @@
 				86BB7DA91B361FC400E65FFF /* Sources */,
 				86BB7DAA1B361FC400E65FFF /* Frameworks */,
 				86BB7DAB1B361FC400E65FFF /* Resources */,
-				86AF37811B3819B4001FDD9D /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -571,7 +574,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo $SRCROOT\necho $PROJECT_DIR";
+			shellScript = "";
 		};
 		86BB7DFE1B36274100E65FFF /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -750,11 +753,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/../Frameworks/iOS",
+					"$(PROJECT_DIR)/Example-iOS",
 				);
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -774,11 +779,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/../Frameworks/iOS",
+					"$(PROJECT_DIR)/Example-iOS",
 				);
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "Example-iOS/Info.plist";
@@ -856,6 +863,7 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(PROJECT_DIR)/../Frameworks",
+					"$(PROJECT_DIR)/Frameworks",
 				);
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (

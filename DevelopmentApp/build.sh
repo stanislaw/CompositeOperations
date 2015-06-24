@@ -6,23 +6,30 @@ project="DevelopmentApp.xcodeproj"
 framework_name="CompositeOperations"
 framework="${framework_name}.framework"
 ios_scheme="${framework_name}-iOS"
+ios_example_scheme=Example-iOS
 osx_scheme="${framework_name}-OSX"
 
 project_dir=${PROJECT_DIR:-.}
 build_dir=${BUILD_DIR:-Build}
 configuration=${CONFIGURATION:-Release}
 
-ios_simulator_path="${build_dir}/${framework_name}/${configuration}-iphonesimulator"
+ios_simulator_path="${build_dir}/${ios_scheme}/${configuration}-iphonesimulator"
 ios_simulator_binary="${ios_simulator_path}/${framework}/${framework_name}"
 
-ios_device_path="${build_dir}/${framework_name}/${configuration}-iphoneos"
+ios_device_path="${build_dir}/${ios_scheme}/${configuration}-iphoneos"
 ios_device_binary="${ios_device_path}/${framework}/${framework_name}"
 
-ios_universal_path="${build_dir}/${framework_name}/${configuration}-iphoneuniversal"
-ios_universal_framework=${ios_universal_path}/${framework}
+ios_example_device_path="${build_dir}/${ios_example_scheme}/${configuration}-iphoneos"
+ios_example_device_binary="${ios_example_device_path}/${ios_example_scheme}.app"
+
+ios_example_simulator_path="${build_dir}/${ios_example_scheme}/${configuration}-iphonesimulator"
+ios_example_simulator_binary="${ios_example_simulator_path}/${ios_example_scheme}.app"
+
+ios_universal_path="${build_dir}/${ios_scheme}/${configuration}-iphoneuniversal"
+ios_universal_framework="${ios_universal_path}/${framework}"
 ios_universal_binary="${ios_universal_path}/${framework}/${framework_name}"
 
-osx_path="${build_dir}/${framework_name}/${configuration}-macosx"
+osx_path="${build_dir}/${osx_scheme}/${configuration}-macosx"
 osx_framework="${osx_path}/${framework}"
 
 distribution_path="${project_dir}/../Frameworks"
@@ -49,6 +56,14 @@ echo "Output folder:     $distribution_path"
 echo "iOS output folder: $distribution_path_ios"
 echo "OSX output folder: $distribution_path_osx"
 
+cmd() {
+	echo "Running command: $@"
+    eval $@ || {
+		echo "Command failed: \"$@\""
+        exit 1
+    }
+}
+
 # Clean Build folder
 
 rm -rf "${build_dir}"
@@ -56,19 +71,19 @@ mkdir -p "${build_dir}"
 
 # Build iOS Frameworks: iphonesimulator and iphoneos
 
-xcodebuild -project ${project} \
-           -scheme ${ios_scheme} \
-           -sdk iphonesimulator \
-           -configuration ${configuration} \
-           CONFIGURATION_BUILD_DIR=${ios_simulator_path} \
-           clean build 
+cmd xcodebuild -project ${project} \
+               -scheme ${ios_scheme} \
+               -sdk iphonesimulator \
+               -configuration ${configuration} \
+               CONFIGURATION_BUILD_DIR=${ios_simulator_path} \
+               clean build 
 
-xcodebuild -project ${project} \
-           -scheme ${ios_scheme} \
-           -sdk iphoneos \
-           -configuration ${configuration} \
-           CONFIGURATION_BUILD_DIR=${ios_device_path} \
-           clean build
+cmd xcodebuild -project ${project} \
+               -scheme ${ios_scheme} \
+               -sdk iphoneos \
+               -configuration ${configuration} \
+               CONFIGURATION_BUILD_DIR=${ios_device_path} \
+               clean build
 
 # Create directory for universal framework
 
@@ -83,21 +98,16 @@ cp -r "${ios_device_path}/." "${ios_universal_framework}"
 
 # Make an universal binary
 
-lipo "${ios_simulator_binary}" "${ios_device_binary}" -create -output "${ios_universal_binary}" | echo
-
-# Codesign iOS universal framework
-
-### FIXME
+lipo "${ios_simulator_binary}" "${ios_device_binary}" -create -output "${ios_universal_binary}"
 
 # Build OSX framework
 
-xcodebuild -project ${project} \
-           -scheme ${osx_scheme} \
-           -sdk macosx \
-           -configuration ${configuration} \
-           CONFIGURATION_BUILD_DIR=${osx_path} \
-           clean build 
-
+cmd xcodebuild -project ${project} \
+               -scheme ${osx_scheme} \
+               -sdk macosx \
+               -configuration ${configuration} \
+               CONFIGURATION_BUILD_DIR=${osx_path} \
+               clean build 
 # Copy results to output Frameworks/{iOS,OSX} directories
 
 rm -rf "$distribution_path"
@@ -106,6 +116,28 @@ mkdir -p "$distribution_path_osx"
 
 cp -av "${ios_universal_framework}" "${distribution_path_ios}"
 cp -av "${osx_framework}" "${distribution_path_osx}"
+
+# Validate iOS example application
+
+# Build Example iOS app against simulator
+cmd xcodebuild -project ${project} \
+               -scheme ${ios_example_scheme} \
+               -sdk iphonesimulator \
+               -configuration ${configuration} \
+               CONFIGURATION_BUILD_DIR=${ios_example_simulator_path} \
+               clean build
+
+# Build Example iOS app against device
+cmd xcodebuild -project ${project} \
+               -scheme ${ios_example_scheme} \
+               -sdk iphoneos \
+               -configuration ${configuration} \
+               CONFIGURATION_BUILD_DIR=${ios_example_device_path} \
+               clean build
+
+# How To Perform iOS App Validation From the Command Line
+# http://stackoverflow.com/questions/7568420/how-to-perform-ios-app-validation-from-the-command-line
+cmd xcrun -v -sdk iphoneos Validation ${ios_example_device_binary}
 
 # See results
 
