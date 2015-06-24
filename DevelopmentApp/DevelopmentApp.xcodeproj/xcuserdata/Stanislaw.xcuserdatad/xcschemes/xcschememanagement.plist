@@ -9,6 +9,11 @@
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
+		<key>CompositeOperations-iOS-Example.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
 		<key>CompositeOperations-iOS.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
@@ -18,6 +23,11 @@
 		<dict>
 			<key>orderHint</key>
 			<integer>2</integer>
+		</dict>
+		<key>Example-iOS.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
@@ -48,6 +58,16 @@
 			<true/>
 		</dict>
 		<key>864EE0FF1AC4B362007D1B13</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>86AF38371B3B1352001FDD9D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>86AF384F1B3B1352001FDD9D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
