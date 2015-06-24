@@ -109,7 +109,7 @@
 		86AF38451B3B1352001FDD9D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		86AF38471B3B1352001FDD9D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		86AF384A1B3B1352001FDD9D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		86AF385E1B3B1375001FDD9D /* CompositeOperations.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CompositeOperations.framework; path = "../../../../../../stanislaw/Programming/Open-Source/CompositeOperations/Frameworks/iOS/CompositeOperations.framework"; sourceTree = "<group>"; };
+		86AF385E1B3B1375001FDD9D /* CompositeOperations.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CompositeOperations.framework; sourceTree = "<group>"; };
 		86BB7DA31B361FC300E65FFF /* CompositeOperations.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CompositeOperations.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		86BB7DA61B361FC400E65FFF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		86BB7DAD1B361FC400E65FFF /* CompositeOperations-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CompositeOperations-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -380,6 +380,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 86AF385C1B3B1352001FDD9D /* Build configuration list for PBXNativeTarget "Example-iOS" */;
 			buildPhases = (
+				86AF38601B3B13D8001FDD9D /* ShellScript */,
 				86AF38341B3B1352001FDD9D /* Sources */,
 				86AF38351B3B1352001FDD9D /* Frameworks */,
 				86AF38361B3B1352001FDD9D /* Resources */,
@@ -559,6 +560,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		86AF38601B3B13D8001FDD9D /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo $SRCROOT\necho $PROJECT_DIR";
+		};
 		86BB7DFE1B36274100E65FFF /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -740,7 +754,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/stanislaw/Programming/Open-Source/CompositeOperations/Frameworks/iOS",
+					"$(PROJECT_DIR)/../Frameworks/iOS",
 				);
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -764,7 +778,7 @@
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/stanislaw/Programming/Open-Source/CompositeOperations/Frameworks/iOS",
+					"$(PROJECT_DIR)/../Frameworks/iOS",
 				);
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "Example-iOS/Info.plist";
@@ -841,7 +855,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
-					"$(PROJECT_DIR)/Frameworks",
+					"$(PROJECT_DIR)/../Frameworks",
 				);
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1017,6 +1031,7 @@
 				86AF38591B3B1352001FDD9D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		86BB7DB61B361FC400E65FFF /* Build configuration list for PBXNativeTarget "CompositeOperations-iOS" */ = {
 			isa = XCConfigurationList;
