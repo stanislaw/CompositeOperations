@@ -485,7 +485,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Taken from https://medium.com/@syshen/create-an-ios-universal-framework-148eb130a46c\n\nREVEAL_ARCHIVE_IN_FINDER=true\n\nFRAMEWORK_NAME=\"CompositeOperations\"\n\nSIMULATOR_LIBRARY_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${FRAMEWORK_NAME}.framework\"\nDEVICE_LIBRARY_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${FRAMEWORK_NAME}.framework\"\nUNIVERSAL_LIBRARY_DIR=\"${BUILD_DIR}/${CONFIGURATION}-iphoneuniversal\"\nOSX_LIBRARY_PATH=\"${BUILD_DIR}/${CONFIGURATION}-osx/${FRAMEWORK_NAME}.framework\"\n\nFRAMEWORK=\"${UNIVERSAL_LIBRARY_DIR}/${FRAMEWORK_NAME}.framework\"\n\nOUTPUT_DIR=\"${PROJECT_DIR}/../Frameworks\"\nOUTPUT_DIR_IOS=\"${PROJECT_DIR}/../Frameworks/iOS\"\nOUTPUT_DIR_OSX=\"${PROJECT_DIR}/../Frameworks/OSX\"\n\n# echo \"PROJECT_NAME: ${PROJECT_NAME}\"\n# echo \"PRODUCT_NAME: ${PRODUCT_NAME}\"\n# echo \"SIMULATOR_LIBRARY_PATH: ${SIMULATOR_LIBRARY_PATH}\"\n# echo \"DEVICE_LIBRARY_PATH: ${DEVICE_LIBRARY_PATH}\"\n# echo \"UNIVERSAL_LIBRARY_DIR: ${UNIVERSAL_LIBRARY_DIR}\"\n# echo \"FRAMEWORK: ${FRAMEWORK}\"\n\n# Clean Build folder\n\nrm -rf \"${BUILD_DIR}\"\nmkdir -p \"${BUILD_DIR}\"\n\n# Build iOS Frameworks: iphonesimulator and iphoneos\n\nxcodebuild -project DevelopmentApp.xcodeproj -scheme CompositeOperations-iOS -sdk iphonesimulator -configuration Release clean build CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphonesimulator 2>&1\n\nxcodebuild -project DevelopmentApp.xcodeproj -scheme CompositeOperations-iOS -sdk iphoneos -configuration Release clean build CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphoneos 2>&1\n\n# Create directory for universal framework\n\nrm -rf \"${UNIVERSAL_LIBRARY_DIR}\"\n\nmkdir \"${UNIVERSAL_LIBRARY_DIR}\"\n\nmkdir -p \"${FRAMEWORK}\"\n\n# Copy files Framework\n\ncp -r \"${DEVICE_LIBRARY_PATH}/.\" \"${FRAMEWORK}\"\n\n# Make an universal binary\n\nlipo \"${SIMULATOR_LIBRARY_PATH}/${FRAMEWORK_NAME}\" \"${DEVICE_LIBRARY_PATH}/${FRAMEWORK_NAME}\" -create -output \"${FRAMEWORK}/${FRAMEWORK_NAME}\" | echo\n\n# Codesign iOS universal framework\n\n### FIXME\n# /usr/bin/codesign --force --sign \"iPhone Developer\" \"${FRAMEWORK}\"\n\n# Build OSX framework\n\nxcodebuild -project DevelopmentApp.xcodeproj -scheme CompositeOperations-OSX -sdk macosx -configuration Release CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-osx clean build\n\n# Copy results to output Frameworks/{iOS,OSX} directories\n\nrm -rf \"$OUTPUT_DIR_IOS\"\nrm -rf \"$OUTPUT_DIR_OSX\"\nmkdir -p \"$OUTPUT_DIR_IOS\"\nmkdir -p \"$OUTPUT_DIR_OSX\"\n\ncp -a \"${FRAMEWORK}\" \"$OUTPUT_DIR_IOS\"\ncp -a \"${OSX_LIBRARY_PATH}\" \"${OUTPUT_DIR_OSX}\"\n\n# See results\n\nif [ ${REVEAL_ARCHIVE_IN_FINDER} = true ]; then\nopen \"${OUTPUT_DIR}/\"\nfi\n";
+			shellScript = "sh build.sh";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -733,8 +733,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -763,8 +763,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
-				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "3rd Party Mac Developer Application";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
