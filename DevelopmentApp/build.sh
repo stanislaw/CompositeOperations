@@ -61,7 +61,7 @@ echo "iOS output folder: $distribution_path_ios"
 echo "OSX output folder: $distribution_path_osx"
 
 run() {
-	echo "Running command: $@"
+    echo "Running command: $@"
     eval $@ || {
 		echo "Command failed: \"$@\""
         exit 1
@@ -102,7 +102,7 @@ cp -r "${ios_device_path}/." "${ios_universal_framework}"
 
 # Make an universal binary
 
-lipo "${ios_simulator_binary}" "${ios_device_binary}" -create -output "${ios_universal_binary}"
+run lipo "${ios_simulator_binary}" "${ios_device_binary}" -create -output "${ios_universal_binary}"
 
 # Build OSX framework
 
@@ -112,6 +112,7 @@ run xcodebuild -project ${project} \
                -configuration ${configuration} \
                CONFIGURATION_BUILD_DIR=${osx_path} \
                clean build 
+
 # Copy results to output Frameworks/{iOS,OSX} directories
 
 rm -rf "$distribution_path"
@@ -153,8 +154,6 @@ run xcodebuild -project ${project} \
                CONFIGURATION_BUILD_DIR=${osx_example_path} \
                clean build
 
-# How To Perform App Validation From the Command Line
-# http://stackoverflow.com/questions/7568420/how-to-perform-ios-app-validation-from-the-command-line
 run codesign -vvvv --verify --deep ${osx_example_binary}
 
 # See results
