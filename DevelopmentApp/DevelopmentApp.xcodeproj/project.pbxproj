@@ -126,7 +126,7 @@
 		8657A3C41B3B241300B667E9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8657A3C61B3B241300B667E9 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		8657A3C91B3B241300B667E9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		8657A3DD1B3B244B00B667E9 /* CompositeOperations.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CompositeOperations.framework; path = "../../../../../../stanislaw/Programming/Open-Source/CompositeOperations/Frameworks/OSX/CompositeOperations.framework"; sourceTree = "<group>"; };
+		8657A3DD1B3B244B00B667E9 /* CompositeOperations.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CompositeOperations.framework; path = "../../Frameworks/OSX/CompositeOperations.framework"; sourceTree = "<group>"; };
 		86AF38381B3B1352001FDD9D /* Example-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Example-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		86AF383B1B3B1352001FDD9D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		86AF383C1B3B1352001FDD9D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
