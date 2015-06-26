@@ -10,6 +10,15 @@
 
 #import <CompositeOperations/CompositeOperations.h>
 
+@interface Operation: COOperation
+@end
+
+@implementation Operation
+- (void)main {
+    NSLog(@"Trivial operation to test things");
+}
+@end
+
 @interface AppDelegate ()
 
 @property (weak) IBOutlet NSWindow *window;
@@ -18,7 +27,7 @@
 @implementation AppDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-
+    [[Operation new] start];
 }
 
 @end

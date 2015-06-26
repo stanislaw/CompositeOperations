@@ -1,3 +1,5 @@
+test:
+	./build.sh distribute
 xctool:
 	xctool -project DevelopmentApp.xcodeproj \
                -scheme CompositeOperations-iOS \

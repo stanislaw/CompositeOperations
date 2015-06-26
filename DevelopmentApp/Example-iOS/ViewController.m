@@ -10,6 +10,15 @@
 
 #import <CompositeOperations/CompositeOperations.h>
 
+@interface Operation: COOperation
+@end
+
+@implementation Operation
+- (void)main {
+    NSLog(@"Trivial operation to test things");
+}
+@end
+
 @interface ViewController ()
 
 @end
@@ -18,7 +27,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+
+    [[Operation new] start];
 }
 
 - (void)didReceiveMemoryWarning {

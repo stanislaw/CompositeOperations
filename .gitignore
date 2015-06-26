@@ -1,4 +1,4 @@
 **/Build/**
 **/xcuserdata/**
 .DS_Store
-Frameworks/**
+Distribution/**

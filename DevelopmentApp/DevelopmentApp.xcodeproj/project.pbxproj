@@ -21,14 +21,15 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		8657A3B61B3B21C600B667E9 /* CompositeOperations.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 86AF385E1B3B1375001FDD9D /* CompositeOperations.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		862051301B3DF4B50066333D /* CompositeOperations.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8620512D1B3DF4A50066333D /* CompositeOperations.framework */; };
+		862051311B3DF4B50066333D /* CompositeOperations.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8620512D1B3DF4A50066333D /* CompositeOperations.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		862051321B3DF4BD0066333D /* CompositeOperations.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8620512F1B3DF4A50066333D /* CompositeOperations.framework */; };
+		862051331B3DF4BD0066333D /* CompositeOperations.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8620512F1B3DF4A50066333D /* CompositeOperations.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8657A3B81B3B229300B667E9 /* Kiwi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 864EE1771AC4C44A007D1B13 /* Kiwi.framework */; };
 		8657A3C31B3B241300B667E9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8657A3C21B3B241300B667E9 /* AppDelegate.m */; };
 		8657A3C51B3B241300B667E9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8657A3C41B3B241300B667E9 /* main.m */; };
 		8657A3C71B3B241300B667E9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8657A3C61B3B241300B667E9 /* Images.xcassets */; };
 		8657A3CA1B3B241300B667E9 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8657A3C81B3B241300B667E9 /* MainMenu.xib */; };
-		8657A3DF1B3B248900B667E9 /* CompositeOperations.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8657A3DD1B3B244B00B667E9 /* CompositeOperations.framework */; };
-		8657A3E01B3B248900B667E9 /* CompositeOperations.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8657A3DD1B3B244B00B667E9 /* CompositeOperations.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		86AF37881B381BD4001FDD9D /* COOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1121AC4B4DC007D1B13 /* COOperation.m */; };
 		86AF37891B381BD4001FDD9D /* COParallelOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1141AC4B4DC007D1B13 /* COParallelOperation.m */; };
 		86AF378A1B381BD4001FDD9D /* COSequentialOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1161AC4B4DC007D1B13 /* COSequentialOperation.m */; };
@@ -38,7 +39,6 @@
 		86AF38461B3B1352001FDD9D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 86AF38441B3B1352001FDD9D /* Main.storyboard */; };
 		86AF38481B3B1352001FDD9D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 86AF38471B3B1352001FDD9D /* Images.xcassets */; };
 		86AF384B1B3B1352001FDD9D /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 86AF38491B3B1352001FDD9D /* LaunchScreen.xib */; };
-		86AF38611B3B1BB3001FDD9D /* CompositeOperations.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86AF385E1B3B1375001FDD9D /* CompositeOperations.framework */; };
 		86BB7DBC1B36202F00E65FFF /* CompositeOperations.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1101AC4B4DC007D1B13 /* CompositeOperations.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		86BB7DBD1B36202F00E65FFF /* COOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1111AC4B4DC007D1B13 /* COOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		86BB7DBE1B36202F00E65FFF /* COParallelOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1131AC4B4DC007D1B13 /* COParallelOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -78,7 +78,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				8657A3E01B3B248900B667E9 /* CompositeOperations.framework in Embed Frameworks */,
+				862051331B3DF4BD0066333D /* CompositeOperations.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -89,7 +89,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				8657A3B61B3B21C600B667E9 /* CompositeOperations.framework in Embed Frameworks */,
+				862051311B3DF4B50066333D /* CompositeOperations.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -97,6 +97,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		8620512D1B3DF4A50066333D /* CompositeOperations.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CompositeOperations.framework; sourceTree = "<group>"; };
+		8620512F1B3DF4A50066333D /* CompositeOperations.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CompositeOperations.framework; sourceTree = "<group>"; };
 		864EE1101AC4B4DC007D1B13 /* CompositeOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompositeOperations.h; sourceTree = "<group>"; };
 		864EE1111AC4B4DC007D1B13 /* COOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COOperation.h; sourceTree = "<group>"; };
 		864EE1121AC4B4DC007D1B13 /* COOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COOperation.m; sourceTree = "<group>"; };
@@ -126,7 +128,6 @@
 		8657A3C41B3B241300B667E9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8657A3C61B3B241300B667E9 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		8657A3C91B3B241300B667E9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		8657A3DD1B3B244B00B667E9 /* CompositeOperations.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CompositeOperations.framework; path = ../../Frameworks/OSX/CompositeOperations.framework; sourceTree = "<group>"; };
 		86AF38381B3B1352001FDD9D /* Example-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Example-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		86AF383B1B3B1352001FDD9D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		86AF383C1B3B1352001FDD9D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -137,7 +138,6 @@
 		86AF38451B3B1352001FDD9D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		86AF38471B3B1352001FDD9D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		86AF384A1B3B1352001FDD9D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		86AF385E1B3B1375001FDD9D /* CompositeOperations.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CompositeOperations.framework; path = ../../Frameworks/iOS/CompositeOperations.framework; sourceTree = "<group>"; };
 		86BB7DA31B361FC300E65FFF /* CompositeOperations.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CompositeOperations.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		86BB7DA61B361FC400E65FFF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		86BB7DAD1B361FC400E65FFF /* CompositeOperations-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CompositeOperations-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -153,7 +153,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8657A3DF1B3B248900B667E9 /* CompositeOperations.framework in Frameworks */,
+				862051321B3DF4BD0066333D /* CompositeOperations.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -161,7 +161,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				86AF38611B3B1BB3001FDD9D /* CompositeOperations.framework in Frameworks */,
+				862051301B3DF4B50066333D /* CompositeOperations.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -199,6 +199,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8620512B1B3DF4A50066333D /* Distribution */ = {
+			isa = PBXGroup;
+			children = (
+				8620512C1B3DF4A50066333D /* iOS */,
+				8620512E1B3DF4A50066333D /* OSX */,
+			);
+			name = Distribution;
+			path = "$(PROJECT_DIR)/../Distribution";
+			sourceTree = "<group>";
+		};
+		8620512C1B3DF4A50066333D /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				8620512D1B3DF4A50066333D /* CompositeOperations.framework */,
+			);
+			path = iOS;
+			sourceTree = "<group>";
+		};
+		8620512E1B3DF4A50066333D /* OSX */ = {
+			isa = PBXGroup;
+			children = (
+				8620512F1B3DF4A50066333D /* CompositeOperations.framework */,
+			);
+			path = OSX;
+			sourceTree = "<group>";
+		};
 		864AA3CD1A17AB20008A1EA6 = {
 			isa = PBXGroup;
 			children = (
@@ -212,6 +238,7 @@
 				8657A3BE1B3B241300B667E9 /* Example-OSX */,
 				864AA3D71A17AB20008A1EA6 /* Products */,
 				864EE1761AC4C44A007D1B13 /* Frameworks */,
+				8620512B1B3DF4A50066333D /* Distribution */,
 			);
 			sourceTree = "<group>";
 		};
@@ -300,7 +327,6 @@
 		8657A3BE1B3B241300B667E9 /* Example-OSX */ = {
 			isa = PBXGroup;
 			children = (
-				8657A3DD1B3B244B00B667E9 /* CompositeOperations.framework */,
 				8657A3C11B3B241300B667E9 /* AppDelegate.h */,
 				8657A3C21B3B241300B667E9 /* AppDelegate.m */,
 				8657A3C61B3B241300B667E9 /* Images.xcassets */,
@@ -322,7 +348,6 @@
 		86AF38391B3B1352001FDD9D /* Example-iOS */ = {
 			isa = PBXGroup;
 			children = (
-				86AF385E1B3B1375001FDD9D /* CompositeOperations.framework */,
 				86AF383E1B3B1352001FDD9D /* AppDelegate.h */,
 				86AF383F1B3B1352001FDD9D /* AppDelegate.m */,
 				86AF38411B3B1352001FDD9D /* ViewController.h */,
@@ -863,7 +888,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/../Frameworks/OSX",
+					"$(PROJECT_DIR)/../Distribution/OSX"
 				);
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -885,7 +910,7 @@
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/../Frameworks/OSX",
+					"$(PROJECT_DIR)/../Distribution/OSX",
 				);
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "Example-OSX/Info.plist";
@@ -903,8 +928,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/../Frameworks/iOS",
-					"$(PROJECT_DIR)/../Frameworks/OSX",
+					"$(PROJECT_DIR)/../Distribution/iOS",
 				);
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -930,8 +954,7 @@
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/../Frameworks/iOS",
-					"$(PROJECT_DIR)/../Frameworks/OSX",
+					"$(PROJECT_DIR)/../Distribution/iOS",
 				);
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "Example-iOS/Info.plist";
