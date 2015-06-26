@@ -68,97 +68,110 @@ run() {
     }
 }
 
-# Clean Build folder
+clean_build_folder() {
+    rm -rf "${build_dir}"
+    mkdir -p "${build_dir}"
+}
 
-rm -rf "${build_dir}"
-mkdir -p "${build_dir}"
+run_unit_tests() {
+	run xcodebuild -project DevelopmentApp.xcodeproj \
+                   -scheme CompositeOperations-iOS \
+                   -sdk iphonesimulator \
+                   clean test
+}
 
-# Build iOS Frameworks: iphonesimulator and iphoneos
+build_ios() {
+    run xcodebuild -project ${project} \
+                   -scheme ${ios_scheme} \
+                   -sdk iphonesimulator \
+                   -configuration ${configuration} \
+                   CONFIGURATION_BUILD_DIR=${ios_simulator_path} \
+                   clean build 
 
-run xcodebuild -project ${project} \
-               -scheme ${ios_scheme} \
-               -sdk iphonesimulator \
-               -configuration ${configuration} \
-               CONFIGURATION_BUILD_DIR=${ios_simulator_path} \
-               clean build 
+    run xcodebuild -project ${project} \
+                   -scheme ${ios_scheme} \
+                   -sdk iphoneos \
+                   -configuration ${configuration} \
+                   CONFIGURATION_BUILD_DIR=${ios_device_path} \
+                   clean build
 
-run xcodebuild -project ${project} \
-               -scheme ${ios_scheme} \
-               -sdk iphoneos \
-               -configuration ${configuration} \
-               CONFIGURATION_BUILD_DIR=${ios_device_path} \
-               clean build
+    rm -rf "${ios_universal_path}"
+    mkdir "${ios_universal_path}"
 
-# Create directory for universal framework
+    mkdir -p "${ios_universal_framework}"
 
-rm -rf "${ios_universal_path}"
-mkdir "${ios_universal_path}"
+    cp -r "${ios_device_path}/." "${ios_universal_framework}"
 
-mkdir -p "${ios_universal_framework}"
+    run lipo "${ios_simulator_binary}" "${ios_device_binary}" -create -output "${ios_universal_binary}"
+}
 
-# Copy files Framework
+build_osx() {
+    run xcodebuild -project ${project} \
+                   -scheme ${osx_scheme} \
+                   -sdk macosx \
+                   -configuration ${configuration} \
+                   CONFIGURATION_BUILD_DIR=${osx_path} \
+                   clean build 
+}
 
-cp -r "${ios_device_path}/." "${ios_universal_framework}"
+export_built_frameworks_to_distribution_folder() {
+    rm -rf "$distribution_path"
+    mkdir -p "$distribution_path_ios"
+    mkdir -p "$distribution_path_osx"
 
-# Make an universal binary
+    cp -av "${ios_universal_framework}" "${distribution_path_ios}"
+    cp -av "${osx_framework}" "${distribution_path_osx}"
+}
 
-run lipo "${ios_simulator_binary}" "${ios_device_binary}" -create -output "${ios_universal_binary}"
+validate_ios() {
 
-# Build OSX framework
+    # Build Example iOS app against simulator
+    run xcodebuild -project ${project} \
+                   -target ${ios_example_scheme} \
+                   -sdk iphonesimulator \
+                   -configuration ${configuration} \
+                   CONFIGURATION_BUILD_DIR=${ios_example_simulator_path} \
+                   clean build
 
-run xcodebuild -project ${project} \
-               -scheme ${osx_scheme} \
-               -sdk macosx \
-               -configuration ${configuration} \
-               CONFIGURATION_BUILD_DIR=${osx_path} \
-               clean build 
+    # Build Example iOS app against device
+    run xcodebuild -project ${project} \
+                   -target ${ios_example_scheme} \
+                   -sdk iphoneos \
+                   -configuration ${configuration} \
+                   CONFIGURATION_BUILD_DIR=${ios_example_device_path} \
+                   clean build
 
-# Copy results to output Frameworks/{iOS,OSX} directories
+    run codesign -vvvv --verify --deep ${ios_example_device_binary}
 
-rm -rf "$distribution_path"
-mkdir -p "$distribution_path_ios"
-mkdir -p "$distribution_path_osx"
+    # How To Perform iOS App Validation From the Command Line
+    # http://stackoverflow.com/questions/7568420/how-to-perform-ios-app-validation-from-the-command-line
+    run xcrun -v -sdk iphoneos Validation ${ios_example_device_binary}
 
-cp -av "${ios_universal_framework}" "${distribution_path_ios}"
-cp -av "${osx_framework}" "${distribution_path_osx}"
+    # Build Example OSX app
+    run xcodebuild -project ${project} \
+                   -target ${osx_example_scheme} \
+                   -sdk macosx \
+                   -configuration ${configuration} \
+                   CONFIGURATION_BUILD_DIR=${osx_example_path} \
+                   clean build
 
-# Validate iOS example application
+    run codesign -vvvv --verify --deep ${osx_example_binary}
+}
 
-# Build Example iOS app against simulator
-run xcodebuild -project ${project} \
-               -target ${ios_example_scheme} \
-               -sdk iphonesimulator \
-               -configuration ${configuration} \
-               CONFIGURATION_BUILD_DIR=${ios_example_simulator_path} \
-               clean build
+open_distribution_folder() {
+    if [ ${reveal_archive_in_finder} = true ]; then
+        open "${distribution_path}"
+    fi
+}
 
-# Build Example iOS app against device
-run xcodebuild -project ${project} \
-               -target ${ios_example_scheme} \
-               -sdk iphoneos \
-               -configuration ${configuration} \
-               CONFIGURATION_BUILD_DIR=${ios_example_device_path} \
-               clean build
+distribute() {
+	clean_build_folder
+	run_unit_tests
+	build_ios
+	build_osx
+	export_built_frameworks_to_distribution_folder
+	validate_ios
+	open_distribution_folder
+}
 
-run codesign -vvvv --verify --deep ${ios_example_device_binary}
-
-# How To Perform iOS App Validation From the Command Line
-# http://stackoverflow.com/questions/7568420/how-to-perform-ios-app-validation-from-the-command-line
-run xcrun -v -sdk iphoneos Validation ${ios_example_device_binary}
-
-# Build Example OSX app
-run xcodebuild -project ${project} \
-               -target ${osx_example_scheme} \
-               -sdk macosx \
-               -configuration ${configuration} \
-               CONFIGURATION_BUILD_DIR=${osx_example_path} \
-               clean build
-
-run codesign -vvvv --verify --deep ${osx_example_binary}
-
-# See results
-
-if [ ${reveal_archive_in_finder} = true ]; then
-    open "${distribution_path}"
-fi
-
+distribute
