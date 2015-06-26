@@ -174,4 +174,5 @@ distribute() {
 	open_distribution_folder
 }
 
-distribute
+$@
+
