@@ -1,4 +1,5 @@
 language: objective-c
 before_install:
 - cd DevelopmentApp
-script: make
+script: ./build.sh run_unit_tests
+
