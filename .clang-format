@@ -1,0 +1,27 @@
+# brew install clang-format
+
+BasedOnStyle: LLVM
+Language: Cpp
+ColumnLimit: 0
+IndentWidth: 4
+UseTab: Never
+
+AlignEscapedNewlinesLeft: false
+AllowShortIfStatementsOnASingleLine: true
+AllowShortLoopsOnASingleLine: false
+AlignTrailingComments: false
+
+IndentCaseLabels: true
+MaxEmptyLinesToKeep: 1
+ObjCBlockIndentWidth: 4
+ObjCSpaceAfterProperty: true
+ObjCSpaceBeforeProtocolList: true
+
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeParens: ControlStatements
+SpaceInEmptyParentheses: false
+SpacesBeforeTrailingComments: 1
+SpacesInCStyleCastParentheses: false
+SpacesInContainerLiterals: false
+SpacesInParentheses: false
+
