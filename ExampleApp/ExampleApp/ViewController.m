@@ -1,12 +1,12 @@
 //
-//  AppDelegate.m
-//  Example-OSX
+//  ViewController.m
+//  ExampleApp
 //
-//  Created by Stanislaw Pankevich on 24/06/15.
-//  Copyright (c) 2015 Stanislaw Pankevich. All rights reserved.
+//  Created by Stanislaw Pankevich on 20/09/15.
+//  Copyright © 2015 Stanislaw Pankevich. All rights reserved.
 //
 
-#import "AppDelegate.h"
+#import "ViewController.h"
 
 #import <CompositeOperations/CompositeOperations.h>
 
@@ -21,14 +21,12 @@
 }
 @end
 
-@interface AppDelegate ()
-
-@property (weak) IBOutlet NSWindow *window;
+@interface ViewController ()
 @end
 
-@implementation AppDelegate
+@implementation ViewController
 
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+- (void)viewDidLoad {
     Operation *operation = [Operation new];
 
     COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithOperations:@[ operation ] runInParallel:NO];
