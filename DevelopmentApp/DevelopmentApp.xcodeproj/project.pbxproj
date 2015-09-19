@@ -21,6 +21,9 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		8600DE5C1BADBE43005297A9 /* COOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1121AC4B4DC007D1B13 /* COOperation.m */; settings = {ASSET_TAGS = (); }; };
+		8600DE5D1BADBE43005297A9 /* COParallelOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1141AC4B4DC007D1B13 /* COParallelOperation.m */; settings = {ASSET_TAGS = (); }; };
+		8600DE5E1BADBE43005297A9 /* COSequentialOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1161AC4B4DC007D1B13 /* COSequentialOperation.m */; settings = {ASSET_TAGS = (); }; };
 		862051301B3DF4B50066333D /* CompositeOperations.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8620512D1B3DF4A50066333D /* CompositeOperations.framework */; };
 		862051311B3DF4B50066333D /* CompositeOperations.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8620512D1B3DF4A50066333D /* CompositeOperations.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		862051321B3DF4BD0066333D /* CompositeOperations.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8620512F1B3DF4A50066333D /* CompositeOperations.framework */; };
@@ -53,7 +56,6 @@
 		86BB7DC81B36208400E65FFF /* COOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1121AC4B4DC007D1B13 /* COOperation.m */; };
 		86BB7DC91B36208400E65FFF /* COParallelOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1141AC4B4DC007D1B13 /* COParallelOperation.m */; };
 		86BB7DCA1B36208400E65FFF /* COSequentialOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1161AC4B4DC007D1B13 /* COSequentialOperation.m */; };
-		86BB7DDB1B3621E000E65FFF /* CompositeOperations.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86BB7DD01B3621E000E65FFF /* CompositeOperations.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		86BB7DE91B3621FB00E65FFF /* CompositeOperations.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1101AC4B4DC007D1B13 /* CompositeOperations.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		86BB7DEA1B3621FB00E65FFF /* COOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1111AC4B4DC007D1B13 /* COOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		86BB7DEB1B3621FB00E65FFF /* COParallelOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1131AC4B4DC007D1B13 /* COParallelOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -192,7 +194,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				86BB7DF91B36227B00E65FFF /* Kiwi.framework in Frameworks */,
-				86BB7DDB1B3621E000E65FFF /* CompositeOperations.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -767,10 +768,13 @@
 			files = (
 				86BB7DF81B36227200E65FFF /* COSequentialOperationTests.m in Sources */,
 				86BB7DF21B36227200E65FFF /* NSArray+CompositeOperations.m in Sources */,
+				8600DE5E1BADBE43005297A9 /* COSequentialOperation.m in Sources */,
 				86BB7DF31B36227200E65FFF /* TestCompositeOperations.m in Sources */,
+				8600DE5C1BADBE43005297A9 /* COOperation.m in Sources */,
 				86BB7DF71B36227200E65FFF /* COParallelOperationTests.m in Sources */,
 				86BB7DF61B36227200E65FFF /* COOperationTests.m in Sources */,
 				86BB7DF41B36227200E65FFF /* TestOperations.m in Sources */,
+				8600DE5D1BADBE43005297A9 /* COParallelOperation.m in Sources */,
 				86BB7DF51B36227200E65FFF /* CompositeOperationsTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -888,7 +892,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/../Distribution/OSX"
+					"$(PROJECT_DIR)/../Distribution/OSX",
 				);
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
