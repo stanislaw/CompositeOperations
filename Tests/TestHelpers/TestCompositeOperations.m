@@ -8,6 +8,8 @@
 
 #import "TestCompositeOperations.h"
 #import "TestOperations.h"
+#import "COOperation.h"
+#import "COSequentialOperation.h"
 
 @implementation SequenceOfThreeTrivialGreenOperations
 

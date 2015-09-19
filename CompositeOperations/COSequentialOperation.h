@@ -7,15 +7,11 @@
 // Released under the MIT license
 //
 
-#import <CompositeOperations/COOperation.h>
+#import <CompositeOperations/COCompositeOperation.h>
 
 FOUNDATION_EXPORT NSString *const COSequentialOperationErrorKey;
 
-@protocol COSequentialTask <NSObject>
-- (COOperation *)nextOperationAfterOperation:(COOperation *)previousOperationOrNil;
-@end
-
-@interface COSequentialOperation : COOperation
+@interface COSequentialOperation : COCompositeOperation
 - (id)initWithSequentialTask:(id <COSequentialTask>)sequentialTask NS_DESIGNATED_INITIALIZER;
 - (id)initWithOperations:(NSArray *)operations;
 - (id)init NS_UNAVAILABLE;

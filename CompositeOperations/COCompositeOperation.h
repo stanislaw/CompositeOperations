@@ -7,8 +7,14 @@
 //
 
 #import <CompositeOperations/COOperation.h>
-#import <CompositeOperations/COSequentialOperation.h>
-#import <CompositeOperations/COParallelOperation.h>
+
+@protocol COSequentialTask <NSObject>
+- (COOperation *)nextOperationAfterOperation:(COOperation *)previousOperationOrNil;
+@end
+
+@protocol COParallelTask <NSObject>
+- (NSArray *)operations;
+@end
 
 @interface COCompositeOperation : COOperation
 - (id)initWithSequentialTask:(id <COSequentialTask>)sequentialTask;

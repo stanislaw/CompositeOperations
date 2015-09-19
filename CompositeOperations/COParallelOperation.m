@@ -7,7 +7,7 @@
 // Released under the MIT license
 //
 
-#import <CompositeOperations/COParallelOperation.h>
+#import "COParallelOperation.h"
 
 NSString *const COParallelOperationErrorsKey = @"COParallelOperationErrorsKey";
 
@@ -20,12 +20,6 @@ NSString *const COParallelOperationErrorsKey = @"COParallelOperationErrorsKey";
 @end
 
 @implementation COParallelOperation
-
-- (id)init {
-    @throw [NSException exceptionWithName:COErrorDomain reason:@"Must use designated initializer initWithParallelTask:!" userInfo:nil];
-
-    return nil;
-}
 
 - (id)initWithParallelTask:(id <COParallelTask>)parallelTask {
     NSParameterAssert(parallelTask);

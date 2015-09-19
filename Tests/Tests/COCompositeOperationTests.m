@@ -3,16 +3,22 @@
 #import "TestOperations.h"
 #import "TestCompositeOperations.h"
 
-#import <CompositeOperations/COCompositeOperation.h>
-
 SPEC_BEGIN(COCompositeOperationSpec)
 
 describe(@"COCompositeOperation", ^{
+    describe(@"-init", ^{
+        it(@"should raise exception", ^{
+            [[theBlock(^{
+                __unused COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] init];
+            }) should] raiseWithName:COErrorDomain];
+        });
+    });
+
     describe(@"-initWithSequentialTask", ^{
         it(@"should be of class COSequentialOperation", ^{
             COCompositeOperation *sequentialOperation = [[COCompositeOperation alloc] initWithSequentialTask:[SequenceOfThreeTrivialGreenOperations new]];
 
-            [[sequentialOperation should] beKindOfClass:[COSequentialOperation class]];
+            [[sequentialOperation should] beKindOfClass:[COCompositeOperation class]];
         });
 
         it(@"should run composite operation", ^{
@@ -46,7 +52,7 @@ describe(@"COCompositeOperation", ^{
 
             COCompositeOperation *sequentialOperation = [[COCompositeOperation alloc] initWithOperations:operations runInParallel:NO];
 
-            [[sequentialOperation should] beKindOfClass:[COSequentialOperation class]];
+            [[sequentialOperation should] beKindOfClass:[COCompositeOperation class]];
         });
 
         it(@"should run composite operation", ^{
@@ -80,7 +86,7 @@ describe(@"COCompositeOperation", ^{
         it(@"should be of class COParallelOperation", ^{
             COCompositeOperation *parallelOperation = [[COCompositeOperation alloc] initWithParallelTask:[TransactionOfThreeOperationsTriviallyReturningNull new]];
 
-            [[parallelOperation should] beKindOfClass:[COParallelOperation class]];
+            [[parallelOperation should] beKindOfClass:[COCompositeOperation class]];
         });
 
         it(@"should run composite operation", ^{
@@ -110,7 +116,7 @@ describe(@"COCompositeOperation", ^{
         it(@"should be of class COParallelOperation", ^{
             COCompositeOperation *parallelOperation = [[COCompositeOperation alloc] initWithParallelTask:[TransactionOfThreeOperationsTriviallyReturningNull new]];
 
-            [[parallelOperation should] beKindOfClass:[COParallelOperation class]];
+            [[parallelOperation should] beKindOfClass:[COCompositeOperation class]];
         });
 
         it(@"should run composite operation", ^{

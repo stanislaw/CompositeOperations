@@ -3,7 +3,7 @@
 #import "TestOperations.h"
 #import "TestCompositeOperations.h"
 
-#import <CompositeOperations/COSequentialOperation.h>
+#import "COSequentialOperation.h"
 
 SPEC_BEGIN(COSequentialOperationSpec)
 

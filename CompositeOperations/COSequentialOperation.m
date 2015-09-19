@@ -7,7 +7,7 @@
 // Released under the MIT license
 //
 
-#import <CompositeOperations/COSequentialOperation.h>
+#import "COSequentialOperation.h"
 
 NSString *const COSequentialOperationErrorKey = @"COSequentialOperationErrorKey";
 

@@ -8,6 +8,9 @@
 
 #import <CompositeOperations/COCompositeOperation.h>
 
+#import "COSequentialOperation.h"
+#import "COParallelOperation.h"
+
 @interface COCompositeOperationCluster : COCompositeOperation
 @end
 
@@ -17,11 +20,12 @@
 @implementation COCompositeOperation
 
 - (id)init {
-    @throw [NSException exceptionWithName:COErrorDomain reason:@"Must use designated initializer initiWithSequentialTask: initWithParallelTask:!" userInfo:nil];
+    if ([self isMemberOfClass:[COCompositeOperationCluster class]]) {
+        @throw [NSException exceptionWithName:COErrorDomain reason:@"Must use one of designated initializers: initiWithSequentialTask:, initWithParallelTask:! or convenience initializer: initWithOperations:runInParallel:" userInfo:nil];
+    }
 
-    return nil;
+    return [super init];
 }
-
 
 + (id)allocWithZone:(struct _NSZone *)zone {
     if (self != [COCompositeOperation class]) {

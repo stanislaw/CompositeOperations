@@ -2,7 +2,7 @@
 #import "TestHelpers.h"
 #import "TestOperations.h"
 
-#import <CompositeOperations/CompositeOperations.h>
+#import "COParallelOperation.h"
 
 #import "TestCompositeOperations.h"
 
