@@ -15,7 +15,9 @@
 
 @implementation Operation
 - (void)main {
-    NSLog(@"Trivial operation to test things");
+    NSLog(@"Trivial operation to test integration");
+
+    [self finish];
 }
 @end
 
@@ -27,7 +29,17 @@
 @implementation AppDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-    [[Operation new] start];
+    Operation *operation = [Operation new];
+
+    COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithOperations:@[ operation ] runInParallel:NO];
+
+    __weak COCompositeOperation *weakCompositeOperation = compositeOperation;
+
+    compositeOperation.completionBlock = ^{
+        NSLog(@"%@", weakCompositeOperation);
+    };
+
+    [[NSOperationQueue mainQueue] addOperation:compositeOperation];
 }
 
 @end

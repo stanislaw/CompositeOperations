@@ -62,6 +62,7 @@ NSString *const COSequentialOperationErrorKey = @"COSequentialOperationErrorKey"
 }
 
 - (void)runNextOperation:(COOperation *)lastFinishedOperationOrNil {
+
     if (lastFinishedOperationOrNil && lastFinishedOperationOrNil.result == nil) {
         NSError *error = lastFinishedOperationOrNil.error;
 
@@ -124,6 +125,8 @@ NSString *const COSequentialOperationErrorKey = @"COSequentialOperationErrorKey"
 @implementation COSimpleSequentialTask
 
 - (id)initWithOperations:(NSArray *)operations {
+    NSParameterAssert(operations);
+
     self = [super init];
 
     if (self == nil) return nil;
