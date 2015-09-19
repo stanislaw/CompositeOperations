@@ -13,7 +13,7 @@ NSString *const COSequentialOperationErrorKey = @"COSequentialOperationErrorKey"
 
 @interface COSequentialOperation ()
 
-@property (strong, nonatomic) id <COSequence> sequence;
+@property (strong, nonatomic) id <COSequentialTask> sequentialTask;
 @property (strong, nonatomic) NSMutableArray *operations;
 
 - (void)runNextOperation:(COOperation *)lastFinishedOperationOrNil;
@@ -23,20 +23,20 @@ NSString *const COSequentialOperationErrorKey = @"COSequentialOperationErrorKey"
 @implementation COSequentialOperation
 
 - (id)init {
-    @throw [NSException exceptionWithName:COErrorDomain reason:@"Must use designated initializer initWithSequence:!" userInfo:nil];
+    @throw [NSException exceptionWithName:COErrorDomain reason:@"Must use designated initializer initWithSequentialTask:!" userInfo:nil];
 
     return nil;
 }
 
-- (id)initWithSequence:(id <COSequence>)sequence {
-    NSParameterAssert([sequence conformsToProtocol:@protocol(COSequence)]);
-    
+- (id)initWithSequentialTask:(id<COSequentialTask>)sequentialTask {
+    NSParameterAssert([sequentialTask conformsToProtocol:@protocol(COSequentialTask)]);
+
     self = [super init];
 
     if (self == nil) return nil;
 
     _operations = [NSMutableArray new];
-    _sequence   = sequence;
+    _sequentialTask = sequentialTask;
 
     return self;
 }
@@ -60,7 +60,7 @@ NSString *const COSequentialOperationErrorKey = @"COSequentialOperationErrorKey"
         return;
     }
 
-    COOperation *nextOperation = [self.sequence nextOperationAfterOperation:lastFinishedOperationOrNil];
+    COOperation *nextOperation = [self.sequentialTask nextOperationAfterOperation:lastFinishedOperationOrNil];
 
     if (nextOperation) {
         [self.operations addObject:nextOperation];

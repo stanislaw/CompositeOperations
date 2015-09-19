@@ -11,10 +11,11 @@
 
 FOUNDATION_EXPORT NSString *const COParallelOperationErrorsKey;
 
-@protocol COTransaction <NSObject>
+@protocol COParallelTask <NSObject>
 - (NSArray *)operations;
 @end
 
 @interface COParallelOperation : COOperation
-- (id)initWithTransaction:(id <COTransaction>)transaction;
+- (id)initWithParallelTask:(id <COParallelTask>)parallelTask;
+- (id)initWithOperations:(NSArray *)operations;
 @end

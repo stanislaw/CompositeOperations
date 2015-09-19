@@ -11,7 +11,7 @@ describe(@"Composite Operations tests", ^{
     it(@"should run composite operation", ^{
         dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
 
-        COParallelOperation *parallelOperation = [[COParallelOperation alloc] initWithTransaction:[TransactionWithThreeSequentialOperationsEachWithThreeTrivialGreenOperations new]];
+        COParallelOperation *parallelOperation = [[COParallelOperation alloc] initWithParallelTask:[TransactionWithThreeSequentialOperationsEachWithThreeTrivialGreenOperations new]];
 
         parallelOperation.completionBlock = ^{
             dispatch_semaphore_signal(waitSemaphore);

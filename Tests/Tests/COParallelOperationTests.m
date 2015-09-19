@@ -20,7 +20,7 @@ describe(@"COParallelOperationSpec", ^{
     it(@"", ^{
         dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
 
-        ParallelCompositeOperation1 *parallelOperation = [[ParallelCompositeOperation1 alloc] initWithTransaction:[TransactionOfThreeOperationsTriviallyReturningNull new]];
+        ParallelCompositeOperation1 *parallelOperation = [[ParallelCompositeOperation1 alloc] initWithParallelTask:[TransactionOfThreeOperationsTriviallyReturningNull new]];
 
         parallelOperation.completionBlock = ^{
             dispatch_semaphore_signal(waitSemaphore);
@@ -44,7 +44,7 @@ describe(@"COParallelOperationSpec - Rejection", ^{
     it(@"", ^{
         dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
 
-        ParallelCompositeOperation1 *parallelOperation = [[ParallelCompositeOperation1 alloc] initWithTransaction:[TransactionWithOneOperationRejectingItself new]];
+        ParallelCompositeOperation1 *parallelOperation = [[ParallelCompositeOperation1 alloc] initWithParallelTask:[TransactionWithOneOperationRejectingItself new]];
 
         parallelOperation.completionBlock = ^{
             dispatch_semaphore_signal(waitSemaphore);
@@ -85,9 +85,9 @@ describe(@"COParallelOperationSpec - Rejection", ^{
 
         NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:0 userInfo:nil];
 
-        id <COTransaction> transaction = [[TransactionWithOneOperationRejectingItselfWithGivenError alloc] initWithError:error];
+        id <COParallelTask> transaction = [[TransactionWithOneOperationRejectingItselfWithGivenError alloc] initWithError:error];
 
-        ParallelCompositeOperation1 *parallelOperation = [[ParallelCompositeOperation1 alloc] initWithTransaction:transaction];
+        ParallelCompositeOperation1 *parallelOperation = [[ParallelCompositeOperation1 alloc] initWithParallelTask:transaction];
 
         parallelOperation.completionBlock = ^{
             dispatch_semaphore_signal(waitSemaphore);

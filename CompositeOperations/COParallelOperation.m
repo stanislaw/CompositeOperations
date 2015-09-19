@@ -22,19 +22,27 @@ NSString *const COParallelOperationErrorsKey = @"COParallelOperationErrorsKey";
 @implementation COParallelOperation
 
 - (id)init {
-    @throw [NSException exceptionWithName:COErrorDomain reason:@"Must use designated initializer initWithTransaction:!" userInfo:nil];
+    @throw [NSException exceptionWithName:COErrorDomain reason:@"Must use designated initializer initWithParallelTask:!" userInfo:nil];
 
     return nil;
 }
 
-- (id)initWithTransaction:(id<COTransaction>)transaction {
-    NSParameterAssert(transaction);
+- (id)initWithParallelTask:(id <COParallelTask>)parallelTask {
+    NSParameterAssert(parallelTask);
 
+    self = [self initWithOperations:parallelTask.operations];
+
+    if (self == nil) return nil;
+
+    return self;
+}
+
+- (id)initWithOperations:(NSArray *)operations {
     self = [super init];
 
     if (self == nil) return nil;
 
-    _operations = [transaction operations];
+    _operations = operations;
 
     return self;
 }

@@ -1,6 +1,6 @@
 //
 //  TestCompositeOperations.m
-//  DevelopmentApp
+//  CompositeOperations
 //
 //  Created by Stanislaw Pankevich on 18/11/14.
 //  Copyright (c) 2014 Stanislaw Pankevich. All rights reserved.
@@ -96,9 +96,9 @@
 @implementation TransactionWithThreeSequentialOperationsEachWithThreeTrivialGreenOperations
 
 - (NSArray *)operations {
-    COSequentialOperation *sequentialOperation1 = [[COSequentialOperation alloc] initWithSequence:[SequenceOfThreeTrivialGreenOperations new]];
-    COSequentialOperation *sequentialOperation2 = [[COSequentialOperation alloc] initWithSequence:[SequenceOfThreeTrivialGreenOperations new]];
-    COSequentialOperation *sequentialOperation3 = [[COSequentialOperation alloc] initWithSequence:[SequenceOfThreeTrivialGreenOperations new]];
+    COSequentialOperation *sequentialOperation1 = [[COSequentialOperation alloc] initWithSequentialTask:[SequenceOfThreeTrivialGreenOperations new]];
+    COSequentialOperation *sequentialOperation2 = [[COSequentialOperation alloc] initWithSequentialTask:[SequenceOfThreeTrivialGreenOperations new]];
+    COSequentialOperation *sequentialOperation3 = [[COSequentialOperation alloc] initWithSequentialTask:[SequenceOfThreeTrivialGreenOperations new]];
 
     NSArray *operations = @[
         sequentialOperation1,

@@ -11,10 +11,10 @@
 
 FOUNDATION_EXPORT NSString *const COSequentialOperationErrorKey;
 
-@protocol COSequence <NSObject>
+@protocol COSequentialTask <NSObject>
 - (COOperation *)nextOperationAfterOperation:(COOperation *)previousOperationOrNil;
 @end
 
 @interface COSequentialOperation : COOperation
-- (id)initWithSequence:(id <COSequence>)sequence;
+- (id)initWithSequentialTask:(id <COSequentialTask>)sequentialTask;
 @end

@@ -3,16 +3,18 @@
 #import "TestOperations.h"
 #import "TestCompositeOperations.h"
 
-#import <CompositeOperations/COSequentialOperation.h>
+#import <CompositeOperations/COCompositeOperation.h>
 
-SPEC_BEGIN(COSequentialOperationSpec)
+SPEC_BEGIN(COCompositeOperationSpec)
 
-describe(@"COSequentialOperationSpec", ^{
+describe(@"COCompositeOperation", ^{
 
     it(@"should run composite operation", ^{
         dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
 
-        COSequentialOperation *sequentialOperation = [[COSequentialOperation alloc] initWithSequentialTask:[SequenceOfThreeTrivialGreenOperations new]];
+        COCompositeOperation *sequentialOperation = [[COCompositeOperation alloc] initWithSequentialTask:[SequenceOfThreeTrivialGreenOperations new]];
+
+        NSAssert(sequentialOperation, nil);
 
         sequentialOperation.completionBlock = ^{
             dispatch_semaphore_signal(waitSemaphore);
@@ -30,12 +32,12 @@ describe(@"COSequentialOperationSpec", ^{
     });
 });
 
-describe(@"COSequentialOperationSpec - Rejection", ^{
+describe(@"COCompositeOperationSpec - Rejection", ^{
 
     it(@"should run composite operation", ^{
         dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
 
-        COSequentialOperation *sequentialOperation = [[COSequentialOperation alloc] initWithSequentialTask:[SequenceWithFirstOperationRejectingItself new]];
+        COCompositeOperation *sequentialOperation = [[COCompositeOperation alloc] initWithSequentialTask:[SequenceWithFirstOperationRejectingItself new]];
 
         sequentialOperation.completionBlock = ^{
             dispatch_semaphore_signal(waitSemaphore);
