@@ -69,10 +69,8 @@ NSString *const COSequentialOperationErrorKey = @"COSequentialOperationErrorKey"
         __weak COOperation *weakNextOperation = nextOperation;
 
         nextOperation.completionBlock = ^{
-            __strong COOperation *strongNextOperation = weakNextOperation;
-
             dispatch_async(dispatch_get_main_queue(), ^{
-                [weakSelf runNextOperation:strongNextOperation];
+                [weakSelf runNextOperation:weakNextOperation];
             });
         };
 
