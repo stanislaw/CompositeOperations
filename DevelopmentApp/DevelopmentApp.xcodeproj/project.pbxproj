@@ -50,7 +50,6 @@
 		86BB7DC11B36205400E65FFF /* COOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1331AC4B576007D1B13 /* COOperationTests.m */; };
 		86BB7DC21B36205400E65FFF /* COParallelOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1341AC4B576007D1B13 /* COParallelOperationTests.m */; };
 		86BB7DC31B36205400E65FFF /* COSequentialOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1351AC4B576007D1B13 /* COSequentialOperationTests.m */; };
-		86BB7DC41B36205E00E65FFF /* NSArray+CompositeOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE12B1AC4B576007D1B13 /* NSArray+CompositeOperations.m */; };
 		86BB7DC51B36205E00E65FFF /* TestCompositeOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE12D1AC4B576007D1B13 /* TestCompositeOperations.m */; };
 		86BB7DC61B36205E00E65FFF /* TestOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1301AC4B576007D1B13 /* TestOperations.m */; };
 		86BB7DC81B36208400E65FFF /* COOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1121AC4B4DC007D1B13 /* COOperation.m */; };
@@ -63,7 +62,6 @@
 		86BB7DED1B36220200E65FFF /* COOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1121AC4B4DC007D1B13 /* COOperation.m */; };
 		86BB7DEE1B36220200E65FFF /* COParallelOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1141AC4B4DC007D1B13 /* COParallelOperation.m */; };
 		86BB7DEF1B36220200E65FFF /* COSequentialOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1161AC4B4DC007D1B13 /* COSequentialOperation.m */; };
-		86BB7DF21B36227200E65FFF /* NSArray+CompositeOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE12B1AC4B576007D1B13 /* NSArray+CompositeOperations.m */; };
 		86BB7DF31B36227200E65FFF /* TestCompositeOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE12D1AC4B576007D1B13 /* TestCompositeOperations.m */; };
 		86BB7DF41B36227200E65FFF /* TestOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1301AC4B576007D1B13 /* TestOperations.m */; };
 		86BB7DF51B36227200E65FFF /* CompositeOperationsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1321AC4B576007D1B13 /* CompositeOperationsTests.m */; };
@@ -111,8 +109,6 @@
 		864EE1171AC4B4DC007D1B13 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		864EE1271AC4B576007D1B13 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		864EE1291AC4B576007D1B13 /* Assertions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Assertions.h; sourceTree = "<group>"; };
-		864EE12A1AC4B576007D1B13 /* NSArray+CompositeOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+CompositeOperations.h"; sourceTree = "<group>"; };
-		864EE12B1AC4B576007D1B13 /* NSArray+CompositeOperations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+CompositeOperations.m"; sourceTree = "<group>"; };
 		864EE12C1AC4B576007D1B13 /* TestCompositeOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestCompositeOperations.h; sourceTree = "<group>"; };
 		864EE12D1AC4B576007D1B13 /* TestCompositeOperations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestCompositeOperations.m; sourceTree = "<group>"; };
 		864EE12E1AC4B576007D1B13 /* TestHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestHelpers.h; sourceTree = "<group>"; };
@@ -295,8 +291,6 @@
 			isa = PBXGroup;
 			children = (
 				864EE1291AC4B576007D1B13 /* Assertions.h */,
-				864EE12A1AC4B576007D1B13 /* NSArray+CompositeOperations.h */,
-				864EE12B1AC4B576007D1B13 /* NSArray+CompositeOperations.m */,
 				864EE12C1AC4B576007D1B13 /* TestCompositeOperations.h */,
 				864EE12D1AC4B576007D1B13 /* TestCompositeOperations.m */,
 				864EE12E1AC4B576007D1B13 /* TestHelpers.h */,
@@ -746,7 +740,6 @@
 				86AF37881B381BD4001FDD9D /* COOperation.m in Sources */,
 				86BB7DC11B36205400E65FFF /* COOperationTests.m in Sources */,
 				86BB7DC21B36205400E65FFF /* COParallelOperationTests.m in Sources */,
-				86BB7DC41B36205E00E65FFF /* NSArray+CompositeOperations.m in Sources */,
 				86AF37891B381BD4001FDD9D /* COParallelOperation.m in Sources */,
 				86BB7DC51B36205E00E65FFF /* TestCompositeOperations.m in Sources */,
 			);
@@ -767,7 +760,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				86BB7DF81B36227200E65FFF /* COSequentialOperationTests.m in Sources */,
-				86BB7DF21B36227200E65FFF /* NSArray+CompositeOperations.m in Sources */,
 				8600DE5E1BADBE43005297A9 /* COSequentialOperation.m in Sources */,
 				86BB7DF31B36227200E65FFF /* TestCompositeOperations.m in Sources */,
 				8600DE5C1BADBE43005297A9 /* COOperation.m in Sources */,

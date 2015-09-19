@@ -3,8 +3,6 @@
 #import <XCTest/XCTest.h>
 #import <Kiwi/Kiwi.h>
 
-#import "NSArray+CompositeOperations.h"
-
 #import "Assertions.h"
 
 typedef void (^asyncronousBlock)(void);
