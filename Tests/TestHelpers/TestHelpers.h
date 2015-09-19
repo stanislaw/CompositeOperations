@@ -48,4 +48,4 @@ static inline void asynchronousJob(asyncronousBlock block) {
     dispatch_async(queue, block);
 }
 
-#define NSSTRING_CONSTANT(name) NSString * const name = @#name
+#define NSSTRING_CONSTANT(name) NSString *const name = @ #name

@@ -7,7 +7,7 @@
 // Released under the MIT license
 //
 
-#import "COSequentialOperation.h"
+#import <CompositeOperations/COSequentialOperation.h>
 
 NSString *const COSequentialOperationErrorKey = @"COSequentialOperationErrorKey";
 
@@ -18,6 +18,10 @@ NSString *const COSequentialOperationErrorKey = @"COSequentialOperationErrorKey"
 
 - (void)runNextOperation:(COOperation *)lastFinishedOperationOrNil;
 
+@end
+
+@interface COSimpleSequentialTask : NSObject <COSequentialTask>
+- (id)initWithOperations:(NSArray *)operations;
 @end
 
 @implementation COSequentialOperation
@@ -37,6 +41,18 @@ NSString *const COSequentialOperationErrorKey = @"COSequentialOperationErrorKey"
 
     _operations = [NSMutableArray new];
     _sequentialTask = sequentialTask;
+
+    return self;
+}
+
+- (id)initWithOperations:(NSArray *)operations {
+    NSParameterAssert(operations);
+
+    COSimpleSequentialTask *sequentialTask = [[COSimpleSequentialTask alloc] initWithOperations:operations];
+
+    self = [self initWithSequentialTask:sequentialTask];
+
+    if (self == nil) return nil;
 
     return self;
 }
@@ -96,6 +112,30 @@ NSString *const COSequentialOperationErrorKey = @"COSequentialOperationErrorKey"
     }
 
     return resultError;
+}
+
+@end
+
+@interface COSimpleSequentialTask ()
+@property (readonly, nonatomic) NSArray *operations;
+@property (readonly, nonatomic) NSEnumerator *enumerator;
+@end
+
+@implementation COSimpleSequentialTask
+
+- (id)initWithOperations:(NSArray *)operations {
+    self = [super init];
+
+    if (self == nil) return nil;
+
+    _operations = operations;
+    _enumerator = [operations objectEnumerator];
+
+    return self;
+}
+
+- (COOperation *)nextOperationAfterOperation:(COOperation *)previousOperationOrNil {
+    return [self.enumerator nextObject];
 }
 
 @end

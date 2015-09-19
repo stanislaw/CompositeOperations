@@ -6,10 +6,12 @@
 //  Copyright © 2015 Stanislaw Pankevich. All rights reserved.
 //
 
-#import <CompositeOperations/CompositeOperations.h>
+#import <CompositeOperations/COOperation.h>
+#import <CompositeOperations/COSequentialOperation.h>
+#import <CompositeOperations/COParallelOperation.h>
 
 @interface COCompositeOperation : COOperation
-- (id)initWithSequentialTask:(id<COSequentialTask>)sequentialTask;
-- (id)initWithParallelTask:(id<COParallelTask>)parallelTask;
+- (id)initWithSequentialTask:(id <COSequentialTask>)sequentialTask;
+- (id)initWithParallelTask:(id <COParallelTask>)parallelTask;
 - (id)initWithOperations:(NSArray *)operations runInParallel:(BOOL)parallel;
 @end

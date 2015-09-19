@@ -6,7 +6,7 @@
 //  Copyright © 2015 Stanislaw Pankevich. All rights reserved.
 //
 
-#import "COCompositeOperation.h"
+#import <CompositeOperations/COCompositeOperation.h>
 
 @interface COCompositeOperationCluster : COCompositeOperation
 @end
@@ -44,16 +44,24 @@
 
 @implementation COCompositeOperationCluster
 
-- (id)initWithSequentialTask:(id<COSequentialTask>)sequentialTask {
+- (id)initWithSequentialTask:(id <COSequentialTask>)sequentialTask {
     NSParameterAssert(sequentialTask);
 
     return (id)[[COSequentialOperation alloc] initWithSequentialTask:sequentialTask];
 }
 
-- (id)initWithParallelTask:(id<COParallelTask>)parallelTask {
+- (id)initWithParallelTask:(id <COParallelTask>)parallelTask {
     NSParameterAssert(parallelTask);
 
     return (id)[[COParallelOperation alloc] initWithParallelTask:parallelTask];
+}
+
+- (id)initWithOperations:(NSArray *)operations runInParallel:(BOOL)parallel {
+    if (parallel) {
+        return (id)[[COParallelOperation alloc] initWithOperations:operations];
+    } else {
+        return (id)[[COSequentialOperation alloc] initWithOperations:operations];
+    }
 }
 
 @end

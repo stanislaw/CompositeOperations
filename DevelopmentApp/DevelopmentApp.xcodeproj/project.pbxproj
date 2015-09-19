@@ -39,6 +39,7 @@
 		8600DE7C1BADFF58005297A9 /* COOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1331AC4B576007D1B13 /* COOperationTests.m */; settings = {ASSET_TAGS = (); }; };
 		8600DE7D1BADFF58005297A9 /* COParallelOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1341AC4B576007D1B13 /* COParallelOperationTests.m */; settings = {ASSET_TAGS = (); }; };
 		8600DE7E1BADFF58005297A9 /* COSequentialOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1351AC4B576007D1B13 /* COSequentialOperationTests.m */; settings = {ASSET_TAGS = (); }; };
+		8600DE7F1BAE0E2A005297A9 /* COCompositeOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8600DE601BADD5E8005297A9 /* COCompositeOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		862051301B3DF4B50066333D /* CompositeOperations.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8620512D1B3DF4A50066333D /* CompositeOperations.framework */; };
 		862051311B3DF4B50066333D /* CompositeOperations.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8620512D1B3DF4A50066333D /* CompositeOperations.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		862051321B3DF4BD0066333D /* CompositeOperations.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8620512F1B3DF4A50066333D /* CompositeOperations.framework */; };
@@ -60,7 +61,7 @@
 		86BB7DBC1B36202F00E65FFF /* CompositeOperations.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1101AC4B4DC007D1B13 /* CompositeOperations.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		86BB7DBD1B36202F00E65FFF /* COOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1111AC4B4DC007D1B13 /* COOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		86BB7DBE1B36202F00E65FFF /* COParallelOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1131AC4B4DC007D1B13 /* COParallelOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		86BB7DBF1B36202F00E65FFF /* COSequentialOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1151AC4B4DC007D1B13 /* COSequentialOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		86BB7DBF1B36202F00E65FFF /* COSequentialOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1151AC4B4DC007D1B13 /* COSequentialOperation.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		86BB7DC51B36205E00E65FFF /* TestCompositeOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE12D1AC4B576007D1B13 /* TestCompositeOperations.m */; };
 		86BB7DC61B36205E00E65FFF /* TestOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1301AC4B576007D1B13 /* TestOperations.m */; };
 		86BB7DC81B36208400E65FFF /* COOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1121AC4B4DC007D1B13 /* COOperation.m */; };
@@ -69,7 +70,7 @@
 		86BB7DE91B3621FB00E65FFF /* CompositeOperations.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1101AC4B4DC007D1B13 /* CompositeOperations.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		86BB7DEA1B3621FB00E65FFF /* COOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1111AC4B4DC007D1B13 /* COOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		86BB7DEB1B3621FB00E65FFF /* COParallelOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1131AC4B4DC007D1B13 /* COParallelOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		86BB7DEC1B3621FB00E65FFF /* COSequentialOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1151AC4B4DC007D1B13 /* COSequentialOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		86BB7DEC1B3621FB00E65FFF /* COSequentialOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 864EE1151AC4B4DC007D1B13 /* COSequentialOperation.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		86BB7DED1B36220200E65FFF /* COOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1121AC4B4DC007D1B13 /* COOperation.m */; };
 		86BB7DEE1B36220200E65FFF /* COParallelOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1141AC4B4DC007D1B13 /* COParallelOperation.m */; };
 		86BB7DEF1B36220200E65FFF /* COSequentialOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1161AC4B4DC007D1B13 /* COSequentialOperation.m */; };
@@ -462,6 +463,7 @@
 			files = (
 				86BB7DE91B3621FB00E65FFF /* CompositeOperations.h in Headers */,
 				86BB7DEC1B3621FB00E65FFF /* COSequentialOperation.h in Headers */,
+				8600DE7F1BAE0E2A005297A9 /* COCompositeOperation.h in Headers */,
 				86BB7DEA1B3621FB00E65FFF /* COOperation.h in Headers */,
 				86BB7DEB1B3621FB00E65FFF /* COParallelOperation.h in Headers */,
 			);

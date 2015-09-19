@@ -7,7 +7,7 @@
 // Released under the MIT license
 //
 
-#import "COOperation.h"
+#import <CompositeOperations/COOperation.h>
 
 FOUNDATION_EXPORT NSString *const COParallelOperationErrorsKey;
 
@@ -16,6 +16,7 @@ FOUNDATION_EXPORT NSString *const COParallelOperationErrorsKey;
 @end
 
 @interface COParallelOperation : COOperation
+- (id)initWithOperations:(NSArray *)operations NS_DESIGNATED_INITIALIZER;
 - (id)initWithParallelTask:(id <COParallelTask>)parallelTask;
-- (id)initWithOperations:(NSArray *)operations;
+- (id)init NS_UNAVAILABLE;
 @end

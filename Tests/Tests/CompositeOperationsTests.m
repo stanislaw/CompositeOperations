@@ -7,31 +7,32 @@
 SPEC_BEGIN(COCompositeOperationsSpec)
 
 describe(@"Composite Operations tests", ^{
+    describe(@"Parallel operation: 3 parallel operations", ^{
+        it(@"should run composite operation", ^{
+            dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
 
-    it(@"should run composite operation", ^{
-        dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
+            COParallelOperation *parallelOperation = [[COParallelOperation alloc] initWithParallelTask:[TransactionWithThreeSequentialOperationsEachWithThreeTrivialGreenOperations new]];
 
-        COParallelOperation *parallelOperation = [[COParallelOperation alloc] initWithParallelTask:[TransactionWithThreeSequentialOperationsEachWithThreeTrivialGreenOperations new]];
+            parallelOperation.completionBlock = ^{
+                dispatch_semaphore_signal(waitSemaphore);
+            };
 
-        parallelOperation.completionBlock = ^{
-            dispatch_semaphore_signal(waitSemaphore);
-        };
+            [parallelOperation start];
 
-        [parallelOperation start];
+            while (dispatch_semaphore_wait(waitSemaphore, DISPATCH_TIME_NOW)) {
+                CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
+            }
 
-        while (dispatch_semaphore_wait(waitSemaphore, DISPATCH_TIME_NOW)) {
-            CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
-        }
+            [[theValue(parallelOperation.isFinished) should] beYes];
 
-        [[theValue(parallelOperation.isFinished) should] beYes];
-
-        NSArray *expectedResult = @[
-            @[ @(1), @(1), @(1) ],
-            @[ @(1), @(1), @(1) ],
-            @[ @(1), @(1), @(1) ]
-        ];
-
-        [[parallelOperation.result should] equal:expectedResult];
+            NSArray *expectedResult = @[
+                                        @[ @(1), @(1), @(1) ],
+                                        @[ @(1), @(1), @(1) ],
+                                        @[ @(1), @(1), @(1) ]
+                                        ];
+            
+            [[parallelOperation.result should] equal:expectedResult];
+        });
     });
 });
 

@@ -19,13 +19,13 @@ FOUNDATION_EXPORT NSString *const COOperationErrorKey;
 
 @protocol COOperation <NSObject>
 
+@property (readonly) id result;
+@property (readonly) NSError *error;
+
 - (void)finish;
 - (void)finishWithResult:(id)result;
 - (void)reject;
 - (void)rejectWithError:(NSError *)error;
-
-@property (readonly) id result;
-@property (readonly) NSError *error;
 
 @end
 

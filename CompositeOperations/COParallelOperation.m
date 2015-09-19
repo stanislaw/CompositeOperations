@@ -7,7 +7,7 @@
 // Released under the MIT license
 //
 
-#import "COParallelOperation.h"
+#import <CompositeOperations/COParallelOperation.h>
 
 NSString *const COParallelOperationErrorsKey = @"COParallelOperationErrorsKey";
 

@@ -28,34 +28,33 @@ describe(@"COSequentialOperationSpec", ^{
 
         [[sequentialOperation.result should] equal:@[ @(1), @(1), @(1) ]];
     });
-});
 
-describe(@"COSequentialOperationSpec - Rejection", ^{
+    describe(@"COSequentialOperationSpec - Rejection", ^{
+        it(@"should run composite operation", ^{
+            dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
 
-    it(@"should run composite operation", ^{
-        dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
+            COSequentialOperation *sequentialOperation = [[COSequentialOperation alloc] initWithSequentialTask:[SequenceWithFirstOperationRejectingItself new]];
 
-        COSequentialOperation *sequentialOperation = [[COSequentialOperation alloc] initWithSequentialTask:[SequenceWithFirstOperationRejectingItself new]];
+            sequentialOperation.completionBlock = ^{
+                dispatch_semaphore_signal(waitSemaphore);
+            };
 
-        sequentialOperation.completionBlock = ^{
-            dispatch_semaphore_signal(waitSemaphore);
-        };
+            [sequentialOperation start];
 
-        [sequentialOperation start];
+            while (dispatch_semaphore_wait(waitSemaphore, DISPATCH_TIME_NOW)) {
+                CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
+            }
 
-        while (dispatch_semaphore_wait(waitSemaphore, DISPATCH_TIME_NOW)) {
-            CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
-        }
+            [[theValue(sequentialOperation.isFinished) should] beYes];
 
-        [[theValue(sequentialOperation.isFinished) should] beYes];
+            [[sequentialOperation.result should] beNil];
+            [[sequentialOperation.error shouldNot] beNil];
 
-        [[sequentialOperation.result should] beNil];
-        [[sequentialOperation.error shouldNot] beNil];
-
-        NSError *expectedOperationError = [NSError errorWithDomain:COErrorDomain code:COOperationErrorRejected userInfo:nil];
-        NSError *expectedSequentialOperationError = [NSError errorWithDomain:COErrorDomain code:COOperationErrorRejected userInfo:@{ COSequentialOperationErrorKey: expectedOperationError }];
-
-        [[sequentialOperation.error should] equal:expectedSequentialOperationError];
+            NSError *expectedOperationError = [NSError errorWithDomain:COErrorDomain code:COOperationErrorRejected userInfo:nil];
+            NSError *expectedSequentialOperationError = [NSError errorWithDomain:COErrorDomain code:COOperationErrorRejected userInfo:@{ COSequentialOperationErrorKey: expectedOperationError }];
+            
+            [[sequentialOperation.error should] equal:expectedSequentialOperationError];
+        });
     });
 });
 

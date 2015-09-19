@@ -13,7 +13,6 @@
 @implementation ParallelCompositeOperation1
 @end
 
-
 SPEC_BEGIN(COParallelOperationSpec)
 
 describe(@"COParallelOperationSpec", ^{

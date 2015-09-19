@@ -54,4 +54,3 @@ describe(@"COOperation", ^{
 });
 
 SPEC_END
-
