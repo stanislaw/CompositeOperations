@@ -121,7 +121,7 @@ build_ios() {
 
     mkdir -p "${ios_universal_framework}"
 
-    cp -av "${ios_device_path}/." "${ios_universal_path}"
+    cp -Rv "${ios_device_path}/." "${ios_universal_path}"
 
     run lipo "${ios_simulator_binary}" "${ios_device_binary}" -create -output "${ios_universal_binary}"
 }
@@ -142,8 +142,8 @@ export_built_frameworks() {
     mkdir -p "$distribution_path_ios"
     mkdir -p "$distribution_path_osx"
 
-    cp -av "${ios_universal_framework}" "${distribution_path_ios}"
-    cp -av "${osx_framework}" "${distribution_path_osx}"
+    cp -Rv "${ios_universal_framework}" "${distribution_path_ios}"
+    cp -Rv "${osx_framework}" "${distribution_path_osx}"
 }
 
 
@@ -196,7 +196,7 @@ distribute() {
 	build_ios
 	build_osx
 	export_built_frameworks
-	validate
+	# validate
 	open_distribution_folder
 }
 
