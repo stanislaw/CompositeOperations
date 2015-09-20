@@ -3,7 +3,7 @@
 ## dot-clang-format
 ## version: 0.0.1
 
-folders=("CompositeOperations", "Tests") # Example: ("App" "UnitTests" "IntegrationTests")
+folders=("CompositeOperations" "Tests") # Example: ("App" "UnitTests" "IntegrationTests")
 
 objc_files() {
   for folder in "${folders[@]}"

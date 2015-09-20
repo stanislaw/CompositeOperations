@@ -11,7 +11,7 @@
 
 @interface COSequentialOperation ()
 
-@property (strong, nonatomic) id <COSequence> sequence;
+@property (strong, nonatomic) id<COSequence> sequence;
 @property (strong, nonatomic) NSMutableArray *operations;
 
 - (void)runNextOperation:(COOperation *)lastFinishedOperationOrNil;
@@ -50,15 +50,7 @@
 }
 
 - (void)runNextOperation:(COOperation *)lastFinishedOperationOrNil {
-    if (lastFinishedOperationOrNil && lastFinishedOperationOrNil.result == nil) {
-        NSError *error = lastFinishedOperationOrNil.error;
-
-        [self rejectWithError:error];
-
-        return;
-    }
-
-    else if (self.isCancelled) {
+    if (self.isCancelled) {
         [self reject];
 
         return;
@@ -83,6 +75,14 @@
         });
     } else {
         if (lastFinishedOperationOrNil) {
+            if (lastFinishedOperationOrNil.result == nil) {
+                NSError *error = lastFinishedOperationOrNil.error;
+
+                [self rejectWithError:error];
+
+                return;
+            }
+
             [self finishWithResult:lastFinishedOperationOrNil.result];
         } else {
             [self finish];

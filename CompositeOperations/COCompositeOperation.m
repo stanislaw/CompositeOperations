@@ -51,7 +51,7 @@ NSString *const COCompositeOperationErrorKey = @"COSequentialOperationErrorKey";
 
 @implementation COCompositeOperationCluster
 
-- (id)initWithSequence:(id <COSequence>)sequence {
+- (id)initWithSequence:(id<COSequence>)sequence {
     NSParameterAssert(sequence);
 
     return (id)[[COSequentialOperation alloc] initWithSequence:sequence];

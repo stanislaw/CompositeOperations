@@ -12,5 +12,5 @@
 
 @interface COCompositeOperation : COOperation
 - (id)initWithOperations:(NSArray *)operations runInParallel:(BOOL)parallel;
-- (id)initWithSequence:(id <COSequence>)sequence;
+- (id)initWithSequence:(id<COSequence>)sequence;
 @end

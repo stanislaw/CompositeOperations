@@ -11,7 +11,7 @@
 #import "COOperation.h"
 #import "COSequentialOperation.h"
 
-@implementation SequenceOfThreeTrivialGreenOperations
+@implementation Sequence_ThreeTrivialGreenOperations
 
 - (COOperation *)nextOperationAfterOperation:(COOperation *)previousOperationOrNil {
 
@@ -28,24 +28,42 @@
 
 @end
 
-@implementation SequenceWithFirstOperationRejectingItself
+@implementation Sequence_FirstOperationRejects
 
 - (COOperation *)nextOperationAfterOperation:(COOperation *)previousOperationOrNil {
-    if (self.numberOfOperations == 0) {
+    if (previousOperationOrNil == nil) {
+        self.numberOfOperations++;
+
+        return [OperationRejectingItself new];
+    }
+
+    if (previousOperationOrNil.error) {
+        return nil;
+    }
+
+    return nil;
+}
+
+@end
+
+@implementation Sequence_FirstOperationRejects_3Attempts
+
+- (COOperation *)nextOperationAfterOperation:(COOperation *)previousOperationOrNil {
+    if (previousOperationOrNil == nil) {
+        self.numberOfOperations++;
+
         return [OperationRejectingItself new];
     }
 
     else if (self.numberOfOperations < 3) {
         self.numberOfOperations++;
 
-        NSArray *array = previousOperationOrNil ? previousOperationOrNil.result : @[];
+        NSArray *array = previousOperationOrNil.result ?: @[];
 
         return [[OperationTakingArrayAndAdding1ToIt alloc] initWithArray:array];
     }
 
-    else {
-        return nil;
-    }
+    return nil;
 }
 
 @end

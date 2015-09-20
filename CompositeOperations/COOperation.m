@@ -18,7 +18,7 @@ typedef NS_ENUM(NSInteger, COOperationState) {
 
 NSString *const COOperationErrorKey = @"COOperationErrorKey";
 
-static inline NSString * COKeyPathFromOperationState(COOperationState state) {
+static inline NSString *COKeyPathFromOperationState(COOperationState state) {
     switch (state) {
         case COOperationStateReady: {
             return @"isReady";
@@ -75,9 +75,9 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
 
 @implementation COOperation
 
-@synthesize state  = _state;
+@synthesize state = _state;
 @synthesize result = _result;
-@synthesize error  = _error;
+@synthesize error = _error;
 @synthesize completion = _completion;
 
 - (id)init {
@@ -206,7 +206,7 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
 }
 
 - (NSError *)resultErrorForError:(NSError *)error code:(NSUInteger)code userInfo:(NSDictionary *)userInfo {
-    NSDictionary *resultErrorUserInfo = error ? @{ COOperationErrorKey: error } : nil;
+    NSDictionary *resultErrorUserInfo = error ? @{COOperationErrorKey: error} : nil;
 
     NSError *resultError = [NSError errorWithDomain:COErrorDomain code:code userInfo:resultErrorUserInfo];
 
@@ -219,7 +219,7 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
 - (NSString *)description {
     NSMutableArray *descriptionComponents = [NSMutableArray array];
 
-    [descriptionComponents addObject:[NSString stringWithFormat:@"state = %@; isCancelled = %@; result = %@; error = \"%@\"", COKeyPathFromOperationState(self.state), self.isCancelled ? @"YES" : @"NO", self.result, self.error.localizedDescription ]];
+    [descriptionComponents addObject:[NSString stringWithFormat:@"state = %@; isCancelled = %@; result = %@; error = \"%@\"", COKeyPathFromOperationState(self.state), self.isCancelled ? @"YES" : @"NO", self.result, self.error.localizedDescription]];
 
     NSString *description = [NSString stringWithFormat:@"<%@: %p (%@)>", NSStringFromClass([self class]), self, [descriptionComponents componentsJoinedByString:@"; "]];
 
@@ -229,7 +229,7 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
 - (NSString *)debugDescription {
     NSMutableArray *descriptionComponents = [NSMutableArray array];
 
-    [descriptionComponents addObject:[NSString stringWithFormat:@"state = %@; isCancelled = %@; result = %@; error = \"%@\"", COKeyPathFromOperationState(self.state), self.isCancelled ? @"YES" : @"NO", self.result, self.error ]];
+    [descriptionComponents addObject:[NSString stringWithFormat:@"state = %@; isCancelled = %@; result = %@; error = \"%@\"", COKeyPathFromOperationState(self.state), self.isCancelled ? @"YES" : @"NO", self.result, self.error]];
 
     NSString *description = [NSString stringWithFormat:@"<%@: %p (%@)>", NSStringFromClass([self class]), self, [descriptionComponents componentsJoinedByString:@"; "]];
 

@@ -89,8 +89,7 @@
 
     NSError *resultError = [NSError errorWithDomain:COErrorDomain
                                                code:code
-                                           userInfo:@{ COOperationErrorKey : errors }];
-
+                                           userInfo:@{COOperationErrorKey: errors}];
 
     return resultError;
 }
