@@ -8,6 +8,7 @@
 //
 
 #import <CompositeOperations/COOperation.h>
+#import <CompositeOperations/COTypedefs.h>
 
 typedef NS_ENUM(NSInteger, COOperationState) {
     COOperationStateReady = 0,
@@ -15,7 +16,6 @@ typedef NS_ENUM(NSInteger, COOperationState) {
     COOperationStateFinished = 2
 };
 
-NSString *const COErrorDomain = @"com.CompositeOperations";
 NSString *const COOperationErrorKey = @"COOperationErrorKey";
 
 static inline NSString * COKeyPathFromOperationState(COOperationState state) {
@@ -101,14 +101,14 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
     if (COStateTransitionIsValid(self.state, state) == NO) {
         NSString *errMessage = [NSString stringWithFormat:@"%@: transition from %@ to %@ is invalid", self, COKeyPathFromOperationState(self.state), COKeyPathFromOperationState(state)];
 
-        @throw [NSException exceptionWithName:NSGenericException reason:errMessage userInfo:nil];
+        @throw [NSException exceptionWithName:COGenericException reason:errMessage userInfo:nil];
     }
 
     @synchronized(self) {
         if (COStateTransitionIsValid(self.state, state) == NO) {
             NSString *errMessage = [NSString stringWithFormat:@"%@: transition from %@ to %@ is invalid", self, COKeyPathFromOperationState(self.state), COKeyPathFromOperationState(state)];
 
-            @throw [NSException exceptionWithName:NSGenericException reason:errMessage userInfo:nil];
+            @throw [NSException exceptionWithName:COGenericException reason:errMessage userInfo:nil];
         };
 
         NSString *oldStateKey = COKeyPathFromOperationState(self.state);

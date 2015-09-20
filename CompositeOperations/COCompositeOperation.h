@@ -6,18 +6,11 @@
 //  Copyright © 2015 Stanislaw Pankevich. All rights reserved.
 //
 
+#import <CompositeOperations/COTypedefs.h>
 #import <CompositeOperations/COOperation.h>
 
-@protocol COSequentialTask <NSObject>
-- (COOperation *)nextOperationAfterOperation:(COOperation *)previousOperationOrNil;
-@end
-
-@protocol COParallelTask <NSObject>
-- (NSArray *)operations;
-@end
-
 @interface COCompositeOperation : COOperation
+- (id)initWithOperations:(NSArray *)operations runInParallel:(BOOL)parallel;
 - (id)initWithSequentialTask:(id <COSequentialTask>)sequentialTask;
 - (id)initWithParallelTask:(id <COParallelTask>)parallelTask;
-- (id)initWithOperations:(NSArray *)operations runInParallel:(BOOL)parallel;
 @end

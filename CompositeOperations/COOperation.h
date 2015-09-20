@@ -14,7 +14,6 @@ typedef NS_ENUM(NSUInteger, COOperationErrorCode) {
     COOperationErrorCancelled
 };
 
-FOUNDATION_EXPORT NSString *const COErrorDomain;
 FOUNDATION_EXPORT NSString *const COOperationErrorKey;
 
 @protocol COOperation <NSObject>

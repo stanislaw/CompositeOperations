@@ -26,12 +26,6 @@ NSString *const COSequentialOperationErrorKey = @"COSequentialOperationErrorKey"
 
 @implementation COSequentialOperation
 
-- (id)init {
-    @throw [NSException exceptionWithName:COErrorDomain reason:@"Must use designated initializer initWithSequentialTask:!" userInfo:nil];
-
-    return nil;
-}
-
 - (id)initWithSequentialTask:(id<COSequentialTask>)sequentialTask {
     NSParameterAssert([sequentialTask conformsToProtocol:@protocol(COSequentialTask)]);
 

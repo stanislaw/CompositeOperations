@@ -26,6 +26,12 @@
 		8600DE851BAE26F5005297A9 /* COOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1331AC4B576007D1B13 /* COOperationTests.m */; settings = {ASSET_TAGS = (); }; };
 		8600DE861BAE26F5005297A9 /* COParallelOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1341AC4B576007D1B13 /* COParallelOperationTests.m */; settings = {ASSET_TAGS = (); }; };
 		8600DE871BAE26F5005297A9 /* COSequentialOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1351AC4B576007D1B13 /* COSequentialOperationTests.m */; settings = {ASSET_TAGS = (); }; };
+		8600DEB41BAE4364005297A9 /* COTypedefs.h in Headers */ = {isa = PBXBuildFile; fileRef = 8600DEB31BAE42CD005297A9 /* COTypedefs.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8600DEB51BAE4365005297A9 /* COTypedefs.h in Headers */ = {isa = PBXBuildFile; fileRef = 8600DEB31BAE42CD005297A9 /* COTypedefs.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8600DEB61BAE43DF005297A9 /* COTypedefs.m in Sources */ = {isa = PBXBuildFile; fileRef = 8600DEB21BAE4295005297A9 /* COTypedefs.m */; settings = {ASSET_TAGS = (); }; };
+		8600DEB71BAE43E0005297A9 /* COTypedefs.m in Sources */ = {isa = PBXBuildFile; fileRef = 8600DEB21BAE4295005297A9 /* COTypedefs.m */; settings = {ASSET_TAGS = (); }; };
+		8600DEB81BAE43E0005297A9 /* COTypedefs.m in Sources */ = {isa = PBXBuildFile; fileRef = 8600DEB21BAE4295005297A9 /* COTypedefs.m */; settings = {ASSET_TAGS = (); }; };
+		8600DEB91BAE43E1005297A9 /* COTypedefs.m in Sources */ = {isa = PBXBuildFile; fileRef = 8600DEB21BAE4295005297A9 /* COTypedefs.m */; settings = {ASSET_TAGS = (); }; };
 		8657A3B81B3B229300B667E9 /* Kiwi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 864EE1771AC4C44A007D1B13 /* Kiwi.framework */; };
 		86AF37881B381BD4001FDD9D /* COOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1121AC4B4DC007D1B13 /* COOperation.m */; };
 		86AF37891B381BD4001FDD9D /* COParallelOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1141AC4B4DC007D1B13 /* COParallelOperation.m */; };
@@ -55,6 +61,8 @@
 		8600DE601BADD5E8005297A9 /* COCompositeOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COCompositeOperation.h; sourceTree = "<group>"; };
 		8600DE611BADD5E8005297A9 /* COCompositeOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COCompositeOperation.m; sourceTree = "<group>"; };
 		8600DE641BADD79D005297A9 /* COCompositeOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COCompositeOperationTests.m; sourceTree = "<group>"; };
+		8600DEB21BAE4295005297A9 /* COTypedefs.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = COTypedefs.m; sourceTree = "<group>"; };
+		8600DEB31BAE42CD005297A9 /* COTypedefs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = COTypedefs.h; sourceTree = "<group>"; };
 		8620512D1B3DF4A50066333D /* CompositeOperations.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CompositeOperations.framework; sourceTree = "<group>"; };
 		8620512F1B3DF4A50066333D /* CompositeOperations.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CompositeOperations.framework; sourceTree = "<group>"; };
 		864EE1101AC4B4DC007D1B13 /* CompositeOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompositeOperations.h; sourceTree = "<group>"; };
@@ -184,6 +192,8 @@
 				864EE1161AC4B4DC007D1B13 /* COSequentialOperation.m */,
 				8600DE601BADD5E8005297A9 /* COCompositeOperation.h */,
 				8600DE611BADD5E8005297A9 /* COCompositeOperation.m */,
+				8600DEB31BAE42CD005297A9 /* COTypedefs.h */,
+				8600DEB21BAE4295005297A9 /* COTypedefs.m */,
 			);
 			name = CompositeOperations;
 			path = ../CompositeOperations;
@@ -314,6 +324,7 @@
 			files = (
 				86BB7DBC1B36202F00E65FFF /* CompositeOperations.h in Headers */,
 				86BB7DBF1B36202F00E65FFF /* COSequentialOperation.h in Headers */,
+				8600DEB51BAE4365005297A9 /* COTypedefs.h in Headers */,
 				8600DE621BADD5E8005297A9 /* COCompositeOperation.h in Headers */,
 				86BB7DBD1B36202F00E65FFF /* COOperation.h in Headers */,
 				86BB7DBE1B36202F00E65FFF /* COParallelOperation.h in Headers */,
@@ -326,6 +337,7 @@
 			files = (
 				86BB7DE91B3621FB00E65FFF /* CompositeOperations.h in Headers */,
 				86BB7DEC1B3621FB00E65FFF /* COSequentialOperation.h in Headers */,
+				8600DEB41BAE4364005297A9 /* COTypedefs.h in Headers */,
 				8600DE7F1BAE0E2A005297A9 /* COCompositeOperation.h in Headers */,
 				86BB7DEA1B3621FB00E65FFF /* COOperation.h in Headers */,
 				86BB7DEB1B3621FB00E65FFF /* COParallelOperation.h in Headers */,
@@ -490,6 +502,7 @@
 				86BB7DC81B36208400E65FFF /* COOperation.m in Sources */,
 				86BB7DCA1B36208400E65FFF /* COSequentialOperation.m in Sources */,
 				8600DE631BADD5E8005297A9 /* COCompositeOperation.m in Sources */,
+				8600DEB91BAE43E1005297A9 /* COTypedefs.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -506,6 +519,7 @@
 				86AF37881B381BD4001FDD9D /* COOperation.m in Sources */,
 				86AF37891B381BD4001FDD9D /* COParallelOperation.m in Sources */,
 				86BB7DC51B36205E00E65FFF /* TestCompositeOperations.m in Sources */,
+				8600DEB71BAE43E0005297A9 /* COTypedefs.m in Sources */,
 				8600DE6C1BADD8BB005297A9 /* COCompositeOperation.m in Sources */,
 				8600DE841BAE26F5005297A9 /* CompositeOperationsTests.m in Sources */,
 			);
@@ -519,6 +533,7 @@
 				86BB7DED1B36220200E65FFF /* COOperation.m in Sources */,
 				86BB7DEF1B36220200E65FFF /* COSequentialOperation.m in Sources */,
 				8600DE6A1BADD82F005297A9 /* COCompositeOperation.m in Sources */,
+				8600DEB81BAE43E0005297A9 /* COTypedefs.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -535,6 +550,7 @@
 				8600DE5C1BADBE43005297A9 /* COOperation.m in Sources */,
 				86BB7DF41B36227200E65FFF /* TestOperations.m in Sources */,
 				8600DE5D1BADBE43005297A9 /* COParallelOperation.m in Sources */,
+				8600DEB61BAE43DF005297A9 /* COTypedefs.m in Sources */,
 				8600DE6B1BADD8BA005297A9 /* COCompositeOperation.m in Sources */,
 				8600DE801BAE26F4005297A9 /* CompositeOperationsTests.m in Sources */,
 			);

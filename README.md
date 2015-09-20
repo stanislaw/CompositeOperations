@@ -4,7 +4,7 @@ You might be interested at this project if you use GCD and/or NSOperation but wa
 
 Key features:
  
-* Composition of operations, two types: sequential composition - `COSequentialOperation`, parallel composition - `COParallelOperation`. 
+* Composition of operations, two types: sequential and parallel composition. 
 * Multistep asynchronous operations: chaining, parallelizing, synchronizing.
 * Mixing (or combining) composite operations into each other.
 * CompositeOperations is non-blocking: none of its operations blocks the thread it is executing on.
@@ -12,7 +12,7 @@ Key features:
 
 [![Build Status](https://travis-ci.org/stanislaw/CompositeOperations.png?branch=master)](https://travis-ci.org/stanislaw/CompositeOperations)
 
-## Status 2014.12.06
+## Status 2015.09.20
 
 The project has alpha status. 
 

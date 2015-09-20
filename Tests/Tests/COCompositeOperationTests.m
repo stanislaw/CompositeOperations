@@ -10,7 +10,7 @@ describe(@"COCompositeOperation", ^{
         it(@"should raise exception", ^{
             [[theBlock(^{
                 __unused COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] init];
-            }) should] raiseWithName:COErrorDomain];
+            }) should] raiseWithName:COGenericException];
         });
     });
 

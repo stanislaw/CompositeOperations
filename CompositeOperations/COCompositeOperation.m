@@ -21,7 +21,7 @@
 
 - (id)init {
     if ([self isMemberOfClass:[COCompositeOperationCluster class]]) {
-        @throw [NSException exceptionWithName:COErrorDomain reason:@"Must use one of designated initializers: initiWithSequentialTask:, initWithParallelTask:! or convenience initializer: initWithOperations:runInParallel:" userInfo:nil];
+        @throw [NSException exceptionWithName:COGenericException reason:@"Must use one of designated initializers: initiWithSequentialTask:, initWithParallelTask:! or convenience initializer: initWithOperations:runInParallel:" userInfo:nil];
     }
 
     return [super init];
