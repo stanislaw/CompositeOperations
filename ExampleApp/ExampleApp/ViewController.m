@@ -27,6 +27,8 @@
 @implementation ViewController
 
 - (void)viewDidLoad {
+    NSLog(@"CompositeOperations: %f %s", CompositeOperationsVersionNumber, CompositeOperationsVersionString);
+
     Operation *operation = [Operation new];
 
     COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] initWithOperations:@[ operation ] runInParallel:NO];
