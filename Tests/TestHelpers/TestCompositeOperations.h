@@ -15,17 +15,3 @@
 @interface SequenceWithFirstOperationRejectingItself : NSObject <COSequentialTask>
 @property (assign, nonatomic) NSUInteger numberOfOperations;
 @end
-
-@interface TransactionOfThreeOperationsTriviallyReturningNull : NSObject <COParallelTask>
-@end
-
-@interface TransactionWithOneOperationRejectingItself : NSObject <COParallelTask>
-@end
-
-@interface TransactionWithOneOperationRejectingItselfWithGivenError : NSObject <COParallelTask>
-- (id)initWithError:(NSError *)error;
-@property (readonly) NSError *error;
-@end
-
-@interface TransactionWithThreeSequentialOperationsEachWithThreeTrivialGreenOperations : NSObject <COParallelTask>
-@end

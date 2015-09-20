@@ -21,16 +21,6 @@ NSString *const COParallelOperationErrorsKey = @"COParallelOperationErrorsKey";
 
 @implementation COParallelOperation
 
-- (id)initWithParallelTask:(id <COParallelTask>)parallelTask {
-    NSParameterAssert(parallelTask);
-
-    self = [self initWithOperations:parallelTask.operations];
-
-    if (self == nil) return nil;
-
-    return self;
-}
-
 - (id)initWithOperations:(NSArray *)operations {
     self = [super init];
 

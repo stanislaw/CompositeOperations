@@ -12,5 +12,4 @@
 @interface COCompositeOperation : COOperation
 - (id)initWithOperations:(NSArray *)operations runInParallel:(BOOL)parallel;
 - (id)initWithSequentialTask:(id <COSequentialTask>)sequentialTask;
-- (id)initWithParallelTask:(id <COParallelTask>)parallelTask;
 @end

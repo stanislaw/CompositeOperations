@@ -3,6 +3,7 @@
 #import "TestCompositeOperations.h"
 
 #import "COParallelOperation.h"
+#import "COSequentialOperation.h"
 
 SPEC_BEGIN(COCompositeOperationsSpec)
 
@@ -11,7 +12,17 @@ describe(@"Composite Operations tests", ^{
         it(@"should run composite operation", ^{
             dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
 
-            COParallelOperation *parallelOperation = [[COParallelOperation alloc] initWithParallelTask:[TransactionWithThreeSequentialOperationsEachWithThreeTrivialGreenOperations new]];
+            COSequentialOperation *sequentialOperation1 = [[COSequentialOperation alloc] initWithSequentialTask:[SequenceOfThreeTrivialGreenOperations new]];
+            COSequentialOperation *sequentialOperation2 = [[COSequentialOperation alloc] initWithSequentialTask:[SequenceOfThreeTrivialGreenOperations new]];
+            COSequentialOperation *sequentialOperation3 = [[COSequentialOperation alloc] initWithSequentialTask:[SequenceOfThreeTrivialGreenOperations new]];
+
+            NSArray *operations = @[
+                sequentialOperation1,
+                sequentialOperation2,
+                sequentialOperation3
+            ];
+
+            COParallelOperation *parallelOperation = [[COParallelOperation alloc] initWithOperations:operations];
 
             parallelOperation.completionBlock = ^{
                 dispatch_semaphore_signal(waitSemaphore);

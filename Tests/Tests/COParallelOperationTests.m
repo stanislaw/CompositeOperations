@@ -19,7 +19,13 @@ describe(@"COParallelOperationSpec", ^{
     it(@"", ^{
         dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
 
-        ParallelCompositeOperation1 *parallelOperation = [[ParallelCompositeOperation1 alloc] initWithParallelTask:[TransactionOfThreeOperationsTriviallyReturningNull new]];
+        NSArray *operations = @[
+            [OperationTriviallyReturningNull new],
+            [OperationTriviallyReturningNull new],
+            [OperationTriviallyReturningNull new]
+        ];
+
+        ParallelCompositeOperation1 *parallelOperation = [[ParallelCompositeOperation1 alloc] initWithOperations:operations];
 
         parallelOperation.completionBlock = ^{
             dispatch_semaphore_signal(waitSemaphore);
@@ -43,7 +49,11 @@ describe(@"COParallelOperationSpec - Rejection", ^{
     it(@"", ^{
         dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
 
-        ParallelCompositeOperation1 *parallelOperation = [[ParallelCompositeOperation1 alloc] initWithParallelTask:[TransactionWithOneOperationRejectingItself new]];
+        NSArray *operations = @[
+            [OperationRejectingItself new],
+        ];
+
+        ParallelCompositeOperation1 *parallelOperation = [[ParallelCompositeOperation1 alloc] initWithOperations:operations];
 
         parallelOperation.completionBlock = ^{
             dispatch_semaphore_signal(waitSemaphore);
@@ -84,9 +94,11 @@ describe(@"COParallelOperationSpec - Rejection", ^{
 
         NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:0 userInfo:nil];
 
-        id <COParallelTask> transaction = [[TransactionWithOneOperationRejectingItselfWithGivenError alloc] initWithError:error];
+        NSArray *operations = @[
+            [[OperationRejectingItselfWithError alloc] initWithError:error]
+        ];
 
-        ParallelCompositeOperation1 *parallelOperation = [[ParallelCompositeOperation1 alloc] initWithParallelTask:transaction];
+        ParallelCompositeOperation1 *parallelOperation = [[ParallelCompositeOperation1 alloc] initWithOperations:operations];
 
         parallelOperation.completionBlock = ^{
             dispatch_semaphore_signal(waitSemaphore);
