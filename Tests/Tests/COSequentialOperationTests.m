@@ -9,31 +9,11 @@ SPEC_BEGIN(COSequentialOperationSpec)
 
 describe(@"COSequentialOperationSpec", ^{
 
-    it(@"should run composite operation", ^{
-        dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
-
-        COSequentialOperation *sequentialOperation = [[COSequentialOperation alloc] initWithSequence:[Sequence_ThreeTrivialGreenOperations new]];
-
-        sequentialOperation.completionBlock = ^{
-            dispatch_semaphore_signal(waitSemaphore);
-        };
-
-        [sequentialOperation start];
-
-        while (dispatch_semaphore_wait(waitSemaphore, DISPATCH_TIME_NOW)) {
-            CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
-        }
-
-        [[theValue(sequentialOperation.isFinished) should] beYes];
-
-        [[sequentialOperation.result should] equal:@[ @(1), @(1), @(1) ]];
-    });
-
-    describe(@"COSequentialOperationSpec - Rejection", ^{
+    describe(@"-initWithSequence:", ^{
         it(@"should run composite operation", ^{
             dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
 
-            COSequentialOperation *sequentialOperation = [[COSequentialOperation alloc] initWithSequence:[Sequence_FirstOperationRejects new]];
+            COSequentialOperation *sequentialOperation = [[COSequentialOperation alloc] initWithSequence:[Sequence_ThreeTrivialGreenOperations new]];
 
             sequentialOperation.completionBlock = ^{
                 dispatch_semaphore_signal(waitSemaphore);
@@ -47,35 +27,120 @@ describe(@"COSequentialOperationSpec", ^{
 
             [[theValue(sequentialOperation.isFinished) should] beYes];
 
-            [[sequentialOperation.result should] beNil];
-            [[sequentialOperation.error shouldNot] beNil];
+            [[sequentialOperation.result should] equal:@[ @(1), @(1), @(1) ]];
+        });
 
-            NSError *expectedOperationError = [NSError errorWithDomain:COErrorDomain code:COOperationErrorRejected userInfo:nil];
-            NSError *expectedSequentialOperationError = [NSError errorWithDomain:COErrorDomain code:COOperationErrorRejected userInfo:@{ COOperationErrorKey: expectedOperationError }];
-            
-            [[sequentialOperation.error should] equal:expectedSequentialOperationError];
+        describe(@"COSequentialOperationSpec - Rejection", ^{
+            it(@"should run composite operation", ^{
+                dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
+
+                COSequentialOperation *sequentialOperation = [[COSequentialOperation alloc] initWithSequence:[Sequence_FirstOperationRejects new]];
+
+                sequentialOperation.completionBlock = ^{
+                    dispatch_semaphore_signal(waitSemaphore);
+                };
+
+                [sequentialOperation start];
+
+                while (dispatch_semaphore_wait(waitSemaphore, DISPATCH_TIME_NOW)) {
+                    CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
+                }
+
+                [[theValue(sequentialOperation.isFinished) should] beYes];
+
+                [[sequentialOperation.result should] beNil];
+                [[sequentialOperation.error shouldNot] beNil];
+
+                NSError *expectedOperationError = [NSError errorWithDomain:COErrorDomain code:COOperationErrorRejected userInfo:nil];
+                NSError *expectedSequentialOperationError = [NSError errorWithDomain:COErrorDomain code:COOperationErrorRejected userInfo:@{ COOperationErrorKey: expectedOperationError }];
+
+                [[sequentialOperation.error should] equal:expectedSequentialOperationError];
+            });
+        });
+
+        describe(@"COSequentialOperationSpec - Rejection - 3 Attempts", ^{
+            it(@"should run composite operation", ^{
+                dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
+
+                COSequentialOperation *sequentialOperation = [[COSequentialOperation alloc] initWithSequence:[Sequence_FirstOperationRejects_3Attempts new]];
+
+                sequentialOperation.completionBlock = ^{
+                    dispatch_semaphore_signal(waitSemaphore);
+                };
+
+                [sequentialOperation start];
+
+                while (dispatch_semaphore_wait(waitSemaphore, DISPATCH_TIME_NOW)) {
+                    CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
+                }
+
+                [[theValue(sequentialOperation.isFinished) should] beYes];
+
+                [[sequentialOperation.result should] equal:@[ @(1), @(1) ]];
+            });
         });
     });
 
-    describe(@"COSequentialOperationSpec - Rejection - 3 Attempts", ^{
-        it(@"should run composite operation", ^{
-            dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
+    describe(@"-initWithOperations:", ^{
+        describe(@"3 green operations", ^{
+            it(@"should run composite operation", ^{
+                dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
 
-            COSequentialOperation *sequentialOperation = [[COSequentialOperation alloc] initWithSequence:[Sequence_FirstOperationRejects_3Attempts new]];
+                NSArray *operations = @[
+                                        [OperationTriviallyReturningNull new],
+                                        [OperationTriviallyReturningNull new],
+                                        [OperationTriviallyReturningNull new]
+                                        ];
 
-            sequentialOperation.completionBlock = ^{
-                dispatch_semaphore_signal(waitSemaphore);
-            };
+                COSequentialOperation *sequentialOperation = [[COSequentialOperation alloc] initWithOperations:operations];
 
-            [sequentialOperation start];
+                sequentialOperation.completionBlock = ^{
+                    dispatch_semaphore_signal(waitSemaphore);
+                };
 
-            while (dispatch_semaphore_wait(waitSemaphore, DISPATCH_TIME_NOW)) {
-                CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
-            }
+                [sequentialOperation start];
 
-            [[theValue(sequentialOperation.isFinished) should] beYes];
+                while (dispatch_semaphore_wait(waitSemaphore, DISPATCH_TIME_NOW)) {
+                    CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
+                }
 
-            [[sequentialOperation.result should] equal:@[ @(1), @(1) ]];
+                [[theValue(sequentialOperation.isFinished) should] beYes];
+
+                [[sequentialOperation.result should] equal:[NSNull null]];
+            });
+        });
+
+        describe(@"COSequentialOperationSpec - Rejection (first operation produces error)", ^{
+            it(@"should stop running after first operation", ^{
+                dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
+
+                NSArray *operations = @[
+                    [OperationRejectingItself new],
+                    [OperationTriviallyReturningNull new],
+                ];
+
+                COSequentialOperation *sequentialOperation = [[COSequentialOperation alloc] initWithOperations:operations];
+
+                sequentialOperation.completionBlock = ^{
+                    dispatch_semaphore_signal(waitSemaphore);
+                };
+
+                [sequentialOperation start];
+
+                while (dispatch_semaphore_wait(waitSemaphore, DISPATCH_TIME_NOW)) {
+                    CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
+                }
+
+                [[theValue(sequentialOperation.isFinished) should] beYes];
+
+                [[sequentialOperation.result should] beNil];
+                [[sequentialOperation.error shouldNot] beNil];
+
+                NSError *expectedOperationError = [NSError errorWithDomain:COErrorDomain code:COOperationErrorRejected userInfo:nil];
+                NSError *expectedSequentialOperationError = [NSError errorWithDomain:COErrorDomain code:COOperationErrorRejected userInfo:@{ COOperationErrorKey: expectedOperationError }];
+
+                [[sequentialOperation.error should] equal:expectedSequentialOperationError];
+            });
         });
     });
 });
