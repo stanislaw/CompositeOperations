@@ -1,0 +1,54 @@
+NAME=CompositeOperations
+VERSION=0.7.6
+GH_REPO=stanislaw/CompositeOperations
+
+### Dirs
+
+PORT_TEMP_DIR ?= ~/Library/Caches/Ports
+# ~/Library/Caches/Ports/CompositeOperations
+PORT_DIR=$(PORT_TEMP_DIR)/$(NAME)
+SOURCE_PATH  = $(PORT_DIR)/$(NAME)-${VERSION}
+ZIPBALL_PATH = $(PORT_DIR)/$(NAME)-$(VERSION).zip
+IOS_FRAMEWORK_SOURCE_PATH = $(SOURCE_PATH)/CompositeOperations/iOS/CompositeOperations.framework
+
+PORT_VENDOR_DIR ?= ./Vendor
+# ./Vendor/CompositeOperations
+INSTALL_PATH = $(PORT_VENDOR_DIR)/$(NAME)
+
+### URLs
+
+GH_URL=https://github.com
+ZIPBALL_URL=${GH_URL}/${GH_REPO}/releases/download/${VERSION}/CompositeOperations.zip
+
+### Targets
+
+.PHONY: install update uninstall clean purge
+
+install: $(SOURCE_PATH) $(ZIPBALL_PATH) $(IOS_FRAMEWORK_SOURCE_PATH) $(INSTALL_PATH)
+
+uninstall:
+	rm -rf $(INSTALL_PATH)
+
+update: uninstall install
+
+clean:
+	rm -rf $(SOURCE_PATH)
+
+purge: uninstall clean
+
+### Artefacts
+
+$(SOURCE_PATH):
+	mkdir -p $@
+
+$(ZIPBALL_PATH):
+	wget ${ZIPBALL_URL} -O $@
+
+$(IOS_FRAMEWORK_SOURCE_PATH):
+	mkdir -p $@
+	unzip $(ZIPBALL_PATH) -d $(SOURCE_PATH)
+
+$(INSTALL_PATH):
+	mkdir -p $@
+	cp -Rv $(IOS_FRAMEWORK_SOURCE_PATH) $@
+

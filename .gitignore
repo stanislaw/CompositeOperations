@@ -2,3 +2,5 @@
 **/xcuserdata/**
 .DS_Store
 Distribution/**
+Vendor/**
+
