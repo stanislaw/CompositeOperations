@@ -40,7 +40,8 @@ osx_example_binary="${osx_example_path}/${osx_example_scheme}.app"
 osx_path="${build_dir}/${osx_scheme}/${configuration}-macosx"
 osx_framework="${osx_path}/${framework}"
 
-distribution_path="$(pwd)/Distribution"
+zip_distribution_path="$(pwd)/Distribution"
+distribution_path="$(pwd)/Distribution/$framework_name"
 distribution_path_ios="${distribution_path}/iOS"
 distribution_path_osx="${distribution_path}/OSX"
 
@@ -138,12 +139,17 @@ build_osx() {
 
 
 export_built_frameworks() {
-    rm -rf "$distribution_path"
-    mkdir -p "$distribution_path_ios"
-    mkdir -p "$distribution_path_osx"
+    rm -rfv "$distribution_path"
+    rm -rfv "$zip_distribution_path"
+ 
+    mkdir -pv "$distribution_path_ios"
+    mkdir -pv "$distribution_path_osx"
 
     cp -Rv "${ios_universal_framework}" "${distribution_path_ios}"
     cp -Rv "${osx_framework}" "${distribution_path_osx}"
+
+    cd $zip_distribution_path 
+    zip --verbose --symlinks -r $zip_distribution_path/CompositeOperations.zip ./$framework_name
 }
 
 
