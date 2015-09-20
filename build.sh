@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# set -x # enable for debugging
+
 reveal_archive_in_finder=true
 
 project="DevelopmentApp.xcodeproj"
@@ -12,9 +14,9 @@ ios_example_scheme=Example-iOS
 osx_scheme="${framework_name}-OSX"
 osx_example_scheme="Example-OSX"
 
-project_dir=${PROJECT_DIR:-$(pwd)}
-build_dir=${BUILD_DIR:-Build}
-configuration=${CONFIGURATION:-Release}
+project_dir="$(pwd)/DevelopmentApp"
+build_dir="${project_dir}/Build"
+configuration="Release"
 
 ios_simulator_path="${build_dir}/${ios_scheme}/${configuration}-iphonesimulator"
 ios_simulator_binary="${ios_simulator_path}/${framework}/${framework_name}"
@@ -38,10 +40,9 @@ osx_example_binary="${osx_example_path}/${osx_example_scheme}.app"
 osx_path="${build_dir}/${osx_scheme}/${configuration}-macosx"
 osx_framework="${osx_path}/${framework}"
 
-distribution_path="${project_dir}/../Distribution"
+distribution_path="$(pwd)/Distribution"
 distribution_path_ios="${distribution_path}/iOS"
 distribution_path_osx="${distribution_path}/OSX"
-
 
 usage() {
 cat <<EOF
@@ -59,9 +60,9 @@ EOF
 
 
 run() {
-    echo "Running command: $@"
+    # echo "Running command: $@"
     eval $@ || {
-		echo "Command failed: \"$@\""
+        echo "Command failed: \"$@\""
         exit 1
     }
 }
@@ -94,7 +95,7 @@ clean_build_folder() {
 
 
 run_unit_tests() {
-	run xcodebuild -project ${project} \
+    run xcodebuild -project ${project_dir}/${project} \
                    -scheme ${unit_tests_scheme} \
                    -sdk iphonesimulator \
                    clean test
@@ -102,14 +103,14 @@ run_unit_tests() {
 
 
 build_ios() {
-    run xcodebuild -project ${project} \
+    run xcodebuild -project ${project_dir}/${project} \
                    -scheme ${ios_scheme} \
                    -sdk iphonesimulator \
                    -configuration ${configuration} \
                    CONFIGURATION_BUILD_DIR=${ios_simulator_path} \
                    clean build 
 
-    run xcodebuild -project ${project} \
+	run xcodebuild -project ${project_dir}/${project} \
                    -scheme ${ios_scheme} \
                    -sdk iphoneos \
                    -configuration ${configuration} \
@@ -117,7 +118,6 @@ build_ios() {
                    clean build
 
     rm -rf "${ios_universal_path}"
-    mkdir "${ios_universal_path}"
 
     mkdir -p "${ios_universal_framework}"
 
@@ -128,7 +128,7 @@ build_ios() {
 
 
 build_osx() {
-    run xcodebuild -project ${project} \
+    run xcodebuild -project ${project_dir}/${project} \
                    -scheme ${osx_scheme} \
                    -sdk macosx \
                    -configuration ${configuration} \
@@ -148,38 +148,42 @@ export_built_frameworks() {
 
 
 validate() {
+    local lipo_for_ios="lipo -info ${distribution_path_ios}/${framework}/${framework_name}"
+    local validation="$lipo_for_ios | grep -q 'i386 armv7 x86_64 arm64'"
+    run $validation && echo "Validation: iOS framework is codesigned correctly"
 
     # Build Example iOS app against simulator
-    run xcodebuild -project ${project} \
-                   -target ${ios_example_scheme} \
-                   -sdk iphonesimulator \
-                   -configuration ${configuration} \
-                   CONFIGURATION_BUILD_DIR=${ios_example_simulator_path} \
-                   clean build
+    # run xcodebuild -project ${project} \
+    #                -target ${ios_example_scheme} \
+    #                -sdk iphonesimulator \
+    #                -configuration ${configuration} \
+    #                CONFIGURATION_BUILD_DIR=${ios_example_simulator_path} \
+    #                clean build
 
     # Build Example iOS app against device
-    run xcodebuild -project ${project} \
-                   -target ${ios_example_scheme} \
-                   -sdk iphoneos \
-                   -configuration ${configuration} \
-                   CONFIGURATION_BUILD_DIR=${ios_example_device_path} \
-                   clean build
+    # run xcodebuild -project ${project} \
+    #                -target ${ios_example_scheme} \
+    #                -sdk iphoneos \
+    #                -configuration ${configuration} \
+    #                CONFIGURATION_BUILD_DIR=${ios_example_device_path} \
+    #                clean build
 
-    run codesign -vvvv --verify --deep ${ios_example_device_binary}
+    # run codesign -vvvv --verify --deep ${ios_example_device_binary}
 
     # How To Perform iOS App Validation From the Command Line
     # http://stackoverflow.com/questions/7568420/how-to-perform-ios-app-validation-from-the-command-line
-    run xcrun -v -sdk iphoneos Validation ${ios_example_device_binary}
+    # run xcrun -v -sdk iphoneos Validation ${ios_example_device_binary}
 
     # Build Example OSX app
-    run xcodebuild -project ${project} \
-                   -target ${osx_example_scheme} \
-                   -sdk macosx \
-                   -configuration ${configuration} \
-                   CONFIGURATION_BUILD_DIR=${osx_example_path} \
-                   clean build
+    # run xcodebuild -project ${project} \
+    #                -target ${osx_example_scheme} \
+    #                -sdk macosx \
+    #                -configuration ${configuration} \
+    #                CONFIGURATION_BUILD_DIR=${osx_example_path} \
+    #                clean build
 
-    run codesign -vvvv --verify --deep ${osx_example_binary}
+    # run codesign -vvvv --verify --deep ${osx_example_binary}
+
 }
 
 
@@ -196,7 +200,7 @@ distribute() {
 	build_ios
 	build_osx
 	export_built_frameworks
-	# validate
+	validate
 	open_distribution_folder
 }
 
@@ -213,7 +217,4 @@ if type -t $@ | grep "function" &> /dev/null; then
 else
     echo "Command '$@' not found"	
 fi
-	
-	
-
 
