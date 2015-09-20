@@ -1,9 +1,10 @@
 //
-//  COTypedefs.h
-//  DevelopmentApp
+// CompositeOperations
 //
-//  Created by Stanislaw Pankevich on 20/09/15.
-//  Copyright © 2015 Stanislaw Pankevich. All rights reserved.
+// CompositeOperations/COTypedefs.h
+//
+// Copyright (c) 2014 Stanislaw Pankevich
+// Released under the MIT license
 //
 
 #import <Foundation/Foundation.h>
