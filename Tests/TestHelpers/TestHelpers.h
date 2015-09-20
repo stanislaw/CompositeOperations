@@ -4,6 +4,7 @@
 #import <Kiwi/Kiwi.h>
 
 #import "Assertions.h"
+#import "TestOperations.h"
 
 typedef void (^asyncronousBlock)(void);
 

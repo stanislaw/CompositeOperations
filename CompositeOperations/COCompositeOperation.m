@@ -11,6 +11,8 @@
 #import "COSequentialOperation.h"
 #import "COParallelOperation.h"
 
+NSString *const COCompositeOperationErrorKey = @"COSequentialOperationErrorKey";
+
 @interface COCompositeOperationCluster : COCompositeOperation
 @end
 

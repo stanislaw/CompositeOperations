@@ -75,9 +75,10 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
 
 @implementation COOperation
 
-@synthesize state  = _state,
-            result = _result,
-            error  = _error;
+@synthesize state  = _state;
+@synthesize result = _result;
+@synthesize error  = _error;
+@synthesize completion = _completion;
 
 - (id)init {
     self = [super init];
@@ -168,6 +169,10 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
     }
 
     self.state = COOperationStateFinished;
+
+    if (self.completion) {
+        self.completion(self.result, self.error);
+    }
 }
 
 - (void)reject {
@@ -178,6 +183,10 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
     }
 
     self.state = COOperationStateFinished;
+
+    if (self.completion) {
+        self.completion(nil, self.error);
+    }
 }
 
 - (void)rejectWithError:(NSError *)error {
@@ -190,6 +199,10 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
     }
 
     self.state = COOperationStateFinished;
+
+    if (self.completion) {
+        self.completion(nil, self.error);
+    }
 }
 
 - (NSError *)resultErrorForError:(NSError *)error code:(NSUInteger)code userInfo:(NSDictionary *)userInfo {

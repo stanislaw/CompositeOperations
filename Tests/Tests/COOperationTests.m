@@ -51,6 +51,61 @@ describe(@"COOperation", ^{
         });
     });
 
+    describe(@"-completion", ^{
+        describe(@"Success", ^{
+            it(@"should call @completion block with result", ^{
+                dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
+
+                __block id expectedResult = nil;
+
+                COOperation *operation = [OperationTriviallyReturningNull new];
+
+                operation.completion = ^(id result, NSError *error) {
+                    expectedResult = result;
+
+                    dispatch_semaphore_signal(waitSemaphore);
+                };
+
+                [operation start];
+
+                while (dispatch_semaphore_wait(waitSemaphore, DISPATCH_TIME_NOW)) {
+                    CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
+                }
+
+                [[expectedResult should] equal:operation.result];
+            });
+        });
+
+        describe(@"Rejection", ^{
+            it(@"should call @completion block with result", ^{
+                dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
+
+                __block NSError *expectedError = nil;
+                __block id expectedResult = nil;
+
+                NSError *givenError = [NSError errorWithDomain:NSInternalInconsistencyException code:200 userInfo:nil];
+
+                COOperation *operation = [[OperationRejectingItselfWithError alloc] initWithError:givenError];
+
+                operation.completion = ^(id result, NSError *error) {
+                    expectedResult = result;
+                    expectedError = error;
+
+                    dispatch_semaphore_signal(waitSemaphore);
+                };
+
+                [operation start];
+
+                while (dispatch_semaphore_wait(waitSemaphore, DISPATCH_TIME_NOW)) {
+                    CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
+                }
+
+                [[expectedError.userInfo[COOperationErrorKey] should] equal:givenError];
+                [[expectedResult should] beNil];
+            });
+        });
+    });
+
 });
 
 SPEC_END

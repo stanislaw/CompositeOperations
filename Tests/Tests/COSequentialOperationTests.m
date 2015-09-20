@@ -51,7 +51,7 @@ describe(@"COSequentialOperationSpec", ^{
             [[sequentialOperation.error shouldNot] beNil];
 
             NSError *expectedOperationError = [NSError errorWithDomain:COErrorDomain code:COOperationErrorRejected userInfo:nil];
-            NSError *expectedSequentialOperationError = [NSError errorWithDomain:COErrorDomain code:COOperationErrorRejected userInfo:@{ COSequentialOperationErrorKey: expectedOperationError }];
+            NSError *expectedSequentialOperationError = [NSError errorWithDomain:COErrorDomain code:COOperationErrorRejected userInfo:@{ COOperationErrorKey: expectedOperationError }];
             
             [[sequentialOperation.error should] equal:expectedSequentialOperationError];
         });

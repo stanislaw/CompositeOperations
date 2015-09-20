@@ -76,7 +76,7 @@ describe(@"COParallelOperationSpec - Rejection", ^{
         NSError *expectedOperationError = [NSError errorWithDomain:COErrorDomain code:COOperationErrorRejected userInfo:nil];
 
         NSDictionary *expectedParallelOperationErrorUserInfo = @{
-            COParallelOperationErrorsKey: @[ expectedOperationError ]
+            COOperationErrorKey: @[ expectedOperationError ]
         };
 
         [[theValue(parallelOperation.isFinished) should] beYes];
@@ -115,7 +115,7 @@ describe(@"COParallelOperationSpec - Rejection", ^{
         NSError *expectedOperationError = [NSError errorWithDomain:COErrorDomain code:COOperationErrorRejected userInfo:@{ COOperationErrorKey: error }];
 
         NSDictionary *expectedParallelOperationErrorUserInfo = @{
-            COParallelOperationErrorsKey: @[ expectedOperationError ]
+            COOperationErrorKey: @[ expectedOperationError ]
         };
 
         [[theValue(parallelOperation.isFinished) should] beYes];

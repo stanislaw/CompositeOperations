@@ -9,8 +9,6 @@
 
 #import <CompositeOperations/COCompositeOperation.h>
 
-FOUNDATION_EXPORT NSString *const COSequentialOperationErrorKey;
-
 @interface COSequentialOperation : COCompositeOperation
 - (id)initWithSequence:(id <COSequence>)sequence NS_DESIGNATED_INITIALIZER;
 - (id)initWithOperations:(NSArray *)operations;

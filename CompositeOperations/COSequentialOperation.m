@@ -9,8 +9,6 @@
 
 #import "COSequentialOperation.h"
 
-NSString *const COSequentialOperationErrorKey = @"COSequentialOperationErrorKey";
-
 @interface COSequentialOperation ()
 
 @property (strong, nonatomic) id <COSequence> sequence;
@@ -96,20 +94,6 @@ NSString *const COSequentialOperationErrorKey = @"COSequentialOperationErrorKey"
 
 - (void)main {
     [self runNextOperation:nil];
-}
-
-#pragma mark - COOperation
-
-- (NSError *)resultErrorForError:(NSError *)error code:(NSUInteger)code userInfo:(NSDictionary *)userInfo {
-    NSError *resultError;
-
-    if (error) {
-        resultError = [NSError errorWithDomain:COErrorDomain code:code userInfo:@{ COSequentialOperationErrorKey: error }];
-    } else {
-        resultError = [NSError errorWithDomain:COErrorDomain code:code userInfo:nil];
-    }
-
-    return resultError;
 }
 
 @end

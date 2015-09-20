@@ -21,6 +21,8 @@ FOUNDATION_EXPORT NSString *const COOperationErrorKey;
 @property (readonly) id result;
 @property (readonly) NSError *error;
 
+@property (copy) void (^completion)(id result, NSError *error);
+
 - (void)finish;
 - (void)finishWithResult:(id)result;
 - (void)reject;

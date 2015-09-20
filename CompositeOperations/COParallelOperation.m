@@ -9,8 +9,6 @@
 
 #import "COParallelOperation.h"
 
-NSString *const COParallelOperationErrorsKey = @"COParallelOperationErrorsKey";
-
 @interface COParallelOperation ()
 
 @property (readonly, nonatomic) NSArray *operations;
@@ -91,7 +89,7 @@ NSString *const COParallelOperationErrorsKey = @"COParallelOperationErrorsKey";
 
     NSError *resultError = [NSError errorWithDomain:COErrorDomain
                                                code:code
-                                           userInfo:@{ COParallelOperationErrorsKey : errors }];
+                                           userInfo:@{ COOperationErrorKey : errors }];
 
 
     return resultError;
