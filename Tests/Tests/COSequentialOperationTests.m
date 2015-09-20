@@ -12,7 +12,7 @@ describe(@"COSequentialOperationSpec", ^{
     it(@"should run composite operation", ^{
         dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
 
-        COSequentialOperation *sequentialOperation = [[COSequentialOperation alloc] initWithSequentialTask:[SequenceOfThreeTrivialGreenOperations new]];
+        COSequentialOperation *sequentialOperation = [[COSequentialOperation alloc] initWithSequence:[SequenceOfThreeTrivialGreenOperations new]];
 
         sequentialOperation.completionBlock = ^{
             dispatch_semaphore_signal(waitSemaphore);
@@ -33,7 +33,7 @@ describe(@"COSequentialOperationSpec", ^{
         it(@"should run composite operation", ^{
             dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
 
-            COSequentialOperation *sequentialOperation = [[COSequentialOperation alloc] initWithSequentialTask:[SequenceWithFirstOperationRejectingItself new]];
+            COSequentialOperation *sequentialOperation = [[COSequentialOperation alloc] initWithSequence:[SequenceWithFirstOperationRejectingItself new]];
 
             sequentialOperation.completionBlock = ^{
                 dispatch_semaphore_signal(waitSemaphore);

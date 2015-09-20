@@ -13,10 +13,6 @@ FOUNDATION_EXPORT NSString *const COGenericException;
 
 @class COOperation;
 
-@protocol COSequentialTask <NSObject>
+@protocol COSequence <NSObject>
 - (COOperation *)nextOperationAfterOperation:(COOperation *)previousOperationOrNil;
-@end
-
-@protocol COParallelTask <NSObject>
-- (NSArray *)operations;
 @end

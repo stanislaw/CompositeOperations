@@ -13,28 +13,28 @@ NSString *const COSequentialOperationErrorKey = @"COSequentialOperationErrorKey"
 
 @interface COSequentialOperation ()
 
-@property (strong, nonatomic) id <COSequentialTask> sequentialTask;
+@property (strong, nonatomic) id <COSequence> sequence;
 @property (strong, nonatomic) NSMutableArray *operations;
 
 - (void)runNextOperation:(COOperation *)lastFinishedOperationOrNil;
 
 @end
 
-@interface COSimpleSequentialTask : NSObject <COSequentialTask>
+@interface COSimpleSequence : NSObject <COSequence>
 - (id)initWithOperations:(NSArray *)operations;
 @end
 
 @implementation COSequentialOperation
 
-- (id)initWithSequentialTask:(id<COSequentialTask>)sequentialTask {
-    NSParameterAssert([sequentialTask conformsToProtocol:@protocol(COSequentialTask)]);
+- (id)initWithSequence:(id<COSequence>)sequence {
+    NSParameterAssert([sequence conformsToProtocol:@protocol(COSequence)]);
 
     self = [super init];
 
     if (self == nil) return nil;
 
     _operations = [NSMutableArray new];
-    _sequentialTask = sequentialTask;
+    _sequence = sequence;
 
     return self;
 }
@@ -42,21 +42,16 @@ NSString *const COSequentialOperationErrorKey = @"COSequentialOperationErrorKey"
 - (id)initWithOperations:(NSArray *)operations {
     NSParameterAssert(operations);
 
-    COSimpleSequentialTask *sequentialTask = [[COSimpleSequentialTask alloc] initWithOperations:operations];
+    COSimpleSequence *sequence = [[COSimpleSequence alloc] initWithOperations:operations];
 
-    self = [self initWithSequentialTask:sequentialTask];
+    self = [self initWithSequence:sequence];
 
     if (self == nil) return nil;
 
     return self;
 }
 
-- (void)main {
-    [self runNextOperation:nil];
-}
-
 - (void)runNextOperation:(COOperation *)lastFinishedOperationOrNil {
-
     if (lastFinishedOperationOrNil && lastFinishedOperationOrNil.result == nil) {
         NSError *error = lastFinishedOperationOrNil.error;
 
@@ -71,7 +66,7 @@ NSString *const COSequentialOperationErrorKey = @"COSequentialOperationErrorKey"
         return;
     }
 
-    COOperation *nextOperation = [self.sequentialTask nextOperationAfterOperation:lastFinishedOperationOrNil];
+    COOperation *nextOperation = [self.sequence nextOperationAfterOperation:lastFinishedOperationOrNil];
 
     if (nextOperation) {
         [self.operations addObject:nextOperation];
@@ -97,6 +92,14 @@ NSString *const COSequentialOperationErrorKey = @"COSequentialOperationErrorKey"
     }
 }
 
+#pragma mark - NSOperation
+
+- (void)main {
+    [self runNextOperation:nil];
+}
+
+#pragma mark - COOperation
+
 - (NSError *)resultErrorForError:(NSError *)error code:(NSUInteger)code userInfo:(NSDictionary *)userInfo {
     NSError *resultError;
 
@@ -111,12 +114,12 @@ NSString *const COSequentialOperationErrorKey = @"COSequentialOperationErrorKey"
 
 @end
 
-@interface COSimpleSequentialTask ()
+@interface COSimpleSequence ()
 @property (readonly, nonatomic) NSArray *operations;
 @property (readonly, nonatomic) NSEnumerator *enumerator;
 @end
 
-@implementation COSimpleSequentialTask
+@implementation COSimpleSequence
 
 - (id)initWithOperations:(NSArray *)operations {
     NSParameterAssert(operations);

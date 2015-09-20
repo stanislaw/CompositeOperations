@@ -12,7 +12,7 @@
 FOUNDATION_EXPORT NSString *const COSequentialOperationErrorKey;
 
 @interface COSequentialOperation : COCompositeOperation
-- (id)initWithSequentialTask:(id <COSequentialTask>)sequentialTask NS_DESIGNATED_INITIALIZER;
+- (id)initWithSequence:(id <COSequence>)sequence NS_DESIGNATED_INITIALIZER;
 - (id)initWithOperations:(NSArray *)operations;
 - (id)initWithOperations:(NSArray *)operations runInParallel:(BOOL)parallel NS_UNAVAILABLE;
 - (id)init NS_UNAVAILABLE;

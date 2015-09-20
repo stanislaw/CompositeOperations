@@ -21,7 +21,7 @@
 
 - (id)init {
     if ([self isMemberOfClass:[COCompositeOperationCluster class]]) {
-        @throw [NSException exceptionWithName:COGenericException reason:@"Must use one of designated initializers: initiWithSequentialTask:, initWithParallelTask:! or convenience initializer: initWithOperations:runInParallel:" userInfo:nil];
+        @throw [NSException exceptionWithName:COGenericException reason:@"Must use one of designated initializers: initWithOperations:runInParallel: or initiWithSequence:" userInfo:nil];
     }
 
     return [super init];
@@ -48,10 +48,10 @@
 
 @implementation COCompositeOperationCluster
 
-- (id)initWithSequentialTask:(id <COSequentialTask>)sequentialTask {
-    NSParameterAssert(sequentialTask);
+- (id)initWithSequence:(id <COSequence>)sequence {
+    NSParameterAssert(sequence);
 
-    return (id)[[COSequentialOperation alloc] initWithSequentialTask:sequentialTask];
+    return (id)[[COSequentialOperation alloc] initWithSequence:sequence];
 }
 
 - (id)initWithOperations:(NSArray *)operations runInParallel:(BOOL)parallel {

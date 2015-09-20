@@ -14,9 +14,9 @@ describe(@"COCompositeOperation", ^{
         });
     });
 
-    describe(@"-initWithSequentialTask", ^{
+    describe(@"-initWithSequence", ^{
         it(@"should be of class COSequentialOperation", ^{
-            COCompositeOperation *sequentialOperation = [[COCompositeOperation alloc] initWithSequentialTask:[SequenceOfThreeTrivialGreenOperations new]];
+            COCompositeOperation *sequentialOperation = [[COCompositeOperation alloc] initWithSequence:[SequenceOfThreeTrivialGreenOperations new]];
 
             [[sequentialOperation should] beKindOfClass:[COCompositeOperation class]];
         });
@@ -24,7 +24,7 @@ describe(@"COCompositeOperation", ^{
         it(@"should run composite operation", ^{
             dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
 
-            COCompositeOperation *sequentialOperation = [[COCompositeOperation alloc] initWithSequentialTask:[SequenceOfThreeTrivialGreenOperations new]];
+            COCompositeOperation *sequentialOperation = [[COCompositeOperation alloc] initWithSequence:[SequenceOfThreeTrivialGreenOperations new]];
 
             sequentialOperation.completionBlock = ^{
                 dispatch_semaphore_signal(waitSemaphore);
