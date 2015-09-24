@@ -3,4 +3,5 @@
 .DS_Store
 Distribution/**
 Vendor/**
+**/DerivedData/**
 
