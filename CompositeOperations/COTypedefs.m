@@ -9,5 +9,5 @@
 
 #import <CompositeOperations/COTypedefs.h>
 
-NSString *const COErrorDomain = @"com.CompositeOperations";
+NSString *const COErrorDomain = @"com.CompositeOperations.error";
 NSString *const COGenericException = @"COGenericException";

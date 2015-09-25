@@ -12,15 +12,7 @@
 FOUNDATION_EXPORT NSString *const COErrorDomain;
 FOUNDATION_EXPORT NSString *const COGenericException;
 
-@class COOperation;
-
-@protocol COAbstractOperation <NSObject>
-
-@property (readonly) id result;
-@property (readonly) id error;
-
-@end
-
-@protocol COSequence <NSObject>
-- (NSOperation <COAbstractOperation> *)nextOperationAfterOperation:(NSOperation <COAbstractOperation> *)previousOperationOrNil;
-@end
+typedef NS_ENUM(NSUInteger, COOperationErrorCode) {
+    COOperationErrorRejected = 0,
+    COOperationErrorCancelled
+};

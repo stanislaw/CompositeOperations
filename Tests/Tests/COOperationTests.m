@@ -100,7 +100,7 @@ describe(@"COOperation", ^{
                     CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
                 }
 
-                [[expectedError.userInfo[COOperationErrorKey] should] equal:givenError];
+                [[expectedError should] equal:givenError];
                 [[expectedResult should] beNil];
             });
         });

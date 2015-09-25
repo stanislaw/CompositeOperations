@@ -69,24 +69,13 @@ describe(@"COParallelOperationSpec - Rejection", ^{
         [[theValue(parallelOperation.isCancelled) should] beNo];
 
         [[parallelOperation.result should] beNil];
-        [[parallelOperation.error shouldNot] beNil];
+        [[parallelOperation.error should] beKindOfClass:[NSArray class]];
 
-        NSError *parallelOperationError = parallelOperation.error;
+        NSError *parallelOperationOnlyError = parallelOperation.error.firstObject;
 
         NSError *expectedOperationError = [NSError errorWithDomain:COErrorDomain code:COOperationErrorRejected userInfo:nil];
 
-        NSDictionary *expectedParallelOperationErrorUserInfo = @{
-            COOperationErrorKey: @[ expectedOperationError ]
-        };
-
-        [[theValue(parallelOperation.isFinished) should] beYes];
-        [[theValue(parallelOperation.isCancelled) should] beNo];
-
-        [[parallelOperation.result should] beNil];
-
-        [[parallelOperationError shouldNot] beNil];
-        [[parallelOperationError.userInfo should] equal:expectedParallelOperationErrorUserInfo];
-        [[theValue(parallelOperationError.code) should] equal:@(COOperationErrorRejected)];
+        [[parallelOperationOnlyError should] equal:expectedOperationError];
     });
 
     it(@"", ^{
@@ -110,22 +99,17 @@ describe(@"COParallelOperationSpec - Rejection", ^{
             CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
         }
 
-        NSError *parallelOperationError = parallelOperation.error;
-
-        NSError *expectedOperationError = [NSError errorWithDomain:COErrorDomain code:COOperationErrorRejected userInfo:@{ COOperationErrorKey: error }];
-
-        NSDictionary *expectedParallelOperationErrorUserInfo = @{
-            COOperationErrorKey: @[ expectedOperationError ]
-        };
+        NSArray *parallelOperationError = parallelOperation.error;
+        NSError *parallelOperationOnlyError = parallelOperation.error.firstObject;
 
         [[theValue(parallelOperation.isFinished) should] beYes];
         [[theValue(parallelOperation.isCancelled) should] beNo];
 
         [[parallelOperation.result should] beNil];
 
-        [[parallelOperationError shouldNot] beNil];
-        [[parallelOperationError.userInfo should] equal:expectedParallelOperationErrorUserInfo];
-        [[theValue(parallelOperationError.code) should] equal:@(COOperationErrorRejected)];
+        [[parallelOperationError should] beKindOfClass:[NSArray class]];
+
+        [[parallelOperationOnlyError should] equal:error];
     });
 });
 

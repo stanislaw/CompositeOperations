@@ -27,7 +27,13 @@ describe(@"COSequentialOperationSpec", ^{
 
             [[theValue(sequentialOperation.isFinished) should] beYes];
 
-            [[sequentialOperation.result should] equal:@[ @(1), @(1), @(1) ]];
+            NSArray *expectedResult = @[
+                                        @[ @(1) ],
+                                        @[ @(1), @(1) ],
+                                        @[ @(1), @(1), @(1) ]
+                                        ];
+
+            [[sequentialOperation.result should] equal: expectedResult];
         });
 
         describe(@"COSequentialOperationSpec - Rejection", ^{
@@ -52,9 +58,8 @@ describe(@"COSequentialOperationSpec", ^{
                 [[sequentialOperation.error shouldNot] beNil];
 
                 NSError *expectedOperationError = [NSError errorWithDomain:COErrorDomain code:COOperationErrorRejected userInfo:nil];
-                NSError *expectedSequentialOperationError = [NSError errorWithDomain:COErrorDomain code:COOperationErrorRejected userInfo:@{ COOperationErrorKey: expectedOperationError }];
 
-                [[sequentialOperation.error should] equal:expectedSequentialOperationError];
+                [[sequentialOperation.error should] equal:@[ expectedOperationError ]];
             });
         });
 
@@ -76,7 +81,13 @@ describe(@"COSequentialOperationSpec", ^{
 
                 [[theValue(sequentialOperation.isFinished) should] beYes];
 
-                [[sequentialOperation.result should] equal:@[ @(1), @(1) ]];
+                NSArray *expectedResult = @[
+                    [NSNull null],
+                    @[ @(1) ],
+                    @[ @(1), @(1) ]
+                ];
+
+                [[sequentialOperation.result should] equal: expectedResult];
             });
         });
     });
@@ -106,7 +117,13 @@ describe(@"COSequentialOperationSpec", ^{
 
                 [[theValue(sequentialOperation.isFinished) should] beYes];
 
-                [[sequentialOperation.result should] equal:[NSNull null]];
+                NSArray *expectedResult = @[
+                                            [NSNull null],
+                                            [NSNull null],
+                                            [NSNull null]
+                                            ];
+                
+                [[sequentialOperation.result should] equal: expectedResult];
             });
         });
 
@@ -137,9 +154,8 @@ describe(@"COSequentialOperationSpec", ^{
                 [[sequentialOperation.error shouldNot] beNil];
 
                 NSError *expectedOperationError = [NSError errorWithDomain:COErrorDomain code:COOperationErrorRejected userInfo:nil];
-                NSError *expectedSequentialOperationError = [NSError errorWithDomain:COErrorDomain code:COOperationErrorRejected userInfo:@{ COOperationErrorKey: expectedOperationError }];
 
-                [[sequentialOperation.error should] equal:expectedSequentialOperationError];
+                [[sequentialOperation.error should] equal:@[ expectedOperationError ] ];
             });
         });
     });

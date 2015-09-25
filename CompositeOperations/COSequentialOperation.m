@@ -9,6 +9,8 @@
 
 #import "COSequentialOperation.h"
 
+#import "COAbstractOperation_Private.h"
+
 @interface COSequentialOperation ()
 
 @property (strong, nonatomic) id<COSequence> sequence;
@@ -23,6 +25,10 @@
 @end
 
 @implementation COSequentialOperation
+
+@synthesize completion = _completion;
+
+#pragma mark - <COSequentialOperation>
 
 - (id)initWithSequence:(id<COSequence>)sequence {
     NSParameterAssert([sequence conformsToProtocol:@protocol(COSequence)]);
@@ -74,19 +80,43 @@
             [nextOperation start];
         });
     } else {
-        if (lastFinishedOperationOrNil) {
-            if (lastFinishedOperationOrNil.result == nil) {
-                NSError *error = lastFinishedOperationOrNil.error;
+        if (lastFinishedOperationOrNil && lastFinishedOperationOrNil.result == nil) {
+            [self reject];
 
-                [self rejectWithError:error];
-
-                return;
-            }
-
-            [self finishWithResult:lastFinishedOperationOrNil.result];
-        } else {
-            [self finish];
+            return;
         }
+
+        [self finish];
+    }
+}
+
+- (void)finish {
+    if (self.isCancelled == NO) {
+        self.result = [self.operations valueForKey:@"result"];
+    } else {
+        self.error = [NSError errorWithDomain:COErrorDomain code:COOperationErrorCancelled userInfo:nil];
+    }
+
+    self.state = COOperationStateFinished;
+
+    if (self.completion) {
+        self.completion(self.result, self.error);
+    }
+}
+
+- (void)reject {
+    if (self.isCancelled == NO) {
+        NSArray *errors = [self.operations valueForKey:@"error"];
+
+        self.error = errors;
+    } else {
+        self.error = [NSError errorWithDomain:COErrorDomain code:COOperationErrorCancelled userInfo:nil];
+    }
+
+    self.state = COOperationStateFinished;
+
+    if (self.completion) {
+        self.completion(nil, self.error);
     }
 }
 
@@ -118,7 +148,7 @@
     return self;
 }
 
-- (id <COOperation>)nextOperationAfterOperation:(id <COOperation>)previousOperationOrNil {
+- (id <COAbstractOperation>)nextOperationAfterOperation:(id <COAbstractOperation>)previousOperationOrNil {
     if (previousOperationOrNil && previousOperationOrNil.result == nil) {
         return nil;
     }

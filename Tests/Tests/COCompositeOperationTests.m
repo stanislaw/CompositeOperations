@@ -35,8 +35,14 @@ describe(@"COCompositeOperation", ^{
             waitUsingSemaphore(waitSemaphore);
 
             [[theValue(sequentialOperation.isFinished) should] beYes];
-            
-            [[sequentialOperation.result should] equal:@[ @(1), @(1), @(1) ]];
+
+            NSArray *expectedResult = @[
+                                        @[ @(1) ],
+                                        @[ @(1), @(1) ],
+                                        @[ @(1), @(1), @(1) ]
+                                        ];
+
+            [[sequentialOperation.result should] equal: expectedResult];
         });
     });
 
@@ -76,7 +82,14 @@ describe(@"COCompositeOperation", ^{
 
             [[theValue(sequentialOperation.isFinished) should] beYes];
 
-            [[sequentialOperation.result should] equal:[NSNull null]];
+            NSArray *expectedResult = @[
+                [NSNull null],
+                [NSNull null],
+                [NSNull null]
+            ];
+
+            [[sequentialOperation.result should] equal: expectedResult];
+
         });
     });
 

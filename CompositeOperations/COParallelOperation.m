@@ -9,6 +9,8 @@
 
 #import "COParallelOperation.h"
 
+#import "COAbstractOperation_Private.h"
+
 @interface COParallelOperation ()
 
 @property (readonly, nonatomic) NSArray *operations;
@@ -18,6 +20,10 @@
 @end
 
 @implementation COParallelOperation
+
+@synthesize completion = _completion;
+
+#pragma mark - COParallelOperation
 
 - (id)initWithOperations:(NSArray *)operations {
     self = [super init];
@@ -29,14 +35,52 @@
     return self;
 }
 
+- (void)finishWithResult:(id)result {
+    NSParameterAssert(result);
+
+    if (self.isCancelled == NO) {
+        self.result = result;
+    } else {
+        self.error = [NSError errorWithDomain:COErrorDomain code:COOperationErrorCancelled userInfo:nil];
+    }
+
+    self.state = COOperationStateFinished;
+
+    if (self.completion) {
+        self.completion(self.result, self.error);
+    }
+}
+
+- (void)reject {
+    if (self.isCancelled == NO) {
+        NSArray *errors = [self.operations valueForKey:@"error"];
+
+        self.error = errors;
+    } else {
+        self.error = [NSError errorWithDomain:COErrorDomain code:COOperationErrorCancelled userInfo:nil];
+    }
+
+    self.state = COOperationStateFinished;
+
+    if (self.completion) {
+        self.completion(nil, self.error);
+    }
+}
+
+- (void)cancelAllOperations {
+    [self.operations makeObjectsPerformSelector:@selector(cancel)];
+}
+
+#pragma mark - NSOperation
+
 - (void)main {
     dispatch_group_t group = dispatch_group_create();
 
-    for (NSOperation <COOperation> *operation in self.operations) {
+    for (NSOperation <COAbstractOperation> *operation in self.operations) {
         dispatch_group_enter(group);
 
         __weak COParallelOperation *weakSelf = self;
-        __weak NSOperation <COOperation> *weakOperation = operation;
+        __weak NSOperation <COAbstractOperation> *weakOperation = operation;
 
         operation.completionBlock = ^{
             if (weakOperation.result == nil) {
@@ -47,7 +91,7 @@
         };
     }
 
-    for (NSOperation <COOperation> *operation in self.operations) {
+    for (NSOperation <COAbstractOperation> *operation in self.operations) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [operation start];
         });
@@ -61,7 +105,7 @@
 
             __block BOOL allOperationsFinishedSuccessfully = YES;
 
-            [self.operations enumerateObjectsUsingBlock:^(id <COOperation> operation, NSUInteger idx, BOOL *stop) {
+            [self.operations enumerateObjectsUsingBlock:^(id <COAbstractOperation> operation, NSUInteger idx, BOOL *stop) {
                 id result = operation.result;
 
                 if (result) {
@@ -82,20 +126,6 @@
             }
         }
     });
-}
-
-- (NSError *)resultErrorForError:(NSError *)error code:(NSUInteger)code userInfo:(NSDictionary *)userInfo {
-    NSArray *errors = [self.operations valueForKey:@"error"];
-
-    NSError *resultError = [NSError errorWithDomain:COErrorDomain
-                                               code:code
-                                           userInfo:@{COOperationErrorKey: errors}];
-
-    return resultError;
-}
-
-- (void)cancelAllOperations {
-    [self.operations makeObjectsPerformSelector:@selector(cancel)];
 }
 
 @end

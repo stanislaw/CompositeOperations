@@ -7,17 +7,13 @@
 // Released under the MIT license
 //
 
-#import <Foundation/Foundation.h>
 #import <CompositeOperations/COTypedefs.h>
-
-typedef NS_ENUM(NSUInteger, COOperationErrorCode) {
-    COOperationErrorRejected = 0,
-    COOperationErrorCancelled
-};
-
-FOUNDATION_EXPORT NSString *const COOperationErrorKey;
+#import <CompositeOperations/COAbstractOperation.h>
 
 @protocol COOperation <COAbstractOperation>
+
+@property (readonly) id result;
+@property (readonly) NSError *error;
 
 @property (copy) void (^completion)(id result, NSError *error);
 
@@ -28,5 +24,5 @@ FOUNDATION_EXPORT NSString *const COOperationErrorKey;
 
 @end
 
-@interface COOperation : NSOperation <COOperation>
+@interface COOperation : COAbstractOperation <COOperation>
 @end

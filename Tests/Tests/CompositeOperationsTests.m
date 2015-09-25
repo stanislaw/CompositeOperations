@@ -36,12 +36,18 @@ describe(@"Composite Operations tests", ^{
 
             [[theValue(parallelOperation.isFinished) should] beYes];
 
+            NSArray *expectedResultOfEachOperation = @[
+                @[@(1)],
+                @[@(1), @(1)],
+                @[@(1), @(1), @(1)]
+            ];
+
             NSArray *expectedResult = @[
-                                        @[ @(1), @(1), @(1) ],
-                                        @[ @(1), @(1), @(1) ],
-                                        @[ @(1), @(1), @(1) ]
-                                        ];
-            
+                expectedResultOfEachOperation,
+                expectedResultOfEachOperation,
+                expectedResultOfEachOperation
+            ];
+
             [[parallelOperation.result should] equal:expectedResult];
         });
     });
