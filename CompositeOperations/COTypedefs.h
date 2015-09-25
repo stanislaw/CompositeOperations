@@ -14,20 +14,13 @@ FOUNDATION_EXPORT NSString *const COGenericException;
 
 @class COOperation;
 
-@protocol COOperation <NSObject>
+@protocol COAbstractOperation <NSObject>
 
 @property (readonly) id result;
-@property (readonly) NSError *error;
-
-@property (copy) void (^completion)(id result, NSError *error);
-
-- (void)finish;
-- (void)finishWithResult:(id)result;
-- (void)reject;
-- (void)rejectWithError:(NSError *)error;
+@property (readonly) id error;
 
 @end
 
 @protocol COSequence <NSObject>
-- (NSOperation <COOperation> *)nextOperationAfterOperation:(NSOperation <COOperation> *)previousOperationOrNil;
+- (NSOperation <COAbstractOperation> *)nextOperationAfterOperation:(NSOperation <COAbstractOperation> *)previousOperationOrNil;
 @end

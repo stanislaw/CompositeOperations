@@ -17,5 +17,16 @@ typedef NS_ENUM(NSUInteger, COOperationErrorCode) {
 
 FOUNDATION_EXPORT NSString *const COOperationErrorKey;
 
+@protocol COOperation <COAbstractOperation>
+
+@property (copy) void (^completion)(id result, NSError *error);
+
+- (void)finish;
+- (void)finishWithResult:(id)result;
+- (void)reject;
+- (void)rejectWithError:(NSError *)error;
+
+@end
+
 @interface COOperation : NSOperation <COOperation>
 @end

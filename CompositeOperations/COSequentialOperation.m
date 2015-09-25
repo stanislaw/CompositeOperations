@@ -14,7 +14,7 @@
 @property (strong, nonatomic) id<COSequence> sequence;
 @property (strong, nonatomic) NSMutableArray *operations;
 
-- (void)runNextOperation:(NSOperation <COOperation> *)lastFinishedOperationOrNil;
+- (void)runNextOperation:(NSOperation <COAbstractOperation> *)lastFinishedOperationOrNil;
 
 @end
 
@@ -49,20 +49,20 @@
     return self;
 }
 
-- (void)runNextOperation:(NSOperation <COOperation> *)lastFinishedOperationOrNil {
+- (void)runNextOperation:(NSOperation <COAbstractOperation> *)lastFinishedOperationOrNil {
     if (self.isCancelled) {
         [self reject];
 
         return;
     }
 
-    NSOperation <COOperation> *nextOperation = [self.sequence nextOperationAfterOperation:lastFinishedOperationOrNil];
+    NSOperation <COAbstractOperation> *nextOperation = [self.sequence nextOperationAfterOperation:lastFinishedOperationOrNil];
 
     if (nextOperation) {
         [self.operations addObject:nextOperation];
 
         __weak COSequentialOperation *weakSelf = self;
-        __weak NSOperation <COOperation> *weakNextOperation = nextOperation;
+        __weak NSOperation <COAbstractOperation> *weakNextOperation = nextOperation;
 
         nextOperation.completionBlock = ^{
             dispatch_async(dispatch_get_main_queue(), ^{
