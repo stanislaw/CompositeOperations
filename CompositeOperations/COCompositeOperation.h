@@ -23,7 +23,7 @@
 
 @end
 
-@interface COCompositeOperation : COAbstractOperation
+@interface COCompositeOperation : COAbstractOperation <COCompositeOperation>
 - (id)initWithOperations:(NSArray *)operations runInParallel:(BOOL)parallel;
 - (id)initWithSequence:(id<COSequence>)sequence;
 @end

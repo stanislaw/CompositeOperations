@@ -22,6 +22,8 @@ NSString *const COCompositeOperationErrorKey = @"COSequentialOperationErrorKey";
 
 @implementation COCompositeOperation
 
+@synthesize completion = _completion;
+
 - (id)init {
     if ([self isMemberOfClass:[COCompositeOperationCluster class]]) {
         @throw [NSException exceptionWithName:COGenericException reason:@"Must use one of designated initializers: initWithOperations:runInParallel: or initiWithSequence:" userInfo:nil];
