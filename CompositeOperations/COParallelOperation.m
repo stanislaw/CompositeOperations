@@ -44,7 +44,7 @@
         self.error = [NSError errorWithDomain:COErrorDomain code:COSimpleOperationErrorCancelled userInfo:nil];
     }
 
-    self.state = COSimpleOperationStateFinished;
+    self.state = COOperationStateFinished;
 
     if (self.completion) {
         self.completion(self.result, self.error);
@@ -60,7 +60,7 @@
         self.error = [NSError errorWithDomain:COErrorDomain code:COSimpleOperationErrorCancelled userInfo:nil];
     }
 
-    self.state = COSimpleOperationStateFinished;
+    self.state = COOperationStateFinished;
 
     if (self.completion) {
         self.completion(nil, self.error);
@@ -76,11 +76,11 @@
 - (void)main {
     dispatch_group_t group = dispatch_group_create();
 
-    for (NSOperation <COAbstractOperation> *operation in self.operations) {
+    for (NSOperation <COOperation> *operation in self.operations) {
         dispatch_group_enter(group);
 
         __weak COParallelOperation *weakSelf = self;
-        __weak NSOperation <COAbstractOperation> *weakOperation = operation;
+        __weak NSOperation <COOperation> *weakOperation = operation;
 
         operation.completionBlock = ^{
             if (weakOperation.result == nil) {
@@ -91,7 +91,7 @@
         };
     }
 
-    for (NSOperation <COAbstractOperation> *operation in self.operations) {
+    for (NSOperation <COOperation> *operation in self.operations) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [operation start];
         });
@@ -105,7 +105,7 @@
 
             __block BOOL allOperationsFinishedSuccessfully = YES;
 
-            [self.operations enumerateObjectsUsingBlock:^(id <COAbstractOperation> operation, NSUInteger idx, BOOL *stop) {
+            [self.operations enumerateObjectsUsingBlock:^(id <COOperation> operation, NSUInteger idx, BOOL *stop) {
                 id result = operation.result;
 
                 if (result) {

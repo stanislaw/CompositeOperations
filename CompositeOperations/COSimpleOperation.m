@@ -33,7 +33,7 @@
         self.error = [NSError errorWithDomain:COErrorDomain code:COSimpleOperationErrorCancelled userInfo:nil];
     }
 
-    self.state = COSimpleOperationStateFinished;
+    self.state = COOperationStateFinished;
 
     if (self.completion) {
         self.completion(self.result, self.error);
@@ -47,7 +47,7 @@
         self.error = [NSError errorWithDomain:COErrorDomain code:COSimpleOperationErrorCancelled userInfo:nil];
     }
 
-    self.state = COSimpleOperationStateFinished;
+    self.state = COOperationStateFinished;
 
     if (self.completion) {
         self.completion(nil, self.error);
@@ -63,7 +63,7 @@
         self.error = [NSError errorWithDomain:COErrorDomain code:COSimpleOperationErrorCancelled userInfo:nil];
     }
 
-    self.state = COSimpleOperationStateFinished;
+    self.state = COOperationStateFinished;
 
     if (self.completion) {
         self.completion(nil, self.error);

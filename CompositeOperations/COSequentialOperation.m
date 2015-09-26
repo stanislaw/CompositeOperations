@@ -16,7 +16,7 @@
 @property (strong, nonatomic) id<COSequence> sequence;
 @property (strong, nonatomic) NSMutableArray *operations;
 
-- (void)runNextOperation:(NSOperation <COAbstractOperation> *)lastFinishedOperationOrNil;
+- (void)runNextOperation:(NSOperation <COOperation> *)lastFinishedOperationOrNil;
 
 @end
 
@@ -55,20 +55,20 @@
     return self;
 }
 
-- (void)runNextOperation:(NSOperation <COAbstractOperation> *)lastFinishedOperationOrNil {
+- (void)runNextOperation:(NSOperation <COOperation> *)lastFinishedOperationOrNil {
     if (self.isCancelled) {
         [self reject];
 
         return;
     }
 
-    NSOperation <COAbstractOperation> *nextOperation = [self.sequence nextOperationAfterOperation:lastFinishedOperationOrNil];
+    NSOperation <COOperation> *nextOperation = [self.sequence nextOperationAfterOperation:lastFinishedOperationOrNil];
 
     if (nextOperation) {
         [self.operations addObject:nextOperation];
 
         __weak COSequentialOperation *weakSelf = self;
-        __weak NSOperation <COAbstractOperation> *weakNextOperation = nextOperation;
+        __weak NSOperation <COOperation> *weakNextOperation = nextOperation;
 
         nextOperation.completionBlock = ^{
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -97,7 +97,7 @@
         self.error = [NSError errorWithDomain:COErrorDomain code:COSimpleOperationErrorCancelled userInfo:nil];
     }
 
-    self.state = COSimpleOperationStateFinished;
+    self.state = COOperationStateFinished;
 
     if (self.completion) {
         self.completion(self.result, self.error);
@@ -113,7 +113,7 @@
         self.error = [NSError errorWithDomain:COErrorDomain code:COSimpleOperationErrorCancelled userInfo:nil];
     }
 
-    self.state = COSimpleOperationStateFinished;
+    self.state = COOperationStateFinished;
 
     if (self.completion) {
         self.completion(nil, self.error);
@@ -148,7 +148,7 @@
     return self;
 }
 
-- (id <COAbstractOperation>)nextOperationAfterOperation:(id <COAbstractOperation>)previousOperationOrNil {
+- (id <COOperation>)nextOperationAfterOperation:(id <COOperation>)previousOperationOrNil {
     if (previousOperationOrNil && previousOperationOrNil.result == nil) {
         return nil;
     }

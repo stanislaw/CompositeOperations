@@ -10,7 +10,7 @@
 #import <CompositeOperations/COTypedefs.h>
 #import <CompositeOperations/COAbstractOperation.h>
 
-@protocol COSimpleOperation <COAbstractOperation>
+@protocol COSimpleOperation <COOperation>
 
 @property (readonly) id result;
 @property (readonly) NSError *error;

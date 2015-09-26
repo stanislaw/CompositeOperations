@@ -21,20 +21,20 @@
 
     if (self == nil) return nil;
 
-    _state = COSimpleOperationStateReady;
+    _state = COOperationStateReady;
 
     return self;
 }
 
-- (COSimpleOperationState)state {
-    COSimpleOperationState state;
+- (COOperationState)state {
+    COOperationState state;
     @synchronized(self) {
         state = _state;
     }
     return state;
 }
 
-- (void)setState:(COSimpleOperationState)state {
+- (void)setState:(COOperationState)state {
     if (COStateTransitionIsValid(self.state, state) == NO) {
         NSString *errMessage = [NSString stringWithFormat:@"%@: transition from %@ to %@ is invalid", self, COKeyPathFromOperationState(self.state), COKeyPathFromOperationState(state)];
 
@@ -62,15 +62,15 @@
 #pragma mark - NSOperation
 
 - (BOOL)isReady {
-    return self.state == COSimpleOperationStateReady && super.isReady;
+    return self.state == COOperationStateReady && super.isReady;
 }
 
 - (BOOL)isExecuting {
-    return self.state == COSimpleOperationStateExecuting;
+    return self.state == COOperationStateExecuting;
 }
 
 - (BOOL)isFinished {
-    return self.state == COSimpleOperationStateFinished;
+    return self.state == COOperationStateFinished;
 }
 
 - (void)main {
@@ -79,7 +79,7 @@
 
 - (void)start {
     if (self.isReady) {
-        self.state = COSimpleOperationStateExecuting;
+        self.state = COOperationStateExecuting;
 
         if (self.isCancelled) {
             [self reject];
@@ -98,7 +98,7 @@
         self.error = [NSError errorWithDomain:COErrorDomain code:COSimpleOperationErrorCancelled userInfo:nil];
     }
 
-    self.state = COSimpleOperationStateFinished;
+    self.state = COOperationStateFinished;
 }
 
 - (void)reject {
@@ -108,7 +108,7 @@
         self.error = [NSError errorWithDomain:COErrorDomain code:COSimpleOperationErrorCancelled userInfo:nil];
     }
 
-    self.state = COSimpleOperationStateFinished;
+    self.state = COOperationStateFinished;
 }
 
 #pragma mark

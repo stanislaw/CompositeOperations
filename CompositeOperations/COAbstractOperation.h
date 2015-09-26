@@ -10,12 +10,5 @@
 #import <Foundation/Foundation.h>
 #import <CompositeOperations/COTypedefs.h>
 
-@protocol COAbstractOperation <NSObject>
-
-@property (readonly) id result;
-@property (readonly) id error;
-
-@end
-
-@interface COAbstractOperation : NSOperation <COAbstractOperation>
+@interface COAbstractOperation : NSOperation <COOperation>
 @end

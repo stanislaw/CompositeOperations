@@ -11,10 +11,10 @@
 #import <CompositeOperations/COAbstractOperation.h>
 
 @protocol COSequence <NSObject>
-- (NSOperation <COAbstractOperation> *)nextOperationAfterOperation:(NSOperation <COAbstractOperation> *)previousOperationOrNil;
+- (NSOperation <COOperation> *)nextOperationAfterOperation:(NSOperation <COOperation> *)previousOperationOrNil;
 @end
 
-@protocol COCompositeOperation <COAbstractOperation>
+@protocol COCompositeOperation <COOperation>
 
 @property (readonly) NSArray *result;
 @property (readonly) NSArray *error;
