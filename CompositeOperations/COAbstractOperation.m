@@ -1,7 +1,7 @@
 //
 // CompositeOperations
 //
-// CompositeOperations/COOperation.m
+// CompositeOperations/COAbstractOperation.m
 //
 // Copyright (c) 2014 Stanislaw Pankevich
 // Released under the MIT license
