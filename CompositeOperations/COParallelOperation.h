@@ -9,7 +9,7 @@
 
 #import <CompositeOperations/COCompositeOperation.h>
 
-@interface COParallelOperation : COCompositeOperation <COCompositeOperation>
+@interface COParallelOperation : COCompositeOperation
 - (id)initWithOperations:(NSArray *)operations NS_DESIGNATED_INITIALIZER;
 - (id)initWithOperations:(NSArray *)operations runInParallel:(BOOL)parallel NS_UNAVAILABLE;
 - (id)init NS_UNAVAILABLE;
