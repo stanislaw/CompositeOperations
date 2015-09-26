@@ -14,7 +14,7 @@
 
 NSString *const COCompositeOperationErrorKey = @"COSequentialOperationErrorKey";
 
-@interface COCompositeOperationCluster : COCompositeOperation
+@interface __COCompositeOperation : COCompositeOperation
 @end
 
 #pragma clang diagnostic push
@@ -25,7 +25,7 @@ NSString *const COCompositeOperationErrorKey = @"COSequentialOperationErrorKey";
 @synthesize completion = _completion;
 
 - (id)init {
-    if ([self isMemberOfClass:[COCompositeOperationCluster class]]) {
+    if ([self isMemberOfClass:[__COCompositeOperation class]]) {
         @throw [NSException exceptionWithName:COGenericException reason:@"Must use one of designated initializers: initWithOperations:runInParallel: or initiWithSequence:" userInfo:nil];
     }
 
@@ -37,11 +37,11 @@ NSString *const COCompositeOperationErrorKey = @"COSequentialOperationErrorKey";
         return [super allocWithZone:zone];
     }
 
-    static COCompositeOperationCluster *classCluster = nil;
+    static __COCompositeOperation *classCluster = nil;
 
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        classCluster = [COCompositeOperationCluster alloc];
+        classCluster = [__COCompositeOperation alloc];
     });
 
     return classCluster;
@@ -51,7 +51,7 @@ NSString *const COCompositeOperationErrorKey = @"COSequentialOperationErrorKey";
 
 #pragma clang diagnostic pop
 
-@implementation COCompositeOperationCluster
+@implementation __COCompositeOperation
 
 - (id)initWithSequence:(id<COSequence>)sequence {
     NSParameterAssert(sequence);
