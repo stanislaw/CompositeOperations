@@ -1,7 +1,7 @@
 //
 // CompositeOperations
 //
-// CompositeOperations/COOperation.h
+// CompositeOperations/COSimpleOperation.h
 //
 // Copyright (c) 2014 Stanislaw Pankevich
 // Released under the MIT license
@@ -10,7 +10,7 @@
 #import <CompositeOperations/COTypedefs.h>
 #import <CompositeOperations/COAbstractOperation.h>
 
-@protocol COOperation <COAbstractOperation>
+@protocol COSimpleOperation <COAbstractOperation>
 
 @property (readonly) id result;
 @property (readonly) NSError *error;
@@ -24,5 +24,5 @@
 
 @end
 
-@interface COOperation : COAbstractOperation <COOperation>
+@interface COSimpleOperation : COAbstractOperation <COSimpleOperation>
 @end

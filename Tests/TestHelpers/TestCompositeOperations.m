@@ -8,12 +8,12 @@
 
 #import "TestCompositeOperations.h"
 #import "TestOperations.h"
-#import "COOperation.h"
+#import "COSimpleOperation.h"
 #import "COSequentialOperation.h"
 
 @implementation Sequence_ThreeTrivialGreenOperations
 
-- (COOperation *)nextOperationAfterOperation:(COOperation *)previousOperationOrNil {
+- (COSimpleOperation *)nextOperationAfterOperation:(COSimpleOperation *)previousOperationOrNil {
 
     if (self.numberOfOperations < 3) {
         self.numberOfOperations++;
@@ -30,7 +30,7 @@
 
 @implementation Sequence_FirstOperationRejects
 
-- (COOperation *)nextOperationAfterOperation:(COOperation *)previousOperationOrNil {
+- (COSimpleOperation *)nextOperationAfterOperation:(COSimpleOperation *)previousOperationOrNil {
     if (previousOperationOrNil == nil) {
         self.numberOfOperations++;
 
@@ -48,7 +48,7 @@
 
 @implementation Sequence_FirstOperationRejects_3Attempts
 
-- (COOperation *)nextOperationAfterOperation:(COOperation *)previousOperationOrNil {
+- (COSimpleOperation *)nextOperationAfterOperation:(COSimpleOperation *)previousOperationOrNil {
     if (previousOperationOrNil == nil) {
         self.numberOfOperations++;
 

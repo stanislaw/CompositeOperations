@@ -21,20 +21,20 @@
 
     if (self == nil) return nil;
 
-    _state = COOperationStateReady;
+    _state = COSimpleOperationStateReady;
 
     return self;
 }
 
-- (COOperationState)state {
-    COOperationState state;
+- (COSimpleOperationState)state {
+    COSimpleOperationState state;
     @synchronized(self) {
         state = _state;
     }
     return state;
 }
 
-- (void)setState:(COOperationState)state {
+- (void)setState:(COSimpleOperationState)state {
     if (COStateTransitionIsValid(self.state, state) == NO) {
         NSString *errMessage = [NSString stringWithFormat:@"%@: transition from %@ to %@ is invalid", self, COKeyPathFromOperationState(self.state), COKeyPathFromOperationState(state)];
 
@@ -62,15 +62,15 @@
 #pragma mark - NSOperation
 
 - (BOOL)isReady {
-    return self.state == COOperationStateReady && super.isReady;
+    return self.state == COSimpleOperationStateReady && super.isReady;
 }
 
 - (BOOL)isExecuting {
-    return self.state == COOperationStateExecuting;
+    return self.state == COSimpleOperationStateExecuting;
 }
 
 - (BOOL)isFinished {
-    return self.state == COOperationStateFinished;
+    return self.state == COSimpleOperationStateFinished;
 }
 
 - (void)main {
@@ -79,7 +79,7 @@
 
 - (void)start {
     if (self.isReady) {
-        self.state = COOperationStateExecuting;
+        self.state = COSimpleOperationStateExecuting;
 
         if (self.isCancelled) {
             [self reject];
@@ -89,26 +89,26 @@
     }
 }
 
-#pragma mark - <COOperation>
+#pragma mark - <COSimpleOperation>
 
 - (void)finish {
     if (self.isCancelled == NO) {
         self.result = [NSNull null];
     } else {
-        self.error = [NSError errorWithDomain:COErrorDomain code:COOperationErrorCancelled userInfo:nil];
+        self.error = [NSError errorWithDomain:COErrorDomain code:COSimpleOperationErrorCancelled userInfo:nil];
     }
 
-    self.state = COOperationStateFinished;
+    self.state = COSimpleOperationStateFinished;
 }
 
 - (void)reject {
     if (self.isCancelled == NO) {
-        self.error = [NSError errorWithDomain:COErrorDomain code:COOperationErrorRejected userInfo:nil];
+        self.error = [NSError errorWithDomain:COErrorDomain code:COSimpleOperationErrorRejected userInfo:nil];
     } else {
-        self.error = [NSError errorWithDomain:COErrorDomain code:COOperationErrorCancelled userInfo:nil];
+        self.error = [NSError errorWithDomain:COErrorDomain code:COSimpleOperationErrorCancelled userInfo:nil];
     }
 
-    self.state = COOperationStateFinished;
+    self.state = COSimpleOperationStateFinished;
 }
 
 #pragma mark

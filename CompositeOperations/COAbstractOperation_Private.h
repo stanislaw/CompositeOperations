@@ -9,23 +9,23 @@
 
 #import <CompositeOperations/COAbstractOperation.h>
 
-typedef NS_ENUM(NSInteger, COOperationState) {
-    COOperationStateReady = 0,
-    COOperationStateExecuting = 1,
-    COOperationStateFinished = 2
+typedef NS_ENUM(NSInteger, COSimpleOperationState) {
+    COSimpleOperationStateReady = 0,
+    COSimpleOperationStateExecuting = 1,
+    COSimpleOperationStateFinished = 2
 };
 
-static inline NSString *COKeyPathFromOperationState(COOperationState state) {
+static inline NSString *COKeyPathFromOperationState(COSimpleOperationState state) {
     switch (state) {
-        case COOperationStateReady: {
+        case COSimpleOperationStateReady: {
             return @"isReady";
         }
 
-        case COOperationStateExecuting: {
+        case COSimpleOperationStateExecuting: {
             return @"isExecuting";
         }
 
-        case COOperationStateFinished: {
+        case COSimpleOperationStateFinished: {
             return @"isFinished";
         }
 
@@ -35,21 +35,21 @@ static inline NSString *COKeyPathFromOperationState(COOperationState state) {
     }
 }
 
-static inline int COStateTransitionIsValid(COOperationState fromState, COOperationState toState) {
+static inline int COStateTransitionIsValid(COSimpleOperationState fromState, COSimpleOperationState toState) {
     switch (fromState) {
-        case COOperationStateReady: {
+        case COSimpleOperationStateReady: {
             return YES;
         }
 
-        case COOperationStateExecuting: {
-            if (toState == COOperationStateFinished) {
+        case COSimpleOperationStateExecuting: {
+            if (toState == COSimpleOperationStateFinished) {
                 return YES;
             } else {
                 return NO;
             }
         }
 
-        case COOperationStateFinished: {
+        case COSimpleOperationStateFinished: {
             return NO;
         }
 
@@ -61,7 +61,7 @@ static inline int COStateTransitionIsValid(COOperationState fromState, COOperati
 
 @interface COAbstractOperation ()
 
-@property (assign, nonatomic) COOperationState state;
+@property (assign, nonatomic) COSimpleOperationState state;
 
 @property (strong, nonatomic) id result;
 @property (strong, nonatomic) id error;

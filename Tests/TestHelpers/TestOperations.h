@@ -8,16 +8,16 @@
 
 #import <CompositeOperations/CompositeOperations.h>
 
-@interface OperationTriviallyReturningNull : COOperation
+@interface OperationTriviallyReturningNull : COSimpleOperation
 @end
 
-@interface OperationTakingArrayAndAdding1ToIt : COOperation
+@interface OperationTakingArrayAndAdding1ToIt : COSimpleOperation
 - (id)initWithArray:(NSArray *)array;
 @end
 
-@interface OperationRejectingItself : COOperation
+@interface OperationRejectingItself : COSimpleOperation
 @end
 
-@interface OperationRejectingItselfWithError : COOperation
+@interface OperationRejectingItselfWithError : COSimpleOperation
 - (id)initWithError:(NSError *)error;
 @end

@@ -3,15 +3,15 @@
 
 #import <CompositeOperations/CompositeOperations.h>
 
-SPEC_BEGIN(COOperationTests)
+SPEC_BEGIN(COSimpleOperationTests)
 
-describe(@"COOperation", ^{
+describe(@"COSimpleOperation", ^{
     describe(@"NSOperation-inherited behavior", ^{
         describe(@"-finish without -start", ^{
             it(@"triggers completion block", ^{
                 __block BOOL isFinished = NO;
 
-                COOperation *operation = [COOperation new];
+                COSimpleOperation *operation = [COSimpleOperation new];
 
                 operation.completionBlock = ^{
                     isFinished = YES;
@@ -30,7 +30,7 @@ describe(@"COOperation", ^{
     describe(@"-cancel", ^{
         describe(@"-cancel before start", ^{
             it(@"finish operation with default cancellation error", ^{
-                COOperation *operation = [COOperation new];
+                COSimpleOperation *operation = [COSimpleOperation new];
 
                 [operation cancel];
 
@@ -44,7 +44,7 @@ describe(@"COOperation", ^{
 
                 [[operation.result should] beNil];
 
-                NSError *expectedError = [NSError errorWithDomain:COErrorDomain code:COOperationErrorCancelled userInfo:nil];
+                NSError *expectedError = [NSError errorWithDomain:COErrorDomain code:COSimpleOperationErrorCancelled userInfo:nil];
 
                 [[operation.error should] equal:expectedError];
             });
@@ -58,7 +58,7 @@ describe(@"COOperation", ^{
 
                 __block id expectedResult = nil;
 
-                COOperation *operation = [OperationTriviallyReturningNull new];
+                COSimpleOperation *operation = [OperationTriviallyReturningNull new];
 
                 operation.completion = ^(id result, NSError *error) {
                     expectedResult = result;
@@ -85,7 +85,7 @@ describe(@"COOperation", ^{
 
                 NSError *givenError = [NSError errorWithDomain:NSInternalInconsistencyException code:200 userInfo:nil];
 
-                COOperation *operation = [[OperationRejectingItselfWithError alloc] initWithError:givenError];
+                COSimpleOperation *operation = [[OperationRejectingItselfWithError alloc] initWithError:givenError];
 
                 operation.completion = ^(id result, NSError *error) {
                     expectedResult = result;
