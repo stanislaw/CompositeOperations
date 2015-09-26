@@ -13,7 +13,7 @@
 
 @interface COParallelOperation ()
 
-@property (readonly, nonatomic) NSArray *operations;
+@property (readonly, nonatomic) NSArray <NSOperation <COOperation> *> *operations;
 
 - (void)cancelAllOperations;
 
@@ -25,7 +25,7 @@
 
 #pragma mark - COParallelOperation
 
-- (id)initWithOperations:(NSArray *)operations {
+- (id)initWithOperations:(NSArray <NSOperation <COOperation> *> *)operations {
     self = [super init];
 
     if (self == nil) return nil;

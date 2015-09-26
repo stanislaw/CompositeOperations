@@ -59,7 +59,7 @@ NSString *const COCompositeOperationErrorKey = @"COSequentialOperationErrorKey";
     return (id)[[COSequentialOperation alloc] initWithSequence:sequence];
 }
 
-- (id)initWithOperations:(NSArray *)operations runInParallel:(BOOL)parallel {
+- (id)initWithOperations:(NSArray <NSOperation <COOperation> *> *)operations runInParallel:(BOOL)parallel {
     if (parallel) {
         return (id)[[COParallelOperation alloc] initWithOperations:operations];
     } else {

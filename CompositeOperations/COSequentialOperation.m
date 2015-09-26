@@ -14,14 +14,14 @@
 @interface COSequentialOperation ()
 
 @property (strong, nonatomic) id<COSequence> sequence;
-@property (strong, nonatomic) NSMutableArray *operations;
+@property (readonly, nonatomic) NSMutableArray <NSOperation <COOperation> *> *operations;
 
 - (void)runNextOperation:(NSOperation <COOperation> *)lastFinishedOperationOrNil;
 
 @end
 
 @interface COSimpleSequence : NSObject <COSequence>
-- (id)initWithOperations:(NSArray *)operations;
+- (id)initWithOperations:(NSArray <NSOperation <COOperation> *> *)operations;
 @end
 
 @implementation COSequentialOperation
@@ -43,7 +43,7 @@
     return self;
 }
 
-- (id)initWithOperations:(NSArray *)operations {
+- (id)initWithOperations:(NSArray <NSOperation <COOperation> *> *)operations {
     NSParameterAssert(operations);
 
     COSimpleSequence *sequence = [[COSimpleSequence alloc] initWithOperations:operations];
@@ -135,7 +135,7 @@
 
 @implementation COSimpleSequence
 
-- (id)initWithOperations:(NSArray *)operations {
+- (id)initWithOperations:(NSArray <NSOperation <COOperation> *> *)operations {
     NSParameterAssert(operations);
 
     self = [super init];

@@ -17,13 +17,13 @@
 @protocol COCompositeOperation <COOperation>
 
 @property (readonly) NSArray *result;
-@property (readonly) NSArray *error;
+@property (readonly) NSArray <NSError *> *error;
 
-@property (copy) void (^completion)(NSArray *results, NSArray *errors);
+@property (copy) void (^completion)(NSArray *results, NSArray <NSError *> *errors);
 
 @end
 
 @interface COCompositeOperation : COAbstractOperation <COCompositeOperation>
-- (id)initWithOperations:(NSArray *)operations runInParallel:(BOOL)parallel;
+- (id)initWithOperations:(NSArray <NSOperation <COOperation> *> *)operations runInParallel:(BOOL)parallel;
 - (id)initWithSequence:(id<COSequence>)sequence;
 @end
