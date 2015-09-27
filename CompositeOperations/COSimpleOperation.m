@@ -18,6 +18,9 @@
 
 @synthesize completion = _completion;
 
+@dynamic result;
+@dynamic error;
+
 #pragma mark - <COSimpleOperation>
 
 - (void)finish {

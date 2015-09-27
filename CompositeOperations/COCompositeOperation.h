@@ -14,16 +14,16 @@
 - (NSOperation <COOperation> *)nextOperationAfterOperation:(NSOperation <COOperation> *)previousOperationOrNil;
 @end
 
-@protocol COCompositeOperation <COOperation>
+@interface COCompositeOperation : COAbstractOperation
 
 @property (readonly) NSArray *result;
 @property (readonly) NSArray <NSError *> *error;
 
 @property (copy) void (^completion)(NSArray *results, NSArray <NSError *> *errors);
 
-@end
+- (id)initWithOperations:(NSArray <NSOperation <COOperation> *> *)operations
+           runInParallel:(BOOL)parallel;
 
-@interface COCompositeOperation : COAbstractOperation <COCompositeOperation>
-- (id)initWithOperations:(NSArray <NSOperation <COOperation> *> *)operations runInParallel:(BOOL)parallel;
 - (id)initWithSequence:(id<COSequence>)sequence;
+
 @end
