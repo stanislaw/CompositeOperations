@@ -3,17 +3,17 @@
 #import "TestOperations.h"
 #import "TestCompositeOperations.h"
 
-#import "COSequentialOperation.h"
+#import "__COSequentialOperation.h"
 
-SPEC_BEGIN(COSequentialOperationSpec)
+SPEC_BEGIN(__COSequentialOperationSpec)
 
-describe(@"COSequentialOperationSpec", ^{
+describe(@"__COSequentialOperationSpec", ^{
 
     describe(@"-initWithSequence:", ^{
         it(@"should run composite operation", ^{
             dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
 
-            COSequentialOperation *sequentialOperation = [[COSequentialOperation alloc] initWithSequence:[Sequence_ThreeTrivialGreenOperations new]];
+            __COSequentialOperation *sequentialOperation = [[__COSequentialOperation alloc] initWithSequence:[Sequence_ThreeTrivialGreenOperations new]];
 
             sequentialOperation.completionBlock = ^{
                 dispatch_semaphore_signal(waitSemaphore);
@@ -36,11 +36,11 @@ describe(@"COSequentialOperationSpec", ^{
             [[sequentialOperation.result should] equal: expectedResult];
         });
 
-        describe(@"COSequentialOperationSpec - Rejection", ^{
+        describe(@"__COSequentialOperationSpec - Rejection", ^{
             it(@"should run composite operation", ^{
                 dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
 
-                COSequentialOperation *sequentialOperation = [[COSequentialOperation alloc] initWithSequence:[Sequence_FirstOperationRejects new]];
+                __COSequentialOperation *sequentialOperation = [[__COSequentialOperation alloc] initWithSequence:[Sequence_FirstOperationRejects new]];
 
                 sequentialOperation.completionBlock = ^{
                     dispatch_semaphore_signal(waitSemaphore);
@@ -63,11 +63,11 @@ describe(@"COSequentialOperationSpec", ^{
             });
         });
 
-        describe(@"COSequentialOperationSpec - Rejection - 3 Attempts", ^{
+        describe(@"__COSequentialOperationSpec - Rejection - 3 Attempts", ^{
             it(@"should run composite operation", ^{
                 dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
 
-                COSequentialOperation *sequentialOperation = [[COSequentialOperation alloc] initWithSequence:[Sequence_FirstOperationRejects_3Attempts new]];
+                __COSequentialOperation *sequentialOperation = [[__COSequentialOperation alloc] initWithSequence:[Sequence_FirstOperationRejects_3Attempts new]];
 
                 sequentialOperation.completionBlock = ^{
                     dispatch_semaphore_signal(waitSemaphore);
@@ -103,7 +103,7 @@ describe(@"COSequentialOperationSpec", ^{
                                         [OperationTriviallyReturningNull new]
                                         ];
 
-                COSequentialOperation *sequentialOperation = [[COSequentialOperation alloc] initWithOperations:operations];
+                __COSequentialOperation *sequentialOperation = [[__COSequentialOperation alloc] initWithOperations:operations];
 
                 sequentialOperation.completionBlock = ^{
                     dispatch_semaphore_signal(waitSemaphore);
@@ -127,7 +127,7 @@ describe(@"COSequentialOperationSpec", ^{
             });
         });
 
-        describe(@"COSequentialOperationSpec - Rejection (first operation produces error)", ^{
+        describe(@"__COSequentialOperationSpec - Rejection (first operation produces error)", ^{
             it(@"should stop running after first operation", ^{
                 dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
 
@@ -136,7 +136,7 @@ describe(@"COSequentialOperationSpec", ^{
                     [OperationTriviallyReturningNull new],
                 ];
 
-                COSequentialOperation *sequentialOperation = [[COSequentialOperation alloc] initWithOperations:operations];
+                __COSequentialOperation *sequentialOperation = [[__COSequentialOperation alloc] initWithOperations:operations];
 
                 sequentialOperation.completionBlock = ^{
                     dispatch_semaphore_signal(waitSemaphore);

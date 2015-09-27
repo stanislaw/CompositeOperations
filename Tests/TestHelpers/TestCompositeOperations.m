@@ -9,7 +9,7 @@
 #import "TestCompositeOperations.h"
 #import "TestOperations.h"
 #import "COSimpleOperation.h"
-#import "COSequentialOperation.h"
+#import "__COSequentialOperation.h"
 
 @implementation Sequence_ThreeTrivialGreenOperations
 

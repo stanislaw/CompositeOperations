@@ -2,20 +2,20 @@
 #import "TestHelpers.h"
 #import "TestOperations.h"
 
-#import "COParallelOperation.h"
+#import "__COParallelOperation.h"
 
 #import "TestCompositeOperations.h"
 
-@interface ParallelCompositeOperation1 : COParallelOperation
+@interface ParallelCompositeOperation1 : __COParallelOperation
 @property (assign, nonatomic) NSUInteger numberOfOperations;
 @end
 
 @implementation ParallelCompositeOperation1
 @end
 
-SPEC_BEGIN(COParallelOperationSpec)
+SPEC_BEGIN(__COParallelOperationSpec)
 
-describe(@"COParallelOperationSpec", ^{
+describe(@"__COParallelOperationSpec", ^{
     it(@"", ^{
         dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
 
@@ -45,7 +45,7 @@ describe(@"COParallelOperationSpec", ^{
     });
 });
 
-describe(@"COParallelOperationSpec - Rejection", ^{
+describe(@"__COParallelOperationSpec - Rejection", ^{
     it(@"", ^{
         dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
 

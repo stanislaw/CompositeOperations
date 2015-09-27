@@ -1,17 +1,17 @@
 //
 // CompositeOperations
 //
-// CompositeOperations/COParallelOperation.m
+// CompositeOperations/__COParallelOperation.m
 //
 // Copyright (c) 2014 Stanislaw Pankevich
 // Released under the MIT license
 //
 
-#import "COParallelOperation.h"
+#import "__COParallelOperation.h"
 
 #import "COAbstractOperation_Private.h"
 
-@interface COParallelOperation ()
+@interface __COParallelOperation ()
 
 @property (readonly, nonatomic) NSArray <NSOperation <COOperation> *> *operations;
 
@@ -19,11 +19,9 @@
 
 @end
 
-@implementation COParallelOperation
+@implementation __COParallelOperation
 
-@synthesize completion = _completion;
-
-#pragma mark - COParallelOperation
+#pragma mark - __COParallelOperation
 
 - (id)initWithOperations:(NSArray <NSOperation <COOperation> *> *)operations {
     self = [super init];
@@ -79,7 +77,7 @@
     for (NSOperation <COOperation> *operation in self.operations) {
         dispatch_group_enter(group);
 
-        __weak COParallelOperation *weakSelf = self;
+        __weak __COParallelOperation *weakSelf = self;
         __weak NSOperation <COOperation> *weakOperation = operation;
 
         operation.completionBlock = ^{
@@ -126,6 +124,18 @@
             }
         }
     });
+}
+
+#pragma mark - NSObject
+
+- (NSString *)debugDescription {
+    NSMutableArray *descriptionComponents = [NSMutableArray array];
+
+    [descriptionComponents addObject:[NSString stringWithFormat:@"name = %@; state = %@; isCancelled = %@; operations = %@; result = %@; error = %@", self.name, COKeyPathFromOperationState(self.state), self.isCancelled ? @"YES" : @"NO", self.operations, self.result, self.error]];
+
+    NSString *description = [NSString stringWithFormat:@"<%@: %p (%@)>", NSStringFromClass([self class]), self, [descriptionComponents componentsJoinedByString:@"; "]];
+
+    return description;
 }
 
 @end

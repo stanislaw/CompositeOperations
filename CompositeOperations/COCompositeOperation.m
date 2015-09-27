@@ -9,10 +9,10 @@
 
 #import <CompositeOperations/COCompositeOperation.h>
 
-#import "COSequentialOperation.h"
-#import "COParallelOperation.h"
+#import "__COSequentialOperation.h"
+#import "__COParallelOperation.h"
 
-NSString *const COCompositeOperationErrorKey = @"COSequentialOperationErrorKey";
+NSString *const COCompositeOperationErrorKey = @"__COSequentialOperationErrorKey";
 
 @interface __COCompositeOperation : COCompositeOperation
 @end
@@ -59,14 +59,14 @@ NSString *const COCompositeOperationErrorKey = @"COSequentialOperationErrorKey";
 - (id)initWithSequence:(id<COSequence>)sequence {
     NSParameterAssert(sequence);
 
-    return (id)[[COSequentialOperation alloc] initWithSequence:sequence];
+    return (id)[[__COSequentialOperation alloc] initWithSequence:sequence];
 }
 
 - (id)initWithOperations:(NSArray <NSOperation <COOperation> *> *)operations runInParallel:(BOOL)parallel {
     if (parallel) {
-        return (id)[[COParallelOperation alloc] initWithOperations:operations];
+        return (id)[[__COParallelOperation alloc] initWithOperations:operations];
     } else {
-        return (id)[[COSequentialOperation alloc] initWithOperations:operations];
+        return (id)[[__COSequentialOperation alloc] initWithOperations:operations];
     }
 }
 

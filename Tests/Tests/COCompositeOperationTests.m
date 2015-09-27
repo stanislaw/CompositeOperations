@@ -2,6 +2,8 @@
 #import "TestHelpers.h"
 #import "TestOperations.h"
 #import "TestCompositeOperations.h"
+#import "__COSequentialOperation.h"
+#import "__COParallelOperation.h"
 
 SPEC_BEGIN(COCompositeOperationSpec)
 
@@ -15,10 +17,10 @@ describe(@"COCompositeOperation", ^{
     });
 
     describe(@"-initWithSequence", ^{
-        it(@"should be of class COSequentialOperation", ^{
+        it(@"should be of class __COSequentialOperation", ^{
             COCompositeOperation *sequentialOperation = [[COCompositeOperation alloc] initWithSequence:[Sequence_ThreeTrivialGreenOperations new]];
 
-            [[sequentialOperation should] beKindOfClass:[COCompositeOperation class]];
+            [[sequentialOperation should] beKindOfClass:[__COSequentialOperation class]];
         });
 
         it(@"should run composite operation", ^{
@@ -47,7 +49,7 @@ describe(@"COCompositeOperation", ^{
     });
 
     describe(@"-initWithOperations:inParallel:(NO)", ^{
-        it(@"should be of class COSequentialOperation", ^{
+        it(@"should be of class __COSequentialOperation", ^{
             NSArray *operations = @[
                                     [OperationTriviallyReturningNull new],
                                     [OperationTriviallyReturningNull new],
@@ -94,7 +96,7 @@ describe(@"COCompositeOperation", ^{
     });
 
     describe(@"-initWithOperations:inParallel:(YES)", ^{
-        it(@"should be of class COParallelOperation", ^{
+        it(@"should be of class __COParallelOperation", ^{
             NSArray *operations = @[
                 [OperationTriviallyReturningNull new],
                 [OperationTriviallyReturningNull new],
@@ -103,7 +105,7 @@ describe(@"COCompositeOperation", ^{
 
             COCompositeOperation *parallelOperation = [[COCompositeOperation alloc] initWithOperations:operations runInParallel:YES];
 
-            [[parallelOperation should] beKindOfClass:[COCompositeOperation class]];
+            [[parallelOperation should] beKindOfClass:[__COParallelOperation class]];
         });
 
         it(@"should run composite operation", ^{
@@ -115,23 +117,23 @@ describe(@"COCompositeOperation", ^{
                                     [OperationTriviallyReturningNull new],
                                     ];
 
-            COCompositeOperation *sequentialOperation = [[COCompositeOperation alloc] initWithOperations:operations runInParallel:YES];
+            COCompositeOperation *parallelOperation = [[COCompositeOperation alloc] initWithOperations:operations runInParallel:YES];
 
-            NSAssert(sequentialOperation, nil);
+            NSAssert(parallelOperation, nil);
 
-            sequentialOperation.completionBlock = ^{
+            parallelOperation.completionBlock = ^{
                 dispatch_semaphore_signal(waitSemaphore);
             };
 
-            [sequentialOperation start];
+            [parallelOperation start];
 
             while (dispatch_semaphore_wait(waitSemaphore, DISPATCH_TIME_NOW)) {
                 CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
             }
             
-            [[theValue(sequentialOperation.isFinished) should] beYes];
+            [[theValue(parallelOperation.isFinished) should] beYes];
             
-            [[sequentialOperation.result should] equal:@[ [NSNull null], [NSNull null], [NSNull null] ]];
+            [[parallelOperation.result should] equal:@[ [NSNull null], [NSNull null], [NSNull null] ]];
         });
     });
 });

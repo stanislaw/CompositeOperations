@@ -1,17 +1,17 @@
 //
 // CompositeOperations
 //
-// CompositeOperations/COSequentialOperation.m
+// CompositeOperations/__COSequentialOperation.m
 //
 // Copyright (c) 2014 Stanislaw Pankevich
 // Released under the MIT license
 //
 
-#import "COSequentialOperation.h"
+#import "__COSequentialOperation.h"
 
 #import "COAbstractOperation_Private.h"
 
-@interface COSequentialOperation ()
+@interface __COSequentialOperation ()
 
 @property (strong, nonatomic) id<COSequence> sequence;
 @property (readonly, nonatomic) NSMutableArray <NSOperation <COOperation> *> *operations;
@@ -24,11 +24,9 @@
 - (id)initWithOperations:(NSArray <NSOperation <COOperation> *> *)operations;
 @end
 
-@implementation COSequentialOperation
+@implementation __COSequentialOperation
 
-@synthesize completion = _completion;
-
-#pragma mark - <COSequentialOperation>
+#pragma mark - <__COSequentialOperation>
 
 - (id)initWithSequence:(id<COSequence>)sequence {
     NSParameterAssert([sequence conformsToProtocol:@protocol(COSequence)]);
@@ -67,7 +65,7 @@
     if (nextOperation) {
         [self.operations addObject:nextOperation];
 
-        __weak COSequentialOperation *weakSelf = self;
+        __weak __COSequentialOperation *weakSelf = self;
         __weak NSOperation <COOperation> *weakNextOperation = nextOperation;
 
         nextOperation.completionBlock = ^{
@@ -118,6 +116,18 @@
     if (self.completion) {
         self.completion(nil, self.error);
     }
+}
+
+#pragma mark - NSObject
+
+- (NSString *)debugDescription {
+    NSMutableArray *descriptionComponents = [NSMutableArray array];
+
+    [descriptionComponents addObject:[NSString stringWithFormat:@"name = %@; state = %@; isCancelled = %@; operations = %@; result = %@; error = %@", self.name, COKeyPathFromOperationState(self.state), self.isCancelled ? @"YES" : @"NO", self.operations, self.result, self.error]];
+
+    NSString *description = [NSString stringWithFormat:@"<%@: %p (%@)>", NSStringFromClass([self class]), self, [descriptionComponents componentsJoinedByString:@"; "]];
+
+    return description;
 }
 
 #pragma mark - NSOperation
