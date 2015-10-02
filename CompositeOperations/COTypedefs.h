@@ -12,8 +12,8 @@
 FOUNDATION_EXPORT NSString *const COErrorDomain;
 FOUNDATION_EXPORT NSString *const COGenericException;
 
-typedef NS_ENUM(NSUInteger, COSimpleOperationErrorCode) {
-    COSimpleOperationErrorRejected = 0,
-    COSimpleOperationErrorCancelled
+typedef NS_ENUM(NSUInteger, COOperationErrorCode) {
+    COOperationErrorRejected = 0,
+    COOperationErrorCancelled
 };
 

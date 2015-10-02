@@ -95,7 +95,7 @@
     if (self.isCancelled == NO) {
         self.result = [NSNull null];
     } else {
-        self.error = [NSError errorWithDomain:COErrorDomain code:COSimpleOperationErrorCancelled userInfo:nil];
+        self.error = [NSError errorWithDomain:COErrorDomain code:COOperationErrorCancelled userInfo:nil];
     }
 
     self.state = COOperationStateFinished;
@@ -103,9 +103,9 @@
 
 - (void)reject {
     if (self.isCancelled == NO) {
-        self.error = [NSError errorWithDomain:COErrorDomain code:COSimpleOperationErrorRejected userInfo:nil];
+        self.error = [NSError errorWithDomain:COErrorDomain code:COOperationErrorRejected userInfo:nil];
     } else {
-        self.error = [NSError errorWithDomain:COErrorDomain code:COSimpleOperationErrorCancelled userInfo:nil];
+        self.error = [NSError errorWithDomain:COErrorDomain code:COOperationErrorCancelled userInfo:nil];
     }
 
     self.state = COOperationStateFinished;

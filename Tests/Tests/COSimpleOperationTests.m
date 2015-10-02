@@ -44,7 +44,7 @@ describe(@"COSimpleOperation", ^{
 
                 [[operation.result should] beNil];
 
-                NSError *expectedError = [NSError errorWithDomain:COErrorDomain code:COSimpleOperationErrorCancelled userInfo:nil];
+                NSError *expectedError = [NSError errorWithDomain:COErrorDomain code:COOperationErrorCancelled userInfo:nil];
 
                 [[operation.error should] equal:expectedError];
             });

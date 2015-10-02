@@ -73,7 +73,7 @@ describe(@"__COParallelOperationSpec - Rejection", ^{
 
         NSError *parallelOperationOnlyError = parallelOperation.error.firstObject;
 
-        NSError *expectedOperationError = [NSError errorWithDomain:COErrorDomain code:COSimpleOperationErrorRejected userInfo:nil];
+        NSError *expectedOperationError = [NSError errorWithDomain:COErrorDomain code:COOperationErrorRejected userInfo:nil];
 
         [[parallelOperationOnlyError should] equal:expectedOperationError];
     });

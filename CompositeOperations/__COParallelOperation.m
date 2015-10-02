@@ -39,7 +39,7 @@
     if (self.isCancelled == NO) {
         self.result = result;
     } else {
-        self.error = [NSError errorWithDomain:COErrorDomain code:COSimpleOperationErrorCancelled userInfo:nil];
+        self.error = [NSError errorWithDomain:COErrorDomain code:COOperationErrorCancelled userInfo:nil];
     }
 
     self.state = COOperationStateFinished;
@@ -55,7 +55,7 @@
 
         self.error = errors;
     } else {
-        self.error = [NSError errorWithDomain:COErrorDomain code:COSimpleOperationErrorCancelled userInfo:nil];
+        self.error = [NSError errorWithDomain:COErrorDomain code:COOperationErrorCancelled userInfo:nil];
     }
 
     self.state = COOperationStateFinished;
