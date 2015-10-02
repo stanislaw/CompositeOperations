@@ -9,10 +9,7 @@
 
 #import <CompositeOperations/COTypedefs.h>
 #import <CompositeOperations/COAbstractOperation.h>
-
-@protocol COSequence <NSObject>
-- (NSOperation <COOperation> *)nextOperationAfterOperation:(NSOperation <COOperation> *)previousOperationOrNil;
-@end
+#import <CompositeOperations/COSequence.h>
 
 @interface COCompositeOperation : COAbstractOperation
 

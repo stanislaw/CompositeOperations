@@ -17,10 +17,3 @@ typedef NS_ENUM(NSUInteger, COSimpleOperationErrorCode) {
     COSimpleOperationErrorCancelled
 };
 
-@protocol COOperation <NSObject>
-
-@property (readonly) id result;
-@property (readonly) id error;
-
-@end
-
