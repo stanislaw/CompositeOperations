@@ -8,6 +8,10 @@
 
 #import "ViewController.h"
 
+#import "OperationsRepository.h"
+
+#import "CompositeOperations.h"
+
 @interface ViewController ()
 
 @end
@@ -16,12 +20,22 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
-}
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    NSString *githubUser = @"facebook";
+
+    COCompositeOperation *githubUserIssuesOperation = [[OperationsRepository new] githubUserIssues:githubUser];
+
+    githubUserIssuesOperation.completion = ^(NSArray *results, NSArray *errors) {
+        if (results) {
+            id finalResult = results.lastObject;
+
+            NSLog(@"%@", finalResult);
+        } else {
+            NSLog(@"%@", errors);
+        }
+    };
+
+    [[NSOperationQueue mainQueue] addOperation:githubUserIssuesOperation];
 }
 
 @end

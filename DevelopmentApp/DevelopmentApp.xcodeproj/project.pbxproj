@@ -19,6 +19,16 @@
 		864E2B271BBF0584007A5A5F /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 864E2B1F1BBF0584007A5A5F /* Info.plist */; settings = {ASSET_TAGS = (); }; };
 		864E2B281BBF0584007A5A5F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 864E2B201BBF0584007A5A5F /* main.m */; settings = {ASSET_TAGS = (); }; };
 		864E2B291BBF0584007A5A5F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 864E2B221BBF0584007A5A5F /* Assets.xcassets */; settings = {ASSET_TAGS = (); }; };
+		864E2B311BBF09A1007A5A5F /* COAbstractOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C6E9DD1BB5E724009B80EC /* COAbstractOperation.m */; settings = {ASSET_TAGS = (); }; };
+		864E2B321BBF09A1007A5A5F /* COCompositeOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C6E9E01BB5E724009B80EC /* COCompositeOperation.m */; settings = {ASSET_TAGS = (); }; };
+		864E2B331BBF09A1007A5A5F /* COSimpleOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C6E9E31BB5E724009B80EC /* COSimpleOperation.m */; settings = {ASSET_TAGS = (); }; };
+		864E2B341BBF09A1007A5A5F /* __COParallelOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C6E9E51BB5E724009B80EC /* __COParallelOperation.m */; settings = {ASSET_TAGS = (); }; };
+		864E2B351BBF09A1007A5A5F /* __COSequentialOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C6E9E71BB5E724009B80EC /* __COSequentialOperation.m */; settings = {ASSET_TAGS = (); }; };
+		864E2B361BBF09A1007A5A5F /* COTypedefs.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C6E9E91BB5E724009B80EC /* COTypedefs.m */; settings = {ASSET_TAGS = (); }; };
+		864E2B391BBF0C88007A5A5F /* OperationsRepository.m in Sources */ = {isa = PBXBuildFile; fileRef = 864E2B381BBF0C88007A5A5F /* OperationsRepository.m */; settings = {ASSET_TAGS = (); }; };
+		864E2B471BBF197F007A5A5F /* GithubRepositoryIssuesFetchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864E2B421BBF197F007A5A5F /* GithubRepositoryIssuesFetchOperation.m */; settings = {ASSET_TAGS = (); }; };
+		864E2B481BBF197F007A5A5F /* GithubUserIssuesOperationSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = 864E2B441BBF197F007A5A5F /* GithubUserIssuesOperationSequence.m */; settings = {ASSET_TAGS = (); }; };
+		864E2B491BBF197F007A5A5F /* GithubUserRepositoriesFetchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864E2B461BBF197F007A5A5F /* GithubUserRepositoriesFetchOperation.m */; settings = {ASSET_TAGS = (); }; };
 		8657A3B81B3B229300B667E9 /* Kiwi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 864EE1771AC4C44A007D1B13 /* Kiwi.framework */; };
 		86BB7DC51B36205E00E65FFF /* TestCompositeOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE12D1AC4B576007D1B13 /* TestCompositeOperations.m */; };
 		86BB7DC61B36205E00E65FFF /* TestOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 864EE1301AC4B576007D1B13 /* TestOperations.m */; };
@@ -90,6 +100,14 @@
 		864E2B1F1BBF0584007A5A5F /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		864E2B201BBF0584007A5A5F /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		864E2B221BBF0584007A5A5F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		864E2B371BBF0C88007A5A5F /* OperationsRepository.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OperationsRepository.h; sourceTree = "<group>"; };
+		864E2B381BBF0C88007A5A5F /* OperationsRepository.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OperationsRepository.m; sourceTree = "<group>"; };
+		864E2B411BBF197F007A5A5F /* GithubRepositoryIssuesFetchOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GithubRepositoryIssuesFetchOperation.h; sourceTree = "<group>"; };
+		864E2B421BBF197F007A5A5F /* GithubRepositoryIssuesFetchOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GithubRepositoryIssuesFetchOperation.m; sourceTree = "<group>"; };
+		864E2B431BBF197F007A5A5F /* GithubUserIssuesOperationSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GithubUserIssuesOperationSequence.h; sourceTree = "<group>"; };
+		864E2B441BBF197F007A5A5F /* GithubUserIssuesOperationSequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GithubUserIssuesOperationSequence.m; sourceTree = "<group>"; };
+		864E2B451BBF197F007A5A5F /* GithubUserRepositoriesFetchOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GithubUserRepositoriesFetchOperation.h; sourceTree = "<group>"; };
+		864E2B461BBF197F007A5A5F /* GithubUserRepositoriesFetchOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GithubUserRepositoriesFetchOperation.m; sourceTree = "<group>"; };
 		864EE1271AC4B576007D1B13 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		864EE1291AC4B576007D1B13 /* Assertions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Assertions.h; sourceTree = "<group>"; };
 		864EE12C1AC4B576007D1B13 /* TestCompositeOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestCompositeOperations.h; sourceTree = "<group>"; };
@@ -235,13 +253,14 @@
 		864E2B151BBF0584007A5A5F /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				864E2B2D1BBF0914007A5A5F /* Operations */,
 				864E2B161BBF0584007A5A5F /* AppDelegate.h */,
 				864E2B171BBF0584007A5A5F /* AppDelegate.m */,
 				864E2B181BBF0584007A5A5F /* ViewController.h */,
 				864E2B191BBF0584007A5A5F /* ViewController.m */,
 			);
 			name = Classes;
-			path = "../../../../../../stanislaw/Programming/Open-Source/CompositeOperations/DevelopmentApp/Example/Classes";
+			path = "Classes";
 			sourceTree = "<group>";
 		};
 		864E2B1A1BBF0584007A5A5F /* Etc */ = {
@@ -253,7 +272,7 @@
 				864E2B201BBF0584007A5A5F /* main.m */,
 			);
 			name = Etc;
-			path = "../../../../../../stanislaw/Programming/Open-Source/CompositeOperations/DevelopmentApp/Example/Etc";
+			path = "Etc";
 			sourceTree = "<group>";
 		};
 		864E2B211BBF0584007A5A5F /* Resources */ = {
@@ -262,7 +281,30 @@
 				864E2B221BBF0584007A5A5F /* Assets.xcassets */,
 			);
 			name = Resources;
-			path = "../../../../../../stanislaw/Programming/Open-Source/CompositeOperations/DevelopmentApp/Example/Resources";
+			path = "Resources";
+			sourceTree = "<group>";
+		};
+		864E2B2D1BBF0914007A5A5F /* Operations */ = {
+			isa = PBXGroup;
+			children = (
+				864E2B401BBF197F007A5A5F /* Github */,
+				864E2B371BBF0C88007A5A5F /* OperationsRepository.h */,
+				864E2B381BBF0C88007A5A5F /* OperationsRepository.m */,
+			);
+			path = Operations;
+			sourceTree = "<group>";
+		};
+		864E2B401BBF197F007A5A5F /* Github */ = {
+			isa = PBXGroup;
+			children = (
+				864E2B451BBF197F007A5A5F /* GithubUserRepositoriesFetchOperation.h */,
+				864E2B461BBF197F007A5A5F /* GithubUserRepositoriesFetchOperation.m */,
+				864E2B411BBF197F007A5A5F /* GithubRepositoryIssuesFetchOperation.h */,
+				864E2B421BBF197F007A5A5F /* GithubRepositoryIssuesFetchOperation.m */,
+				864E2B431BBF197F007A5A5F /* GithubUserIssuesOperationSequence.h */,
+				864E2B441BBF197F007A5A5F /* GithubUserIssuesOperationSequence.m */,
+			);
+			path = Github;
 			sourceTree = "<group>";
 		};
 		864EE1201AC4B576007D1B13 /* Tests */ = {
@@ -627,9 +669,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				864E2B341BBF09A1007A5A5F /* __COParallelOperation.m in Sources */,
 				864E2B241BBF0584007A5A5F /* ViewController.m in Sources */,
+				864E2B351BBF09A1007A5A5F /* __COSequentialOperation.m in Sources */,
+				864E2B321BBF09A1007A5A5F /* COCompositeOperation.m in Sources */,
 				864E2B281BBF0584007A5A5F /* main.m in Sources */,
+				864E2B481BBF197F007A5A5F /* GithubUserIssuesOperationSequence.m in Sources */,
+				864E2B311BBF09A1007A5A5F /* COAbstractOperation.m in Sources */,
+				864E2B391BBF0C88007A5A5F /* OperationsRepository.m in Sources */,
+				864E2B331BBF09A1007A5A5F /* COSimpleOperation.m in Sources */,
+				864E2B471BBF197F007A5A5F /* GithubRepositoryIssuesFetchOperation.m in Sources */,
+				864E2B491BBF197F007A5A5F /* GithubUserRepositoriesFetchOperation.m in Sources */,
 				864E2B231BBF0584007A5A5F /* AppDelegate.m in Sources */,
+				864E2B361BBF09A1007A5A5F /* COTypedefs.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1087,6 +1139,7 @@
 				864E2B131BBF04CE007A5A5F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		86BB7DB61B361FC400E65FFF /* Build configuration list for PBXNativeTarget "CompositeOperations-iOS" */ = {
 			isa = XCConfigurationList;
