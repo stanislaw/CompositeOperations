@@ -20,13 +20,27 @@
 
 @implementation OperationsRepository
 
+#pragma mark - Composite
+
 - (COCompositeOperation *)githubUserIssues:(NSString *)user {
     id <COSequence> sequence = [[GithubUserIssuesOperationSequence alloc] initWithGithubUser:user];
 
     return [[COCompositeOperation alloc] initWithSequence:sequence];
 }
 
-#pragma mark -
+- (COCompositeOperation *)issuesForUser:(NSString *)user repositories:(NSArray <NSString *> *)repositories {
+    NSMutableArray *issuesForRepositoriesOperations = [NSMutableArray new];
+
+    for (NSString *repository in repositories) {
+        NSOperation *repositoryIssues = [self issuesForUser:user repository:repository];
+
+        [issuesForRepositoriesOperations addObject:repositoryIssues];
+    }
+
+    return [[COCompositeOperation alloc] initWithOperations:issuesForRepositoriesOperations runInParallel:YES];
+}
+
+#pragma mark - Simple
 
 - (NSOperation <COOperation> *)repositoriesForUser:(NSString *)user {
     return [[GithubUserRepositoriesFetchOperation alloc] initWithUser:user];

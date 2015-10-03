@@ -25,9 +25,7 @@
 }
 
 - (void)main {
-    NSString *accessToken = @"53a3e9f788b1626f8e695f591b1863a0834d0090";
-
-    NSString *repositoriesPath = [NSString stringWithFormat:@"https://api.github.com/users/%@/repos?page=1&per_page=5&access_token=%@", self.user, accessToken];
+    NSString *repositoriesPath = [NSString stringWithFormat:@"https://api.github.com/users/%@/repos?page=1&per_page=5", self.user];
 
     NSURL *repositoriesURL = [NSURL URLWithString:[repositoriesPath stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]];
 
@@ -44,10 +42,18 @@
         }
 
         NSError *parsingError = nil;
-        NSArray *repositories = [NSJSONSerialization JSONObjectWithData:data options:0 error:&parsingError];
+        id repositories = [NSJSONSerialization JSONObjectWithData:data options:0 error:&parsingError];
 
         if (repositories == nil) {
             [self rejectWithError:parsingError];
+            return;
+        }
+
+        // Github can return 200 with error message in it.
+        if ([repositories isKindOfClass:[NSArray class]] == NO) {
+            NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:0 userInfo:repositories];
+
+            [self rejectWithError:error];
             return;
         }
 

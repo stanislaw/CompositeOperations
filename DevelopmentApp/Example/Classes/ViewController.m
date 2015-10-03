@@ -29,9 +29,9 @@
         if (results) {
             id finalResult = results.lastObject;
 
-            NSLog(@"%@", finalResult);
+            NSLog(@"Success: %@", finalResult);
         } else {
-            NSLog(@"%@", errors);
+            NSLog(@"Error: %@", errors);
         }
     };
 

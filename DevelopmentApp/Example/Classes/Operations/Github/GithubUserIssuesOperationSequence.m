@@ -32,20 +32,15 @@
         return [[OperationsRepository new] repositoriesForUser:self.user];
     }
 
-    if ([previousOperationOrNil isKindOfClass:[GithubUserRepositoriesFetchOperation class]]) {
+    // Second operation follows the first
+    if ([previousOperationOrNil isKindOfClass:[GithubUserRepositoriesFetchOperation class]] &&
+        previousOperationOrNil.result) {
         NSArray *repositories = previousOperationOrNil.result;
 
-        NSMutableArray *issuesForRepositoriesOperations = [NSMutableArray new];
-
-        for (NSString *repository in repositories) {
-            NSOperation *repositoryIssues = [[OperationsRepository new] issuesForUser:self.user repository:repository];
-
-            [issuesForRepositoriesOperations addObject:repositoryIssues];
-        }
-
-        return [[COCompositeOperation alloc] initWithOperations:issuesForRepositoriesOperations runInParallel:YES];
+        return [[OperationsRepository new] issuesForUser:self.user repositories:repositories];
     }
 
+    // Returning nil tells composite operation that we are done
     return nil;
 }
 
