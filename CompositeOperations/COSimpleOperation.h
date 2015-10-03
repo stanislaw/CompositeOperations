@@ -12,14 +12,14 @@
 
 @interface COSimpleOperation : COAbstractOperation
 
-@property (readonly) id result;
-@property (readonly) NSError *error;
+@property (readonly, nullable) id result;
+@property (readonly, nullable) NSError *error;
 
-@property (copy) void (^completion)(id result, NSError *error);
+@property (copy, nullable) void (^completion)(id _Nullable result, NSError * _Nullable error);
 
 - (void)finish;
-- (void)finishWithResult:(id)result;
+- (void)finishWithResult:(nonnull id)result;
 - (void)reject;
-- (void)rejectWithError:(NSError *)error;
+- (void)rejectWithError:(nonnull NSError *)error;
 
 @end

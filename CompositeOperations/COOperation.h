@@ -11,8 +11,8 @@
 
 @protocol COOperation <NSObject>
 
-@property (readonly) id result;
-@property (readonly) id error;
+@property (readonly, nullable) id result;
+@property (readonly, nullable) id error;
 
 @end
 

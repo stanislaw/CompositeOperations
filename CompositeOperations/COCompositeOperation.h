@@ -13,17 +13,18 @@
 
 @interface COCompositeOperation : COAbstractOperation
 
-@property (readonly) NSArray *result;
-@property (readonly) NSArray <NSError *> *error;
+@property (readonly, nullable) NSArray *result;
+@property (readonly, nullable) NSArray <NSError *> *error;
 
-@property (copy) void (^completion)(NSArray *results, NSArray <NSError *> *errors);
+@property (copy, nullable) void (^completion)(NSArray * _Nullable results, NSArray <NSError *> * _Nullable errors);
 
 // Parallel flow
-- (id)initWithOperations:(NSArray <NSOperation <COOperation> *> *)operations
-          operationQueue:(NSOperationQueue *)operationQueue;
-- (id)initWithOperations:(NSArray <NSOperation <COOperation> *> *)operations;
+- (nonnull id)initWithOperations:(nonnull NSArray <NSOperation <COOperation> *> *)operations
+                  operationQueue:(nonnull NSOperationQueue *)operationQueue;
+
+- (nonnull id)initWithOperations:(nonnull NSArray <NSOperation <COOperation> *> *)operations;
 
 // Sequential flow
-- (id)initWithSequence:(id<COSequence>)sequence;
+- (nonnull id)initWithSequence:(nonnull id<COSequence>)sequence;
 
 @end

@@ -24,8 +24,8 @@
 
 #pragma mark - __COParallelOperation
 
-- (id)initWithOperations:(NSArray <NSOperation <COOperation> *> *)operations
-          operationQueue:(NSOperationQueue *)operationQueue {
+- (id)initWithOperations:(nonnull NSArray <NSOperation <COOperation> *> *)operations
+          operationQueue:(nonnull NSOperationQueue *)operationQueue {
     NSParameterAssert(operationQueue);
 
     self = [super init];
@@ -38,7 +38,9 @@
     return self;
 }
 
-- (id)initWithOperations:(NSArray <NSOperation <COOperation> *> *)operations {
+- (id)initWithOperations:(nonnull NSArray <NSOperation <COOperation> *> *)operations {
+    NSParameterAssert(operations);
+
     NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
     operationQueue.maxConcurrentOperationCount = 4;
 
@@ -51,7 +53,7 @@
     return self;
 }
 
-- (void)finishWithResult:(id)result {
+- (void)finishWithResult:(nonnull id)result {
     NSParameterAssert(result);
 
     if (self.isCancelled == NO) {

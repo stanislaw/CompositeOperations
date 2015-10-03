@@ -56,17 +56,17 @@ NSString *const COCompositeOperationErrorKey = @"__COSequentialOperationErrorKey
 
 @implementation __COCompositeOperation
 
-- (id)initWithOperations:(NSArray <NSOperation <COOperation> *> *)operations {
+- (id)initWithOperations:(nonnull NSArray <NSOperation <COOperation> *> *)operations {
     return (id)[[__COParallelOperation alloc] initWithOperations:operations];
 }
 
-- (id)initWithOperations:(NSArray <NSOperation <COOperation> *> *)operations
-          operationQueue:(NSOperationQueue *)operationQueue {
+- (id)initWithOperations:(nonnull NSArray <NSOperation <COOperation> *> *)operations
+          operationQueue:(nonnull NSOperationQueue *)operationQueue {
     return (id)[[__COParallelOperation alloc] initWithOperations:operations
                                                   operationQueue:operationQueue];
 }
 
-- (id)initWithSequence:(id<COSequence>)sequence {
+- (id)initWithSequence:(nonnull id<COSequence>)sequence {
     NSParameterAssert(sequence);
 
     return (id)[[__COSequentialOperation alloc] initWithSequence:sequence];

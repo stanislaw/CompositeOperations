@@ -11,6 +11,5 @@
 
 @interface __COSequentialOperation : COCompositeOperation
 - (id)initWithSequence:(id<COSequence>)sequence NS_DESIGNATED_INITIALIZER;
-- (id)initWithOperations:(NSArray <NSOperation <COOperation> *> *)operations;
 - (id)init NS_UNAVAILABLE;
 @end
