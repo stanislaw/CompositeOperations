@@ -48,54 +48,7 @@ describe(@"COCompositeOperation", ^{
         });
     });
 
-    describe(@"-initWithOperations:inParallel:(NO)", ^{
-        it(@"should be of class __COSequentialOperation", ^{
-            NSArray *operations = @[
-                                    [OperationTriviallyReturningNull new],
-                                    [OperationTriviallyReturningNull new],
-                                    [OperationTriviallyReturningNull new],
-                                    ];
-
-            COCompositeOperation *sequentialOperation = [[COCompositeOperation alloc] initWithOperations:operations runInParallel:NO];
-
-            [[sequentialOperation should] beKindOfClass:[COCompositeOperation class]];
-        });
-
-        it(@"should run composite operation", ^{
-            dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
-
-            NSArray *operations = @[
-                [OperationTriviallyReturningNull new],
-                [OperationTriviallyReturningNull new],
-                [OperationTriviallyReturningNull new],
-            ];
-
-            COCompositeOperation *sequentialOperation = [[COCompositeOperation alloc] initWithOperations:operations runInParallel:NO];
-
-            sequentialOperation.completionBlock = ^{
-                dispatch_semaphore_signal(waitSemaphore);
-            };
-
-            [sequentialOperation start];
-
-            while (dispatch_semaphore_wait(waitSemaphore, DISPATCH_TIME_NOW)) {
-                CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
-            }
-
-            [[theValue(sequentialOperation.isFinished) should] beYes];
-
-            NSArray *expectedResult = @[
-                [NSNull null],
-                [NSNull null],
-                [NSNull null]
-            ];
-
-            [[sequentialOperation.result should] equal: expectedResult];
-
-        });
-    });
-
-    describe(@"-initWithOperations:inParallel:(YES)", ^{
+    describe(@"-initWithOperations:", ^{
         it(@"should be of class __COParallelOperation", ^{
             NSArray *operations = @[
                 [OperationTriviallyReturningNull new],
@@ -103,7 +56,7 @@ describe(@"COCompositeOperation", ^{
                 [OperationTriviallyReturningNull new]
             ];
 
-            COCompositeOperation *parallelOperation = [[COCompositeOperation alloc] initWithOperations:operations runInParallel:YES];
+            COCompositeOperation *parallelOperation = [[COCompositeOperation alloc] initWithOperations:operations];
 
             [[parallelOperation should] beKindOfClass:[__COParallelOperation class]];
         });
@@ -117,7 +70,7 @@ describe(@"COCompositeOperation", ^{
                                     [OperationTriviallyReturningNull new],
                                     ];
 
-            COCompositeOperation *parallelOperation = [[COCompositeOperation alloc] initWithOperations:operations runInParallel:YES];
+            COCompositeOperation *parallelOperation = [[COCompositeOperation alloc] initWithOperations:operations];
 
             NSAssert(parallelOperation, nil);
 

@@ -13,6 +13,7 @@
 
 @interface __COParallelOperation ()
 
+@property (readonly, nonatomic) NSOperationQueue *operationQueue;
 @property (readonly, nonatomic) NSArray <NSOperation <COOperation> *> *operations;
 
 - (void)cancelAllOperations;
@@ -23,8 +24,27 @@
 
 #pragma mark - __COParallelOperation
 
-- (id)initWithOperations:(NSArray <NSOperation <COOperation> *> *)operations {
+- (id)initWithOperations:(nonnull NSArray <NSOperation <COOperation> *> *)operations
+          operationQueue:(nonnull NSOperationQueue *)operationQueue {
+    NSParameterAssert(operationQueue);
+
     self = [super init];
+
+    if (self == nil) return nil;
+
+    _operationQueue = operationQueue;
+    _operations = operations;
+
+    return self;
+}
+
+- (id)initWithOperations:(nonnull NSArray <NSOperation <COOperation> *> *)operations {
+    NSParameterAssert(operations);
+
+    NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
+    operationQueue.maxConcurrentOperationCount = 4;
+
+    self = [self initWithOperations:operations operationQueue:operationQueue];
 
     if (self == nil) return nil;
 
@@ -33,7 +53,7 @@
     return self;
 }
 
-- (void)finishWithResult:(id)result {
+- (void)finishWithResult:(nonnull id)result {
     NSParameterAssert(result);
 
     if (self.isCancelled == NO) {
@@ -89,12 +109,6 @@
         };
     }
 
-    for (NSOperation <COOperation> *operation in self.operations) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [operation start];
-        });
-    };
-
     dispatch_group_notify(group, dispatch_get_main_queue(), ^{
         if (self.isCancelled) {
             [self reject];
@@ -124,6 +138,8 @@
             }
         }
     });
+
+    [self.operationQueue addOperations:self.operations waitUntilFinished:NO];
 }
 
 #pragma mark - NSObject

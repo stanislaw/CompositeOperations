@@ -27,7 +27,7 @@
     [self finishWithResult:[NSNull null]];
 }
 
-- (void)finishWithResult:(id)result {
+- (void)finishWithResult:(nonnull id)result {
     NSParameterAssert(result);
 
     if (self.isCancelled == NO) {
@@ -57,7 +57,7 @@
     }
 }
 
-- (void)rejectWithError:(NSError *)error {
+- (void)rejectWithError:(nonnull NSError *)error {
     NSParameterAssert(error);
 
     if (self.isCancelled == NO) {

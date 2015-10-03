@@ -28,7 +28,7 @@
 
 #pragma mark - <__COSequentialOperation>
 
-- (id)initWithSequence:(id<COSequence>)sequence {
+- (id)initWithSequence:(nonnull id<COSequence>)sequence {
     NSParameterAssert([sequence conformsToProtocol:@protocol(COSequence)]);
 
     self = [super init];
@@ -37,18 +37,6 @@
 
     _operations = [NSMutableArray new];
     _sequence = sequence;
-
-    return self;
-}
-
-- (id)initWithOperations:(NSArray <NSOperation <COOperation> *> *)operations {
-    NSParameterAssert(operations);
-
-    COSimpleSequence *sequence = [[COSimpleSequence alloc] initWithOperations:operations];
-
-    self = [self initWithSequence:sequence];
-
-    if (self == nil) return nil;
 
     return self;
 }

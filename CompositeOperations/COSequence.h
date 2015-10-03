@@ -1,9 +1,10 @@
 //
-//  COSequence.h
-//  DevelopmentApp
+// CompositeOperations
 //
-//  Created by Stanislaw Pankevich on 02/10/15.
-//  Copyright © 2015 Stanislaw Pankevich. All rights reserved.
+// CompositeOperations/COSequence.h
+//
+// Copyright (c) 2014 Stanislaw Pankevich
+// Released under the MIT license
 //
 
 #import <Foundation/Foundation.h>
