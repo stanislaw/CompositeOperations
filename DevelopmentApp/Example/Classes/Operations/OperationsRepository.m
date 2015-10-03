@@ -28,7 +28,9 @@
     return [[COCompositeOperation alloc] initWithSequence:sequence];
 }
 
-- (COCompositeOperation *)issuesForUser:(NSString *)user repositories:(NSArray <NSString *> *)repositories {
+- (COCompositeOperation *)issuesForUser:(NSString *)user
+                           repositories:(NSArray <NSString *> *)repositories {
+
     NSMutableArray *issuesForRepositoriesOperations = [NSMutableArray new];
 
     for (NSString *repository in repositories) {
@@ -37,7 +39,7 @@
         [issuesForRepositoriesOperations addObject:repositoryIssues];
     }
 
-    return [[COCompositeOperation alloc] initWithOperations:issuesForRepositoriesOperations runInParallel:YES];
+    return [[COCompositeOperation alloc] initWithOperations:issuesForRepositoriesOperations];
 }
 
 #pragma mark - Simple
@@ -46,8 +48,11 @@
     return [[GithubUserRepositoriesFetchOperation alloc] initWithUser:user];
 }
 
-- (NSOperation <COOperation> *)issuesForUser:(NSString *)user repository:(NSString *)repository {
-    return [[GithubRepositoryIssuesFetchOperation alloc] initWithUser:user repository:repository];
+- (NSOperation <COOperation> *)issuesForUser:(NSString *)user
+                                  repository:(NSString *)repository {
+
+    return [[GithubRepositoryIssuesFetchOperation alloc] initWithUser:user
+                                                           repository:repository];
 }
 
 @end

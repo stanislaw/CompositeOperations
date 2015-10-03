@@ -20,7 +20,6 @@
 		864E2B241BBF0584007A5A5F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 864E2B191BBF0584007A5A5F /* ViewController.m */; settings = {ASSET_TAGS = (); }; };
 		864E2B251BBF0584007A5A5F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 864E2B1B1BBF0584007A5A5F /* LaunchScreen.storyboard */; settings = {ASSET_TAGS = (); }; };
 		864E2B261BBF0584007A5A5F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 864E2B1D1BBF0584007A5A5F /* Main.storyboard */; settings = {ASSET_TAGS = (); }; };
-		864E2B271BBF0584007A5A5F /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 864E2B1F1BBF0584007A5A5F /* Info.plist */; settings = {ASSET_TAGS = (); }; };
 		864E2B281BBF0584007A5A5F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 864E2B201BBF0584007A5A5F /* main.m */; settings = {ASSET_TAGS = (); }; };
 		864E2B291BBF0584007A5A5F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 864E2B221BBF0584007A5A5F /* Assets.xcassets */; settings = {ASSET_TAGS = (); }; };
 		864E2B311BBF09A1007A5A5F /* COAbstractOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C6E9DD1BB5E724009B80EC /* COAbstractOperation.m */; settings = {ASSET_TAGS = (); }; };
@@ -635,7 +634,6 @@
 				864E2B251BBF0584007A5A5F /* LaunchScreen.storyboard in Resources */,
 				864E2B261BBF0584007A5A5F /* Main.storyboard in Resources */,
 				864E2B291BBF0584007A5A5F /* Assets.xcassets in Resources */,
-				864E2B271BBF0584007A5A5F /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

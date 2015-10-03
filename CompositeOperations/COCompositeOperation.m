@@ -29,7 +29,7 @@ NSString *const COCompositeOperationErrorKey = @"__COSequentialOperationErrorKey
 
 - (id)init {
     if ([self isMemberOfClass:[__COCompositeOperation class]]) {
-        @throw [NSException exceptionWithName:COGenericException reason:@"Must use one of designated initializers: initWithOperations:runInParallel: or initiWithSequence:" userInfo:nil];
+        @throw [NSException exceptionWithName:COGenericException reason:@"Must use one of initializers: initWithOperations:, initWithOperations:operationQueue: or initWithSequence:" userInfo:nil];
     }
 
     return [super init];
@@ -56,18 +56,20 @@ NSString *const COCompositeOperationErrorKey = @"__COSequentialOperationErrorKey
 
 @implementation __COCompositeOperation
 
+- (id)initWithOperations:(NSArray <NSOperation <COOperation> *> *)operations {
+    return (id)[[__COParallelOperation alloc] initWithOperations:operations];
+}
+
+- (id)initWithOperations:(NSArray <NSOperation <COOperation> *> *)operations
+          operationQueue:(NSOperationQueue *)operationQueue {
+    return (id)[[__COParallelOperation alloc] initWithOperations:operations
+                                                  operationQueue:operationQueue];
+}
+
 - (id)initWithSequence:(id<COSequence>)sequence {
     NSParameterAssert(sequence);
 
     return (id)[[__COSequentialOperation alloc] initWithSequence:sequence];
-}
-
-- (id)initWithOperations:(NSArray <NSOperation <COOperation> *> *)operations runInParallel:(BOOL)parallel {
-    if (parallel) {
-        return (id)[[__COParallelOperation alloc] initWithOperations:operations];
-    } else {
-        return (id)[[__COSequentialOperation alloc] initWithOperations:operations];
-    }
 }
 
 @end

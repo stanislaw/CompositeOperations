@@ -18,9 +18,12 @@
 
 @property (copy) void (^completion)(NSArray *results, NSArray <NSError *> *errors);
 
+// Parallel flow
 - (id)initWithOperations:(NSArray <NSOperation <COOperation> *> *)operations
-           runInParallel:(BOOL)parallel;
+          operationQueue:(NSOperationQueue *)operationQueue;
+- (id)initWithOperations:(NSArray <NSOperation <COOperation> *> *)operations;
 
+// Sequential flow
 - (id)initWithSequence:(id<COSequence>)sequence;
 
 @end

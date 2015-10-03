@@ -16,9 +16,12 @@
 
 - (COCompositeOperation *)githubUserIssues:(NSString *)user;
 
-- (COCompositeOperation *)issuesForUser:(NSString *)user repositories:(NSArray <NSString *> *)repositories;
+- (COCompositeOperation *)issuesForUser:(NSString *)user
+                           repositories:(NSArray <NSString *> *)repositories;
 
 - (NSOperation <COOperation> *)repositoriesForUser:(NSString *)user;
-- (NSOperation <COOperation> *)issuesForUser:(NSString *)user repository:(NSString *)repository;
+
+- (NSOperation <COOperation> *)issuesForUser:(NSString *)user
+                                  repository:(NSString *)repository;
 
 @end

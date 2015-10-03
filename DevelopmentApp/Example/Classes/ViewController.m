@@ -13,10 +13,12 @@
 #import "CompositeOperations.h"
 
 @interface ViewController ()
-
+@property (readonly, nonatomic) NSOperationQueue *operationQueue;
 @end
 
 @implementation ViewController
+
+@synthesize operationQueue = _operationQueue;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
