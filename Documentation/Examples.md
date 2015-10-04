@@ -95,9 +95,11 @@ parallelOperation.completion = ^(NSArray *results, NSArray *errors) {
     return nil;
 }
 
-COCompositeOperation *sequentalOperation = [[COCompositeOperation alloc] initWithOperations:operations];
+COSimpleSequence *sequence = [COSimpleSequence new];
 
-sequentalOperation.completion = ^(NSArray *results, NSArray *errors) {
+COCompositeOperation *sequentialOperation = [[COCompositeOperation alloc] initWithSequence:sequence];
+
+sequentialOperation.completion = ^(NSArray *results, NSArray *errors) {
     if (results) {
         // handle results
     } else {
@@ -105,5 +107,5 @@ sequentalOperation.completion = ^(NSArray *results, NSArray *errors) {
     }
 };
 
-[[NSOperationQueue mainQueue] addOperation:sequentalOperation];
+[[NSOperationQueue mainQueue] addOperation:sequentialOperation];
 ```
