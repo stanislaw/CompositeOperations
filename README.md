@@ -162,17 +162,21 @@ sequentialOperation.completion = ^(NSArray *results, NSArray *errors) {
 [[NSOperationQueue mainQueue] addOperation:sequentialOperation];
 ```
 
-## Examples
-
-See [Documentation/Examples](Documentation/Examples.md).
-
-Also see DevelopmentApp project and Example target in it.
-
 ## Design principles
 
 - Simple operation or root composite operation that are created must be retained. The most natural way of doing it is to run operations in NSOperationQueues though it is also possible to retain operation as `@property (strong)` field.
 - Use `@completion` of both COSimpleOperation and COCompositeOperation, do not use `NSOperation@completionBlock`.
-- Use `cancel` to cancel operation from outside. To stop operation's execution from inside always use `reject`
+- Use `cancel` to cancel operation from outside. To stop operation's execution from inside always use `reject`.
+
+## Examples
+
+See [Documentation/Examples](Documentation/Examples.md).
+
+Also see DevelopmentApp project and `Example` target in it.
+
+## Related
+
+* [WWDC 2015 - Advanced NSOperations](https://developer.apple.com/videos/play/wwdc2015-226/)
 
 ## Copyright
 
