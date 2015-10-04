@@ -52,7 +52,7 @@ simpleOperation.completion = ^(id result, NSError *error) {
 
 #### Parallel Composition
 
-```
+```objective-c
 NSArray *operations = @[ operation1, operation2, operation3 ]; // each operation is NSOperation <COOperation> *
 
 COCompositeOperation *parallelOperation = [[COCompositeOperation alloc] initWithOperations:operations];
@@ -70,7 +70,7 @@ parallelOperation.completion = ^(NSArray *results, NSArray *errors) {
 
 #### Sequential Composition
 
-```
+```objective-c
 @interface COSimpleSequence : NSObject
 @end
 
