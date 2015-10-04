@@ -57,9 +57,7 @@ describe(@"__COSequentialOperationSpec", ^{
                 [[sequentialOperation.result should] beNil];
                 [[sequentialOperation.error shouldNot] beNil];
 
-                NSError *expectedOperationError = [NSError errorWithDomain:COErrorDomain code:COOperationErrorRejected userInfo:nil];
-
-                [[sequentialOperation.error should] equal:@[ expectedOperationError ]];
+                [[sequentialOperation.error.firstObject should] beKindOfClass:[NSError class]];
             });
         });
 

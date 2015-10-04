@@ -27,7 +27,6 @@
 		864E2B331BBF09A1007A5A5F /* COSimpleOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C6E9E31BB5E724009B80EC /* COSimpleOperation.m */; settings = {ASSET_TAGS = (); }; };
 		864E2B341BBF09A1007A5A5F /* __COParallelOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C6E9E51BB5E724009B80EC /* __COParallelOperation.m */; settings = {ASSET_TAGS = (); }; };
 		864E2B351BBF09A1007A5A5F /* __COSequentialOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C6E9E71BB5E724009B80EC /* __COSequentialOperation.m */; settings = {ASSET_TAGS = (); }; };
-		864E2B361BBF09A1007A5A5F /* COTypedefs.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C6E9E91BB5E724009B80EC /* COTypedefs.m */; settings = {ASSET_TAGS = (); }; };
 		864E2B391BBF0C88007A5A5F /* OperationsRepository.m in Sources */ = {isa = PBXBuildFile; fileRef = 864E2B381BBF0C88007A5A5F /* OperationsRepository.m */; settings = {ASSET_TAGS = (); }; };
 		864E2B471BBF197F007A5A5F /* GithubRepositoryIssuesFetchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 864E2B421BBF197F007A5A5F /* GithubRepositoryIssuesFetchOperation.m */; settings = {ASSET_TAGS = (); }; };
 		864E2B481BBF197F007A5A5F /* GithubUserIssuesOperationSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = 864E2B441BBF197F007A5A5F /* GithubUserIssuesOperationSequence.m */; settings = {ASSET_TAGS = (); }; };
@@ -53,9 +52,6 @@
 		86C6E9F91BB5E724009B80EC /* __COSequentialOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 86C6E9E61BB5E724009B80EC /* __COSequentialOperation.h */; settings = {ASSET_TAGS = (); }; };
 		86C6E9FA1BB5E724009B80EC /* __COSequentialOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C6E9E71BB5E724009B80EC /* __COSequentialOperation.m */; settings = {ASSET_TAGS = (); }; };
 		86C6E9FB1BB5E724009B80EC /* __COSequentialOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C6E9E71BB5E724009B80EC /* __COSequentialOperation.m */; settings = {ASSET_TAGS = (); }; };
-		86C6E9FC1BB5E724009B80EC /* COTypedefs.h in Headers */ = {isa = PBXBuildFile; fileRef = 86C6E9E81BB5E724009B80EC /* COTypedefs.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		86C6E9FD1BB5E724009B80EC /* COTypedefs.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C6E9E91BB5E724009B80EC /* COTypedefs.m */; settings = {ASSET_TAGS = (); }; };
-		86C6E9FE1BB5E724009B80EC /* COTypedefs.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C6E9E91BB5E724009B80EC /* COTypedefs.m */; settings = {ASSET_TAGS = (); }; };
 		86C6E9FF1BB5E724009B80EC /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 86C6E9EA1BB5E724009B80EC /* Info.plist */; settings = {ASSET_TAGS = (); }; };
 		86C6EA001BB5E724009B80EC /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 86C6E9EA1BB5E724009B80EC /* Info.plist */; settings = {ASSET_TAGS = (); }; };
 		86C6EA021BB5EA68009B80EC /* COAbstractOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 86C6E9DC1BB5E724009B80EC /* COAbstractOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -72,18 +68,15 @@
 		86CA010D1BB727AA00FE65DA /* COSimpleOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C6E9E31BB5E724009B80EC /* COSimpleOperation.m */; settings = {ASSET_TAGS = (); }; };
 		86CA010E1BB727AA00FE65DA /* __COParallelOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C6E9E51BB5E724009B80EC /* __COParallelOperation.m */; settings = {ASSET_TAGS = (); }; };
 		86CA010F1BB727AA00FE65DA /* __COSequentialOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C6E9E71BB5E724009B80EC /* __COSequentialOperation.m */; settings = {ASSET_TAGS = (); }; };
-		86CA01101BB727AA00FE65DA /* COTypedefs.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C6E9E91BB5E724009B80EC /* COTypedefs.m */; settings = {ASSET_TAGS = (); }; };
 		86CA01111BB727AB00FE65DA /* COCompositeOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C6E9E01BB5E724009B80EC /* COCompositeOperation.m */; settings = {ASSET_TAGS = (); }; };
 		86CA01121BB727AB00FE65DA /* COSimpleOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C6E9E31BB5E724009B80EC /* COSimpleOperation.m */; settings = {ASSET_TAGS = (); }; };
 		86CA01131BB727AB00FE65DA /* __COParallelOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C6E9E51BB5E724009B80EC /* __COParallelOperation.m */; settings = {ASSET_TAGS = (); }; };
 		86CA01141BB727AB00FE65DA /* __COSequentialOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C6E9E71BB5E724009B80EC /* __COSequentialOperation.m */; settings = {ASSET_TAGS = (); }; };
-		86CA01151BB727AB00FE65DA /* COTypedefs.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C6E9E91BB5E724009B80EC /* COTypedefs.m */; settings = {ASSET_TAGS = (); }; };
 		86CA01161BB727AF00FE65DA /* COAbstractOperation_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 86C6E9DE1BB5E724009B80EC /* COAbstractOperation_Private.h */; settings = {ASSET_TAGS = (); }; };
 		86CA01171BB727D400FE65DA /* CompositeOperations.h in Headers */ = {isa = PBXBuildFile; fileRef = 86C6E9E11BB5E724009B80EC /* CompositeOperations.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		86CA01181BB727DA00FE65DA /* COSimpleOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 86C6E9E21BB5E724009B80EC /* COSimpleOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		86CA01191BB727E200FE65DA /* __COParallelOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 86C6E9E41BB5E724009B80EC /* __COParallelOperation.h */; settings = {ASSET_TAGS = (); }; };
 		86CA011A1BB727E200FE65DA /* __COSequentialOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 86C6E9E61BB5E724009B80EC /* __COSequentialOperation.h */; settings = {ASSET_TAGS = (); }; };
-		86CA011B1BB727E800FE65DA /* COTypedefs.h in Headers */ = {isa = PBXBuildFile; fileRef = 86C6E9E81BB5E724009B80EC /* COTypedefs.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		86CA011C1BB727F200FE65DA /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 86C6E9EA1BB5E724009B80EC /* Info.plist */; settings = {ASSET_TAGS = (); }; };
 		86CA011D1BB727F300FE65DA /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 86C6E9EA1BB5E724009B80EC /* Info.plist */; settings = {ASSET_TAGS = (); }; };
 		86CA011E1BB7281D00FE65DA /* COCompositeOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 86C6E9DF1BB5E724009B80EC /* COCompositeOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -145,8 +138,6 @@
 		86C6E9E51BB5E724009B80EC /* __COParallelOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = __COParallelOperation.m; sourceTree = "<group>"; };
 		86C6E9E61BB5E724009B80EC /* __COSequentialOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = __COSequentialOperation.h; sourceTree = "<group>"; };
 		86C6E9E71BB5E724009B80EC /* __COSequentialOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = __COSequentialOperation.m; sourceTree = "<group>"; };
-		86C6E9E81BB5E724009B80EC /* COTypedefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COTypedefs.h; sourceTree = "<group>"; };
-		86C6E9E91BB5E724009B80EC /* COTypedefs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COTypedefs.m; sourceTree = "<group>"; };
 		86C6E9EA1BB5E724009B80EC /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -442,8 +433,6 @@
 				86C6E9E51BB5E724009B80EC /* __COParallelOperation.m */,
 				86C6E9E61BB5E724009B80EC /* __COSequentialOperation.h */,
 				86C6E9E71BB5E724009B80EC /* __COSequentialOperation.m */,
-				86C6E9E81BB5E724009B80EC /* COTypedefs.h */,
-				86C6E9E91BB5E724009B80EC /* COTypedefs.m */,
 				86C6E9EA1BB5E724009B80EC /* Info.plist */,
 			);
 			name = CompositeOperations;
@@ -457,7 +446,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				86C6E9FC1BB5E724009B80EC /* COTypedefs.h in Headers */,
 				86C6E9EF1BB5E724009B80EC /* COCompositeOperation.h in Headers */,
 				86C6EA021BB5EA68009B80EC /* COAbstractOperation.h in Headers */,
 				86C6E9F61BB5E724009B80EC /* __COParallelOperation.h in Headers */,
@@ -475,7 +463,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				86CA01161BB727AF00FE65DA /* COAbstractOperation_Private.h in Headers */,
-				86CA011B1BB727E800FE65DA /* COTypedefs.h in Headers */,
 				862904701BBF300900C8E33A /* COOperation.h in Headers */,
 				86CA011E1BB7281D00FE65DA /* COCompositeOperation.h in Headers */,
 				86CA01191BB727E200FE65DA /* __COParallelOperation.h in Headers */,
@@ -688,7 +675,6 @@
 				864E2B471BBF197F007A5A5F /* GithubRepositoryIssuesFetchOperation.m in Sources */,
 				864E2B491BBF197F007A5A5F /* GithubUserRepositoriesFetchOperation.m in Sources */,
 				864E2B231BBF0584007A5A5F /* AppDelegate.m in Sources */,
-				864E2B361BBF09A1007A5A5F /* COTypedefs.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -699,7 +685,6 @@
 				86C6E9F71BB5E724009B80EC /* __COParallelOperation.m in Sources */,
 				86C6EA0D1BB70253009B80EC /* COAbstractOperation.m in Sources */,
 				86C6E9FA1BB5E724009B80EC /* __COSequentialOperation.m in Sources */,
-				86C6E9FD1BB5E724009B80EC /* COTypedefs.m in Sources */,
 				86C6E9F01BB5E724009B80EC /* COCompositeOperation.m in Sources */,
 				86C6E9F41BB5E724009B80EC /* COSimpleOperation.m in Sources */,
 			);
@@ -716,7 +701,6 @@
 				86C6EA0A1BB5ED9C009B80EC /* COParallelOperationTests.m in Sources */,
 				86C6E9F51BB5E724009B80EC /* COSimpleOperation.m in Sources */,
 				86C6E9F81BB5E724009B80EC /* __COParallelOperation.m in Sources */,
-				86C6E9FE1BB5E724009B80EC /* COTypedefs.m in Sources */,
 				86C6EA0B1BB5EDA6009B80EC /* CompositeOperationsTests.m in Sources */,
 				86C6EA051BB5EB6B009B80EC /* COSimpleOperationTests.m in Sources */,
 				86C6E9FB1BB5E724009B80EC /* __COSequentialOperation.m in Sources */,
@@ -732,7 +716,6 @@
 				86CA01131BB727AB00FE65DA /* __COParallelOperation.m in Sources */,
 				86CA010A1BB727A200FE65DA /* COAbstractOperation.m in Sources */,
 				86CA01141BB727AB00FE65DA /* __COSequentialOperation.m in Sources */,
-				86CA01151BB727AB00FE65DA /* COTypedefs.m in Sources */,
 				86CA01121BB727AB00FE65DA /* COSimpleOperation.m in Sources */,
 				86CA01111BB727AB00FE65DA /* COCompositeOperation.m in Sources */,
 			);
@@ -748,7 +731,6 @@
 				8600DE711BADFF56005297A9 /* COCompositeOperationTests.m in Sources */,
 				86BB7DF31B36227200E65FFF /* TestCompositeOperations.m in Sources */,
 				86CA010E1BB727AA00FE65DA /* __COParallelOperation.m in Sources */,
-				86CA01101BB727AA00FE65DA /* COTypedefs.m in Sources */,
 				86CA010D1BB727AA00FE65DA /* COSimpleOperation.m in Sources */,
 				8600DE831BAE26F4005297A9 /* COSequentialOperationTests.m in Sources */,
 				86CA010F1BB727AA00FE65DA /* __COSequentialOperation.m in Sources */,

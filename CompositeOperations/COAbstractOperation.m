@@ -8,7 +8,6 @@
 //
 
 #import "COAbstractOperation_Private.h"
-#import <CompositeOperations/COTypedefs.h>
 
 @implementation COAbstractOperation
 
@@ -26,39 +25,6 @@
     return self;
 }
 
-- (COOperationState)state {
-    COOperationState state;
-    @synchronized(self) {
-        state = _state;
-    }
-    return state;
-}
-
-- (void)setState:(COOperationState)state {
-    if (COStateTransitionIsValid(self.state, state) == NO) {
-        NSString *errMessage = [NSString stringWithFormat:@"%@: transition from %@ to %@ is invalid", self, COKeyPathFromOperationState(self.state), COKeyPathFromOperationState(state)];
-
-        @throw [NSException exceptionWithName:COGenericException reason:errMessage userInfo:nil];
-    }
-
-    @synchronized(self) {
-        if (COStateTransitionIsValid(self.state, state) == NO) {
-            NSString *errMessage = [NSString stringWithFormat:@"%@: transition from %@ to %@ is invalid", self, COKeyPathFromOperationState(self.state), COKeyPathFromOperationState(state)];
-
-            @throw [NSException exceptionWithName:COGenericException reason:errMessage userInfo:nil];
-        };
-
-        NSString *oldStateKey = COKeyPathFromOperationState(self.state);
-        NSString *newStateKey = COKeyPathFromOperationState(state);
-
-        [self willChangeValueForKey:newStateKey];
-        [self willChangeValueForKey:oldStateKey];
-        _state = state;
-        [self didChangeValueForKey:oldStateKey];
-        [self didChangeValueForKey:newStateKey];
-    }
-}
-
 #pragma mark - NSOperation
 
 - (BOOL)isReady {
@@ -74,7 +40,8 @@
 }
 
 - (void)main {
-    [self finish];
+    self.result = [NSNull null];
+    self.state = COOperationStateFinished;
 }
 
 - (void)start {
@@ -82,33 +49,46 @@
         self.state = COOperationStateExecuting;
 
         if (self.isCancelled) {
-            [self reject];
+            self.state = COOperationStateFinished;
         } else {
             [self main];
         }
     }
 }
 
-#pragma mark - <COSimpleOperation>
+#pragma mark - COAbstractOperation
 
-- (void)finish {
-    if (self.isCancelled == NO) {
-        self.result = [NSNull null];
-    } else {
-        self.error = [NSError errorWithDomain:COErrorDomain code:COOperationErrorCancelled userInfo:nil];
+- (COOperationState)state {
+    COOperationState state;
+    @synchronized(self) {
+        state = _state;
     }
-
-    self.state = COOperationStateFinished;
+    return state;
 }
 
-- (void)reject {
-    if (self.isCancelled == NO) {
-        self.error = [NSError errorWithDomain:COErrorDomain code:COOperationErrorRejected userInfo:nil];
-    } else {
-        self.error = [NSError errorWithDomain:COErrorDomain code:COOperationErrorCancelled userInfo:nil];
+- (void)setState:(COOperationState)state {
+    if (COStateTransitionIsValid(self.state, state) == NO) {
+        NSString *errMessage = [NSString stringWithFormat:@"%@: transition from %@ to %@ is invalid", self, COKeyPathFromOperationState(self.state), COKeyPathFromOperationState(state)];
+
+        @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:errMessage userInfo:nil];
     }
 
-    self.state = COOperationStateFinished;
+    @synchronized(self) {
+        if (COStateTransitionIsValid(self.state, state) == NO) {
+            NSString *errMessage = [NSString stringWithFormat:@"%@: transition from %@ to %@ is invalid", self, COKeyPathFromOperationState(self.state), COKeyPathFromOperationState(state)];
+
+            @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:errMessage userInfo:nil];
+        };
+
+        NSString *oldStateKey = COKeyPathFromOperationState(self.state);
+        NSString *newStateKey = COKeyPathFromOperationState(state);
+
+        [self willChangeValueForKey:newStateKey];
+        [self willChangeValueForKey:oldStateKey];
+        _state = state;
+        [self didChangeValueForKey:oldStateKey];
+        [self didChangeValueForKey:newStateKey];
+    }
 }
 
 #pragma mark

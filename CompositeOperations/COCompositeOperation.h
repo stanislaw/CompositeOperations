@@ -7,7 +7,6 @@
 // Released under the MIT license
 //
 
-#import <CompositeOperations/COTypedefs.h>
 #import <CompositeOperations/COAbstractOperation.h>
 #import <CompositeOperations/COSequence.h>
 

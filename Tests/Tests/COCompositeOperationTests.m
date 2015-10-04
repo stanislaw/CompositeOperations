@@ -12,7 +12,7 @@ describe(@"COCompositeOperation", ^{
         it(@"should raise exception", ^{
             [[theBlock(^{
                 __unused COCompositeOperation *compositeOperation = [[COCompositeOperation alloc] init];
-            }) should] raiseWithName:COGenericException];
+            }) should] raiseWithName:NSGenericException];
         });
     });
 

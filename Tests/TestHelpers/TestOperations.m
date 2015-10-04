@@ -10,7 +10,7 @@
 
 @implementation OperationTriviallyReturningNull
 - (void)main {
-    [self finish];
+    [self finishWithResult:[NSNull null]];
 }
 @end
 
@@ -38,7 +38,9 @@
 
 @implementation OperationRejectingItself
 - (void)main {
-    [self reject];
+    NSError *error = [NSError errorWithDomain:@"Foo" code:0 userInfo:nil];
+
+    [self rejectWithError:error];
 }
 @end
 

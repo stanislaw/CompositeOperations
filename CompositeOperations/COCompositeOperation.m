@@ -29,7 +29,7 @@ NSString *const COCompositeOperationErrorKey = @"__COSequentialOperationErrorKey
 
 - (id)init {
     if ([self isMemberOfClass:[__COCompositeOperation class]]) {
-        @throw [NSException exceptionWithName:COGenericException reason:@"Must use one of initializers: initWithOperations:, initWithOperations:operationQueue: or initWithSequence:" userInfo:nil];
+        @throw [NSException exceptionWithName:NSGenericException reason:@"Must use one of initializers: initWithOperations:, initWithOperations:operationQueue: or initWithSequence:" userInfo:nil];
     }
 
     return [super init];

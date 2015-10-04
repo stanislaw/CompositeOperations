@@ -17,6 +17,7 @@
 @property (readonly, nonatomic) NSArray <NSOperation <COOperation> *> *operations;
 
 - (void)cancelAllOperations;
+- (void)reject;
 
 @end
 
@@ -58,8 +59,6 @@
 
     if (self.isCancelled == NO) {
         self.result = result;
-    } else {
-        self.error = [NSError errorWithDomain:COErrorDomain code:COOperationErrorCancelled userInfo:nil];
     }
 
     self.state = COOperationStateFinished;
@@ -74,8 +73,6 @@
         NSArray *errors = [self.operations valueForKey:@"error"];
 
         self.error = errors;
-    } else {
-        self.error = [NSError errorWithDomain:COErrorDomain code:COOperationErrorCancelled userInfo:nil];
     }
 
     self.state = COOperationStateFinished;

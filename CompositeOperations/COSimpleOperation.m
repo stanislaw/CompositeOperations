@@ -23,37 +23,17 @@
 
 #pragma mark - <COSimpleOperation>
 
-- (void)finish {
-    [self finishWithResult:[NSNull null]];
-}
-
 - (void)finishWithResult:(nonnull id)result {
     NSParameterAssert(result);
 
     if (self.isCancelled == NO) {
         self.result = result;
-    } else {
-        self.error = [NSError errorWithDomain:COErrorDomain code:COOperationErrorCancelled userInfo:nil];
     }
 
     self.state = COOperationStateFinished;
 
     if (self.completion) {
-        self.completion(self.result, self.error);
-    }
-}
-
-- (void)reject {
-    if (self.isCancelled == NO) {
-        self.error = [NSError errorWithDomain:COErrorDomain code:COOperationErrorRejected userInfo:nil];
-    } else {
-        self.error = [NSError errorWithDomain:COErrorDomain code:COOperationErrorCancelled userInfo:nil];
-    }
-
-    self.state = COOperationStateFinished;
-
-    if (self.completion) {
-        self.completion(nil, self.error);
+        self.completion(self.result, nil);
     }
 }
 
@@ -62,8 +42,6 @@
 
     if (self.isCancelled == NO) {
         self.error = error;
-    } else {
-        self.error = [NSError errorWithDomain:COErrorDomain code:COOperationErrorCancelled userInfo:nil];
     }
 
     self.state = COOperationStateFinished;

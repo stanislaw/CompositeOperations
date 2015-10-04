@@ -49,8 +49,10 @@ describe(@"__COParallelOperationSpec - Rejection", ^{
     it(@"", ^{
         dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
 
+        id <COOperation> rejectingOperation = [OperationRejectingItself new];
+
         NSArray *operations = @[
-            [OperationRejectingItself new],
+            rejectingOperation
         ];
 
         ParallelCompositeOperation1 *parallelOperation = [[ParallelCompositeOperation1 alloc] initWithOperations:operations];
@@ -73,7 +75,7 @@ describe(@"__COParallelOperationSpec - Rejection", ^{
 
         NSError *parallelOperationOnlyError = parallelOperation.error.firstObject;
 
-        NSError *expectedOperationError = [NSError errorWithDomain:COErrorDomain code:COOperationErrorRejected userInfo:nil];
+        NSError *expectedOperationError = rejectingOperation.error;
 
         [[parallelOperationOnlyError should] equal:expectedOperationError];
     });

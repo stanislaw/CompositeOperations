@@ -17,5 +17,6 @@
 - (id)initWithOperations:(NSArray <NSOperation <COOperation> *> *)operations;
 
 - (id)init NS_UNAVAILABLE;
++ (instancetype)new NS_UNAVAILABLE;
 
 @end

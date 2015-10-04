@@ -17,7 +17,7 @@ describe(@"COSimpleOperation", ^{
                     isFinished = YES;
                 };
 
-                [operation finish];
+                [operation finishWithResult:[NSNull null]];
 
                 while (isFinished == NO);
 
@@ -43,10 +43,49 @@ describe(@"COSimpleOperation", ^{
                 [[theValue(operation.isFinished)  should] beYes];
 
                 [[operation.result should] beNil];
+                [[operation.error should] beNil];
+            });
+        });
+    });
 
-                NSError *expectedError = [NSError errorWithDomain:COErrorDomain code:COOperationErrorCancelled userInfo:nil];
+    describe(@"Incorrect State Transitions", ^{
+        describe(@"called two times", ^{
+            describe(@"-finish", ^{
+                it(@"should raise exception", ^{
+                    COSimpleOperation *operation = [COSimpleOperation new];
 
-                [[operation.error should] equal:expectedError];
+                    [operation finishWithResult:[NSNull null]];
+
+                    [[theBlock(^{
+                        [operation finishWithResult:[NSNull null]];
+                    }) should] raiseWithName:NSInternalInconsistencyException];
+                });
+            });
+
+            describe(@"finish -> reject", ^{
+                it(@"should raise exception", ^{
+                    COSimpleOperation *operation = [COSimpleOperation new];
+
+                    [operation finishWithResult:[NSNull null]];
+
+                    [[theBlock(^{
+                        NSError *error = [NSError errorWithDomain:@"FOO" code:0 userInfo:nil];
+                        [operation rejectWithError:error];
+                    }) should] raiseWithName:NSInternalInconsistencyException];
+                });
+            });
+
+            describe(@"finish -> reject", ^{
+                it(@"should raise exception", ^{
+                    COSimpleOperation *operation = [COSimpleOperation new];
+
+                    NSError *error = [NSError errorWithDomain:@"FOO" code:0 userInfo:nil];
+                    [operation rejectWithError:error];
+
+                    [[theBlock(^{
+                        [operation finishWithResult:[NSNull null]];
+                    }) should] raiseWithName:NSInternalInconsistencyException];
+                });
             });
         });
     });

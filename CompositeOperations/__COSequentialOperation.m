@@ -79,8 +79,6 @@
 - (void)finish {
     if (self.isCancelled == NO) {
         self.result = [self.operations valueForKey:@"result"];
-    } else {
-        self.error = [NSError errorWithDomain:COErrorDomain code:COOperationErrorCancelled userInfo:nil];
     }
 
     self.state = COOperationStateFinished;
@@ -95,8 +93,6 @@
         NSArray *errors = [self.operations valueForKey:@"error"];
 
         self.error = errors;
-    } else {
-        self.error = [NSError errorWithDomain:COErrorDomain code:COOperationErrorCancelled userInfo:nil];
     }
 
     self.state = COOperationStateFinished;
