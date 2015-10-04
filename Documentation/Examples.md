@@ -76,7 +76,7 @@ parallelOperation.completion = ^(NSArray *results, NSArray *errors) {
 
 @implementation COSimpleSequence
 
-- (id <COOperation>)nextOperationAfterOperation:(id <COOperation>)previousOperationOrNil {
+- (NSOperation <COOperation> *)nextOperationAfterOperation:(NSOperation <COOperation> *)previousOperationOrNil {
 
     // Nothing behind - it will be the first operation in sequence
     if (previousOperationOrNil == nil)) {
