@@ -23,8 +23,11 @@
 - (void)main {
     [DoSomeThingAsynchronousWithCompletionHandler:^(id result, NSError *error){
         if (result) {
-            [self finishWithResult:result];        } else {
-        	[self rejectWithError:error];        }    }];
+            [self finishWithResult:result];
+        } else {
+        	[self rejectWithError:error];
+        }
+    }];
 }
 @end
 
@@ -36,8 +39,11 @@ SimpleOperation *simpleOperation = [SimpleOperation new];
 
 simpleOperation.completion = ^(id result, NSError *error) {
     if (result) {
-        // handle result    } else {
-        // handle error    }};
+        // handle result
+    } else {
+        // handle error
+    }
+};
 
 [[NSOperationQueue mainQueue] addOperation:simpleOperation];
 ```
@@ -53,8 +59,11 @@ COCompositeOperation *parallelOperation = [[COCompositeOperation alloc] initWith
 
 parallelOperation.completion = ^(NSArray *results, NSArray *errors) {
     if (results) {
-        // handle results    } else {
-        // handle errors    }};
+        // handle results
+    } else {
+        // handle errors
+    }
+};
 
 [[NSOperationQueue mainQueue] addOperation:parallelOperation];
 ```
@@ -74,9 +83,13 @@ parallelOperation.completion = ^(NSArray *results, NSArray *errors) {
         return [Operation1 new];
     }
 
-    // Operation2 follows after Operation1
-    if ([previousOperationOrNil isKindOfClass:[Operation1 class]]) {
-        return [Operation2 new];    }
+    // Operation2 follows after Operation1 if that was successful
+    if ([previousOperationOrNil isKindOfClass:[Operation1 class]] &&
+        previousOperationOrNil.result) {
+        id resultOfOperation1 = previousOperationOrNil.result;
+        
+        return [[Operation2 alloc] initWithResultOfOperation1:result];
+    }
     
     // Returning nil tells composite operation that we are done
     return nil;
@@ -86,8 +99,11 @@ COCompositeOperation *sequentalOperation = [[COCompositeOperation alloc] initWit
 
 sequentalOperation.completion = ^(NSArray *results, NSArray *errors) {
     if (results) {
-        // handle results    } else {
-        // handle errors    }};
+        // handle results
+    } else {
+        // handle errors
+    }
+};
 
 [[NSOperationQueue mainQueue] addOperation:sequentalOperation];
 ```
