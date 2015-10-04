@@ -1,8 +1,8 @@
 //
 //  ViewController.h
-//  ExampleApp
+//  Example
 //
-//  Created by Stanislaw Pankevich on 20/09/15.
+//  Created by Stanislaw Pankevich on 02/10/15.
 //  Copyright © 2015 Stanislaw Pankevich. All rights reserved.
 //
 
