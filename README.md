@@ -102,7 +102,8 @@ parallelOperation.completion = ^(NSArray *results, NSArray *errors) {
     }
     
     else {
-        // handle cancellation: operation was cancelled from outside    }
+        // handle cancellation: operation was cancelled from outside
+    }
 };
 
 [[NSOperationQueue mainQueue] addOperation:parallelOperation];
@@ -156,7 +157,8 @@ sequentialOperation.completion = ^(NSArray *results, NSArray *errors) {
     }
     
     else {
-        // handle cancellation    	    }
+        // handle cancellation    	
+    }
 };
 
 [[NSOperationQueue mainQueue] addOperation:sequentialOperation];
@@ -176,6 +178,7 @@ Also see DevelopmentApp project and `Example` target in it.
 
 ## Related
 
+* [Composite NSOperation. Is this a bad idea?](http://stackoverflow.com/questions/4743953/composite-nsoperation-is-this-a-bad-idea)
 * [WWDC 2015 - Advanced NSOperations](https://developer.apple.com/videos/play/wwdc2015-226/)
 
 ## Copyright
