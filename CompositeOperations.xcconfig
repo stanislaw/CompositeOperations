@@ -1,0 +1,2 @@
+FRAMEWORK_SEARCH_PATHS_COMPOSITE_OPERATIONS = $(VENDOR_DIR)/CompositeOperations
+OTHER_LDFLAGS_COMPOSITE_OPERATIONS = -framework Foundation -framework CompositeOperations
