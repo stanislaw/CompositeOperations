@@ -37,7 +37,7 @@
     }
 }
 
-- (void)rejectWithError:(nonnull NSError *)error {
+- (void)rejectWithError:(nonnull id)error {
     NSParameterAssert(error);
 
     if (self.isCancelled == NO) {

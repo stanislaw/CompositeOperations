@@ -13,9 +13,9 @@
 @interface COCompositeOperation : COAbstractOperation
 
 @property (readonly, nullable) NSArray *result;
-@property (readonly, nullable) NSArray <NSError *> *error;
+@property (readonly, nullable) NSArray *error;
 
-@property (copy, nullable) void (^completion)(NSArray * _Nullable results, NSArray <NSError *> * _Nullable errors);
+@property (copy, nullable) void (^completion)(NSArray * _Nullable results, NSArray * _Nullable errors);
 
 // Parallel flow
 - (nonnull id)initWithOperations:(nonnull NSArray <NSOperation <COOperation> *> *)operations
