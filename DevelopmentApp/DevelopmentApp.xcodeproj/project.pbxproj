@@ -92,7 +92,7 @@
 /* Begin PBXFileReference section */
 		8600DE641BADD79D005297A9 /* COCompositeOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COCompositeOperationTests.m; sourceTree = "<group>"; };
 		860E88BA1BDBC28A00C2FD86 /* COSequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COSequence.m; sourceTree = "<group>"; };
-		860E88C01BDBC62B00C2FD86 /* COSequenceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = COSequenceTests.m; path = "COSequenceTests.m"; sourceTree = "<group>"; };
+		860E88C01BDBC62B00C2FD86 /* COSequenceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COSequenceTests.m; sourceTree = "<group>"; };
 		8620512D1B3DF4A50066333D /* CompositeOperations.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CompositeOperations.framework; sourceTree = "<group>"; };
 		8620512F1B3DF4A50066333D /* CompositeOperations.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CompositeOperations.framework; sourceTree = "<group>"; };
 		8629046C1BBF2E3B00C8E33A /* COSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COSequence.h; sourceTree = "<group>"; };
@@ -797,8 +797,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COMPOSITE_OPERATIONS_BUILD_NUMBER = 11;
-				COMPOSITE_OPERATIONS_VERSION = 0.8.4;
+				COMPOSITE_OPERATIONS_BUILD_NUMBER = 12;
+				COMPOSITE_OPERATIONS_VERSION = 0.8.5;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = "$(COMPOSITE_OPERATIONS_BUILD_NUMBER)";
 				DYLIB_CURRENT_VERSION = "$(COMPOSITE_OPERATIONS_BUILD_NUMBER)";
@@ -833,6 +833,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_MODULE_DEBUGGING = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -843,8 +844,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COMPOSITE_OPERATIONS_BUILD_NUMBER = 11;
-				COMPOSITE_OPERATIONS_VERSION = 0.8.4;
+				COMPOSITE_OPERATIONS_BUILD_NUMBER = 12;
+				COMPOSITE_OPERATIONS_VERSION = 0.8.5;
 				COPY_PHASE_STRIP = YES;
 				CURRENT_PROJECT_VERSION = "$(COMPOSITE_OPERATIONS_BUILD_NUMBER)";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
