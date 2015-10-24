@@ -1,5 +1,5 @@
 //
-//  TestCompositeOperations.h
+//  TestSequences.h
 //  CompositeOperations
 //
 //  Created by Stanislaw Pankevich on 18/11/14.
@@ -8,12 +8,21 @@
 
 #import <CompositeOperations/CompositeOperations.h>
 
+#pragma mark - Basic sequences
+
+@interface Sequence_123 : COSequence <COSequence>
+@end
+
+@interface Sequence_2x2 : COSequence <COSequence>
+@end
+
+#pragma mark - Custom sequences
+
 @interface Sequence_ThreeTrivialGreenOperations : NSObject <COSequence>
 @property (assign, nonatomic) NSUInteger numberOfOperations;
 @end
 
 @interface Sequence_FirstOperationRejects : NSObject <COSequence>
-@property (assign, nonatomic) NSUInteger numberOfOperations;
 @end
 
 @interface Sequence_FirstOperationRejects_3Attempts : NSObject <COSequence>

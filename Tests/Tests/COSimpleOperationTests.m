@@ -97,7 +97,7 @@ describe(@"COSimpleOperation", ^{
 
                 __block id expectedResult = nil;
 
-                COSimpleOperation *operation = [OperationTriviallyReturningNull new];
+                COSimpleOperation *operation = [OperationReturningNull new];
 
                 operation.completion = ^(id result, NSError *error) {
                     expectedResult = result;

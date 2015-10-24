@@ -91,8 +91,7 @@
     }
 }
 
-#pragma mark
-#pragma mark <NSObject>
+#pragma mark - <NSObject>
 
 - (NSString *)description {
     NSMutableArray *descriptionComponents = [NSMutableArray array];

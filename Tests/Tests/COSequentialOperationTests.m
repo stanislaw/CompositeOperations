@@ -1,7 +1,7 @@
 
 #import "TestHelpers.h"
 #import "TestOperations.h"
-#import "TestCompositeOperations.h"
+#import "TestSequences.h"
 
 #import "__COSequentialOperation.h"
 

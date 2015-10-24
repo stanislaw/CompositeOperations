@@ -8,7 +8,15 @@
 
 #import <CompositeOperations/CompositeOperations.h>
 
-@interface OperationTriviallyReturningNull : COSimpleOperation
+@interface OperationReturning1 : COSimpleOperation; @end
+@interface OperationReturning2 : COSimpleOperation; @end
+@interface OperationReturning3 : COSimpleOperation; @end
+
+@interface OperationReturningNull : COSimpleOperation <NSCopying>
+@end
+
+@interface OperationPower2 : COSimpleOperation
+- (id)initWithNumber:(NSNumber *)number;
 @end
 
 @interface OperationTakingArrayAndAdding1ToIt : COSimpleOperation

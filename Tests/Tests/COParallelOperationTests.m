@@ -4,7 +4,7 @@
 
 #import "__COParallelOperation.h"
 
-#import "TestCompositeOperations.h"
+#import "TestSequences.h"
 
 @interface ParallelCompositeOperation1 : __COParallelOperation
 @property (assign, nonatomic) NSUInteger numberOfOperations;
@@ -20,9 +20,9 @@ describe(@"__COParallelOperationSpec", ^{
         dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
 
         NSArray *operations = @[
-            [OperationTriviallyReturningNull new],
-            [OperationTriviallyReturningNull new],
-            [OperationTriviallyReturningNull new]
+            [OperationReturningNull new],
+            [OperationReturningNull new],
+            [OperationReturningNull new]
         ];
 
         ParallelCompositeOperation1 *parallelOperation = [[ParallelCompositeOperation1 alloc] initWithOperations:operations];

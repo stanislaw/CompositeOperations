@@ -8,10 +8,45 @@
 
 #import "TestOperations.h"
 
-@implementation OperationTriviallyReturningNull
+@implementation OperationReturning1
+- (void)main { [self finishWithResult:@(1)]; }
+@end
+
+@implementation OperationReturning2
+- (void)main { [self finishWithResult:@(2)]; }
+@end
+
+@implementation OperationReturning3;
+- (void)main { [self finishWithResult:@(3)]; }
+@end
+
+@implementation OperationReturningNull
 - (void)main {
     [self finishWithResult:[NSNull null]];
 }
+- (id)copyWithZone:(NSZone *)zone {
+    return [[[self class] alloc] init];
+}
+@end
+
+@implementation OperationPower2 {
+    NSNumber *_number;
+}
+
+- (id)initWithNumber:(NSNumber *)number {
+    self = [super init];
+
+    _number = number;
+
+    return self;
+}
+
+- (void)main {
+    NSNumber *power2 = @(_number.integerValue * _number.integerValue);
+
+    [self finishWithResult:power2];
+}
+
 @end
 
 @implementation OperationTakingArrayAndAdding1ToIt {

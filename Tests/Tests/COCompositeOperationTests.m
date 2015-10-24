@@ -1,7 +1,8 @@
 
 #import "TestHelpers.h"
 #import "TestOperations.h"
-#import "TestCompositeOperations.h"
+#import "TestSequences.h"
+
 #import "__COSequentialOperation.h"
 #import "__COParallelOperation.h"
 
@@ -51,9 +52,9 @@ describe(@"COCompositeOperation", ^{
     describe(@"-initWithOperations:", ^{
         it(@"should be of class __COParallelOperation", ^{
             NSArray *operations = @[
-                [OperationTriviallyReturningNull new],
-                [OperationTriviallyReturningNull new],
-                [OperationTriviallyReturningNull new]
+                [OperationReturningNull new],
+                [OperationReturningNull new],
+                [OperationReturningNull new]
             ];
 
             COCompositeOperation *parallelOperation = [[COCompositeOperation alloc] initWithOperations:operations];
@@ -65,9 +66,9 @@ describe(@"COCompositeOperation", ^{
             dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
 
             NSArray *operations = @[
-                                    [OperationTriviallyReturningNull new],
-                                    [OperationTriviallyReturningNull new],
-                                    [OperationTriviallyReturningNull new],
+                                    [OperationReturningNull new],
+                                    [OperationReturningNull new],
+                                    [OperationReturningNull new],
                                     ];
 
             COCompositeOperation *parallelOperation = [[COCompositeOperation alloc] initWithOperations:operations];

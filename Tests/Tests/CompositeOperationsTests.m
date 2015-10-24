@@ -1,6 +1,6 @@
 #import "TestHelpers.h"
 #import "TestOperations.h"
-#import "TestCompositeOperations.h"
+#import "TestSequences.h"
 
 #import "__COParallelOperation.h"
 #import "__COSequentialOperation.h"
