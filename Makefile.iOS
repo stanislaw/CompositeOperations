@@ -1,54 +1,79 @@
 NAME=CompositeOperations
-VERSION=0.7.7
-GH_REPO=stanislaw/CompositeOperations
+XCODEPROJ=DevelopmentApp/DevelopmentApp.xcodeproj
+CONFIGURATION=Release
+SCHEME=CompositeOperations-iOS
+SIMULATOR='platform=iOS Simulator,name=iPhone 6s Plus'
 
-### Dirs
+FRAMEWORK_FOLDER=$(NAME).framework
 
-PORT_TEMP_DIR ?= ~/Library/Caches/Ports
-# ~/Library/Caches/Ports/CompositeOperations
-PORT_DIR=$(PORT_TEMP_DIR)/$(NAME)
-SOURCE_PATH  = $(PORT_DIR)/$(NAME)-${VERSION}
-ZIPBALL_PATH = $(PORT_DIR)/$(NAME)-$(VERSION).zip
-IOS_FRAMEWORK_SOURCE_PATH = $(SOURCE_PATH)/CompositeOperations/iOS/CompositeOperations.framework
+### Paths
 
-PORT_VENDOR_DIR ?= ./Vendor
-# ./Vendor/CompositeOperations
-INSTALL_PATH = $(PORT_VENDOR_DIR)/$(NAME)
+BUILD_PATH=$(PWD)/Build
+BUILD_PATH_SIMULATOR=$(BUILD_PATH)/$(CONFIGURATION)-iphonesimulator
+BUILD_PATH_IPHONE=$(BUILD_PATH)/$(CONFIGURATION)-iphoneos
+BUILD_PATH_UNIVERSAL=$(BUILD_PATH)/$(CONFIGURATION)-universal
+BUILD_PATH_UNIVERSAL_FRAMEWORK_FOLDER=$(BUILD_PATH_UNIVERSAL)/$(FRAMEWORK_FOLDER)
+BUILD_PATH_UNIVERSAL_FRAMEWORK_BINARY=$(BUILD_PATH_UNIVERSAL_FRAMEWORK_FOLDER)/$(NAME)
 
-### URLs
+DISTRIBUTION_PATH=$(PWD)/Distribution
+ZIPBALL_NAME=$(NAME)-iOS.zip
+ZIPBALL_PATH=$(DISTRIBUTION_PATH)/$(ZIPBALL_NAME)
 
-GH_URL=https://github.com
-ZIPBALL_URL=${GH_URL}/${GH_REPO}/releases/download/${VERSION}/CompositeOperations.zip
+### Colors
 
-### Targets
+RESET=\033[0;39m
+RED=\033[0;31m
+GREEN=\033[0;32m
 
-.PHONY: install update uninstall clean purge
+### Actions
 
-install: $(SOURCE_PATH) $(ZIPBALL_PATH) $(IOS_FRAMEWORK_SOURCE_PATH) $(INSTALL_PATH)
+.PHONY: default archive clean test build validate zip
 
-uninstall:
-	rm -rf $(INSTALL_PATH)
+default: test
 
-update: uninstall install
+archive: test build validate zip
+
+test:
+	xcodebuild -project $(XCODEPROJ) \
+                   -scheme $(SCHEME) \
+                   -sdk iphonesimulator \
+                   -destination $(SIMULATOR) \
+                   clean test
+
+build:
+	xcodebuild -project $(XCODEPROJ) \
+                   -scheme $(SCHEME) \
+                   -sdk iphonesimulator \
+                   -destination $(SIMULATOR) \
+                   -configuration $(CONFIGURATION) \
+                   CONFIGURATION_BUILD_DIR=$(BUILD_PATH_SIMULATOR) \
+                   clean build
+
+	xcodebuild -project $(XCODEPROJ) \
+                   -scheme $(SCHEME) \
+                   -sdk iphoneos \
+                   -configuration $(CONFIGURATION) \
+                   CONFIGURATION_BUILD_DIR=$(BUILD_PATH_IPHONE) \
+                   clean build
+
+	rm -rf $(BUILD_PATH_UNIVERSAL)
+	mkdir -p $(BUILD_PATH_UNIVERSAL)
+
+	cp -Rv $(BUILD_PATH_IPHONE)/$(FRAMEWORK_FOLDER) $(BUILD_PATH_UNIVERSAL) 
+
+	lipo $(BUILD_PATH_SIMULATOR)/$(FRAMEWORK_FOLDER)/$(NAME) $(BUILD_PATH_IPHONE)/$(FRAMEWORK_FOLDER)/$(NAME) -create -output $(BUILD_PATH_UNIVERSAL_FRAMEWORK_BINARY)
+
+validate: validate.i386 validate.x86_64 validate.armv7 validate.arm64
+
+validate.%:
+	@printf "Validating $*... "
+	@lipo -info $(BUILD_PATH_UNIVERSAL_FRAMEWORK_BINARY) | grep -q '$*' && echo "$(GREEN)Passed$(RESET)" || (echo "$(RED)Failed$(RESET)"; exit 1)
+
+zip:
+	mkdir -p $(DISTRIBUTION_PATH)
+	cd $(BUILD_PATH_UNIVERSAL) && zip -r -FS $(DISTRIBUTION_PATH)/$(ZIPBALL_NAME) $(FRAMEWORK_FOLDER)
 
 clean:
-	rm -rf $(SOURCE_PATH)
-
-purge: uninstall clean
-
-### Artefacts
-
-$(SOURCE_PATH):
-	mkdir -p $@
-
-$(ZIPBALL_PATH):
-	wget ${ZIPBALL_URL} -O $@
-
-$(IOS_FRAMEWORK_SOURCE_PATH):
-	mkdir -p $@
-	unzip $(ZIPBALL_PATH) -d $(SOURCE_PATH)
-
-$(INSTALL_PATH):
-	mkdir -p $@
-	cp -Rv $(IOS_FRAMEWORK_SOURCE_PATH) $@
+	rm -rf $(BUILD_PATH)
+	rm -rf $(DISTRIBUTION_PATH)
 

@@ -1,7 +1,10 @@
-**/Build/**
-**/xcuserdata/**
 .DS_Store
-Distribution/**
-Vendor/**
-**/DerivedData/**
 
+**/xcuserdata/**
+
+**/Build/**
+**/DerivedData/**
+Distribution/**
+
+Components/**
+components.sh
