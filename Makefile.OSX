@@ -1,0 +1,62 @@
+MAKEFLAGS += --warn-undefined-variables
+
+NAME=CompositeOperations
+XCODEPROJ=DevelopmentApp/DevelopmentApp.xcodeproj
+CONFIGURATION=Release
+SCHEME=CompositeOperations-OSX
+DESTINATION='platform=OS X,arch=x86_64'
+
+FRAMEWORK_FOLDER=$(NAME).framework
+
+### Paths
+
+BUILD_PATH=$(PWD)/Build
+BUILD_PATH_OSX=$(BUILD_PATH)/$(CONFIGURATION)-OSX
+BUILD_PATH_OSX_BINARY=$(BUILD_PATH_OSX)/$(FRAMEWORK_FOLDER)/$(NAME)
+
+DISTRIBUTION_PATH=$(PWD)/Distribution
+ZIPBALL_NAME=$(NAME)-OSX.zip
+ZIPBALL_PATH=$(DISTRIBUTION_PATH)/$(ZIPBALL_NAME)
+
+### Colors
+
+RESET=\033[0;39m
+RED=\033[0;31m
+GREEN=\033[0;32m
+
+### Actions
+
+.PHONY: default archive clean test build validate zip
+
+default: test
+
+archive: test build validate zip
+
+test:
+	xcodebuild -project $(XCODEPROJ) \
+               -scheme $(SCHEME) \
+               -destination $(DESTINATION) \
+               clean test
+
+build:
+	xcodebuild -project $(XCODEPROJ) \
+                   -scheme $(SCHEME) \
+                   -sdk macosx \
+                   -configuration $(CONFIGURATION) \
+                   CONFIGURATION_BUILD_DIR=$(BUILD_PATH_OSX) \
+                   clean build
+
+validate: validate.x86_64
+
+validate.%:
+	@printf "Validating $*... "
+	@lipo -info $(BUILD_PATH_OSX_BINARY) | grep -q '$*' && echo "$(GREEN)Passed$(RESET)" || (echo "$(RED)Failed$(RESET)"; exit 1)
+
+zip:
+	mkdir -p $(DISTRIBUTION_PATH)
+	cd $(BUILD_PATH_OSX) && zip -r -FS $(DISTRIBUTION_PATH)/$(ZIPBALL_NAME) $(FRAMEWORK_FOLDER)
+
+clean:
+	rm -rf $(BUILD_PATH)
+	rm -rf $(DISTRIBUTION_PATH)
+
