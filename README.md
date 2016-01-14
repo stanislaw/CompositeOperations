@@ -16,14 +16,18 @@ The project has alpha status.
 
 ## Installation
 
-### Framework
+### Component
+
+Latest `.make` file can be found in Components repository: [Components.make/CompositeOperations](https://github.com/AlexDenisov/Components/tree/master/Components.make/CompositeOperations).
+
+### Manual
 
 Latest framework binaries can be found on [Releases](https://github.com/stanislaw/CompositeOperations/releases) page.
 
 ### Cocoa Pod
 
 ```
-pod 'CompositeOperations', :git => 'https://github.com/stanislaw/CompositeOperations.git', :tag => '0.8.1'
+pod 'CompositeOperations', :git => 'https://github.com/stanislaw/CompositeOperations.git', :tag => '0.8.5'
 ```
 
 ## Usage
