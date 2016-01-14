@@ -8,14 +8,6 @@
 
 #import <CompositeOperations/CompositeOperations.h>
 
-#pragma mark - Basic sequences
-
-@interface Sequence_123 : COSequence <COSequence>
-@end
-
-@interface Sequence_2x2 : COSequence <COSequence>
-@end
-
 #pragma mark - Custom sequences
 
 @interface Sequence_ThreeTrivialGreenOperations : NSObject <COSequence>

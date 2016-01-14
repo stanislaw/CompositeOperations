@@ -9,34 +9,6 @@
 
 #import <CompositeOperations/COSequence.h>
 
-@implementation COSequence
-
-- (NSDictionary *)steps {
-    @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                   reason:@"Sequence @steps must me implemented by a subclass"
-                                 userInfo:nil];
-    return nil;
-}
-
-#pragma mark - <COSequence>
-
-- (NSOperation<COOperation> *)nextOperationAfterOperation:(NSOperation<COOperation> *)previousOperationOrNil {
-    if (previousOperationOrNil && previousOperationOrNil.result == nil) {
-        return nil;
-    }
-
-    NSString *step = COStep([previousOperationOrNil class]);
-
-    COStepGenerator generator = self.steps[step];
-    NSAssert(generator, nil);
-
-    id nextOperation = generator(previousOperationOrNil);
-
-    return nextOperation;
-}
-
-@end
-
 @interface CORetrySequence ()
 @property (assign, nonatomic) NSUInteger numberOfRetries;
 @property (readonly, nonatomic) NSOperation <COOperation> *operation;

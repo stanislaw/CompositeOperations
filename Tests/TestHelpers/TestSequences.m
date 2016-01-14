@@ -13,52 +13,6 @@
 #import "COSimpleOperation.h"
 #import "__COSequentialOperation.h"
 
-#pragma mark - Basic sequences
-
-@implementation Sequence_123
-
-- (NSDictionary *)steps {
-    return @{
-        COStepInitial: ^id(id _){
-            return [OperationReturning1 new];
-        },
-
-        COStep(OperationReturning1): ^id(id _){
-            return [OperationReturning2 new];
-        },
-
-        COStep(OperationReturning2): ^id(id _){
-            return [OperationReturning3 new];
-        },
-
-        COStep(OperationReturning3): ^id(id _){
-            return COStepFinal;
-        },
-    };
-}
-
-@end
-
-@implementation Sequence_2x2
-
-- (NSDictionary *)steps {
-    return @{
-             COStepInitial: ^id(id _){
-                 return [OperationReturning2 new];
-             },
-
-             COStep(OperationReturning2): ^id(OperationReturning2 *operation){
-                 return [[OperationPower2 alloc] initWithNumber:operation.result];
-             },
-             
-             COStep(OperationPower2): ^id(id _){
-                 return COStepFinal;
-             },
-    };
-}
-
-@end
-
 #pragma mark - Custom sequences
 
 @implementation Sequence_ThreeTrivialGreenOperations
