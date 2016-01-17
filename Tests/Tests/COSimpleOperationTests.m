@@ -93,23 +93,19 @@ describe(@"COSimpleOperation", ^{
     describe(@"-completion", ^{
         describe(@"Success", ^{
             it(@"should call @completion block with result", ^{
-                dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
-
                 __block id expectedResult = nil;
 
                 COSimpleOperation *operation = [OperationReturningNull new];
 
-                operation.completion = ^(id result, NSError *error) {
-                    expectedResult = result;
+                waitForCompletion(^(void(^done)(void)) {
+                    operation.completion = ^(id result, NSError *error) {
+                        expectedResult = result;
 
-                    dispatch_semaphore_signal(waitSemaphore);
-                };
+                        done();
+                    };
 
-                [operation start];
-
-                while (dispatch_semaphore_wait(waitSemaphore, DISPATCH_TIME_NOW)) {
-                    CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
-                }
+                    [operation start];
+                });
 
                 [[expectedResult should] equal:operation.result];
             });
@@ -117,8 +113,6 @@ describe(@"COSimpleOperation", ^{
 
         describe(@"Rejection", ^{
             it(@"should call @completion block with result", ^{
-                dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
-
                 __block NSError *expectedError = nil;
                 __block id expectedResult = nil;
 
@@ -126,18 +120,16 @@ describe(@"COSimpleOperation", ^{
 
                 COSimpleOperation *operation = [[OperationRejectingItselfWithError alloc] initWithError:givenError];
 
-                operation.completion = ^(id result, NSError *error) {
-                    expectedResult = result;
-                    expectedError = error;
+                waitForCompletion(^(void(^done)(void)) {
+                    operation.completion = ^(id result, NSError *error) {
+                        expectedResult = result;
+                        expectedError = error;
 
-                    dispatch_semaphore_signal(waitSemaphore);
-                };
+                        done();
+                    };
 
-                [operation start];
-
-                while (dispatch_semaphore_wait(waitSemaphore, DISPATCH_TIME_NOW)) {
-                    CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
-                }
+                    [operation start];
+                });
 
                 [[expectedError should] equal:givenError];
                 [[expectedResult should] beNil];

@@ -11,19 +11,15 @@ describe(@"__COSequentialOperationSpec", ^{
 
     describe(@"-initWithSequence:", ^{
         it(@"should run composite operation", ^{
-            dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
-
             __COSequentialOperation *sequentialOperation = [[__COSequentialOperation alloc] initWithSequence:[Sequence_ThreeTrivialGreenOperations new]];
 
-            sequentialOperation.completionBlock = ^{
-                dispatch_semaphore_signal(waitSemaphore);
-            };
+            waitForCompletion(^(void(^done)(void)) {
+                sequentialOperation.completionBlock = ^{
+                    done();
+                };
 
-            [sequentialOperation start];
-
-            while (dispatch_semaphore_wait(waitSemaphore, DISPATCH_TIME_NOW)) {
-                CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
-            }
+                [sequentialOperation start];
+            });
 
             [[theValue(sequentialOperation.isFinished) should] beYes];
 
@@ -38,19 +34,15 @@ describe(@"__COSequentialOperationSpec", ^{
 
         describe(@"__COSequentialOperationSpec - Rejection", ^{
             it(@"should run composite operation", ^{
-                dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
-
                 __COSequentialOperation *sequentialOperation = [[__COSequentialOperation alloc] initWithSequence:[Sequence_FirstOperationRejects new]];
 
-                sequentialOperation.completionBlock = ^{
-                    dispatch_semaphore_signal(waitSemaphore);
-                };
+                waitForCompletion(^(void(^done)(void)) {
+                    sequentialOperation.completionBlock = ^{
+                        done();
+                    };
 
-                [sequentialOperation start];
-
-                while (dispatch_semaphore_wait(waitSemaphore, DISPATCH_TIME_NOW)) {
-                    CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
-                }
+                    [sequentialOperation start];
+                });
 
                 [[theValue(sequentialOperation.isFinished) should] beYes];
 
@@ -63,19 +55,15 @@ describe(@"__COSequentialOperationSpec", ^{
 
         describe(@"__COSequentialOperationSpec - Rejection - 3 Attempts", ^{
             it(@"should run composite operation", ^{
-                dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
-
                 __COSequentialOperation *sequentialOperation = [[__COSequentialOperation alloc] initWithSequence:[Sequence_FirstOperationRejects_3Attempts new]];
 
-                sequentialOperation.completionBlock = ^{
-                    dispatch_semaphore_signal(waitSemaphore);
-                };
+                waitForCompletion(^(void(^done)(void)) {
+                    sequentialOperation.completionBlock = ^{
+                        done();
+                    };
 
-                [sequentialOperation start];
-
-                while (dispatch_semaphore_wait(waitSemaphore, DISPATCH_TIME_NOW)) {
-                    CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
-                }
+                    [sequentialOperation start];
+                });
 
                 [[theValue(sequentialOperation.isFinished) should] beYes];
 

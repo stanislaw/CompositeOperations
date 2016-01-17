@@ -6,14 +6,20 @@
 #import "Assertions.h"
 #import "TestOperations.h"
 
-static inline void waitUsingSemaphore(dispatch_semaphore_t semaphore) {
+static inline void waitForCompletion(void (^completion)(void (^)(void))) {
     static const NSTimeInterval WaitInterval = 1;
 
     NSDate *startingDate = [NSDate date];
 
-    while ([[NSDate date] timeIntervalSinceDate:startingDate] < WaitInterval && dispatch_semaphore_wait(semaphore, DISPATCH_TIME_NOW)) {
+    __block BOOL flag = NO;
+
+    void (^done)(void) = ^{
+        flag = YES;
+    };
+
+    completion(done);
+
+    while ([[NSDate date] timeIntervalSinceDate:startingDate] < WaitInterval && flag == NO) {
         CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
     }
 }
-
-#define NSSTRING_CONSTANT(name) NSString *const name = @ #name

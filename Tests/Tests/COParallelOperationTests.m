@@ -17,8 +17,6 @@ SPEC_BEGIN(__COParallelOperationSpec)
 
 describe(@"__COParallelOperationSpec", ^{
     it(@"", ^{
-        dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
-
         NSArray *operations = @[
             [OperationReturningNull new],
             [OperationReturningNull new],
@@ -27,16 +25,14 @@ describe(@"__COParallelOperationSpec", ^{
 
         ParallelCompositeOperation1 *parallelOperation = [[ParallelCompositeOperation1 alloc] initWithOperations:operations];
 
-        parallelOperation.completionBlock = ^{
-            dispatch_semaphore_signal(waitSemaphore);
-        };
+        waitForCompletion(^(void(^done)(void)) {
+            parallelOperation.completionBlock = ^{
+                done();
+            };
 
-        [parallelOperation start];
+            [parallelOperation start];
+        });
 
-        while (dispatch_semaphore_wait(waitSemaphore, DISPATCH_TIME_NOW)) {
-            CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
-        }
-        
         [[theValue(parallelOperation.isFinished) should] beYes];
         [[theValue(parallelOperation.isCancelled) should] beNo];
 
@@ -47,8 +43,6 @@ describe(@"__COParallelOperationSpec", ^{
 
 describe(@"__COParallelOperationSpec - Rejection", ^{
     it(@"", ^{
-        dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
-
         id <COOperation> rejectingOperation = [OperationRejectingItself new];
 
         NSArray *operations = @[
@@ -57,15 +51,13 @@ describe(@"__COParallelOperationSpec - Rejection", ^{
 
         ParallelCompositeOperation1 *parallelOperation = [[ParallelCompositeOperation1 alloc] initWithOperations:operations];
 
-        parallelOperation.completionBlock = ^{
-            dispatch_semaphore_signal(waitSemaphore);
-        };
+        waitForCompletion(^(void(^done)(void)) {
+            parallelOperation.completionBlock = ^{
+                done();
+            };
 
-        [parallelOperation start];
-
-        while (dispatch_semaphore_wait(waitSemaphore, DISPATCH_TIME_NOW)) {
-            CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
-        }
+            [parallelOperation start];
+        });
 
         [[theValue(parallelOperation.isFinished) should] beYes];
         [[theValue(parallelOperation.isCancelled) should] beNo];
@@ -81,8 +73,6 @@ describe(@"__COParallelOperationSpec - Rejection", ^{
     });
 
     it(@"", ^{
-        dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
-
         NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:0 userInfo:nil];
 
         NSArray *operations = @[
@@ -91,15 +81,13 @@ describe(@"__COParallelOperationSpec - Rejection", ^{
 
         ParallelCompositeOperation1 *parallelOperation = [[ParallelCompositeOperation1 alloc] initWithOperations:operations];
 
-        parallelOperation.completionBlock = ^{
-            dispatch_semaphore_signal(waitSemaphore);
-        };
+        waitForCompletion(^(void(^done)(void)) {
+            parallelOperation.completionBlock = ^{
+                done();
+            };
 
-        [parallelOperation start];
-
-        while (dispatch_semaphore_wait(waitSemaphore, DISPATCH_TIME_NOW)) {
-            CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
-        }
+            [parallelOperation start];
+        });
 
         NSArray *parallelOperationError = parallelOperation.error;
         NSError *parallelOperationOnlyError = parallelOperation.error.firstObject;

@@ -25,17 +25,15 @@ describe(@"COCompositeOperation", ^{
         });
 
         it(@"should run composite operation", ^{
-            dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
-
             COCompositeOperation *sequentialOperation = [[COCompositeOperation alloc] initWithSequence:[Sequence_ThreeTrivialGreenOperations new]];
 
-            sequentialOperation.completionBlock = ^{
-                dispatch_semaphore_signal(waitSemaphore);
-            };
+            waitForCompletion(^(void(^done)(void)) {
+                sequentialOperation.completionBlock = ^{
+                    done();
+                };
 
-            [sequentialOperation start];
-
-            waitUsingSemaphore(waitSemaphore);
+                [sequentialOperation start];
+            });
 
             [[theValue(sequentialOperation.isFinished) should] beYes];
 
@@ -63,8 +61,6 @@ describe(@"COCompositeOperation", ^{
         });
 
         it(@"should run composite operation", ^{
-            dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
-
             NSArray *operations = @[
                                     [OperationReturningNull new],
                                     [OperationReturningNull new],
@@ -75,16 +71,14 @@ describe(@"COCompositeOperation", ^{
 
             NSAssert(parallelOperation, nil);
 
-            parallelOperation.completionBlock = ^{
-                dispatch_semaphore_signal(waitSemaphore);
-            };
+            waitForCompletion(^(void(^done)(void)) {
+                parallelOperation.completionBlock = ^{
+                    done();
+                };
 
-            [parallelOperation start];
+                [parallelOperation start];
+            });
 
-            while (dispatch_semaphore_wait(waitSemaphore, DISPATCH_TIME_NOW)) {
-                CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
-            }
-            
             [[theValue(parallelOperation.isFinished) should] beYes];
             
             [[parallelOperation.result should] equal:@[ [NSNull null], [NSNull null], [NSNull null] ]];
