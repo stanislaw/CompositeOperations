@@ -20,10 +20,6 @@
 
 @end
 
-@interface COSimpleSequence : NSObject <COSequence>
-- (id)initWithOperations:(NSArray <NSOperation <COOperation> *> *)operations;
-@end
-
 @implementation __COSequentialOperation
 
 #pragma mark - <__COSequentialOperation>
@@ -118,36 +114,6 @@
 
 - (void)main {
     [self runNextOperation:nil];
-}
-
-@end
-
-@interface COSimpleSequence ()
-@property (readonly, nonatomic) NSArray *operations;
-@property (readonly, nonatomic) NSEnumerator *enumerator;
-@end
-
-@implementation COSimpleSequence
-
-- (id)initWithOperations:(NSArray <NSOperation <COOperation> *> *)operations {
-    NSParameterAssert(operations);
-
-    self = [super init];
-
-    if (self == nil) return nil;
-
-    _operations = operations;
-    _enumerator = [operations objectEnumerator];
-
-    return self;
-}
-
-- (id <COOperation>)nextOperationAfterOperation:(id <COOperation>)previousOperationOrNil {
-    if (previousOperationOrNil && previousOperationOrNil.result == nil) {
-        return nil;
-    }
-
-    return [self.enumerator nextObject];
 }
 
 @end
