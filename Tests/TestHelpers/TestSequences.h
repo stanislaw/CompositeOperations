@@ -20,3 +20,6 @@
 @interface Sequence_FirstOperationRejects_3Attempts : NSObject <COSequence>
 @property (assign, nonatomic) NSUInteger numberOfOperations;
 @end
+
+@interface LinearSequence_ThreeOperations_EachReturningNSNull : COLinearSequence
+@end

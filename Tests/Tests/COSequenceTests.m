@@ -60,4 +60,30 @@ describe(@"CORetrySequence", ^{
     });
 });
 
+describe(@"COLinearSequence", ^{
+    it(@"should run composite operation", ^{
+        dispatch_semaphore_t waitSemaphore = dispatch_semaphore_create(0);
+
+        LinearSequence_ThreeOperations_EachReturningNSNull *sequence = [[LinearSequence_ThreeOperations_EachReturningNSNull alloc] init];
+
+        __COSequentialOperation *sequentialOperation = [[__COSequentialOperation alloc] initWithSequence:sequence];
+
+        sequentialOperation.completionBlock = ^{
+            dispatch_semaphore_signal(waitSemaphore);
+        };
+
+        [sequentialOperation start];
+
+        while (dispatch_semaphore_wait(waitSemaphore, DISPATCH_TIME_NOW)) {
+            CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.05, YES);
+        }
+
+        [[theValue(sequentialOperation.isFinished) should] beYes];
+
+        NSArray *expectedResult = @[ [NSNull null], [NSNull null], [NSNull null] ];
+
+        [[sequentialOperation.result should] equal: expectedResult];
+    });
+});
+
 SPEC_END

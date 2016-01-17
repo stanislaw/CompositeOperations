@@ -10,10 +10,14 @@
 #import <Foundation/Foundation.h>
 #import <CompositeOperations/COOperation.h>
 
-typedef NSOperation<COOperation> * _Nullable (^COStepGenerator)(NSOperation<COOperation> * _Nullable);
-
 @protocol COSequence <NSObject>
 - (NSOperation <COOperation> * _Nullable)nextOperationAfterOperation:(NSOperation <COOperation> *_Nullable)previousOperationOrNil;
+@end
+
+typedef NSOperation <COOperation> *_Nullable(^COLinearSequenceStep)(NSOperation <COOperation> *_Nullable);
+
+@interface COLinearSequence : NSObject <COSequence>
+- (nonnull NSArray <COLinearSequenceStep>*)steps;
 @end
 
 @interface CORetrySequence : NSObject <COSequence>

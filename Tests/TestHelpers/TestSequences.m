@@ -64,3 +64,23 @@
 }
 
 @end
+
+@implementation LinearSequence_ThreeOperations_EachReturningNSNull
+
+- (nonnull NSArray <COLinearSequenceStep>*)steps {
+    return @[
+        ^(NSOperation <COOperation> *_) {
+            return [OperationReturningNull new];
+        },
+
+        ^(NSOperation <COOperation> *_) {
+            return [OperationReturningNull new];
+        },
+
+        ^(NSOperation <COOperation> *_) {
+            return [OperationReturningNull new];
+        }
+    ];
+}
+
+@end

@@ -57,12 +57,12 @@
         __weak NSOperation <COOperation> *weakNextOperation = nextOperation;
 
         nextOperation.completionBlock = ^{
-            dispatch_async(dispatch_get_main_queue(), ^{
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 [weakSelf runNextOperation:weakNextOperation];
             });
         };
 
-        dispatch_async(dispatch_get_main_queue(), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             [nextOperation start];
         });
     } else {

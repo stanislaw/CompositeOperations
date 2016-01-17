@@ -14,6 +14,50 @@
 @property (readonly, nonatomic) NSOperation <COOperation> *operation;
 @end
 
+@interface COLinearSequence ()
+@property (assign, nonatomic) NSUInteger currentStepIndex;
+@end
+
+@implementation COLinearSequence
+
+- (instancetype)init {
+    self = [super init];
+
+    _currentStepIndex = 0;
+
+    return self;
+}
+
+- (nonnull NSArray <COLinearSequenceStep>*)steps {
+    NSString *reason = [NSString stringWithFormat:@"Must override -steps method in a subclass!"];
+
+    @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:reason userInfo:nil];
+
+    return nil;
+}
+
+- (NSOperation <COOperation> * _Nullable)nextOperationAfterOperation:(NSOperation <COOperation> *_Nullable)previousOperationOrNil {
+
+    // Linear sequence works only with successful operations
+    if (previousOperationOrNil && previousOperationOrNil.result == nil) {
+        return nil;
+    }
+
+    NSInteger currentStepIndex = self.currentStepIndex++;
+
+    if (currentStepIndex < self.steps.count) {
+        COLinearSequenceStep currentStep = self.steps[currentStepIndex];
+
+        NSOperation<COOperation> *nextOperation = currentStep(previousOperationOrNil);
+
+        return nextOperation;
+    }
+
+    return nil;
+}
+
+@end
+
 @implementation CORetrySequence
 
 @synthesize numberOfRetries = _numberOfRetries;
