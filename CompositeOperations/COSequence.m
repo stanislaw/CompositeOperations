@@ -7,7 +7,7 @@
 // Released under the MIT license
 //
 
-#import <CompositeOperations/COSequence.h>
+#import "COSequence.h"
 
 @interface CORetrySequence ()
 @property (assign, nonatomic) NSUInteger numberOfRetries;

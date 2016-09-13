@@ -7,7 +7,7 @@
 // Released under the MIT license
 //
 
-#import <CompositeOperations/COSimpleOperation.h>
+#import "COSimpleOperation.h"
 
 #import "COAbstractOperation_Private.h"
 

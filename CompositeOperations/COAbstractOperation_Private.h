@@ -7,7 +7,7 @@
 // Released under the MIT license
 //
 
-#import <CompositeOperations/COAbstractOperation.h>
+#import "COAbstractOperation.h"
 
 typedef NS_ENUM(NSInteger, COOperationState) {
     COOperationStateReady = 0,
