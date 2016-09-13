@@ -15,7 +15,7 @@ FOUNDATION_EXPORT double CompositeOperationsVersionNumber;
 //! Project version string for CompositeOperations.
 FOUNDATION_EXPORT const unsigned char CompositeOperationsVersionString[];
 
-#import <CompositeOperations/COOperation.h>
-#import <CompositeOperations/COSequence.h>
-#import <CompositeOperations/COSimpleOperation.h>
-#import <CompositeOperations/COCompositeOperation.h>
+#import "COOperation.h"
+#import "COSequence.h"
+#import "COSimpleOperation.h"
+#import "COCompositeOperation.h"
