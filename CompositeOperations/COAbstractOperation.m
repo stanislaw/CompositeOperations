@@ -68,17 +68,14 @@
 
 - (void)setState:(COOperationState)state {
     if (COStateTransitionIsValid(self.state, state) == NO) {
-        NSString *errMessage = [NSString stringWithFormat:@"%@: transition from %@ to %@ is invalid", self, COKeyPathFromOperationState(self.state), COKeyPathFromOperationState(state)];
+        return;
 
-        @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:errMessage userInfo:nil];
     }
 
     @synchronized(self) {
         if (COStateTransitionIsValid(self.state, state) == NO) {
-            NSString *errMessage = [NSString stringWithFormat:@"%@: transition from %@ to %@ is invalid", self, COKeyPathFromOperationState(self.state), COKeyPathFromOperationState(state)];
-
-            @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:errMessage userInfo:nil];
-        };
+            return;
+        }
 
         NSString *oldStateKey = COKeyPathFromOperationState(self.state);
         NSString *newStateKey = COKeyPathFromOperationState(state);
