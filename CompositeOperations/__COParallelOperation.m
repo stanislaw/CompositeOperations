@@ -101,8 +101,9 @@
             if (weakOperation.result == nil) {
                 [weakSelf cancelAllOperations];
             }
-
+          if (!self.isCancelled && !self.isFinished) {
             dispatch_group_leave(group);
+          }
         };
     }
 
