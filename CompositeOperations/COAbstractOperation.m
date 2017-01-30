@@ -14,6 +14,7 @@
 @synthesize state = _state;
 @synthesize result = _result;
 @synthesize error = _error;
+@synthesize hasLeftGroup = _hasLeftGroup;
 
 - (id)init {
     self = [super init];

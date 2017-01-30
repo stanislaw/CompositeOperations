@@ -92,6 +92,7 @@
     dispatch_group_t group = dispatch_group_create();
 
     for (NSOperation <COOperation> *operation in self.operations) {
+      
         dispatch_group_enter(group);
 
         __weak __COParallelOperation *weakSelf = self;
@@ -101,9 +102,10 @@
             if (weakOperation.result == nil) {
                 [weakSelf cancelAllOperations];
             }
-          if (!self.isCancelled && !self.isFinished) {
-            dispatch_group_leave(group);
-          }
+            if (!weakOperation.hasLeftGroup) {
+              weakOperation.hasLeftGroup = YES;
+              dispatch_group_leave(group);
+            }
         };
     }
 
