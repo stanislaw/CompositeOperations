@@ -95,8 +95,8 @@
       
         dispatch_group_enter(group);
 
-        __weak __COParallelOperation *weakSelf = self;
-        __weak NSOperation <COOperation> *weakOperation = operation;
+        __block __COParallelOperation *weakSelf = self;
+        __block NSOperation <COOperation> *weakOperation = operation;
 
         operation.completionBlock = ^{
             if (weakOperation.result == nil) {
