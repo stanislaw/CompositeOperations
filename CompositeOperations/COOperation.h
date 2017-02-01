@@ -11,8 +11,10 @@
 
 @protocol COOperation <NSObject>
 
+@required
 @property (readonly, nullable) id result;
 @property (readonly, nullable) id error;
+@property (assign) BOOL hasLeftGroup;
 
 @end
 

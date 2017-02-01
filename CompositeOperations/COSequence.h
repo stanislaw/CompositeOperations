@@ -8,7 +8,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <CompositeOperations/COOperation.h>
+#import "COOperation.h"
 
 @protocol COSequence <NSObject>
 - (NSOperation <COOperation> * _Nullable)nextOperationAfterOperation:(NSOperation <COOperation> *_Nullable)previousOperationOrNil;

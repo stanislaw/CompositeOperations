@@ -92,17 +92,20 @@
     dispatch_group_t group = dispatch_group_create();
 
     for (NSOperation <COOperation> *operation in self.operations) {
+      
         dispatch_group_enter(group);
 
-        __weak __COParallelOperation *weakSelf = self;
-        __weak NSOperation <COOperation> *weakOperation = operation;
+        __block __COParallelOperation *weakSelf = self;
+        __block NSOperation <COOperation> *weakOperation = operation;
 
         operation.completionBlock = ^{
             if (weakOperation.result == nil) {
                 [weakSelf cancelAllOperations];
             }
-
-            dispatch_group_leave(group);
+            if (!weakOperation.hasLeftGroup) {
+              weakOperation.hasLeftGroup = YES;
+              dispatch_group_leave(group);
+            }
         };
     }
 

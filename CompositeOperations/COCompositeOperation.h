@@ -7,8 +7,8 @@
 // Released under the MIT license
 //
 
-#import <CompositeOperations/COAbstractOperation.h>
-#import <CompositeOperations/COSequence.h>
+#import "COAbstractOperation.h"
+#import "COSequence.h"
 
 @interface COCompositeOperation : COAbstractOperation
 

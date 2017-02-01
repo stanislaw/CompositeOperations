@@ -8,7 +8,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <CompositeOperations/COOperation.h>
+#import "COOperation.h"
 
 @interface COAbstractOperation : NSOperation <COOperation>
 @end

@@ -7,7 +7,7 @@
 // Released under the MIT license
 //
 
-#import <CompositeOperations/COCompositeOperation.h>
+#import "COCompositeOperation.h"
 
 #import "__COSequentialOperation.h"
 #import "__COParallelOperation.h"
